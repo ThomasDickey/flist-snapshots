@@ -1,3 +1,11 @@
+1984-06-06  Thomas E. Dickey
+
+	* src/strscale.c: RCS_BASE
+
+1984-06-06  Thomas E. Dickey
+
+	* src/strscale.c: rcs-identifiers
+
 1984-05-28  Thomas E. Dickey
 
 	* src/freelist.c: RCS_BASE
