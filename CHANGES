@@ -1,3 +1,131 @@
+1995-03-18  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/fl.c: corrected prototype of flist_hold
+	added arg for dds_tell
+
+	* src/flsort.c: dircmd.h replaces dirent.h+dclarg.h
+
+	* src/flshow.c: prototype flshow_lis
+
+	* src/flfind.c: dircmd.h replaces dirent.h+dclarg.h
+
+	* src/dircmd.h: typos (comma instead of semicolon)
+
+	* src/dircmd2.h: need extra parentheses for function-pointer
+
+	* src/flcols.c: tDIRCMD
+
+	* src/dircmd.c: tDIRCMD standardized names
+
+	* src/dirchk.c: dircmd.h replaces dircmd2.h+dclarg.h
+
+	* src/dclopt.c: fixes to dclopt_cpy (to compile)
+
+	* src/dclarg.h: corrected type of dclinx
+
+	* src/dclopt.h: include dclarg.h
+
+	* src/chrcmd.c: dircmd.h replaces dircmd2.h
+
+	* src/acpcopy.c: acpcopy2 is int, not void
+
+	* src/getprot.c: prototypes
+
+	* src/acpcopy.c: prototypes
+	memcpy
+
+	* src/dclinx.c: prototypes
+
+	* src/dirhigh.c: dds.h
+
+	* src/argvdcl.c: prototyped
+
+	* src/acplook.c: memcpy
+
+	* src/fledit.c: prototypes
+	memcpy
+
+	* src/flpage.c, src/flscan.c, src/flcopy.c: prototypes
+
+	* src/flcols.c: prototypes for dircmd.h
+
+	* src/flrnam.c, src/flnoid.c, src/flmore.c: prototypes
+
+	* src/flfind.c: prototype
+	memcpy
+
+	* src/dclarg.c: prototyped
+
+	* src/dclarg.h: prototypes
+
+	* src/dclopt.c: dclarg_keyw prototype
+
+	* src/fl.c, src/flshow.c, src/flsort.c, src/whoami.c, src/fldlet.c:
+	prototypes
+
+	* src/dirfind.c: dds.h
+
+	* src/fldump.c, src/flread.c: prototypes
+
+	* src/flprot.c: forgot include
+
+	* src/dircmd.c: split-out dircmd.h for prototypes
+
+	* src/flprot.c: prototype flprot
+
+	* src/dircmd2.h: defined tDIRCMD macro for prototypes
+
+	* src/flescp.c: prototypes
+
+	* src/dircmd.h: RCS_BASE
+
+	* src/dclopt.c: prototyped
+
+	* src/dclopt.h: added prototype for dclopt()
+
+	* src/flprot.c: getprot.h
+
+	* src/getprot.h: added prototypes for getprot, setprot
+
+	* src/setprot.c: getprot.h
+
+	* src/setprot.c: chprot.h (prototypes)
+
+	* src/rmsio.c: use memcpy
+
+	* src/flprot.c: dds.h, strutils.h
+
+	* src/dds.c: missing args for dds_tell
+
+	* src/dds.h: include dirent.h
+
+	* src/chprot.c: typo
+
+	* src/dirent.c: dds.h prototypes
+
+	* src/dds.c: prototyped this module's interface
+
+	* src/dds.h: added rcs-ident, prototypes for dds.c
+
+	* src/dirent.c: nameheap prototypes
+	use memset
+
+	* src/fl.c, src/dirpath.c, src/dirdata.c: nameheap.h
+
+	* src/nameheap.c: prototyped this module's interface
+
+	* src/nameheap.h: oops: interchanged args of nameheap
+
+	* src/nameheap.h: RCS_BASE
+
+	* src/chprot.c: prototyped, use memcpy, memset
+
+	* src/chprot.h: RCS_BASE
+
+	* src/descrip.mms, src/build.com: removed module CPYBLK
+
+	* src/browse.c: use memcpy instead of cpyblk
+
 1995-02-19  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/edtcmd.h: RCS_BASE

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.5 1995/02/19 02:30:13 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.6 1995/03/18 23:57:57 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.5 1995/02/19 02:30:13 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
- *		18 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		04 Nov 1988- added "/dexpired" table entry, and matching sort
  *		11 Jul 1988- fix side-effect of "<number> -" from dclarg fix.
  *		01 Jul 1988- added LSEDIT command
@@ -102,15 +102,14 @@ static char *Id = "$Id: dircmd.c,v 1.5 1995/02/19 02:30:13 tom Exp $";
 #include	"dircmd2.h"
 #include	"dds.h"
 #include	"dirent.h"
+#include	"dircmd.h"
 
 #include	"strutils.h"
 
 /*
  * External procedures:
  */
-extern
-char	*dds_0cmd(),	/* returns pointer to reference copy of display	*/
-	*dirarg();	/* Do parse & simple check of visible-commands	*/
+extern	char	*dirarg(); /* Do parse & simple check of visible-commands */
 
 /*
  * Special command-processing routines are called:
@@ -123,48 +122,10 @@ char	*dds_0cmd(),	/* returns pointer to reference copy of display	*/
  *	xdcl_	=> DCLARG-list (filespecs are uppercased).
  */
 
-/*
- * Procedures which perform FLIST commands:
- */
-extern
-int	flcols(),		/* Alter the display format		*/
-	flcols_left(),
-	flcols_right(),
-	flcols_width(),
-	flcols_132();
-int	flcopy();		/* Copy/append files			*/
-int	fldlet();		/* Delete or purge a file		*/
-#ifdef	DEBUG
-int	fldump();		/* Dump data structures			*/
-#endif
-int	fledit();		/* Edit/inspect file or directory	*/
-int	flescp();		/* Escape from FLIST temporarily	*/
-int	flfind();		/* Search for file-entry		*/
-int	flmore();		/* BROWSE a file (type it)		*/
-int	flnoid();		/* Enqueue a process, no wait		*/
-int	flpage();		/* Do scrolling /TOP, /END, etc.	*/
-int	flprot();		/* Set/clear protection code		*/
-int	flquit();		/* Process (optional) multi-level quit	*/
-int	flread();		/* Read (or re-read) entries in list	*/
-int	flrnam();		/* Rename a file			*/
-int	flscan();		/* Scan 'filelist[]' for deletions	*/
-int	flset_date(),		/* Set date-display flags		*/
-	flset_hold(),		/* Set HOLD-flag			*/
-	flset_mark();		/* Set mark (selection) flag		*/
-int	flshow();		/* Process "SHOW"/"?" commands		*/
-int	flsort();		/* Process sort-commands		*/
-int	not_impl();		/* patch				*/
-
-char	*edtcmd(),		/* Return edited-command		*/
-	*scanint(),		/* => after decoded integer		*/
-	*strchr(),		/* Return index into character string	*/
-	*dclarg_spec(),		/* Skip pointer past filespec-string	*/
-	*dirent_dft();		/* Return pointer to wildcard spec	*/
-
 extern	char	*crtvec[];	/* Display-frame			*/
 
 import(filelist);
-
+
 /*
  * Local (static) data:
  */
@@ -196,7 +157,7 @@ typedef	struct	{
 	} KEYDEFS;
 static
 KEYDEFS	*keydefs	= nullC;
-
+
 /*
  * Symbol table to relate "visible" commands to actual controls.
  * The actual-text may not be printing-ASCII, because this is trapped
@@ -303,7 +264,7 @@ VCMD2	vcmd2[]	= {
 	"/rvers",	3, flsort,	OZ(0),
 	"/rweek",	3, flsort,	OZ(0),
 	"/rxab",	3, flsort,	OZ(0),
-
+
 /*
  * Symbol table for commands which (may) require DCL arguments or options.
  * The command parser performs some checking, to ensure that the command
@@ -335,7 +296,7 @@ VCMD2	vcmd2[]	= {
 	"verify",	2, flscan,	v_1c,		read_dft,
 	"view",		1, fledit,	v_M,		read_dft
 	};
-
+
 /* <dircmd>:
  * Loop, reading characters and executing commands until we either delete the
  * last file in the list, or we receive a QUIT-command.
@@ -356,7 +317,7 @@ int	command,
 			dircmd_kcmd (&curfile, command);
 	}
 }
-
+
 /* <dircmd_kcmd>:
  * Given that a legal keypad or control code was input, complete the processing:
  */
@@ -496,7 +457,7 @@ register int c = toascii(code) + ((flags & 1) ? 128 : 0);
 	keydefs[c].flags = flags & ~1;
 	keydefs[c].string = string;
 }
-
+
 /* <dircmd_getc>:
  * Read a single command (keystroke-level), suppressing characters such
  * as control/S and control/Q which may be passed back by 'getpad()',
@@ -578,7 +539,7 @@ got_command:
 	}
 	return (command);
 }
-
+
 /* <dircmd_read>:
  * Read/edit a "visible" command.  After editing it, execute it:
  */
@@ -604,7 +565,7 @@ int	line	= *curfile_ - crt_top();
 			crtvec[line]),
 		TRUE);			/* Save resulting command	*/
 }
-
+
 /* <dircmd_doit>:
  * Execute a command string.  Return a continuation command-code.
  */
@@ -731,7 +692,7 @@ char	*fullname = "",
 			cmdbfr[0] = EOS;
 		}
 	}
-
+
 	/*
 	 * Common exit point for all completed command-input:
 	 */
@@ -787,7 +748,7 @@ char	*fullname = "",
 		dds_scroll (crt_end() + (*curfile_ - crt_top()));
 	}
 	if (history) cmdstk_put (cmdbfr);
-
+
 	/*
 	 * If 'known_cmd', then we found the command name in one of the tables.
 	 */
@@ -819,7 +780,7 @@ char	*fullname = "",
 	if (xdcl_)	freelist (xdcl_);
 	if (xcmd_)	cfree (xcmd_);
 }
-
+
 /* <dircmd_ask>:
  * This procedure may be called by a visible-command to verify an action.
  * Prompt for:
@@ -853,7 +814,7 @@ char	ok[]	= "QNYG";
 
 	return ((s_-ok)-1);
 }
-
+
 /* <dircmd_vcmd2>:
  * Do table lookup to find FLIST's full-name for a "visible" command.  This
  * lookup is used only for the VCMD2-entries (which can specify arguments,
@@ -902,10 +863,7 @@ dircmd_dirflg (flag)
 /* <not_impl>:
  * Print an appropriate error message for unimplemented routines:
  */
-not_impl (curfile_, cmd_, dcl_)
-int	*curfile_;
-char	*cmd_;
-DCLARG	*dcl_;
+tDIRCMD(not_impl)
 {
 	warn ("?NOT implemented: %.60s", cmd_ ? cmd_ : dcl_->dcl_text);
 }

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chprot.c,v 1.2 1984/12/22 00:57:38 tom Exp $";
+static char *Id = "$Id: chprot.c,v 1.4 1995/03/18 22:35:10 tom Exp $";
 #endif
 
 /*
  * Title:	chprot.c
  * Author:	Thomas E. Dickey
  * Created:	19 Nov 1984
- * Last update:	21 Dec 1984, return status-code from I/O status-block.
+ * Last update:
+ *		18 Mar 1995, standardized memory copy/set.
+ *		21 Dec 1984, return status-code from I/O status-block.
  *
  * Function:	This procedure uses the ACP to alter the protection code of
  *		one or more VAX/VMS disk files.
@@ -33,30 +35,33 @@ static char *Id = "$Id: chprot.c,v 1.2 1984/12/22 00:57:38 tom Exp $";
 #include	"bool.h"
 #include	"acp.h"
 
+#include	"chprot.h"
+
 #define	sys(f)	status = f; if (! $VMS_STATUS_SUCCESS(status))
 #define	QIO(func) sys$qiow (0, chnl, func, &iosb, 0, 0,\
 			&fibDSC, 0,0,0, &atr[0],0)
 
-chprot (filespec, code, mask)
-char	*filespec;			/* specifies files to lookup	*/
-int	code, mask;
+int
+chprot (
+	char	*filespec,		/* specifies files to lookup	*/
+	int	code,
+	int	mask)
 {
-struct	FAB	fab;
-struct	NAM	nam;			/* used in wildcard parsing	*/
+	struct	FAB	fab;
+	struct	NAM	nam;		/* used in wildcard parsing	*/
 
-char	rsa[NAM$C_MAXRSS],		/* resultant string area	*/
-	esa[NAM$C_MAXRSS];		/* expanded string area		*/
+	char	rsa[NAM$C_MAXRSS],	/* resultant string area	*/
+		esa[NAM$C_MAXRSS];	/* expanded string area		*/
 
-long	status;
-IOSB	iosb;
-short	chnl;
-FIB	fib;
-ATR	atr[2];
-auto
-short	short_fpro;
+	long	status;
+	IOSB	iosb;
+	short	chnl;
+	FIB	fib;
+	ATR	atr[2];
+	short	short_fpro;
 
-$DESCRIPTOR(DSC_name,"");
-struct	dsc$descriptor	fibDSC;
+	$DESCRIPTOR(DSC_name,"");
+	struct	dsc$descriptor	fibDSC;
 
 	rmsinit_fab (&fab, &nam, nullC, filespec);
 	rmsinit_nam (&nam, &esa, &rsa);
@@ -67,7 +72,8 @@ struct	dsc$descriptor	fibDSC;
 	{
 		sys(sys$search(&fab))
 		{
-			if (status == RMS$_NMF)	status = 0;
+			if (status == RMS$_NMF)
+				status = 0;
 			return (status);
 		}
 
@@ -76,9 +82,9 @@ struct	dsc$descriptor	fibDSC;
 
 		fibDSC.dsc$w_length = sizeof(FIB);
 		fibDSC.dsc$a_pointer = &fib;
-		cpyblk (&fib, nullC, sizeof(FIB));
+		memset (&fib, 0, sizeof(fib));
 		fib.fib$l_acctl = FIB$M_WRITECK;
-		cpyblk (&fib.fib$w_fid[0], &nam.nam$w_fid[0], 6);
+		memcpy (fib.fib$w_fid, nam.nam$w_fid, sizeof(fib.fib$w_fid));
 
 		atr[0].atr$w_type = ATR$C_FPRO;
 		atr[0].atr$w_size = ATR$S_FPRO;
@@ -95,7 +101,9 @@ struct	dsc$descriptor	fibDSC;
 				   | (code & ~mask);
 		}
 		else
+		{
 			short_fpro = code;
+		}
 
 		sys(QIO(IO$_MODIFY))			goto no_access;
 		sys(iosb.stat)				goto no_access;

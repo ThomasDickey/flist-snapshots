@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclopt.c,v 1.4 1995/02/19 17:45:51 tom Exp $";
+static char *Id = "$Id: dclopt.c,v 1.5 1995/03/18 23:10:18 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dclopt.c,v 1.4 1995/02/19 17:45:51 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		03 Jul 1985, use 'scanint' instead of 'sscanf' to bypass bug
  *			     in CC2.0
  *		26 Jun 1985, moved fancy date-parsing to 'sysbintim'.
@@ -83,21 +83,43 @@ char	e_confl[] =	"repeated or conflicting option",
 	e_table[] =	"(DCLOPT internal error)",
 	e_wantv[] =	"value needed",
 	e_2long[] =	"string too long";
-
-dclopt (msg_, d_, opt, size_opt)
-char	*msg_;
-DCLARG	*d_;
-DCLOPT	opt[];
-int	size_opt;
+
+/*
+ * Do the actual copy of a 'from' object to 'to', given the size.  If the
+ * length is no greater than 8, it won't be a string.
+ */
+static
+void	dclopt_cpy (void *to, void *from, int size)
 {
-int	j,	size,	slen,	got,	flag,
-	Any_Errors = FALSE,
-	confl	= 0,
-	maxopt	= size_opt / sizeof(DCLOPT);
-char	*area,	*init,	msg[80+CRT_COLS],
-	*v_, *v2_,
-	*r_, *s_, *t_,
-	*err_	= 0;
+	if (from != 0) {
+		if (size <= 8) {
+			memcpy (to, from, size);
+		} else {
+	    		strncpy (to, from, size);
+		}
+	} else {
+		if (size <= 8) {
+			memset(to, 0, len);
+		} else {
+	    		to[0] = EOS;
+		}
+	}
+}
+
+int	dclopt (
+	char	*msg_,
+	DCLARG	*d_,
+	DCLOPT	opt[],
+	int	size_opt)
+{
+	int	j,	size,	slen,	got,	flag,
+		Any_Errors = FALSE,
+		confl	= 0,
+		maxopt	= size_opt / sizeof(DCLOPT);
+	char	*area,	*init,	msg[80+CRT_COLS],
+		*v_, *v2_,
+		*r_, *s_, *t_,
+		*err_	= 0;
 
 	/*
 	 * Initialize all options by copying the init component to the area.
@@ -174,7 +196,7 @@ char	*area,	*init,	msg[80+CRT_COLS],
 		else		/* No qualifier value given	*/
 		{
 		    if (flag && v2_)	/* Default if-set ?	*/
-			cpyblk (((size <= 4) ? &flag : (int *)v_), v2_, size);
+			memcpy (((size <= sizeof(flag)) ? &flag : (int *)v_), v2_, size);
 		    else if (size > 8)
 			err_ = e_wantv;
 		    else if (size == 8)
@@ -183,8 +205,8 @@ char	*area,	*init,	msg[80+CRT_COLS],
 
 		if (got && (size < 8))
 		{
-		    if (size <= 4)
-			cpyblk (v_, &flag, size);
+		    if (size <= sizeof(flag))
+			memcpy (v_, &flag, size);
 		    else
 			err_ = e_table;
 		}
@@ -206,22 +228,4 @@ char	*area,	*init,	msg[80+CRT_COLS],
 	    }
 	}
 	return (Any_Errors);
-}
-
-/*
- * Do the actual copy of a 'from' object to 'to', given the size.  If the
- * length is no greater than 8, it won't be a string, and we can use 'cpyblk'
- * even if 'from' is a null pointer.  If it is a string, however, we must test
- * for that.
- */
-dclopt_cpy (to, from, size)
-char	*to, *from;
-int	size;
-{
-	if (size <= 8)
-	    cpyblk (to, from, size);
-	else if (from)
-	    strncpy (to, from, size);
-	else
-	    to[0] = EOS;
 }

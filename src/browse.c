@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.6 1995/02/19 18:24:48 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.7 1995/03/18 20:03:25 tom Exp $";
 #endif
 
 /*
@@ -1468,7 +1468,7 @@ int	old_top = crt_top(),
 #endif
 
 	if (view_size == HalfPage && dirflg > 0 && old_end > new_top)
-	    cpyblk (&endcol[0], &endcol[HalfPage], HalfPage*sizeof(endcol[0]));
+	    memcpy (&endcol[0], &endcol[HalfPage], HalfPage*sizeof(endcol[0]));
 
 	/*
 	 * Note: 'crt_scroll' is given a null display routine to simplify

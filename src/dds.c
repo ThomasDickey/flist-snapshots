@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.5 1995/02/19 18:23:39 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.7 1995/03/18 22:51:08 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dds.c,v 1.5 1995/02/19 18:23:39 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
- *		19 Feb 1995, prototyped
+ *		18 Mar 1995, prototyped
  *		18 Feb 1995, renamed 'beep' to avoid conflict with curses.
  *		23 Feb 1989, use 'flist_chdir()'
  *		25 Aug 1985, added 'dds_width' entrypoint.
@@ -82,18 +82,17 @@ extern	char	*crtvec[];	/* CRT display vectors			*/
 #define	TOP_END	top_line = crt_top(), end_line = crt_end(), lpp = crt_lpp()
 #define	lpp2	(lpp-2)
 #define	lpp1	(lpp-1)
-
+
 /* <dds_inx1>:
  * Given an index into 'filelist[]', return the number in the range
  * [1..(numfiles-numdlets)] which shows its real position in the display
  * list.  This is used at the conclusion of each command to show the
  * current position in the display list.
  */
-dds_inx1 (ifile)
-int	ifile;
+int	dds_inx1 (int ifile)
 {
-register
-int	j,k;
+	register
+	int	j,k;
 
 	ifile++;		/* put into range [1..numfiles]	*/
 	ifile = max(1,min(ifile,numfiles));
@@ -112,11 +111,10 @@ int	j,k;
  * index to 'filelist[]'.  This is used in scrolling commands by index
  * number.
  */
-dds_inx2 (index)
-int	index;
+int	dds_inx2 (int index)
 {
-register
-int	j = numfiles-numdlets;
+	register
+	int	j = numfiles-numdlets;
 
 	index = max(1,min(index,j));
 
@@ -135,17 +133,16 @@ int	j = numfiles-numdlets;
 
 	return (j);
 }
-
+
 /* <dds_line>:
  * Display the indicated file-index on the screen, at the indicated line
  * (numbered from 0).
  */
-dds_line(index)
-int	index;
+void	dds_line(int index)
 {
-int	TOP_END,
-	line	= index - top_line;
-char	bfr	[CRT_COLS];
+	int	TOP_END,
+		line	= index - top_line;
+	char	bfr	[CRT_COLS];
 
 	if (line >= 0 && line < lpp1)
 	{
@@ -162,7 +159,7 @@ char	bfr	[CRT_COLS];
 
 /* <dds_scroll>:
  */
-dds_scroll (ifile)
+int	dds_scroll (int ifile)
 {
 	return (crt_scroll(ifile, numfiles, dds_line));
 }
@@ -172,10 +169,9 @@ dds_scroll (ifile)
  * as needed.  The current working-directory is always set to that of the
  * current file.  Return the actual constrained value of 'ifile'.
  */
-dds_index (ifile)
-int	ifile;
+int	dds_index (int ifile)
 {
-int	iline;
+	int	iline;
 
 	if ((ifile = min(numfiles-1, max(0, ifile))) >= 0)
 	{
@@ -186,16 +182,15 @@ int	iline;
 	}
 	return (ifile);
 }
-
+
 /* <dds_all>:
  * Display all lines in the current screen, beginning with the 'crt_top()'
  * index.  Use "-1" argument for 'top_set' to permit screen refresh,
  * and the -2 argument to do this while setting the top_line-marker to origin.
  */
-dds_all(top_set, now_set)
-int	top_set, now_set;
+void	dds_all(int top_set, int now_set)
 {
-int	j, last, TOP_END;
+	int	j, last, TOP_END;
 
 	if (top_set >= 0)
 		crt_set (TRUE, top_set);
@@ -223,7 +218,7 @@ int	j, last, TOP_END;
 	}
 	dds_index (now_set);
 }
-
+
 /* <dds_tell>:
  * The last line of the screen is used for two purposes:
  *
@@ -234,17 +229,15 @@ int	j, last, TOP_END;
  * sounds an audible alarm, as well as sets a flag "didbeep" which is
  * cleared only after the user next types a character for command-input.
  */
-dds_tell (msg_, ifile)
-char	*msg_;
-int	ifile;
+void	dds_tell (char *msg_, int ifile)
 {
-int	lpp	= crt_lpp(),
-	width	= crt_width()-1;	/* nominally 79	*/
-static
-char	sFMT1[] = "%%-%d.%ds",
-	sFMT2[]	= "Path: %%-%d.%ds %%3d of %%3d ";
-char	bfr[CRT_COLS+3],
-	format[sizeof(sFMT2)+6];
+	int	lpp	= crt_lpp(),
+		width	= crt_width()-1;	/* nominally 79	*/
+	static
+	char	sFMT1[] = "%%-%d.%ds",
+		sFMT2[]	= "Path: %%-%d.%ds %%3d of %%3d ";
+	char	bfr[CRT_COLS+3],
+		format[sizeof(sFMT2)+6];
 
 	if (!didbeep())
 	{
@@ -270,20 +263,19 @@ char	bfr[CRT_COLS+3],
 		crt_text (bfr, lpp1, 0);
 	}
 }
-
+
 /* <dds_while>:
  * Borrow the end of the status-line to show a short (10-char max) message
  * while executing a long process, such as spawn or sort.
  */
-dds_while (msg_)
-char	*msg_;
+void	dds_while (char *msg_)
 {
-int	lpp	= crt_lpp(),
-	width	= crt_width() - 14;	/* nominally 66	*/
-static
-char	sFMT1[]	= "%%-%d.%ds %%-10.10s";
-char	msgbfr[CRT_COLS],
-	format[sizeof(sFMT1)+6];
+	int	lpp	= crt_lpp(),
+		width	= crt_width() - 14;	/* nominally 66	*/
+	static
+	char	sFMT1[]	= "%%-%d.%ds %%-10.10s";
+	char	msgbfr[CRT_COLS],
+		format[sizeof(sFMT1)+6];
 
 	sprintf (format, sFMT1, width, width);
 	sprintf (msgbfr, format, crtvec[lpp1], (msg_ ? msg_ : "Working..."));
@@ -299,7 +291,7 @@ static	long	completion = 0;
  * This procedure is called on completion of a spawned subprocess.  It tests
  * the completion status for abnormality, printing an error message if so.
  */
-dds_ast1 ()
+void	dds_ast1 (void)
 {
 	flist_sysmsg (completion);
 }
@@ -311,22 +303,22 @@ dds_ast1 ()
  * as EDIT) will totally alter the screen.  For this reason, a hook is
  * provided to refresh the screen when this process wakes up again.
  */
-dds_spawn (cli_, ifile, cmd_, msg_, nowait, refresh)
-char	*cli_;		/* null iff DCL (default)		*/
-int	ifile;
-char	*cmd_,		/* command (if null, simple SPAWN)	*/
-	*msg_;
-int	nowait,		/* 1=nowait, 0=wait (til process done)	*/
-	refresh;	/* 0=norefresh, 1=line, 2=screen	*/
+void	dds_spawn (
+	char	*cli_,		/* null iff DCL (default)		*/
+	int	ifile,
+	char	*cmd_,		/* command (if null, simple SPAWN)	*/
+	char	*msg_,
+	int	nowait,		/* 1=nowait, 0=wait (til process done)	*/
+	int	refresh)	/* 0=norefresh, 1=line, 2=screen	*/
 {
-static	$DESCRIPTOR(DSC_line,"");
-static	$DESCRIPTOR(DSC_prompt,"% ");
-static	$DESCRIPTOR(DSC_cli,"");
-int	status,
-	lpp	= crt_lpp(),
-	flags	= (nowait ? 1 : 0);
-FILENT	*z = FK_(ifile);
-char	fullname[MAX_PATH];
+	static	$DESCRIPTOR(DSC_line,"");
+	static	$DESCRIPTOR(DSC_prompt,"% ");
+	static	$DESCRIPTOR(DSC_cli,"");
+	int	status,
+		lpp	= crt_lpp(),
+		flags	= (nowait ? 1 : 0);
+	FILENT	*z = FK_(ifile);
+	char	fullname[MAX_PATH];
 
 	/*
 	 * If a CLI is specified, verify that it is accessible.  The file-spec
@@ -383,7 +375,7 @@ char	fullname[MAX_PATH];
 		dds_ast1 ();	/* Use completion routine to show message */
 	dds_index (ifile);
 }
-
+
 /* <dds_hold>:
  * Prompt the user for a carriage-return before continuing.  This procedure is
  * called from 'dds_spawn' to conditionally (if "/hold" in effect) hold, or
@@ -396,11 +388,10 @@ char	fullname[MAX_PATH];
  * patch: We may implement an intermediate level of "/HOLD" where we will
  *	force it if the completion-status is in error.
  */
-dds_hold (hold)
-int	hold;
+void	dds_hold (int hold)
 {
-int	got,
-	ok	= $VMS_STATUS_SUCCESS(completion);
+	int	got,
+		ok	= $VMS_STATUS_SUCCESS(completion);
 
 	if (hold || flist_hold())
 	{
@@ -411,9 +402,9 @@ int	got,
 			putraw ("\r\n\n");
 		}
 		else
-			dds_tell (" ");	/* Make it clear first		*/
+			dds_tell (" ",-1);/* Make it clear first		*/
 		clrbeep();		/* ...permit the next text:	*/
-		dds_tell ("Hit RETURN to continue");
+		dds_tell ("Hit RETURN to continue",-1);
 		clrbeep();
 		for (;;)
 		{
@@ -424,15 +415,14 @@ int	got,
 		}
 	}
 }
-
+
 /* <dds_fast>:
  * Compute & return index to top (-1), bottom (+1) or middle (0) of display,
  * ignoring possibly deleted files.
  */
-int	dds_fast(opt)
-int	opt;
+int	dds_fast(int opt)
 {
-int	TOP_END;
+	int	TOP_END;
 
 	switch (opt)
 	{
@@ -443,7 +433,7 @@ int	TOP_END;
 	default:	return ((top_line+end_line)/2);
 	}
 }
-
+
 /* <dds_move>:
  * Do short-distance (one-line), or within screen cursor-movement, checking
  * limits:
@@ -466,9 +456,9 @@ int	TOP_END;
  * to properly reposition the cursor.  Out-of-screen scrolling assumes that
  * the screen has already been packed.
  */
-dds_move (curfile, opt)
+int	dds_move (int curfile, int opt)
 {
-int	nxt, j, jm, jp, TOP_END;
+	int	nxt, j, jm, jp, TOP_END;
 
 	if (numfiles <= numdlets)
 		return (0);		/* Ensure a limit to recursion */
@@ -516,25 +506,26 @@ int	nxt, j, jm, jp, TOP_END;
 			return (dds_move (curfile, DDS_D_C));
 	}
 }
-
+
 /* <dds_pack>:
  * Scan the 'filelist[]' array for deleted files (usually outside the current
  * screen).  When found, compress them out of the array, returning TRUE (the
  * number of files compressed).  If no compression is done, return FALSE
  * (no files).
  */
-int	dds_pack (curfile_, inscreen)
-int	*curfile_,		/* => current-file index, to adjust	*/
-	inscreen;		/* != 0 if current screen can compress	*/
+int	dds_pack (
+	int	*curfile_,	/* => current-file index, to adjust	*/
+	int	inscreen)	/* != 0 if current screen can compress	*/
 				/* <= 0 if we adjust fixed-point	*/
 {
-int	j,	k,
-	oldtop	= crt_top(),
-	oldbot	= crt_end(),
-	select	= dircmd_select(-2),
-	adj	= 0,		/* amount by which to adjust indices	*/
-	to_trim	= 0,		/* number of blank lines on end of list	*/
-	to_pack	= numdlets;	/* number of deleted files to scan	*/
+	int	j,
+		k,
+		oldtop	= crt_top(),
+		oldbot	= crt_end(),
+		select	= dircmd_select(-2),
+		adj	= 0,		/* amount to adjust indices	*/
+		to_trim	= 0,		/* # of blank lines on end of list */
+		to_pack	= numdlets;	/* # of deleted files to scan	*/
 
 	if (!numdlets)
 		return (0);
@@ -612,15 +603,14 @@ int	j,	k,
 
 	return (adj);			/* Return # of files packed out */
 }
-
+
 /* <dds_last>:
  * Cleanup after command execution by moving to a non-deleted position, and
  * packing entries which lie off the resulting screen.  Return TRUE if no
  * more files remain, necessitating a QUIT.  The current-file index is updated
  * to point to the proper file entry.
  */
-int	dds_last (curfile_)
-int	*curfile_;
+int	dds_last (int *curfile_)
 {
 	if (multi_quit > 0)
 	{
@@ -637,7 +627,7 @@ int	*curfile_;
 	}
 	return (numfiles <= 0);
 }
-
+
 /* <dds_add>:
  * Add a FILENT entry to 'filelist[]', updating the display as required.
  * This code is used, for example, when an EDIT causes a new version to be
@@ -645,10 +635,12 @@ int	*curfile_;
  * are any deleted-slots, put the entry there, otherwise put it at the end
  * of the list.
  */
-int	dds_add (z)	/* returns resulting index into 'filelist[]'	*/
-FILENT	*z;		/* => structure to insert/append to 'filelist[]' */
+int	dds_add (	/* returns resulting index into 'filelist[]'	*/
+	FILENT	*z)	/* => structure to insert/append to 'filelist[]' */
 {
-int	j, curfile = -1, TOP_END;
+	int	j,
+		curfile = -1,
+		TOP_END;
 
 	for (j = 0; j < numfiles; j++)	/* Find the first deleted-slot */
 	{
@@ -671,31 +663,28 @@ int	j, curfile = -1, TOP_END;
 	dds_width (z, curfile);			/* Latch column widths */
 	return (curfile);
 }
-
+
 /* <dds_add2>:
  * Add a new FILENT block at an empty slot.  Display it.  This code is used,
  * for example, as a result of COPY.
  */
-dds_add2 (z, curfile)
-FILENT	*z;
-int	curfile;
+void	dds_add2 (FILENT *z, int curfile)
 {
 	dirdata_one (z, &filelist[curfile]);
 	dds_width (z, curfile);
 }
-
+
 /* <dds_width>:
  * Update the display-column widths.  If we have a new maxima, may refresh the
  * entire display rather than simply the current line.
  */
-dds_width (z, curfile)
-FILENT	*z;
+void	dds_width (FILENT *z, int curfile)
 {
-type_ccolumns	Ccolumns size_ccolumns;
-static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfx";
-register j;
+	type_ccolumns	Ccolumns size_ccolumns;
+	static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfx";
+	register j;
 
-	cpyblk (Ccolumns, ccolumns, sizeof(ccolumns));
+	memcpy (Ccolumns, ccolumns, sizeof(ccolumns));
 	if (dirent_width(z))
 	{
 		for (j = 0; j < SIZEOF(ccolumns); j++)
