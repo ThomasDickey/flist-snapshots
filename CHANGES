@@ -1,3 +1,19 @@
+1984-08-24  Thomas E. Dickey
+
+	* src/crt.h: RCS_BASE
+
+1984-08-24  Thomas E. Dickey
+
+	* src/crt.h: rcs-identifiers
+
+1984-08-02  Thomas E. Dickey
+
+	* src/syasctim.c: RCS_BASE
+
+1984-08-02  Thomas E. Dickey
+
+	* src/syasctim.c: rcs-identifiers
+
 1984-07-16  Thomas E. Dickey
 
 	* src/sygetmsg.c: RCS_BASE
