@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetsym.c,v 1.4 1995/06/06 13:52:24 tom Exp $";
+static char *Id = "$Id: sygetsym.c,v 1.5 1995/10/21 18:39:57 tom Exp $";
 #endif
 
 /*
@@ -31,7 +31,7 @@ static char *Id = "$Id: sygetsym.c,v 1.4 1995/06/06 13:52:24 tom Exp $";
 
 #include	"sysutils.h"
 
-extern unsigned long lib$get_symbol (struct dsc$descriptor_s *sym, struct dsc$descriptor_s *ret, short *ret_len_w);
+extern unsigned lib$get_symbol (struct dsc$descriptor_s *sym, struct dsc$descriptor_s *ret, short *ret_len_w);
 
 int
 sysgetsym (char *co_, char *ci_, int len)
@@ -40,7 +40,7 @@ sysgetsym (char *co_, char *ci_, int len)
 	$DESCRIPTOR(sym_desc,"");
 	$DESCRIPTOR(ret_desc,"");
 	static	short	ret_len_w;
-	long	status;
+	unsigned status;
 	int	found;
 
 	sym_desc.dsc$a_pointer = ci_;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getpad.c,v 1.4 1995/06/06 11:47:52 tom Exp $";
+static char *Id = "$Id: getpad.c,v 1.5 1995/10/21 17:02:18 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: getpad.c,v 1.4 1995/06/06 11:47:52 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	07 May 1984
  * Last Update:
+ *		21 Oct 1995, renamed variables to avoid min/max conflict.
  *		18 Feb 1995, port to DEC C (renamed 'alarm').
  *		18 Sep 1984, use 'alarm' instead of 'putchar'
  *		22 Jun 1984, corrections to erro handling
@@ -93,7 +94,7 @@ char	bfr[80], *c_;
 
 #define	START	{if (getpad_read() == ESC) {sound_alarm(); goto escape;}}
 
-#define	ABSORB(min,max)	while (raw >= min && raw <= max) START
+#define	ABSORB(minc,maxc)	while (raw >= minc && raw <= maxc) START
 
 int
 getpad (void)
@@ -146,11 +147,11 @@ escape:		c_ = bfr;
 }
 
 int
-getpad_look (int min, int max)
+getpad_look (int minc, int maxc)
 {
 	int	j;
 
-	if (raw >= min && raw <= max)
+	if (raw >= minc && raw <= maxc)
 	{
 		*c_++ = '\0';
 		for (j=0; j < max_table; j++)

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.8 1995/05/29 00:23:44 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.9 1995/10/21 18:45:20 tom Exp $";
 #endif
 
 /*
@@ -43,27 +43,22 @@ static char *Id = "$Id: acplook.c,v 1.8 1995/05/29 00:23:44 tom Exp $";
 #include	"acp.h"
 
 #include	"flist.h"
-#define		DIRENT		/* local */
 #include	"dirent.h"
 
-long	acplook (
+unsigned acplook (
 	FILENT	*z,
 	char	*filespec,		/* specifies files to lookup	*/
 	struct	NAM	*nam_)
 {
-	long	status;
-	struct	{
-		short	stat,
-			unused;
-		long	jobstat;
-		}	iosb;
+	unsigned status;
+	IOSB	iosb;
 	short	chnl;
 	int	j;
 	FIB	fib;
 	ATR	atr[14];
 	short	uic_vec[2];
 	FAT	recattr;
-	long	uchar;
+	unsigned uchar;
 #define	SWAP(x)	((x >> 16) + (x & 0xffff))
 
 	static $DESCRIPTOR(DSC_name,"");
@@ -109,9 +104,9 @@ long	acplook (
 		 * a SYS$OPEN call).
 		 */
 		z->fstat = RMS$_NORMAL;
-		if (iosb.stat != SS$_NORMAL)	z->fstat = iosb.stat;
+		if (iosb.sts != SS$_NORMAL)	z->fstat = iosb.sts;
 		if (uchar & FCH$M_LOCKED)	z->fstat = RMS$_FLK;
-		if (iosb.stat == SS$_NOPRIV)	z->fstat = RMS$_PRV;
+		if (iosb.sts == SS$_NOPRIV)	z->fstat = RMS$_PRV;
 
 		if (! zNOPRIV(z))
 		{

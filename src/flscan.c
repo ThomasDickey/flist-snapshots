@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.7 1995/06/06 10:37:42 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.8 1995/10/21 18:42:25 tom Exp $";
 #endif
 
 /*
@@ -83,7 +83,7 @@ static char *Id = "$Id: flscan.c,v 1.7 1995/06/06 10:37:42 tom Exp $";
 
 extern	int	inspect (char *filespec, int toscan);
 
-static	void	flscan_all (char *spec, int len, long status);
+static	void	flscan_all (char *spec, int len, unsigned status);
 static	void	flscan_clr (void);
 static	void	flscan_off (int j, int *unused);
 static	void	flscan_on  (int j);
@@ -211,7 +211,7 @@ void	flscan_off (int j, int *unused)
  * only where a specific file-spec was found).
  */
 static
-void	flscan_all (char *spec, int len, long status)
+void	flscan_all (char *spec, int len, unsigned status)
 {
 	FILENT	z2;
 	int	j;

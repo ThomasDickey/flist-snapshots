@@ -1,4 +1,4 @@
-/* $Id: dirent.h,v 1.12 1995/06/04 23:26:52 tom Exp $ */
+/* $Id: dirent.h,v 1.13 1995/10/21 18:55:53 tom Exp $ */
 
 /*
  * Title:	dirent.h
@@ -121,10 +121,9 @@ typedef	struct my_filent {
 	DATENT	fexpr;		/* Expiration date (DIR/FULL)		*/
 	unsigned
 	short	fhour;		/* Hour-in-day for "/sh" sorts		*/
-	long	fsize,		/* File size (DIR/SIZE), -1=unknown	*/
-		fallc;		/* File allocation			*/
-	unsigned
-	long	fstat;		/* RMS-status on open			*/
+	unsigned fsize;		/* File size (DIR/SIZE), -1=unknown	*/
+	unsigned fallc;		/* File allocation			*/
+	unsigned fstat;		/* RMS-status on open			*/
 	unsigned
 	char	fmisc,		/* temp bit-vector for list manipulation*/
 		f_rat,		/* FAB: record attributes		*/
@@ -230,7 +229,7 @@ typedef	struct my_flink {
 extern	int	dirent__datechek (FILENT *z);
 extern	int	dirent_acc (FILENT *z, char *mode);
 extern	int	dirent_add (void);
-extern	long	dirent_all (char *filespec, int update);
+extern	void	dirent_all (char *filespec, int update);
 extern	void	dirent_cat_n (char *s, FILENT *z);
 extern	int	dirent_ccol (void);
 extern	int	dirent_chk (FILENT *z, char *filespec);
@@ -243,7 +242,7 @@ extern	void	dirent_dlet (int j);
 extern	char*	dirent_glue (char *filespec, FILENT *z);
 extern	char*	dirent_glue2 (char *filespec, FILENT *z, int curfile);
 extern	int	dirent_isdir (FILENT *z);
-extern	long	dirent_look (char *longspec, char *filespec);
+extern	unsigned dirent_look (char *longspec, char *filespec);
 extern	void	dirent_misc (int inx, int bitv);
 extern	void	dirent_nul (int inx);
 extern	int	dirent_old (char *filespec, int need);
@@ -258,5 +257,8 @@ extern	int	dirent (DCLARG *arg_);
 extern	int	dirhigh (char *filespec);
 extern	int	diropen (char *name_);
 extern	int	diropen2 (FILENT *z);
+
+extern	unsigned acplook (FILENT *z, char *filespec, struct NAM *nam_);
+extern	unsigned rmslook (FILENT *z, struct FAB *fab_);
 
 #endif	/* DIRENT_H */

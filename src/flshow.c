@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.9 1995/06/06 10:38:54 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.10 1995/10/21 18:58:04 tom Exp $";
 #endif
 
 /*
@@ -54,7 +54,8 @@ tDIRCMD(flshow)
 {
 #define	len_date	21
 	DATENT	date;
-	long	j, total, total2;	/* misc variables used in commands */
+	int	j;
+	unsigned total, total2;	/* misc variables used in commands */
 	char	bfr[CRT_COLS+MAX_PATH];
 
 	switch (xdcl_->dcl_text[0])

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sydelete.c,v 1.3 1995/06/04 02:02:06 tom Exp $";
+static char *Id = "$Id: sydelete.c,v 1.4 1995/10/21 18:39:13 tom Exp $";
 #endif
 
 /*
@@ -26,11 +26,11 @@ static char *Id = "$Id: sydelete.c,v 1.3 1995/06/04 02:02:06 tom Exp $";
 
 #define	ok(x) 	status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
 
-long	sysdelete (char *dspec)
+unsigned sysdelete (char *dspec)
 {
 	struct	FAB	dFAB;
 	struct	NAM	dNAM;
-	long	status;
+	unsigned status;
 	int	len;
 	char	dRSA	[NAM$C_MAXRSS];
 	char	dESA	[NAM$C_MAXRSS];

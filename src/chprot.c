@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chprot.c,v 1.6 1995/05/29 00:51:08 tom Exp $";
+static char *Id = "$Id: chprot.c,v 1.7 1995/10/21 19:00:38 tom Exp $";
 #endif
 
 /*
@@ -56,7 +56,7 @@ chprot (
 	char	rsa[NAM$C_MAXRSS],	/* resultant string area	*/
 		esa[NAM$C_MAXRSS];	/* expanded string area		*/
 
-	long	status;
+	unsigned status;
 	IOSB	iosb;
 	short	chnl;
 	FIB	fib;
@@ -99,7 +99,7 @@ chprot (
 		if (mask)
 		{
 			sys(QIO(IO$_ACCESS))		goto no_access;
-			sys(iosb.stat)			goto no_access;
+			sys(iosb.sts)			goto no_access;
 			short_fpro = (short_fpro & mask)
 				   | (code & ~mask);
 		}
@@ -109,7 +109,7 @@ chprot (
 		}
 
 		sys(QIO(IO$_MODIFY))			goto no_access;
-		sys(iosb.stat)				goto no_access;
+		sys(iosb.sts)				goto no_access;
 		sys(sys$dassgn (chnl))			return (status);
 	}
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: termsize.c,v 1.4 1995/06/04 01:31:55 tom Exp $";
+static char *Id = "$Id: termsize.c,v 1.5 1995/10/21 18:40:38 tom Exp $";
 #endif
 
 /*
@@ -87,14 +87,14 @@ termsize (int reset, int *width_, int *length_)
 	struct	{
 		short	sts,
 			count;
-		long	device;
+		unsigned device;
 		}	iosb;
 	struct	{
 		unsigned
 		char	class,
 			type;
 		short	width;
-		long	ttdef,		/* basic characteristics	*/
+		unsigned ttdef,		/* basic characteristics	*/
 			tt2def;		/* extended characteristics	*/
 		}	cbfr;
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetmsg.c,v 1.5 1995/06/06 13:46:52 tom Exp $";
+static char *Id = "$Id: sygetmsg.c,v 1.6 1995/10/21 18:39:20 tom Exp $";
 #endif
 
 /*
@@ -35,7 +35,7 @@ static char *Id = "$Id: sygetmsg.c,v 1.5 1995/06/06 13:46:52 tom Exp $";
 static	char	fao_fix[] = "'!AS'";
 
 void
-sysgetmsg (long status, char *msg, int size_msg)
+sysgetmsg (unsigned status, char *msg, int size_msg)
 {
 	static	char	bigbfr	[MAXBFR];	/* FIXME */
 	$DESCRIPTOR(DSCx,bigbfr);

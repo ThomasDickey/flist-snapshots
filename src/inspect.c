@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: inspect.c,v 1.3 1995/06/06 12:44:46 tom Exp $";
+static char *Id = "$Id: inspect.c,v 1.4 1995/10/21 18:54:08 tom Exp $";
 #endif
 
 /*
@@ -37,8 +37,8 @@ int	inspect (char *filespec, int toscan)
 {
 	int	j, c,
 		success	= FALSE;
-	long	lenr;
-	long	mark;
+	unsigned lenr;
+	unsigned mark;
 	RFILE	*file_	= ropen (filespec, "r");
 	char	z[1024];
 

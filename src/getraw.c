@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.8 1995/06/06 12:03:26 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.9 1995/10/21 18:55:13 tom Exp $";
 #endif
 
 /*
@@ -73,7 +73,7 @@ static char *Id = "$Id: getraw.c,v 1.8 1995/06/06 12:03:26 tom Exp $";
 	0,		/* prompt-string buffer address */\
 	0		/* prompt-string buffer size	*/
 
-typedef	struct	{ short	sts, count; long device; } IOSB;
+typedef	struct	{ short	sts, count; unsigned device; } IOSB;
 
 #undef  CFP
 #define	CFP	struct _cmd_fp
@@ -82,7 +82,7 @@ CFP	{
 	CFP	*nest;		/* linked-list to nest	*/
 	RFILE	*file;		/* File-pointer			*/
 	char	*text;		/* => I/O buffer		*/
-	long	mark;		/* = record-address		*/
+	unsigned mark;		/* = record-address		*/
 	short	size;		/* I/O buffer size		*/
 	short	rlen;		/* = length of current record	*/
 	short	used;		/* number of chars used so far	*/
@@ -101,7 +101,7 @@ static	unsigned
 	short	tty_chan = 0,
 		ast_chan = 0,
 		init	= FALSE;	/* Force auto-init */
-static	long	ctlx_flag = FALSE;
+static	unsigned ctlx_flag = FALSE;
 static	char	typeahead;		/* input-buffer	*/
 
 static	void	getraw_free (void);
@@ -113,7 +113,7 @@ static	void	getraw_free (void);
 void
 ctlx_ast (void)
 {
-	long	status;
+	unsigned status;
 
 	SYS(sys$cancel(tty_chan));
 	ctlx_flag = TRUE;
@@ -145,7 +145,7 @@ void
 getraw_init (char *cmd_, char *dft_)
 {
 	int	bmask[2] = {0, 0x01000000};
-	long	status;
+	unsigned status;
 
 	/*
 	 * If a command-file argument is provided, open the file for input.

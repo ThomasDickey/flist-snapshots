@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirseek.c,v 1.6 1995/06/04 23:57:30 tom Exp $";
+static char *Id = "$Id: dirseek.c,v 1.7 1995/10/21 18:41:14 tom Exp $";
 #endif
 
 /*
@@ -50,7 +50,7 @@ static char *Id = "$Id: dirseek.c,v 1.6 1995/06/04 23:57:30 tom Exp $";
 
 #define	RMS_STUFF	struct	FAB	fab;\
 			struct	NAM	nam;\
-			long	status;\
+			unsigned status;\
 			char	rsa[NAM$C_MAXRSS],	/* resultant 	*/\
 				esa[NAM$C_MAXRSS]	/* expanded (search)*/
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.14 1995/06/05 00:51:42 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.15 1995/10/21 19:32:26 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.14 1995/06/05 00:51:42 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
+ *		21 Oct 1995, /dlong repeated shows time in seconds.
  *		28 May 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods)
  *		05 Dec 1989, corrected typeof(llast)
@@ -153,16 +154,13 @@ static char *Id = "$Id: dirent.c,v 1.14 1995/06/05 00:51:42 tom Exp $";
 #include	"strutils.h"
 #include	"sysutils.h"
 
-extern	long	acplook (FILENT *z, char *filespec, struct NAM *nam_);
-extern	long	rmslook (FILENT *z, struct FAB *fab_);
-
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
 
-static	void	dirent__cnv2 (int no_priv, char *c_, int number);
+static	void	dirent__cnv2 (int no_priv, char *c_, unsigned number);
 static	DATENT*	dirent__date (FILENT *z, int opt);
-static	long	dirent__look (FILENT *z, char *filespec);
-static	long	dirent__one (FILENT *z, char *filespec);
-static	long	dirent__read (char *filespec, FLINK **flink, int update);
+static	int	dirent__look (FILENT *z, char *filespec);
+static	int	dirent__one (FILENT *z, char *filespec);
+static	int	dirent__read (char *filespec, FLINK **flink, int update);
 static	void	dirent_init (void);
 
 /*
@@ -283,11 +281,11 @@ int	dirent_add (void)
  * as calls on this procedure, to support the READ command (re-read all
  * specs).
  */
-long	dirent_all(
+void	dirent_all(
 	char	*filespec,		/* specifies files to lookup	*/
 	int	update)			/* true iff we *must* re-read	*/
 {
-	long	status;
+	unsigned status;
 	int	numfirst = numfiles,
 		newfiles = FALSE;	/* Latch for 'flread'	*/
 	FLINK	*llast	 = 0;
@@ -519,7 +517,7 @@ void	dirent_conv (char *bfr, FILENT *z)
 	else if (j >= 0)		bfr[j]		 = ' ';
 	if (strlen(z->ftype) > col1)	bfr[col0+col1+1] = '|';
 
-	sprintf	(filesize, "%d", z->fsize);
+	sprintf	(filesize, "%u", z->fsize);
 
 	/*
 	 * If I have any data-columns to show, pad the name out to the
@@ -628,13 +626,14 @@ void	dirent_conv (char *bfr, FILENT *z)
 			&&  isOkDate(date_)
 			&&  !isBigDate(date_))
 			{
-				if (D_mode)	lib$day (&j, date_);
+				if (D_mode != 0)
+					lib$day (&j, date_);
 				if (D_mode > 0)
 				{
 					strncpy (c_, day_of_week[j % 7], 4);
 					c_ += 4;
 				}
-				sysasctim (c_, date_, 18);
+				sysasctim (c_, date_, D_mode == 1 ? 18 : 21);
 				if (D_mode < 0)	/* "dd-mmm hh:mm" */
 				{		/* "dd-mmm-yyyy " */
 					if (j+180 > absolute_day)
@@ -646,6 +645,8 @@ void	dirent_conv (char *bfr, FILENT *z)
 				if (D_mode > 0)
 				{
 					strcpy (c_, "    ");
+					if (D_mode > 1)
+						strcat(c_, "   ");
 					c_ = strnull(c_);
 				}
 				sprintf (c_, noDATE, " ");
@@ -829,9 +830,10 @@ int	dirent_isdir (FILENT *z)
  * Lookup a single file, returning (via pointer) its fully-resolved name,
  * and the lookup status.
  */
-long	dirent_look (char *longspec, char *filespec)
+unsigned dirent_look (char *longspec, char *filespec)
 {
-	int	len,	status;
+	size_t	len;
+	unsigned status;
 
 	zfab.fab$l_fna = filespec;
 	zfab.fab$b_fns = strlen(filespec);
@@ -1021,12 +1023,12 @@ int	dirent_width (FILENT *z)
  * Convert (for 'dirent_conv') 16-bit numbers.
  */
 static
-void	dirent__cnv2 (int no_priv, char *c_, int number)
+void	dirent__cnv2 (int no_priv, char *c_, unsigned number)
 {
 	if (no_priv)
 		sprintf (c_, "%-5s", " ");
 	else
-		sprintf (c_, "%5.5d", number);
+		sprintf (c_, "%5.5u", number);
 }
 
 /* <dirent__date>:
@@ -1080,11 +1082,11 @@ int	dirent__datechek (FILENT *z)
  * is set from the SYS$SEARCH for this file.
  */
 static
-long	dirent__look (
+int	dirent__look (
 	FILENT	*z,			/* => Data block to load	*/
 	char	*filespec)		/* Full, unique filename	*/
 {
-	long	status	= RMS$_NORMAL;		/* return-status	*/
+	unsigned status	= RMS$_NORMAL;		/* return-status	*/
 	int	ok	= TRUE;
 
 	/*
@@ -1114,7 +1116,7 @@ long	dirent__look (
  * In all cases, the filename is parsed.
  */
 static
-long	dirent__one (
+int	dirent__one (
 	FILENT	*z,			/* => Data block to load	*/
 	char	*filespec)		/* Full, unique filename	*/
 {
@@ -1132,7 +1134,7 @@ long	dirent__one (
  * data, to support re-reads.
  */
 static
-long	dirent__read (
+int	dirent__read (
 	char	*filespec,
 	FLINK	**flink,
 	int	update)		/* true if we *must* re-read directory	*/
@@ -1150,7 +1152,8 @@ long	dirent__read (
 		dirent_chop (&filent, filespec, &znam);
 		if ((j = dirdata_find (&filent, flink)) <= 0)
 		{
-			if (! dirent__look (&filent, filespec))	return (FALSE);
+			if (! dirent__look (&filent, filespec))
+				return (FALSE);
 		}
 		else
 			filent	= (*flink)->fk;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.12 1995/06/05 23:28:59 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.13 1995/10/21 19:26:07 tom Exp $";
 #endif
 
 /*
@@ -157,7 +157,8 @@ void	dds_line(int inx)
 		dirent_conv (bfr, FK_(inx));
 		if (dircmd_select(-2) == inx)
 		{
-		int	col = dirent_ccol()-1;
+			int	col = dirent_ccol()-1;
+
 			bfr[col-1] = '*';	/* both marker		*/
 			crt_high (bfr, col);	/* and highlighting	*/
 		}
@@ -293,7 +294,7 @@ void	dds_while (char *msg_)
 	clrbeep ();
 }
 
-static	long	completion = 0;
+static	unsigned completion = 0;
 
 /* <dds_ast1>:
  * This procedure is called on completion of a spawned subprocess.  It tests

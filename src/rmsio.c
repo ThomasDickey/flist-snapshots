@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.8 1995/06/06 13:28:46 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.9 1995/10/21 18:55:13 tom Exp $";
 #endif
 
 /*
@@ -93,7 +93,7 @@ static char *Id = "$Id: rmsio.c,v 1.8 1995/06/06 13:28:46 tom Exp $";
 /*
  * Module-level data:
  */
-static	long	rmsio$err = 0;
+static	unsigned rmsio$err = 0;
 static	char	rmsio$nam[NAM$C_MAXRSS] = ""; /* Last filename used in parse */
 
 #define	zFAB	z->fab
@@ -127,7 +127,7 @@ RFILE	*ropen (char *name_, char *mode_)
 RFILE	*ropen2 (char *name_, char *dft_, char *mode_)
 {
 	RFILE	*z = calloc(1, sizeof(RFILE));
-	long	status;
+	unsigned status;
 	int	newfile	= (_tolower(*mode_) == 'w');
 	int	blocked	= (isupper(*mode_));
 	int	no_old	= FALSE;
@@ -203,9 +203,9 @@ int	rgetr (
 	RFILE *	z,		/* file-descriptor pointer	*/
 	char *	bfr,		/* buffer to load		*/
 	int	maxbfr,		/* ...its size			*/
-	long	*mark_)		/* file-address of buffer	*/
+	unsigned *mark_)	/* file-address of buffer	*/
 {
-	long	status;
+	unsigned status;
 	int	len	= -1;
 
 	zRAB.rab$b_rac = RAB$C_SEQ;
@@ -237,7 +237,7 @@ int	rputr (
 	char	*bfr,		/* buffer to load		*/
 	int	maxbfr)		/* ...its size			*/
 {
-	long	status;
+	unsigned status;
 
 	zRAB.rab$b_rac = RAB$C_SEQ;
 
@@ -261,7 +261,7 @@ failed:
  * Return the record-file-address translated into an offset value,
  * compatible with the 'ftell' usage.
  */
-long	rtell (RFILE *z)
+unsigned rtell (RFILE *z)
 {
 	return (rabrfa_get (&zRAB));
 }
@@ -275,7 +275,7 @@ long	rtell (RFILE *z)
  */
 int	rseek (RFILE *z, int offset, int direction)
 {
-	long	status;
+	unsigned status;
 
 	zRAB.rab$b_rac = RAB$C_RFA;
 	rabrfa_put (&zRAB, offset);
@@ -288,7 +288,7 @@ int	rseek (RFILE *z, int offset, int direction)
  */
 int	rclose (RFILE *z)
 {
-	long	status;
+	unsigned status;
 	char	*ubf_	= zRAB.rab$l_ubf;
 
 	CHECK2(sys$disconnect(&zRAB));
@@ -307,7 +307,7 @@ failed:
  */
 int	erstat (RFILE *z, char *msg, int msglen)
 {
-	long	status	= z ? zRAB.rab$l_sts : rmsio$err;
+	unsigned status	= z ? zRAB.rab$l_sts : rmsio$err;
 
 	if (($VMS_STATUS_SEVERITY(status) == STS$K_SEVERE)
 	||  (!z && !$VMS_STATUS_SUCCESS(status)) )

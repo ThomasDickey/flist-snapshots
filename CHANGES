@@ -1,3 +1,42 @@
+1995-10-21  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/fl.c: cleanup compiler warnings, long/unsigned fixes.
+	Also: make repeated /dlong show "seconds"
+
+	* src/version.c: starting to update...
+
+	* src/dirent.c, src/dds.c: long/unsigned fixes
+
+	* src/build.com: first cut at autoconfig for VAX/AXP
+
+	* src/acp.h, src/chprot.c, src/getprot.c, src/flshow.c, src/browse.c, src/dirent.h, src/getraw.c, src/help.c, src/rmsio.c, src/inspect.c, src/rabrfa.c, src/highver.c, src/rmsio.h:
+	long/unsigned fixes
+
+	* src/rmslook.c: long/unsigned fixes
+	removed spurious DIRENT def
+
+	* src/acplook.c: long/unsigned fixes
+
+	* src/descrip.mms: first cut at autoconfig for VAX/AXP
+
+	* src/flscan.c, src/flrnam.c, src/fldlet.c, src/dirseek.h, src/dirseek.c, src/termsize.c, src/syrename.c, src/sygetsym.c, src/syasctim.c, src/sygetmsg.c, src/sydelete.c, src/sysutils.h, src/datent.h, src/canopen.c, src/acpcopy.c:
+	long/unsigned fixes
+
+	* src/dirarg.c: deleted K+R defs
+
+	* src/cmdstk.c, src/diropen.c: prototypes
+
+	* src/syhour.c: mods to clean-compile (and work?) on AXP
+
+	* src/browse.c: DEC-C clean-compile
+
+	* src/dclopt.c: fix cast for sysbintim() call
+	removed K+R decl for 'scanint()'
+
+	* src/getpad.c: renamed variables to avoid min/max conflict
+
+	* src/fl.c: DEC-C clean-compile
+
 1995-10-19  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/sybintim.c, src/whoami.c: DEC-C clean-compile on AXP

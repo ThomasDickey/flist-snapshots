@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: help.c,v 1.5 1995/06/06 12:42:28 tom Exp $";
+static char *Id = "$Id: help.c,v 1.6 1995/10/21 18:55:13 tom Exp $";
 #endif
 
 /*
@@ -38,15 +38,15 @@ static char *Id = "$Id: help.c,v 1.5 1995/06/06 12:42:28 tom Exp $";
 #include	"lbrdef.h"
 
 #if UNUSED
-extern	unsigned long	lib$get_input(void/*FIXME*/);
-extern	unsigned long	lib$put_output(void/*FIXME*/);
+extern	unsigned lib$get_input(void/*FIXME*/);
+extern	unsigned lib$put_output(void/*FIXME*/);
 #endif
-extern	unsigned long	lbr$output_help(
+extern	unsigned lbr$output_help(
 	unsigned (*output)(void),
-	long *width,
+	unsigned *width,
 	struct dsc$descriptor_s *program,
 	struct dsc$descriptor_s *libname,
-	long flags,
+	unsigned flags,
 	unsigned (*input)(void));
 
 #define	DSC(f)	static	$DESCRIPTOR(f," ")
@@ -58,7 +58,7 @@ extern	unsigned long	lbr$output_help(
 void
 help (char *lib, char *prg, int maxcol)
 {
-	long	status,
+	unsigned status,
 		help_index,
 		func_read = LBR$C_READ,
 		type_help = LBR$C_TYP_HLP,

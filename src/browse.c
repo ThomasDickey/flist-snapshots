@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.17 1995/06/06 15:41:16 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.19 1995/10/21 18:56:45 tom Exp $";
 #endif
 
 /*
@@ -9,6 +9,7 @@ static char *Id = "$Id: browse.c,v 1.17 1995/06/06 15:41:16 tom Exp $";
  *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
+ *		21 Oct 1995, DEC-C clean-compile
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		27 May 1995, prototyped
  *		18 Feb 1995	port to AXP (renamed 'alarm').
@@ -152,8 +153,8 @@ static char *Id = "$Id: browse.c,v 1.17 1995/06/06 15:41:16 tom Exp $";
 #include	"warning.h"
 #endif
 
-static	void	more_0_bg (short *lpp_, short *width_);
-static	void	more_0_vt (short *lpp_, short *width_);
+static	int	more_0_bg (short *lpp_, short *width_);
+static	int	more_0_vt (short *lpp_, short *width_);
 static	void	more_0_line (void);
 static	void	more_0_mark (void);
 static	void	more_0_page (void);
@@ -232,7 +233,7 @@ static	void	more_show (char *format, ...);
 static	RFILE	*fp;
 
 typedef	struct	{
-	long	rfa;	/* Record's file-address (direct 'ftell/fseek')	*/
+	unsigned rfa;	/* Record's file-address (direct 'ftell/fseek')	*/
 	short	cra;	/* Character's record-address (maintained here)	*/
 	short	rec;	/* Actual record number				*/
 	} OFFSET;
@@ -369,7 +370,7 @@ char	**argv)
 #endif
 
 	DCLARG	*opt_;
-	void	(*if_bg)(short *lpp, short *width) = more_0_vt;
+	int	(*if_bg)(short *lpp, short *width) = more_0_vt;
 	char	*c_,
 		msg	[MAXBFR];
 
@@ -1748,8 +1749,8 @@ void	more_getr (void)
 	int	skip;
 	int	len	= 0;
 	int	size	= i_size;
-	long	*rfa_	= &rstate.rfa;
-	static	long	dummy_rfa;
+	unsigned *rfa_	= &rstate.rfa;
+	static	unsigned dummy_rfa;
 	char	*s_;
 
 	rstate_len = 0;
@@ -2005,7 +2006,7 @@ void	more_show (char *format, ...)
 
 /* Set Bitgraph terminal to native mode, home and clear. */
 static
-void	more_0_bg(short	*lpp_, short *width_)
+int	more_0_bg(short	*lpp_, short *width_)
 {
 	int	j;
 
@@ -2018,14 +2019,17 @@ void	more_0_bg(short	*lpp_, short *width_)
 	*lpp_	= 64;
 	*width_	= 80;
 	crt__NL0 (FALSE);
+	return 0;
 }
 
 /* <0_vt>:
  */
 static
-void	more_0_vt (short *lpp_, short *width_)
+int	more_0_vt (short *lpp_, short *width_)
 {
-	if (W_opt)	*width_ = 132;
+	if (W_opt)
+		*width_ = 132;
+	return 0;
 }
 
 /*

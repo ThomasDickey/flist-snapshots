@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmdstk.c,v 1.7 1995/05/29 01:00:46 tom Exp $";
+static char *Id = "$Id: cmdstk.c,v 1.8 1995/10/21 17:49:10 tom Exp $";
 #endif
 
 /*
@@ -25,10 +25,9 @@ static char *Id = "$Id: cmdstk.c,v 1.7 1995/05/29 01:00:46 tom Exp $";
 #include	<string.h>
 
 #include	"bool.h"
+#include	"crt.h"
 #include	"cmdstk.h"
 #include	"strutils.h"
-
-extern	void sound_alarm(void);
 
 /*
  * Local (static) data:

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.9 1995/06/06 10:27:38 tom Exp $";
+static char *Id = "$Id: flrnam.c,v 1.10 1995/10/21 18:42:11 tom Exp $";
 #endif
 
 /*
@@ -70,7 +70,7 @@ import(filelist);
 import(V_opt);
 import(conv_list);
 
-static	void	flrnam_all (char *spec, int len, long status);
+static	void	flrnam_all (char *spec, int len, unsigned status);
 
 static	int	curfile;
 static	char	*newspec;
@@ -83,7 +83,7 @@ static	char	*newspec;
 static
 doit(char *newspec, char *oldspec, GETPROT *prot_)
 {
-	long	status;
+	unsigned status;
 	int	modified = FALSE;
 #define	DELETE_MASK	 ((XAB$M_NODEL << XAB$V_SYS)\
 			| (XAB$M_NODEL << XAB$V_OWN)\
@@ -123,7 +123,7 @@ tDIRCMD(flrnam)
  * This procedure is called from 'dirseek_spec' after each file-spec is found.
  */
 static
-void	flrnam_all (char *spec, int len, long status)
+void	flrnam_all (char *spec, int len, unsigned status)
 {
 	FILENT	ztmp,	*z = &ztmp, zold;
 	char	oldspec	[MAX_PATH],

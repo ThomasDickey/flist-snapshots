@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rabrfa.c,v 1.3 1995/06/06 13:01:48 tom Exp $";
+static char *Id = "$Id: rabrfa.c,v 1.4 1995/10/21 18:54:03 tom Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ int	rabrfa_get (struct RAB *z)
  */
 void	rabrfa_put (struct RAB *z, int offset)
 {
-	long	rfa0;
+	unsigned rfa0;
 
 	rfa0 = (offset >> 9) + 1;
 	z->rab$w_rfa[0] = rfa0 & 0xffff;

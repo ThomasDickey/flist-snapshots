@@ -1,4 +1,4 @@
-/* $Id: dirseek.h,v 1.2 1995/06/06 10:25:48 tom Exp $
+/* $Id: dirseek.h,v 1.3 1995/10/21 18:41:28 tom Exp $
  *
  * interface of dirseek.c
  */
@@ -9,7 +9,7 @@
 #include "dclarg.h"
 
 #define	tDIRSEEK \
-	void	(*for_each)(char *buf, int len, long status)
+	void	(*for_each)(char *buf, int len, unsigned status)
 
 extern	int	dirseek ( char *cmd_, DCLARG *d_, int mfld, int need);
 extern	int	dirseek_spec (DCLARG *spec, int implicit, tDIRSEEK);
