@@ -1,3 +1,7 @@
+1985-01-21  Thomas E. Dickey
+
+	* doc/mt.rno: RCS_BASE
+
 1985-01-17  Thomas E. Dickey
 
 	* src/dspc.c: RCS_BASE
