@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: alarm.c,v 1.3 1995/02/18 20:07:16 tom Exp $";
+static char *Id = "$Id: alarm.c,v 1.4 1995/05/29 00:26:38 tom Exp $";
 #endif
 
 /*
@@ -13,6 +13,7 @@ static char *Id = "$Id: alarm.c,v 1.3 1995/02/18 20:07:16 tom Exp $";
  *		because we wish to avoid using the VMS-C run-time support.
  */
 
+#include	<lib$routines.h>
 #include	<descrip.h>
 
 sound_alarm ()

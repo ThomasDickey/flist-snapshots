@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: canopen.c,v 1.3 1984/09/18 10:47:34 tom Exp $";
+static char *Id = "$Id: canopen.c,v 1.4 1995/05/29 00:32:24 tom Exp $";
 #endif
 
 /*
@@ -20,14 +20,16 @@ static char *Id = "$Id: canopen.c,v 1.3 1984/09/18 10:47:34 tom Exp $";
  *		of file-open.
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<stsdef.h>
+
+#include	"rmsinit.h"
 
 #define	check(f)	status = (f);\
 			if (!$VMS_STATUS_SUCCESS(status)) goto failed;
 
-int	canopen (name_)
-char	*name_;
+int	canopen (char *name_)
 {
 struct	FAB	fab;
 struct	NAM	nam;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmdstk.c,v 1.6 1995/05/28 00:05:25 tom Exp $";
+static char *Id = "$Id: cmdstk.c,v 1.7 1995/05/29 01:00:46 tom Exp $";
 #endif
 
 /*
@@ -22,10 +22,13 @@ static char *Id = "$Id: cmdstk.c,v 1.6 1995/05/28 00:05:25 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"cmdstk.h"
 #include	"strutils.h"
+
+extern	void sound_alarm(void);
 
 /*
  * Local (static) data:
@@ -34,7 +37,7 @@ static char *Id = "$Id: cmdstk.c,v 1.6 1995/05/28 00:05:25 tom Exp $";
  * last-command retrieval.
  */
 
-static	CMDSTK	*cmdstk_ = nullC;
+static	CMDSTK	*cmdstk_ = 0;
 
 #define	HEAD	cmdstk_->head
 #define	STORED	cmdstk_->stored

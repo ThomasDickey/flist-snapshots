@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.7 1995/03/19 22:33:09 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.8 1995/05/29 00:23:44 tom Exp $";
 #endif
 
 /*
@@ -32,11 +32,13 @@ static char *Id = "$Id: acplook.c,v 1.7 1995/03/19 22:33:09 tom Exp $";
  * Returns:	The worst error status encountered in doing I/O for the lookup.
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<ssdef.h>
 #include	<stsdef.h>
+#include	<string.h>
 
 #include	"acp.h"
 
@@ -73,14 +75,14 @@ long	acplook (
 	status = sys$assign (&DSC_name, &chnl, 0, 0);
 
 	fibDSC.dsc$w_length = sizeof(FIB);
-	fibDSC.dsc$a_pointer = &fib;
+	fibDSC.dsc$a_pointer = (char *)&fib;
 	memset (&fib, 0, sizeof(fib));
 	memcpy (fib.fib$w_fid, nam_->nam$w_fid, 6);
 
 #define	atrSET(type,size,addr)\
 		atr[j].atr$w_type = type;\
 		atr[j].atr$w_size = size;\
-		atr[j++].atr$l_addr = addr
+		atr[j++].atr$l_addr = (char *)addr
 
 	j = 0;
 	atrSET(ATR$C_CREDATE, ATR$S_CREDATE, &z->fdate);
