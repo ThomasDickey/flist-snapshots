@@ -1,3 +1,29 @@
+1985-04-11  Thomas E. Dickey
+
+	* src/pathup.c: RCS_BASE
+
+1985-04-11  Thomas E. Dickey
+
+	* src/pathup.c: rcs-identifiers
+
+1985-04-11  Thomas E. Dickey
+
+	* src/sytrnlog.c: RCS_BASE
+
+1985-04-11  Thomas E. Dickey
+
+	* src/sytrnlog.c: rcs-identifiers
+
+1985-03-28  Thomas E. Dickey
+
+	* src/main.h: RCS_BASE
+
+1985-03-28  Thomas E. Dickey
+
+	* src/main.h: make program names consistent:FLIST,BROWSE
+
+	* src/main.h: rcs-identifiers
+
 1985-03-20  Thomas E. Dickey
 
 	* src/help.c: RCS_BASE
