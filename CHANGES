@@ -1,3 +1,19 @@
+1984-09-08  Thomas E. Dickey
+
+	* src/syrename.c: RCS_BASE
+
+1984-09-08  Thomas E. Dickey
+
+	* src/syrename.c: rcs-identifiers
+
+1984-09-06  Thomas E. Dickey
+
+	* src/rmsinit.c: RCS_BASE
+
+1984-09-06  Thomas E. Dickey
+
+	* src/rmsinit.c: rcs-identifiers
+
 1984-09-01  Thomas E. Dickey
 
 	* src/strabbr.c: RCS_BASE
