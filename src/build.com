@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.8 1995/10/21 19:05:44 tom Exp $
+$! $Id: build.com,v 1.9 1995/10/22 21:47:21 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -25,7 +25,7 @@ $ else
 $! we have either VAX C or DEC C
 $	CFLAGS = ""
 $	OPTS = ",VMSSHARE.OPT/OPTIONS"
-$	if (f$search("SYS$SYSTEM:VAXC.EXE").eqs.""
+$	if f$search("SYS$SYSTEM:VAXC.EXE").eqs.""
 $	then
 $		CFLAGS = "/prefix_library_entries=all_entries"
 $	endif
@@ -109,6 +109,7 @@ $	call	cc_lib SETPROT
 $	call	cc_lib SHOQUOTA
 $	call	cc_lib SNAPSHOT
 $	call	cc_lib STRABBR
+$	call	cc_lib STRCLIP
 $	call	cc_lib STRFORM2
 $	call	cc_lib STRLCPY
 $	call	cc_lib STRNULL

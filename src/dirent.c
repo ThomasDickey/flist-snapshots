@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.15 1995/10/21 19:32:26 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.16 1995/10/22 19:19:07 tom Exp $";
 #endif
 
 /*
@@ -974,14 +974,15 @@ int	dirent_old_any (
 
 int	dirent_width (FILENT *z)
 {
-	register len, num, latch;
+	register int	len, num, latch;
 	static	int	tens[6] = {1,10,100,1000,10000,100000};
 
 	if (z)
 	{
 		LATCH(0,len = strlen(z->fname)-1);
 		LATCH(1,len = strlen(z->ftype));
-		for (len = 1; len < SIZEOF(tens) && z->fvers >= tens[len]; len++);
+		for (len = 1; len < SIZEOF(tens) && z->fvers >= tens[len]; len++)
+			/*EMPTY*/;
 		LATCH(2,len);
 		LATCH(3,len = strlen(zPATHOF(z)));
 

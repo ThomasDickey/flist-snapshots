@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.9 1995/10/21 18:44:08 tom Exp $
+# $Id: descrip.mms,v 1.10 1995/10/22 21:47:52 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -88,6 +88,7 @@ C_SRC	= -
 	SHOQUOTA.C, -
 	SNAPSHOT.C, -
 	STRABBR.C, -
+	STRCLIP.C, -
 	STRFORM2.C, -
 	STRLCPY.C, -
 	STRNULL.C, -
@@ -228,6 +229,7 @@ MODULES	= -
 	SHOQUOTA, -
 	SNAPSHOT, -
 	STRABBR, -
+	STRCLIP, -
 	STRFORM2, -
 	STRLCPY, -
 	STRNULL, -
@@ -662,6 +664,9 @@ $(A)(SNAPSHOT) : -
 		CRT.H
 
 $(A)(STRABBR) : -
+		STRUTILS.H
+
+$(A)(STRCLIP) : -
 		STRUTILS.H
 
 $(A)(STRLCPY) : -

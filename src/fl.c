@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.20 1995/10/21 12:26:00 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.22 1995/10/22 22:10:57 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: fl.c,v 1.20 1995/10/21 12:26:00 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
- *		21 Oct 1995, DEC-C clean-compile
+ *		22 Oct 1995, DEC-C clean-compile.  Added seconds to "/dlong".
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods, renamed 'alarm')
@@ -252,20 +252,6 @@ int	main (int argc, char **argv)
  */
 void	flist_chdir(char *path)
 {
-#ifdef	PATCH
-	auto	long	status;
-	auto	short	length;
-	auto	char	buffer[MAX_PATH];
-	auto	$DESCRIPTOR(old_dsc,buffer);
-	static	$DESCRIPTOR(new_dsc,"");
-
-	new_dsc.dsc$w_length = strlen(new_dsc.dsc$a_pointer = path);
-	status = sys$setddir(&new_dsc, &length, &old_dsc);
-	flist_log("! set default %s", path);
-	flist_log("! cur default %.*s", length, buffer);
-	/* this did not work, since the device-part was lost!! */
-	return (flist_sysmsg(status));
-#endif	/* PATCH */
 	static	char	old_path[MAX_PATH];
 	auto	char	new_path[MAX_PATH];
 
@@ -290,14 +276,8 @@ void	flist_quit (int status)
 
 void	flist (DCLARG *dcl_)
 {
-	int	curfile = 0,
-		Quit	= FALSE,
-		command;	/* Current command-code			*/
-
-#define	len_date	21
-	long	date[2],
-		j, total, total2;	/* misc variables used in commands	*/
-	char	bfr[CRT_COLS+MAX_PATH], *c_;
+	int	curfile = 0;
+	int	Quit	= FALSE;
 	CMDSTK	*cmdstk_ = cmdstk_init();
 
 	flfind_init (nesting_lvl);
@@ -389,12 +369,17 @@ tDIRCMD(flset_date)
 
 /*
  * Set flag 'D_mode', which controls the width of the data-field in the display.
+ * Values:
+ *	-1, very short, minimal 12-character format
+ *	 0, nominal (date to minutes)
+ *	 1, long (day of week plus date to minutes)
+ *	 2, very long (day of week plus date to seconds)
  */
 void	flist_date2 (int curfile)
 {
 	if (D_opt)
 	{
-		D_mode = max(-1, min(1, D_mode));
+		D_mode = max(-1, min(2, D_mode));
 		dds_all (dds_fast(DDS_U_C), curfile);
 	}
 	else
@@ -631,7 +616,7 @@ void	FlistLogVA (char *format, va_list ap)
 	if (LogRAB != 0)
 	{
 		va_list	ap;
-		register j,k,next;
+		register int j,k,next;
 		char	bfr[CRT_COLS+(2*MAX_PATH)],
 			bfr2[CRT_COLS];
 

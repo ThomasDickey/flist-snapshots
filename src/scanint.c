@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	*Id = "$Id: scanint.c,v 1.3 1995/02/19 18:17:12 tom Exp $";
+static	char	*Id = "$Id: scanint.c,v 1.4 1995/10/22 21:17:33 tom Exp $";
 #endif
 
 /*
@@ -26,7 +26,7 @@ static	char	*Id = "$Id: scanint.c,v 1.3 1995/02/19 18:17:12 tom Exp $";
 char *
 scanint (char *string, int *int_)
 {
-	register first = 1;
+	register int first = 1;
 
 	while (isdigit(*string))
 	{
