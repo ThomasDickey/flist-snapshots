@@ -1,4 +1,3 @@
-$! $Id: setup.com,v 1.2 1993/04/22 16:18:36 tom Exp $
 $	verify = F$VERIFY(0)
 $!+
 $! defines foreign-commands for testing, automatically from contents of [.bin]
