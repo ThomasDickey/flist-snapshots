@@ -1,3 +1,11 @@
+1985-04-17  Thomas E. Dickey
+
+	* src/getpad.h: RCS_BASE
+
+1985-04-17  Thomas E. Dickey
+
+	* src/getpad.h: rcs-identifiers
+
 1985-04-16  Thomas E. Dickey
 
 	* src/browse.hlp, doc/ma.rno: RCS_BASE
