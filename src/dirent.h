@@ -1,4 +1,4 @@
-/* $Id: dirent.h,v 1.13 1995/10/21 18:55:53 tom Exp $ */
+/* $Id: dirent.h,v 1.14 1995/10/24 01:52:14 tom Exp $ */
 
 /*
  * Title:	dirent.h
@@ -176,7 +176,7 @@ typedef	struct my_flink {
 #define	type_O_opt	int		/* Show owner code		*/
 #define	type_P_opt	int		/* Show names of no-priv files	*/
 #define	type_V_opt	int		/* Show only highest version	*/
-#define	type_ccolumns	char		/* width(path,name,type,vers,rfm)*/
+#define	type_ccolumns	char		/* width(path,name,type,vers,rfm,user)*/
 #define	type_pcolumns	char		/* printing-widths (override)	*/
 #define	type_conv_list	char		/* display-format codes (alpha)	*/
 #define	type_maxfiles	int		/* # of files (space allocated)	*/
@@ -200,7 +200,7 @@ typedef	struct my_flink {
 #define	size_O_opt
 #define	size_P_opt
 #define	size_V_opt
-#define	size_ccolumns	[6]		/* name,type,version,path,rfm,org*/
+#define	size_ccolumns	[7]		/* name,type,version,path,rfm,org,user*/
 #define	size_pcolumns	[2]		/* name,type	*/
 #define	size_conv_list	[27]
 #define	size_maxfiles

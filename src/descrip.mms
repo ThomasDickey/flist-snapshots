@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.10 1995/10/22 21:47:52 tom Exp $
+# $Id: descrip.mms,v 1.11 1995/10/24 01:43:52 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -112,6 +112,7 @@ C_SRC	= -
 	TABEXP.C, -
 	TERMSIZE.C, -
 	TTRACE.C, -
+	UID2S.C, -
 	VERSION.C, -
 	WHOAMI.C, -
 	XABPROUI.C
@@ -253,6 +254,7 @@ MODULES	= -
 	TABEXP, -
 	TERMSIZE, -
 	TTRACE, -
+	UID2S, -
 	VERSION, -
 	WHOAMI, -
 	XABPROUI

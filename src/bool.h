@@ -1,5 +1,4 @@
-/* $Id: bool.h,v 1.4 1995/05/28 00:02:54 tom Exp $
- *
+/*
  * Title:	bool.h
  * Author:	Thomas E. Dickey
  * Created:	08 Aug 1983
