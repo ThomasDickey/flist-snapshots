@@ -1,3 +1,9 @@
+1998-10-24  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/isowner.c:
+	hmm: getgid on OpenVMS (AXP) returns a code that's wider than 16-bits,
+	but only 16 matters.
+
 1998-10-18  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/rmslook.c: fix an old bug-report for DEC C 5.3

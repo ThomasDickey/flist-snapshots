@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: isowner.c,v 1.6 1995/10/26 01:01:56 tom Exp $";
+static char *Id = "$Id: isowner.c,v 1.7 1998/10/25 00:52:43 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: isowner.c,v 1.6 1995/10/26 01:01:56 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	20 Dec 1984
  * Last update:
+ *		24 Oct 1998, limit getuid/getgid compares to 16-bits
  *		25 Oct 1995, missing parenthesis
  *		19 Feb 1995, str/sys utils prototypes
  *		04 Nov 1988, removed masking from getuid/getgid calls.
@@ -32,7 +33,7 @@ static char *Id = "$Id: isowner.c,v 1.6 1995/10/26 01:01:56 tom Exp $";
 #include	"strutils.h"
 #include	"sysutils.h"
 
-#define	CMP(func,offset) (func() != z->offset)
+#define	CMP(func,offset) ((func() & 0xffff) != z->offset)
 
 int	isowner (FILENT *z)
 {
