@@ -1,3 +1,13 @@
+1984-05-14  Thomas E. Dickey
+
+	* src/dds.h: RCS_BASE
+
+1984-05-14  Thomas E. Dickey
+
+	* src/dds.h: make program names consistent:FLIST,BROWSE
+
+	* src/dds.h: rcs-identifiers
+
 1983-11-11  Thomas E. Dickey
 
 	* src/strnull.c: RCS_BASE
