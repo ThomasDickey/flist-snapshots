@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.7 1995/10/21 18:46:44 tom Exp $";
+static char *Id = "$Id: rmslook.c,v 1.8 1998/10/19 01:02:04 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: rmslook.c,v 1.7 1995/10/21 18:46:44 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from 'dirent.c')
  * Last update:
+ *		18 Oct 1998, use copyBigDate macro to work with DEC C 5.3
  *		18 Feb 1995, port to AXP (DATENT mods)
  *		15 Jun 1985, use 'xabprouic' for CC2.0 change
  *		22 Mar 1985, added file-id, record-length
@@ -81,12 +82,12 @@ rmslook (FILENT *z, struct FAB *fab_)
 
 		if (dat_)
 		{
-			z->fexpr = dat_->xab$q_edt;
-			z->frevi = dat_->xab$q_rdt;
-			z->fback = dat_->xab$q_bdt;
+			copyBigDate(&(z->fexpr), &(dat_->xab$q_edt));
+			copyBigDate(&(z->frevi), &(dat_->xab$q_rdt));
+			copyBigDate(&(z->fback), &(dat_->xab$q_bdt));
 			if (!isOkDate(&(z->fback)))
 				makeBigDate(&(z->fback)); /* (big num)*/
-			z->fdate = dat_->xab$q_cdt;
+			copyBigDate(&(z->fdate), &(dat_->xab$q_cdt));
 		}
 
 		z->f_rfm	= fab_->fab$b_rfm & fab_->fab$b_org;
