@@ -1,3 +1,19 @@
+1985-05-15  Thomas E. Dickey
+
+	* src/strlcpy.c: RCS_BASE
+
+1985-05-15  Thomas E. Dickey
+
+	* src/strlcpy.c: rcs-identifiers
+
+1985-05-15  Thomas E. Dickey
+
+	* src/strucpy.c: RCS_BASE
+
+1985-05-15  Thomas E. Dickey
+
+	* src/strucpy.c: rcs-identifiers
+
 1985-05-14  Thomas E. Dickey
 
 	* src/cmdstk.c: RCS_BASE
