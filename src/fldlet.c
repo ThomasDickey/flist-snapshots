@@ -1,6 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
-#endif
+  	  /* Copyright 1984 (C), Thomas E. Dickey */
+#include	<rmsdef.h>
+#include	<string.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
+#include	"dircmd2.h"
 
 /*
  * Title:	fldlet.c
@@ -36,15 +41,7 @@ static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
  *		02 Jul 1984, changed 'dirent_path' to 'pathdown'
  *		22 May 1984
  */
-
-#include	<rmsdef.h>
-#include	<string.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
-#include	"dircmd2.h"
-
+
 /*
  * External procedures:
  */

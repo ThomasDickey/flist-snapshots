@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: rmsinit.c,v 1.2 1984/09/07 00:35:58 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<rms.h>
 
 /*
  * Title:	rmsinit.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	05 Sep 1984 (from 'mv', 17 May 1984)
  * Last update:	06 Sep 1984
  *
@@ -12,8 +12,6 @@ static char *Id = "$Id: rmsinit.c,v 1.2 1984/09/07 00:35:58 tom Exp $";
  *		that of FAB- and NAM-block initialization for filename parsing
  *		and directory lookup.
  */
-
-#include	<rms.h>
 
 /*
  * Initialize a FAB block:

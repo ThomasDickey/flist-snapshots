@@ -1,10 +1,8 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: cmpblk.c,v 1.2 1984/10/24 10:41:28 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
 
 /*
  * Title:	cmpblk.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	19 Jun 1984
  * Last update:	24 Oct 1984	re-code to make it more compact.
  *

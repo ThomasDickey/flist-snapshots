@@ -1,10 +1,7 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strwcmp.c,v 1.2 1985/09/14 12:49:12 tom Exp $";
-#endif
-
+  	 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
 /*
  * Title:	strwcmp.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	24 May 1984
  * Last update:	14 Sep 1985	Don't pass ALL/ONE as arguments.  Also, test for
  *				pathname-wildcard "..." which matches 0 or more

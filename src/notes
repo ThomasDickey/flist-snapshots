@@ -4,7 +4,7 @@
 	For example, the "find" command in FLIST.
 
 88/06/15:
-	Recompiled objects (userc.olb, fl.obj, browse.obj) and relinked.
+	Recompiled objects (userc.olb, fl.obj, more.obj) and relinked.
 	To do this, copied some include-files from home into [.c] and [.d],
 	since the VMS C-compiler's search rules have changed since I used it
 	last (should fix REDO.COM).  Will test against the new executables.
@@ -106,7 +106,7 @@
 	lines beginning with '$' (leading blanks optional).  This lets me use
 	the /LOG output directly as a command-file.
 
-	modified 'browse.c' so that the version which is linked into FLIST will
+	modified 'more.c' so that the version which is linked into FLIST will
 	log output in a form that can be replayed in FLIST's command-file.
 
 89/03/06:

@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: sygetmsg.c,v 1.2 1984/07/17 01:37:34 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<ssdef.h>
+#include	<descrip.h>
 
 /*
  * Title:	sysgetmsg.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	13 Jul 1984
  * Last update:	14 Jul 1984
  *
@@ -19,9 +20,6 @@ static char *Id = "$Id: sygetmsg.c,v 1.2 1984/07/17 01:37:34 tom Exp $";
  *		it cannot exploit the FAO translation, and must make special
  *		tests, e.g., for "'!AS'" => "parms".
  */
-
-#include	<ssdef.h>
-#include	<descrip.h>
 
 #define	MAXBFR	256
 #define	MINBFR	(size_msg-1)

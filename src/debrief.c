@@ -1,10 +1,9 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: debrief.c,v 1.2 1985/09/24 10:33:00 tom Exp $";
-#endif
+   	   /* Copyright 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
 
 /*
  * Title:	debrief.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	16 Sep 1985
  * Last update:	23 Sep 1985
  *		21 Sep 1985	The 'vec[]' array may not be sorted.  Allow
@@ -28,9 +27,6 @@ static char *Id = "$Id: debrief.c,v 1.2 1985/09/24 10:33:00 tom Exp $";
  *		-1, if partial match found (ambiguous)
  *		-2, if no match at all
  */
-
-#include	<ctype.h>
-
 typedef	struct	{
 	char	*match;
 	int	brief;

@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strabbr.c,v 1.2 1984/09/01 13:28:12 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	"ctype.h"
 
 /*
  * Title:	strabbr.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	11 Jul 1984
  * Last update:	01 Sep 1984, use '_toupper'
  *
@@ -19,8 +19,6 @@ static char *Id = "$Id: strabbr.c,v 1.2 1984/09/01 13:28:12 tom Exp $";
  *
  * Returns:	TRUE if the strings are matched.
  */
-
-#include	"ctype.h"
 
 strabbr (tst_, ref_, cmplen, abbr)
 char	*tst_, *ref_;

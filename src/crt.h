@@ -1,6 +1,6 @@
 /*
  * Title:	crt.h
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	24 Aug 1984, broke out of 'flist.h'
  * Last update:	24 Aug 1984
  *

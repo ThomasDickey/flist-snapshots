@@ -1,6 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
-#endif
+   	/* Copyright 1984 (C), Thomas E. Dickey */
+#include	<rms.h>
+#include	<string.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
+#include	"getprot.h"
 
 /*
  * Title:	flrnam.c
@@ -25,7 +30,7 @@ static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
  *		10 Jul 1984, re-coded to DCLARG-list
  *		22 May 1984
  *
- * Function:	This module performs the RENAME function for "FLIST".  The
+ * Function:	This module performs the RENAME function for "DIRED".  The
  *		first argument may be a name outside the file-list.
  *
  * Notes:	If the "versions" option is selected, a rename may uncover
@@ -35,7 +40,7 @@ static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
  *		the version-level of an existing file, causing it to vanish.
  *
  *		If the old-file is a directory (e.g., having ".DIR" filetype),
- *		we require that the new-file be also.  FLIST will not permit
+ *		we require that the new-file be also.  DIRED will not permit
  *		the user to accidentally zap himself by renaming a directory
  *		out of existence (or by making a file into a directory).
  *
@@ -48,15 +53,7 @@ static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
  *		level-2 directory which has dependents down to level-8
  *		into a level-8 directory?
  */
-
-#include	<rms.h>
-#include	<string.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
-#include	"getprot.h"
-
+
 import(filelist);
 import(V_opt);
 import(conv_list);

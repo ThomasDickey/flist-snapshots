@@ -1,10 +1,13 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.3 1985/04/28 00:44:08 tom Exp $";
-#endif
+       	 	/* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"getpad.h"
 
 /*
  * Title:	edtcmd.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	16 Apr 1985 (from DIRCMD, 10 May 1984)
  * Last update:	27 Apr 1985
  *
@@ -15,17 +18,11 @@ static char *Id = "$Id: edtcmd.c,v 1.3 1985/04/28 00:44:08 tom Exp $";
  *		edtcmd_crt:	Merge input+reference buffers to display.
  */
 
-#include	<stdlib.h>
-#include	<ctype.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"getpad.h"
-
 /*
  * External procedures:
  */
 int	getpad();	/* returns character or keypad-code	*/
+char	*calloc();	/* allocate a block of dynamic memory	*/
 
 #define	RUBOUT	'\177'
 #define	CTL(c)	('c' & 037)
@@ -33,7 +30,7 @@ int	getpad();	/* returns character or keypad-code	*/
 /*
  * 'lastcommand' is used as a 1-level stack to suppress repeated error messages
  *	due to repeated (or stuck) key.  The logic is tested in the main program
- *	of 'FLIST', where all commands are reduced to a single code.
+ *	of 'DIRED', where all commands are reduced to a single code.
  */
 static
 int	lastcommand, thiscommand;	/* 1-level stack for repeat test */

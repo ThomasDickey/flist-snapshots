@@ -1,10 +1,12 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.2 1985/01/27 20:35:12 tom Exp $";
-#endif
+ 			/* Copyright 1984, 1985 (C) Thomas E. Dickey */
+#include	 <stdio.h>
+#include	<ctype.h>
+
+#include	"crt.h"
 
 /*
  * Title:	snapshot.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	15 Oct 1984
  * Last update:	27 Jan 1985	save old-sgr on status line to restore it.
  *		17 Oct 1984
@@ -13,11 +15,6 @@ static char *Id = "$Id: snapshot.c,v 1.2 1985/01/27 20:35:12 tom Exp $";
  *		CRT module to the output file SNAPSHOT.CRT, doing minor
  *		formatting to make it readable on a printer.
  */
-
-#include	<stdio.h>
-#include	<ctype.h>
-
-#include	"crt.h"
 
 extern	char	*crtvec[];
 

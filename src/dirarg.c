@@ -1,6 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
-#endif
+   	  /* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
+#include	"dircmd2.h"
 
 /*
  * Title:	dirarg.c
@@ -23,8 +27,8 @@ static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
  *		04 Jul 1984
  *
  * Function:	This module performs syntax checking on the command text
- *		which is received by 'dircmd' for FLIST.  The command-name
- *		may be translated if it is a symbol (to permit FLIST to
+ *		which is received by 'dircmd' for DIRED.  The command-name
+ *		may be translated if it is a symbol (to permit DIRED to
  *		associate it with one of its "known" commands).
  *
  *		The argument portion of the string is checked.  The prefix
@@ -74,13 +78,6 @@ static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
  *		after use.  (If an error is detected here, they are already
  *		released.)
  */
-
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
-#include	"dircmd2.h"
 
 /*
  * External procedures:
@@ -134,10 +131,10 @@ char	filespec[MAX_PATH],
 	cmd	= calloc (1, havelen = MAX_PATH);
 
 	/*
-	 * If the given keyword is a FLIST-recognized command, or if the user
+	 * If the given keyword is a DIRED-recognized command, or if the user
 	 * has assigned a symbol which equates to it, set 'cmdnum' to the
 	 * corresponding VCMD2-table index.  Otherwise, let the command fall-
-	 * through to be treated as a non-FLIST command
+	 * through to be treated as a non-DIRED command
 	 */
 #define	MODE(m)	(vcmd_->v_mode & (m))
 #define	CMDNUM(t)  (cmdnum = dircmd_vcmd2 (t, strlen(t)))
@@ -163,8 +160,8 @@ char	filespec[MAX_PATH],
 	}
 
 	/*
-	 * FLIST's '/' and '?' prefixes are analogous to VMS 'SET' and 'SHOW'
-	 * commands.  Translate 'SET' and 'SHOW' verbs into FLIST-format.
+	 * DIRED's '/' and '?' prefixes are analogous to VMS 'SET' and 'SHOW'
+	 * commands.  Translate 'SET' and 'SHOW' verbs into DIRED-format.
 	 */
 	if (cmdnum == 0 || cmdnum == 1)
 	{

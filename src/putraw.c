@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: putraw.c,v 1.2 1984/11/13 01:57:42 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<descrip.h>
 
 /*
  * Title:	putraw.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	12 Nov 1984
  * Last update:	12 Nov 1984
  *
@@ -13,8 +13,6 @@ static char *Id = "$Id: putraw.c,v 1.2 1984/11/13 01:57:42 tom Exp $";
  *		problem with 'printf' is that it does not track backspaces
  *		when determining the wraparound column.)
  */
-
-#include	<descrip.h>
 
 putraw (s_)
 char	*s_;

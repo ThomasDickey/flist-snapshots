@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: rmscc.c,v 1.3 1985/02/20 10:58:40 tom Exp $";
-#endif
+  	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
+#include	<rms.h>
+
+#include	"bool.h"
 
 /*
  * Title:	rmscc.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	02 Jan 1985
  * Last update:	20 Feb 1985, return "-1" if file has undefined format
  *		18 Feb 1985, return "-1" if file is not in sequential format
@@ -13,7 +14,7 @@ static char *Id = "$Id: rmscc.c,v 1.3 1985/02/20 10:58:40 tom Exp $";
  * Function:	RMSCC is designed be used in conjunction with the 'rmsio'
  *		module.  It tests the format+attributes of an open file to see
  *		if its format implies carriage control.  RMSCC is used by the
- *		BROWSE program to determine if the input file contains carriage
+ *		MORE program to determine if the input file contains carriage
  *		control, or if each record should be interpreted as a newline,
  *		or if the file contains neither explicit or implied carriage
  *		control.
@@ -26,10 +27,6 @@ static char *Id = "$Id: rmscc.c,v 1.3 1985/02/20 10:58:40 tom Exp $";
  *		-1	if the file is formatted FIX-512 or VAR-512 (ordinary
  *			binary files on VMS).
  */
-
-#include	<rms.h>
-
-#include	"bool.h"
 
 bool	rmscc (rab_)
 struct	RAB	*rab_;

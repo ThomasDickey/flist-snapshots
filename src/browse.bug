@@ -1,5 +1,5 @@
 See how DEC's CLI-routines actually work on
-BROWSE; see if I can do anything with the error-messages.
+MORE; see if I can do anything with the error-messages.
 
 the "/squeeze" option should scan for repeated embedded LF's.
 
@@ -17,11 +17,11 @@ contain a lf.  I can read this file, but when attempting to do a sys$find
 (for refresh, etc), I get an EOF.  The subsequence sys$read also fails.
 
 30-apr:
-When linked to FLIST, should inherit command history from previous invocations
-of BROWSE, rather than FLIST.
+When linked to DIRED, should inherit command history from previous invocations
+of MORE, rather than DIRED.
 
 30-may:
-Also, when linked to FLIST, should inherit search-string.
+Also, when linked to DIRED, should inherit search-string.
 
 24-sep:
 Should add switches for EBCDIC and BINARY (to suppress LF-interpretation).

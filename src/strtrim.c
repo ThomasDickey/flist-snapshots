@@ -2,9 +2,9 @@
 
 /*
  * Title:	strtrim
- * Author:	Thomas E. Dickey
- * Created:	11 Aug 1983
- * Last update:	11 Aug 1983
+ * Author:	T.E.Dickey (ITT/ATC)
+ * Created:	11 Aug 83
+ * Last update:	11 Aug 83
  *
  * Function:	This procedure trims trailing "blank" characters from a null-
  *		ended ASCII string, by replacing the blanks with nulls.

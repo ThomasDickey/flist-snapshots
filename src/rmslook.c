@@ -1,10 +1,15 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.2 1988/11/04 11:44:08 tom Exp $";
-#endif
+   	 	/* Copyright 1984 (C), Thomas E. Dickey */
+#include	<rms.h>
+#include	<descrip.h>
+#include	<stsdef.h>
+
+#include	"flist.h"
+#define		DIRENT		/* local */
+#include	"dirent.h"
 
 /*
  * Title:	rmslook.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	08 Dec 1984 (from 'dirent.c')
  * Last update:	15 Jun 1985, use 'xabprouic' for CC2.0 change
  *		22 Mar 1985, added file-id, record-length
@@ -25,14 +30,6 @@ static char *Id = "$Id: rmslook.c,v 1.2 1988/11/04 11:44:08 tom Exp $";
  *
  * Returns:	The worst error found while reading the directory entry.
  */
-
-#include	<rms.h>
-#include	<descrip.h>
-#include	<stsdef.h>
-
-#include	"flist.h"
-#define		DIRENT		/* local */
-#include	"dirent.h"
 
 long	rmslook (z, fab_)
 FILENT	*z;

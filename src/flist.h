@@ -1,6 +1,6 @@
 /*
  * Title:	flist.h - misc
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	04 May 1984
  * Last update:	04 May 1985, removed qCMD (restructuring), sCMD
  *		28 Aug 1984, added 'qCMD()'

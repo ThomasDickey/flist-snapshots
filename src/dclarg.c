@@ -1,6 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
-#endif
+ 	   /* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<rms>
+#include	<ctype.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"dclarg.h"
 
 /*
  * Title:	dclarg.c
@@ -16,7 +20,7 @@ static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
  *		08 May 1985, added this comment!
  *		27 Apr 1985, added visible-test for sid here to confuse thieves.
  *		28 Jan 1985, the search here is done only if 'cpy_dft' is set,
- *			     to provide (temporary?) support for FLIST/COPY.
+ *			     to provide (temporary?) support for DIRED/COPY.
  *			     Patch: remove search ultimately, since this does
  *			     not provide support for multiple-outputs.
  *		17 Jan 1985, options on command-keyword should be always set
@@ -83,10 +87,10 @@ static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
  *		cmd_arg	=  A count of the number of leading tokens which are
  *			command verbs.  Normally this is 1 or 0 (the verb was
  *			already absorbed).  It is "2" in the special case of
- *			functions (BROWSE) called from FLIST, since the
- *			procedure 'argvdcl' does not know about this special
- *			case.  The counter specifies the number of tokens to
- *			pass before treating them as filenames (and propagating
+ *			functions (MORE) called from DIRED, since the procedure
+ *			'argvdcl' does not know about this special case.
+ *			The counter specifies the number of tokens to pass
+ *			before treating them as filenames (and propagating
  *			defaults, and related-name fields).
  *		cpy_dft = A flag which is TRUE if we use the defaulting rule
  *			for COPY.  The output file in this case does not
@@ -113,14 +117,7 @@ static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
  *			COMMAND,NAME (can be tested by 'dclinx (p, 0, 1)')
  *			COMMAND	FILE.TYP.TYP  (except as an illegal filename)
  */
-
-#include	<rms>
-#include	<ctype.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"dclarg.h"
-
+
 /*
  * Forward declarations and external procedures:
  */

@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strvcmp.c,v 1.2 1984/11/06 10:29:54 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<ctype.h>
 
 /*
  * Title:	strvcmp.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	05 Nov 1984
  * Last update:	06 Nov 1984
  *
@@ -26,8 +26,6 @@ static char *Id = "$Id: strvcmp.c,v 1.2 1984/11/06 10:29:54 tom Exp $";
  *		match with 'ref_[]', UNLESS a mismatch was found, in this case
  *		zero.
  */
-
-#include	<ctype.h>
 
 strvcmp (ref_, tst_, len)
 char	*ref_, *tst_;

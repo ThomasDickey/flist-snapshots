@@ -1,5 +1,3 @@
-/* $Id: atrdef.h,v 1.2 1984/11/03 01:43:42 tom Exp $ */
-
 #define	ATR$C_ACLEVEL	0x18
 #define	ATR$C_ALCONTROL	0xe
 #define	ATR$C_ASCDATES	0xd

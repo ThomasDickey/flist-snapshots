@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dirhigh.c,v 1.3 1985/08/24 10:57:28 tom Exp $";
-#endif
+  	 /* Copyright 1984 (C), Thomas E. Dickey */
+#include	"flist.h"
+#include	"dirent.h"
 
 /*
  * Title:	dirhigh.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	18 Jul 1984
  * Last update:	24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		20 Jul 1985, use 'dirent_nul' to make dummy entry in 'filelink'.
@@ -13,8 +13,8 @@ static char *Id = "$Id: dirhigh.c,v 1.3 1985/08/24 10:57:28 tom Exp $";
  *		14 Dec 1984, added nam-argument to 'dirent_chop'
  *		25 Aug 1984, cleanup buffer sizes
  *
- * Function:	This module is called from FLIST when a file-modification
- *		operation is used with the (FLIST option) /NOVERSION.  The
+ * Function:	This module is called from DIRED when a file-modification
+ *		operation is used with the (DIRED option) /NOVERSION.  The
  *		intent of NOVERSION is to show on the display only the highest
  *		version of any particular file.  This module determines the
  *		highest version of the particular file, locates in 'filelist[]'
@@ -26,9 +26,6 @@ static char *Id = "$Id: dirhigh.c,v 1.3 1985/08/24 10:57:28 tom Exp $";
  * Returns:	TRUE if any version of the given filename is found; otherwise
  *		assume that the file does not exist.
  */
-
-#include	"flist.h"
-#include	"dirent.h"
 
 import(filelist); import(numfiles); import(numdlets);
 

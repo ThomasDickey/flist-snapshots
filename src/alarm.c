@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: alarm.c,v 1.2 1984/09/10 11:03:00 tom Exp $";
-#endif
+   	/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<descrip.h>
 
 /*
  * Title:	alarm.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	10 Sep 1984
  * Last update:	10 Sep 1984
  *
@@ -12,8 +12,6 @@ static char *Id = "$Id: alarm.c,v 1.2 1984/09/10 11:03:00 tom Exp $";
  *		on the user's terminal.  This is used rather than 'putchar'
  *		because we wish to avoid using the VMS-C run-time support.
  */
-
-#include	<descrip.h>
 
 alarm ()
 {

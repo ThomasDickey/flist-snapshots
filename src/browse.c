@@ -1,12 +1,20 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
-#endif
+ 	     	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
+#include	"rmsio.h"
+#include	<ctype.h>
+#include	<stsdef.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"dclarg.h"
+#include	"dclopt.h"
+#include	"getpad.h"
+#include	"names.h"
 
 /*
- * Title:	BROWSE.c (BROWSE main program)
+ * Title:	more.c (aka BROWSE)
  * Author:	T. Dickey
- *		(This is a completely re-written version of a program
- *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
+ *		(This is a completely re-written version of a program also
+ *		titled MORE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
  *		24 Feb 1989	disable /COMMAND when invoked from FLIST.
@@ -64,7 +72,7 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
  *		04 Dec 1984	Added 'X', to abort search/skip.  Use 'putraw',
  *				'whoami'.  Added '/JOIN', '/SQUEEZE' options.
  *		06 Nov 1984	Re-wrote search-compare, using 'strvcmp'.
- *				This permits BROWSE to find overlapping search-
+ *				This permits MORE to find overlapping search-
  *				targets (as well as fix a reset-bug).
  *		23 Oct 1984	(had stepped on trailing-spaces)
  *		21 Oct 1984	pad the record-size allocation
@@ -108,25 +116,14 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
  *				the actual terminal characteristics, and to do
  *				correct VT52/VT100 cursor movement.
  *
- * Notes:	BROWSE does both left/right and up/down scrolling.  The total
+ * Notes:	MORE does both left/right and up/down scrolling.  The total
  *		number of lines on the CRT screen is assumed even, so that
  *		when the status line is deducted, the remaining part is odd.
  *		This logic is implicit in the up/down scrolling, which overlaps
  *		each marked section by one line (e.g., scrolling forward one
  *		screen keeps one line the same).
  */
-
-#include	"rmsio.h"
-#include	<ctype.h>
-#include	<stsdef.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"dclarg.h"
-#include	"dclopt.h"
-#include	"getpad.h"
-#include	"names.h"
-
+
 /*
  * External (typed) procedures:
  */
@@ -1929,7 +1926,7 @@ char	bfr[1024];
 
 /* <0_bg>:
  * Special terminal initialization.  These routines may be called via 'crt_init'
- * to adjust the screen on the basis of BROWSE options.
+ * to adjust the screen on the basis of MORE options.
  */
 
 /* Set Bitgraph terminal to native mode, home and clear. */

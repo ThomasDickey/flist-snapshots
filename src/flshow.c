@@ -1,9 +1,14 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.3 1988/11/04 12:29:40 tom Exp $";
-#endif
+ 		/* Copyright 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+#include	<stsdef.h>
+
+#include	"flist.h"
+
+#include	"dirent.h"
+#include	"dclarg.h"
 
 /*
- * Title:	flshow.c ("show" commands for FLIST)
+ * Title:	flist.c (alias DIRED, FLIST)
  * Author:	T.E.Dickey
  * Created:	04 May 1985 (from main program)
  * Last update:
@@ -18,15 +23,7 @@ static char *Id = "$Id: flshow.c,v 1.3 1988/11/04 12:29:40 tom Exp $";
  *		14 May 1985, forgot to remove trace
  *		04 May 1985
  */
-
-#include	<ctype.h>
-#include	<stsdef.h>
-
-#include	"flist.h"
-
-#include	"dirent.h"
-#include	"dclarg.h"
-
+
 import(filelist);	import(numfiles);
 
 import(AnyXAB);		import(A_opt);		import(D_opt);
