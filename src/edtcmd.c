@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.6 1995/02/19 18:22:49 tom Exp $";
+static char *Id = "$Id: edtcmd.c,v 1.8 1995/02/20 02:16:26 tom Exp $";
 #endif
 
 /*
@@ -25,12 +25,9 @@ static char *Id = "$Id: edtcmd.c,v 1.6 1995/02/19 18:22:49 tom Exp $";
 #include	"bool.h"
 #include	"crt.h"
 #include	"getpad.h"
-#include	"strutils.h"
+#include	"edtcmd.h"
 
-/*
- * External procedures:
- */
-extern	int	getpad(void);	/* returns character or keypad-code	*/
+#include	"strutils.h"
 
 #define	RUBOUT	'\177'
 #define	CTL(c)	('c' & 037)
@@ -48,7 +45,8 @@ static	char	*cmdbfr	= nullC;
  * Read a character, saving the previous one, for repeated-key testing.
  * We do screen-dump and refresh here as well:
  */
-int	edtcmd_get (void)
+int
+edtcmd_get (void)
 {
 	lastcommand = thiscommand;
 	for (;;)
@@ -87,12 +85,13 @@ edtcmd_last (int c)
 #define	SHOWIT	edtcmd_crt (cmdbfr, refbfr, doHIGH, do_col, do_line, col)
 #define	COMMAND	(doLOWER ? _tolower(command) : _toupper(command))
 
-char	*edtcmd (
+char *
+edtcmd (
 	int	command,	/* Initial and scratch value		*/
+	char	*delim,		/* Delimiters (if used, for repeat-count) */
 	int	flags,		/* Bits: highlight, lowercase, trim	*/
 	int	do_line,	/* Line on which to enter command 	*/
 	int	do_col,		/* Column at which to begin command	*/
-	char	*delim,		/* Delimiters (if used, for repeat-count) */
 	char	*do_hlp,	/* Help-interface string		*/
 	char	*do_1st,	/* Starting contents of command-result	*/
 	char	*do_ref)	/* Reference copy of command-line	*/
@@ -295,18 +294,19 @@ did_abort:
 	ctlx_clr ();		/* Reset CTRL/X flag	*/
 	return (cmdbfr);
 }
-
+
 /* <edtcmd_init>:
  * Initialize this module.  We need a buffer in which to build commands,
  * 'cmdbfr', as well as a buffer in which to store the prior-state of a
  * line which we are receiving upon.
  */
-edtcmd_init ()
+void
+edtcmd_init (void)
 {
 	cmdbfr = calloc(1, CRT_COLS+1);
 	lastcommand = EOS;
 }
-
+
 /* <edtcmd_crt>:
  * Display the text for the current "visible-command".  The command-text is
  * displayed *highlighted*, with a trailing space (so that if we are overstriking
@@ -316,19 +316,20 @@ edtcmd_init ()
  * This procedure is self-contained (does not directly reference any static
  * data).
  */
-edtcmd_crt (cmd_, ref_, highlight, rcol, rline, ccol)
-char	*cmd_,		/* Text to overlay 'ref_[]'		(asciz)	*/
-	*ref_;		/* Reference, to restore/update			*/
-int	highlight,	/* Do highlighting of new text if true		*/
-	rcol,		/* Column at which 'cmd_[]' is put	 1..n	*/
-	rline,		/* Reference: line in screen		 1..n	*/
-	ccol;		/* Reference: cursor-column in 'cmd_[]', 0..n	*/
+void
+edtcmd_crt (
+	char	*cmd_,	/* Text to overlay 'ref_[]'		(asciz)	*/
+	char	*ref_,	/* Reference, to restore/update			*/
+	int	highlight, /* Do highlighting of new text if true	*/
+	int	rcol,	/* Column at which 'cmd_[]' is put	 1..n	*/
+	int	rline,	/* Reference: line in screen		 1..n	*/
+	int	ccol)	/* Reference: cursor-column in 'cmd_[]', 0..n	*/
 {
-int	j	= strlen(ref_),
-	len	= strlen(cmd_);
-char	*c_,
-	tocmp	[CRT_COLS],
-	toshow	[CRT_COLS];
+	int	j	= strlen(ref_),
+		len	= strlen(cmd_);
+	char	*c_,
+		tocmp	[CRT_COLS],
+		toshow	[CRT_COLS];
 
 	for (c_ = toshow; *cmd_; c_++, cmd_++)
 	{

@@ -1,11 +1,18 @@
+/* $Id: getpad.h,v 1.4 1995/02/20 02:15:13 tom Exp $ */
+
 /*
  * Title:	getpad.h
  * Author:	Thomas E. Dickey
  * Created:	07 May 1984
- * Last update:	16 Apr 1985, moved secondary-def's here
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		16 Apr 1985, moved secondary-def's here
  *
  *	Define integer codes for VT52/VT100 keypad sequences
  */
+
+#ifndef	GETPAD_H
+#define	GETPAD_H
 
 #define	pad(x)		(256+x)
 
@@ -43,3 +50,5 @@
 extern	int	getpad (void);
 extern	int	getpad_look(int minc, int maxc);
 extern	int	getpad_read(void);
+
+#endif	/* GETPAD_H */
