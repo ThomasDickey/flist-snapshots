@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.3 1985/07/27 20:04:56 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.4 1995/03/19 00:53:19 tom Exp $";
 #endif
 
 /*
  * Title:	flscan.c
  * Author:	Thomas E. Dickey
  * Created:	24 Jul 1984
- * Last update:	27 Jul 1985, make 'flscan_set'..'flscan_off' common routines to
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		27 Jul 1985, make 'flscan_set'..'flscan_off' common routines to
  *			     use in tests of real directory entries against our
  *			     picture in 'filelist[]'.
  *		24 Jul 1985, use 'dirent_chk2' in front of 'dirent_nul' in case
@@ -69,16 +71,17 @@ static char *Id = "$Id: flscan.c,v 1.3 1985/07/27 20:04:56 tom Exp $";
 
 #include	"flist.h"
 
-#include	"dclarg.h"
+#include	"dircmd.h"
 #include	"dirent.h"
+#include	"dds.h"
 
 /*
  * External (typed) procedures:
  */
-DCLARG	*dclarg_text();		/* (re)-allocate a DCLARG link		*/
-int	flscan_off(),		/* Process an individual entry		*/
-	flscan_all();		/* Set flag as result of directory seek	*/
 char	*dirent_dft();		/* => wildcard default			*/
+
+static	void	flscan_off (int j);
+static	void	flscan_all (char *spec, int len, int status);
 
 import(filelist); import(numfiles);
 import(conv_list);
@@ -87,17 +90,14 @@ static	int	clarified,	/* Flag set if 'inspect' altered data	*/
 		do_inspect;	/* TRUE if we also call 'inspect'	*/
 
 #define	BIT_2	2		/* Use this '.fmisc' bit via dirent_misc */
-
-flscan (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+
+tDIRCMD(flscan)
 {
-int	j,
-	k	= 0,
-	do_args	= FALSE;
-DCLARG	*d_, *spec_;
-char	fbfr[MAX_PATH];
+	int	j,
+		k	= 0,
+		do_args	= FALSE;
+	DCLARG	*d_, *spec_;
+	char	fbfr[MAX_PATH];
 
 	clarified = FALSE;
 	do_inspect = FALSE;	/* Assume VERIFY	*/
@@ -169,7 +169,7 @@ char	fbfr[MAX_PATH];
 	if (strchr(conv_list, 'f') && clarified)
 		dds_all (crt_top(), *curfile_);
 }
-
+
 flscan_set ()	{ dirent_misc (-2, BIT_2);}	/* Set bit everywhere	*/
 flscan_clr ()	{ dirent_misc (-1, BIT_2);}	/* Clear bit everywhere	*/
 flscan_on  (j)	{ dirent_misc (j,  BIT_2);}	/* Set particular bit	*/
@@ -179,8 +179,8 @@ flscan_on  (j)	{ dirent_misc (j,  BIT_2);}	/* Set particular bit	*/
  * the contents of 'filelist[]'.  If not subsequently verified by finding the
  * file in the real directory, 'flscan' will remove it from 'filelist[]'.
  */
-flscan_off (j)
-int	j;
+static
+void	flscan_off (int j)
 {
 	FK(j).fmisc &= (~BIT_2);
 }
@@ -190,13 +190,12 @@ int	j;
  * Reset the corresponding bit in the '.fmisc' component (which are set TRUE
  * only where a specific file-spec was found).
  */
-flscan_all (spec, len, status)
-char	*spec;
-int	len,	status;
+static
+void	flscan_all (char *spec, int len, int status)
 {
-FILENT	z2;
-int	j;
-char	spec2[MAX_PATH];
+	FILENT	z2;
+	int	j;
+	char	spec2[MAX_PATH];
 
 	if (status == RMS$_NORMAL)
 	{

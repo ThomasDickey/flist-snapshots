@@ -1,4 +1,4 @@
-/* $Id: dircmd.h,v 1.1 1995/03/18 23:31:50 tom Exp $
+/* $Id: dircmd.h,v 1.2 1995/03/19 02:00:00 tom Exp $
  *
  * public interface of dircmd.c (and functions tabulated there)
  */
@@ -6,13 +6,13 @@
 #ifndef	DIRCMD_H
 #define	DIRCMD_H
 
+#include "dirent.h"
 #include "dircmd2.h"
-#include "dclarg.h"
 
-extern	tDIRCMD(flcols),	/* Alter the display format		*/
-extern	tDIRCMD(flcols_left),
-extern	tDIRCMD(flcols_right),
-extern	tDIRCMD(flcols_width),
+extern	tDIRCMD(flcols);	/* Alter the display format		*/
+extern	tDIRCMD(flcols_left);
+extern	tDIRCMD(flcols_right);
+extern	tDIRCMD(flcols_width);
 extern	tDIRCMD(flcols_132);
 extern	tDIRCMD(flcopy);	/* Copy/append files			*/
 extern	tDIRCMD(fldlet);	/* Delete or purge a file		*/
@@ -30,8 +30,8 @@ extern	tDIRCMD(flquit);	/* Process (optional) multi-level quit	*/
 extern	tDIRCMD(flread);	/* Read (or re-read) entries in list	*/
 extern	tDIRCMD(flrnam);	/* Rename a file			*/
 extern	tDIRCMD(flscan);	/* Scan 'filelist[]' for deletions	*/
-extern	tDIRCMD(flset_date),	/* Set date-display flags		*/
-extern	tDIRCMD(flset_hold),	/* Set HOLD-flag			*/
+extern	tDIRCMD(flset_date);	/* Set date-display flags		*/
+extern	tDIRCMD(flset_hold);	/* Set HOLD-flag			*/
 extern	tDIRCMD(flset_mark);	/* Set mark (selection) flag		*/
 extern	tDIRCMD(flshow);	/* Process "SHOW"/"?" commands		*/
 extern	tDIRCMD(flsort);	/* Process sort-commands		*/

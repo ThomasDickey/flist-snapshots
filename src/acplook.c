@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.5 1995/02/19 15:54:58 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.7 1995/03/19 22:33:09 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: acplook.c,v 1.5 1995/02/19 15:54:58 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from test code)
  * Last update:
+ *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT changes).
  *		04 Nov 1988, added '.fexpr' data
  *		22 Mar 1985, added file-id, record-length
@@ -73,8 +74,8 @@ long	acplook (
 
 	fibDSC.dsc$w_length = sizeof(FIB);
 	fibDSC.dsc$a_pointer = &fib;
-	cpyblk (&fib, nullC, sizeof(FIB));
-	cpyblk (&fib.fib$w_fid, &nam_->nam$w_fid, 6);
+	memset (&fib, 0, sizeof(fib));
+	memcpy (fib.fib$w_fid, nam_->nam$w_fid, 6);
 
 #define	atrSET(type,size,addr)\
 		atr[j].atr$w_type = type;\
@@ -118,7 +119,7 @@ long	acplook (
 			if (z->fsize < 0)		z->fsize = z->fallc;
 			z->f_grp = uic_vec[1];
 			z->f_mbm = uic_vec[0];
-			cpyblk (&z->fidnum[0], &nam_->nam$w_fid[0], 6);
+			memcpy (z->fidnum, nam_->nam$w_fid, sizeof(z->fidnum));
 
 			/*
 			 * Note: The '.f_rfm' field contains both the file-

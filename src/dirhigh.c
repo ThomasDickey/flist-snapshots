@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirhigh.c,v 1.3 1985/08/24 10:57:28 tom Exp $";
+static char *Id = "$Id: dirhigh.c,v 1.4 1995/03/19 01:03:43 tom Exp $";
 #endif
 
 /*
  * Title:	dirhigh.c
  * Author:	Thomas E. Dickey
  * Created:	18 Jul 1984
- * Last update:	24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		20 Jul 1985, use 'dirent_nul' to make dummy entry in 'filelink'.
  *		16 Jul 1985, use 'filelist' as pointers to 'filelink'.
  *		03 Jul 1985, cleanup of 'filelist' definition
@@ -29,6 +31,7 @@ static char *Id = "$Id: dirhigh.c,v 1.3 1985/08/24 10:57:28 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
+#include	"dds.h"
 
 import(filelist); import(numfiles); import(numdlets);
 

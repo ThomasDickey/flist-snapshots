@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: whoami.c,v 1.2 1985/10/01 01:56:06 tom Exp $";
+static char *Id = "$Id: whoami.c,v 1.3 1995/03/19 00:18:35 tom Exp $";
 #endif
 
 /*
  * Title:	whoami.c
  * Author:	Thomas E. Dickey
  * Created:	29 Nov 1984
- * Last update:	30 Sep 1985, use SYS$GETJPIw in VMS 4.x
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		30 Sep 1985, use SYS$GETJPIw in VMS 4.x
  *		09 May 1985, return nonzero code if from system
  *		01 Dec 1984
  *
@@ -30,23 +32,23 @@ static char *Id = "$Id: whoami.c,v 1.2 1985/10/01 01:56:06 tom Exp $";
 #include	<rms>
 #include	<jpidef.h>
 
-int	whoami (name, opt)
-char	*name;
-int	opt;
+int	whoami (char *name, int opt)
 {
-int	len;
-char	buffer[NAM$C_MAXRSS];	/* Safe: $GETJPI returns at most 128 bytes */
-struct	{
-	short	buf_len,
-		code;
-	char	*buf_adr;
-	long	end_flag;
-	} itmlst;
-struct	FAB	fab;
-struct	NAM	nam;
-char	esa[NAM$C_MAXRSS], *lo_, *hi_;
+	int	len;
+	char	buffer[NAM$C_MAXRSS];
+	/* Safe: $GETJPI returns at most 128 bytes */
 
-	cpyblk (buffer, 0, sizeof(buffer));	/* clear buffer	*/
+	struct	{
+		short	buf_len,
+			code;
+		char	*buf_adr;
+		long	end_flag;
+		} itmlst;
+	struct	FAB	fab;
+	struct	NAM	nam;
+	char	esa[NAM$C_MAXRSS], *lo_, *hi_;
+
+	memset (buffer, 0, sizeof(buffer));	/* clear buffer	*/
 
 	itmlst.buf_len = sizeof(buffer) - 1;
 	itmlst.code    = JPI$_IMAGNAME;

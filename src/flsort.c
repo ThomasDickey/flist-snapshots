@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.4 1995/02/19 01:43:20 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.6 1995/03/19 02:04:08 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flsort.c,v 1.4 1995/02/19 01:43:20 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1984
  * Last update:
+ *		18 Mar 1995	prototypes
  *		18 Feb 1995	port to AXP (DATENT mods).
  *		02 Jan 1989	modified to use 'qsort' instead of my selection-
  *				sort.
@@ -63,7 +64,7 @@ static char *Id = "$Id: flsort.c,v 1.4 1995/02/19 01:43:20 tom Exp $";
  * Parameters:	opt -	  alphabetic code (see above)
  *		order -	  normal/reverse flag (TRUE = reverse).
  *		curfile - index into 'filelist[]' of current file
- *		tmpfix -  temporarily "fix" the current location, restoring the
+ *		fix -     temporarily "fix" the current location, restoring the
  *			  original file-entry which may have been selected.
  *
  * Returns:	The index into 'filelist[]' at which the cursor should be
@@ -81,8 +82,8 @@ static char *Id = "$Id: flsort.c,v 1.4 1995/02/19 01:43:20 tom Exp $";
 #include	<ctype.h>
 
 #include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 import(filelist); import(numfiles);
 import(A_opt);	import(D_opt);	import(M_opt);	import(O_opt);
@@ -95,7 +96,9 @@ char	*full_opt[] = {
 		"REVISED",	"SIZE",		"XAB",		"EXPIRED"};
 static
 int	by_hour = 0;		/* Last HOUR-mode used	*/
-
+
+static	int	flsort_fix (FLINK *f_);
+
 /*
  * The following sort-definitions return -1 if the first argument is lower,
  * 0 if equal, +1 if greater.  Definitions are used rather than procedures
@@ -150,12 +153,12 @@ int	by_hour = 0;		/* Last HOUR-mode used	*/
  */
 #define	sortPRV(z1,z2)	(cmp = (zNOPRIV(z1) ? (zNOPRIV(z2) ? EQL : GTR)\
 					    : (zNOPRIV(z2) ? LSS : EQL) ))
-
+
 static	int	sortopt,	/* copy of 'opt' */
 		sortord;	/* copy of 'order' */
 
 static
-compare(p1, p2)
+int	compare(p1, p2)
 FLINK	**p1, **p2;
 {
 	register FILENT	*f1	= &((*p1)->fk),
@@ -249,28 +252,27 @@ FLINK	**p1, **p2;
 	return ((sortord > 0) ? cmp : -cmp);
 }
 
-flsort (curfile_, xcmd_, xdcl_, tmpfix)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
-int	tmpfix;
+tDIRCMD(flsort)
 {
-FLINK	*cmpFIX, *cmpTMP;
-int	opt	= xdcl_->dcl_text[1],
-	order	= (xdcl_->dcl_text[0] == 'S') ? GTR : LSS,
-	fixpoint = dircmd_select(-2),	/* Save original selection-index */
-	j0, j1,
-	k0	= numfiles-1, k1,
-	cmp, got,
-	didsome	= 0,
-	lpp2	= crt_lpp() - 1;
-DATENT	*c_;
+	FLINK	*cmpFIX, *cmpTMP;
+	int	opt	= xdcl_->dcl_text[1],
+		order	= (xdcl_->dcl_text[0] == 'S') ? GTR : LSS,
+		fixpoint = dircmd_select(-2),	/* Save original selection-index */
+		j0, j1,
+		k0	= numfiles-1, k1,
+		cmp, got,
+		didsome	= 0,
+		lpp2	= crt_lpp() - 1;
+	DATENT	*c_;
 
 	/* Verify that the option is legal one: */
-	if (! isprint (opt))	opt = 'N';
+	if (! isprint (opt))
+		opt = 'N';
+
 	for (j0 = 0; j0 < SIZEOF(full_opt); j0++)
 	{
-		if (opt == *full_opt[j0])	break;
+		if (opt == *full_opt[j0])
+			break;
 	}
 	if (j0 == SIZEOF(full_opt))	j0 = 1;	/* Coerce to NAME	*/
 
@@ -337,7 +339,7 @@ DATENT	*c_;
 	}
 
 	if (fixpoint >= 0)	cmpFIX	= filelist[fixpoint];
-	if (tmpfix)		cmpTMP	= filelist[*curfile_];
+	if (fix)		cmpTMP	= filelist[*curfile_];
 
 	didsome = dds_pack (curfile_, TRUE); /* Get rid of all deleted files */
 	sortopt = opt;		/* set global needed in 'compare()' */
@@ -382,11 +384,11 @@ DATENT	*c_;
 	 */
 	if (didsome)
 	{
-		if (fixpoint >= 0 || tmpfix)
+		if (fixpoint >= 0 || fix)
 		{
 			if (fixpoint >= 0)
 				dircmd_select (*curfile_ = flsort_fix (cmpFIX));
-			if (tmpfix)
+			if (fix)
 				*curfile_ = flsort_fix (cmpTMP);
 
 			k0 = lpp2 * (*curfile_ / lpp2); /* Nominal top-screen  */
@@ -405,10 +407,10 @@ DATENT	*c_;
  * Return the present index of a particular FILENT entry in the 'filelist[]'
  * array.
  */
-flsort_fix (f_)
-FLINK	*f_;
+static
+int	flsort_fix (FLINK *f_)
 {
-int	j;
+	int	j;
 
 	for (j = 0; j < numfiles; j++)
 		if (f_ == filelist[j])		return (j);

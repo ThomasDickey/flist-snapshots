@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirchk.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
+static char *Id = "$Id: dirchk.c,v 1.5 1995/03/19 01:51:58 tom Exp $";
 #endif
 
 /*
@@ -41,8 +41,7 @@ static char *Id = "$Id: dirchk.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 
 #include	"flist.h"
 #include	"names.h"
-#include	"dircmd2.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
 
 dirchk (cmd_, dcl_, state, flg)
 DCLARG	*dcl_;

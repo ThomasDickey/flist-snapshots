@@ -1,10 +1,12 @@
-/* $Id: dircmd2.h,v 1.4 1995/03/18 23:53:14 tom Exp $
+/* $Id: dircmd2.h,v 1.5 1995/03/19 01:58:54 tom Exp $
  *
  * Define command constraints for DCL-commands known to FLIST.
  */
 
 #ifndef	DIRCMD2_H
 #define	DIRCMD2_H
+
+#include "dclarg.h"
 
 #define	tDIRCMD(func) \
 	void	func (int *curfile_, char *xcmd_, DCLARG *xdcl_, int fix, int history)
@@ -51,7 +53,7 @@ typedef	struct	{
 	char	*v_full;	/* full text of command			*/
 	int	v_len;		/* abbreviation length			*/
 	int	v_mode;		/* file count bits (e.g., v_1_IN)	*/
-	tDIRCMD(*v_func);	/* No passback, special			*/
+	tDIRCMD((*v_func));	/* No passback, special			*/
 	char	*v_dfts;	/* default string			*/
 	} VCMD2;
 

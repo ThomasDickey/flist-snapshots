@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acpcopy.c,v 1.2 1985/02/24 00:41:34 tom Exp $";
+static char *Id = "$Id: acpcopy.c,v 1.5 1995/03/19 22:32:47 tom Exp $";
 #endif
 
 /*
  * Title:	ACPcopy.c
  * Author:	Thomas E. Dickey
  * Created:	23 Feb 1985, from code in 'pipefunc' written 16 Nov 1984
- * Last update:	23 Feb 1985, to make a general-access routine
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		23 Feb 1985, to make a general-access routine
  *
  * Function:	Use ACP to copy attributes from one file to another.
  *
@@ -37,9 +39,9 @@ static	ATR	atr[3];			/* Size: 1 more than max attributes */
 static	short	short_fpro;		/* 1: File-protection		    */
 static	long	quad_credate[2];	/* 2: File-creation-date	    */
 
-acpcopy (code, iname, oname)
-int	code;
-char	*iname, *oname;
+static	int	acpcopy2 (int code, char *filespec);
+
+void	acpcopy (int code, char *iname, char *oname)
 {
 	if (code > 0)
 	{
@@ -51,17 +53,16 @@ char	*iname, *oname;
 /*
  * Lookup/Modify attributes using ACP:
  */
-acpcopy2 (code, filespec)
-int	code;
-char	*filespec;
+static
+int	acpcopy2 (int code, char *filespec)
 {
-RMS_STUFF;
-long	iosb[2];
-short	chnl;
-int	j	= 0,
-	func;
-$DESCRIPTOR(DSC_name,rsa);
-struct	dsc$descriptor	fibDSC;
+	RMS_STUFF;
+	long	iosb[2];
+	short	chnl;
+	int	j	= 0;
+	int	func;
+	$DESCRIPTOR(DSC_name,rsa);
+	struct	dsc$descriptor	fibDSC;
 
 	rmsinit_fab (&fab, &nam, nullC, filespec);
 	rmsinit_nam (&nam, &esa, &rsa);
@@ -74,8 +75,8 @@ struct	dsc$descriptor	fibDSC;
 
 	fibDSC.dsc$w_length = sizeof(FIB);
 	fibDSC.dsc$a_pointer = &fib;
-	cpyblk (&fib, nullC, sizeof(FIB));
-	cpyblk (&fib.fib$w_fid[0], &nam.nam$w_fid[0], 6);
+	memset (&fib, 0, sizeof(fib));
+	memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
 #define	SET(type,size,addr) {\
 	atr[j].atr$w_type = type;\

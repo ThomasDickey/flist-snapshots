@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.8 1995/03/18 22:01:20 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.10 1995/03/19 02:08:56 tom Exp $";
 #endif
 
 /*
@@ -99,7 +99,7 @@ static char *Id = "$Id: fl.c,v 1.8 1995/03/18 22:01:20 tom Exp $";
 
 #include	"dds.h"
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
 #include	"dclopt.h"
 
 #include	"nameheap.h"
@@ -108,9 +108,6 @@ static char *Id = "$Id: fl.c,v 1.8 1995/03/18 22:01:20 tom Exp $";
 
 #define	FAILED	(STS$M_INHIB_MSG | STS$K_ERROR)
 #define	NORMAL	(STS$M_INHIB_MSG | STS$K_SUCCESS)
-
-#define	FLSET(func)	flset_/**/func(curfile_, xcmd_, xdcl_)\
-			int *curfile_; char *xcmd_; DCLARG *xdcl_;
 
 /*
  * External functions and data:
@@ -196,7 +193,7 @@ DCLOPT	opts[] = {
 	{"since",	0,	0,	SZ(datechek),	3,	01000},
 	{"versions",	&_TRUE,	0,	SZ(V_opt),	1,	00400}
 	};
-
+
 main (argc, argv)
 int	argc;
 char	*argv[];
@@ -268,7 +265,7 @@ flist_quit (status)
 		crt_quit (TRUE);	/* Make a clean exit		*/
 	exit (status);
 }
-
+
 flist (dcl_)
 DCLARG	*dcl_;
 {
@@ -319,7 +316,7 @@ char	bfr[CRT_COLS+MAX_PATH], *c_,
 	dirpath_free (nesting_lvl);
 	nameheap_set (--nesting_lvl);
 }
-
+
 /*
  * Move the cursor to a new line.  If no actual movement results, flag an
  * error message so that the user will know what happened.
@@ -336,18 +333,28 @@ int	old = *curfile_;
 /*
  * Make the 'hold'-flag visible to external world (see: 'dds_hold()').
  */
-flist_hold ()	{	return (hold_flag);	}
-FLSET(hold)	{	hold_flag = (xcmd_[1] != 'n'); }
+int	flist_hold(void)
+{
+	return (hold_flag);
+}
+
+tDIRCMD(flset_hold)
+{
+	hold_flag = (xcmd_[1] != 'n');
+}
 
 /*
  * Set/clear selection-mark:
  */
-FLSET(mark)	{	dircmd_select (xcmd_[1] == 'n' ? -1 : *curfile_); }
+tDIRCMD(flset_mark)
+{
+	dircmd_select (xcmd_[1] == 'n' ? -1 : *curfile_);
+}
 
 /*
  * Set flags controlling data-display:
  */
-FLSET(date)
+tDIRCMD(flset_date)
 {
 	switch (xcmd_[2])
 	{
@@ -363,7 +370,7 @@ FLSET(date)
 /*
  * Set flag 'D_mode', which controls the width of the data-field in the display.
  */
-flist_date2 (curfile)
+flist_date2 (int curfile)
 {
 	if (D_opt)
 	{
@@ -391,7 +398,7 @@ flist_date (curfile, opt)
 	else
 		warn ("Date-toggle is invalid since NODATE was used");
 }
-
+
 /*
  * FLIST sounds an audible alarm whenever a warning is sent to the status line.
  * This, and other messages are normally cleared from the status line to show
@@ -476,7 +483,7 @@ char	bfr[(3*MAX_PATH) + CRT_COLS];
 
 	sprintf (bfr, VARARGS);
 	if (did_crt_init)
-		dds_tell (bfr);
+		dds_tell (bfr,-1);
 	else
 	{
 		putraw (bfr);
@@ -602,7 +609,7 @@ flist_log (VARARGS)
  * Make available the nesting-level:
  */
 flist_nest () {return (nesting_lvl); }
-
+
 /* <flist_opts>:
  * Process options for either the main entry, or for EDIT-directory (subset).
  * In the latter case, some options are unavailable because of a conflict of
@@ -691,7 +698,7 @@ char	msg[CRT_COLS + MAX_PATH];
 
 	return (FALSE);			/* no errors found	*/
 }
-
+
 /* <flist_lis>:
  * Open/write-to/close listing-file used for miscellaneous displays which do
  * not fit into either the status-line, or into the normal file-display list.

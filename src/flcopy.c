@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcopy.c,v 1.2 1985/08/24 10:53:48 tom Exp $";
+static char *Id = "$Id: flcopy.c,v 1.3 1995/03/19 00:49:39 tom Exp $";
 #endif
 
 /*
  * Title:	flcopy.c
  * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
- * Last update:	24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		19 Jul 1985, use 'dirdata_one', corrected "COPY / ;" results for
  *			     /NOVERSION (file appears to have been in list already).
  *		03 Jul 1985, cleanup 'filelist' definition
@@ -50,22 +52,20 @@ static char *Id = "$Id: flcopy.c,v 1.2 1985/08/24 10:53:48 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 import(filelist);
 import(V_opt);
 
-flcopy (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flcopy)
 {
-FILENT	znew,	*z = &znew;
-char	*out_	= dclinx (xdcl_, 2, 0),
-	filespec[MAX_PATH];
-int	oldinx	= dirent_old (out_, 0),	/* is >= 0 if in 'filelist[]'	*/
-	newinx,
-	cp_cmd	= (strcmp ("COPY", xdcl_->dcl_text) == 0);
+	FILENT	znew,	*z = &znew;
+	char	*out_	= dclinx (xdcl_, 2, 0),
+		filespec[MAX_PATH];
+	int	oldinx	= dirent_old (out_, 0),	/* is >= 0 if in 'filelist[]'	*/
+		newinx,
+		cp_cmd	= (strcmp ("COPY", xdcl_->dcl_text) == 0);
 
 	/*
 	 * Verify that all of the inputs exist, and that the output's

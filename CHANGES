@@ -1,3 +1,11 @@
+1995-03-19  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dircmd2.h: oops: accidentally changed order of VCMD2 members
+	(vaxc on axp didn't even whimper)
+
+	* src/getprot.c, src/chprot.c, src/acplook.c, src/acpcopy.c:
+	fid:non-array
+
 1995-03-18  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/fl.c: corrected prototype of flist_hold

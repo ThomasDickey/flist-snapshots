@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.4 1995/02/19 18:15:26 tom Exp $";
+static char *Id = "$Id: flrnam.c,v 1.5 1995/03/19 00:47:53 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flrnam.c,v 1.4 1995/02/19 18:15:26 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	15 May 1984
  * Last update:
+ *		18 Mar 1995, dircmd prototypes
  *		19 Feb 1995, sys utils prototypes
  *		09 Feb 1989, for vms5.0, may have to alter protection to rename
  *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
@@ -55,8 +56,10 @@ static char *Id = "$Id: flrnam.c,v 1.4 1995/02/19 18:15:26 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 #include	"getprot.h"
+#include	"chprot.h"
 
 #include	"sysutils.h"
 
@@ -64,7 +67,7 @@ import(filelist);
 import(V_opt);
 import(conv_list);
 
-int	flrnam_all();
+static	void	flrnam_all (char *spec, int len, int status);
 
 static	int	curfile;
 static	char	*newspec;
@@ -104,32 +107,28 @@ doit(char *newspec, char *oldspec, GETPROT *fprot)
  * Initiate a search for files matching the old-specification.  Whenever we
  * find one, call 'flrnam_all' to perform the actual RENAME-operation.
  */
-flrnam (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flrnam)
 {
-char	*oldspec = dclinx (xdcl_, 1, 0);
+	char	*oldspec = dclinx (xdcl_, 1, 0);
 
 	curfile	= *curfile_;		/* save, in case we do refresh	*/
 	newspec = dclinx (xdcl_, 2, 0);	/* save, for use in 'flrnam_all'*/
 	dirseek_spec2 (oldspec, flrnam_all);
 }
-
+
 /*
  * This procedure is called from 'dirseek_spec' after each file-spec is found.
  */
-flrnam_all (spec, len, status)
-char	*spec;
-int	len,	status;
+static
+void	flrnam_all (char *spec, int len, int status)
 {
-FILENT	ztmp,	*z = &ztmp, zold;
-char	oldspec	[MAX_PATH],
-	tmpspec	[MAX_PATH],
-	fixspec	[MAX_PATH],
-	msg	[CRT_COLS];
-int	inx,
-	wasdir;
+	FILENT	ztmp,	*z = &ztmp, zold;
+	char	oldspec	[MAX_PATH],
+		tmpspec	[MAX_PATH],
+		fixspec	[MAX_PATH],
+		msg	[CRT_COLS];
+	int	inx,
+		wasdir;
 
 	if (status != RMS$_NORMAL)	/* (file not found)	*/
 		return;
@@ -190,5 +189,7 @@ int	inx,
 	    }
 	}
 	else
+	{
 	    flist_sysmsg (status);
+	}
 }

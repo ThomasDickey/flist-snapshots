@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chrcmd.c,v 1.3 1995/02/19 18:23:38 tom Exp $";
+static char *Id = "$Id: chrcmd.c,v 1.4 1995/03/19 01:37:14 tom Exp $";
 #endif
 
 /*
@@ -23,7 +23,7 @@ static char *Id = "$Id: chrcmd.c,v 1.3 1995/02/19 18:23:38 tom Exp $";
 #include	"flist.h"
 #include	"getpad.h"
 
-#include	"dircmd2.h"
+#include	"dircmd.h"
 
 char	*chrcmd (command)
 {

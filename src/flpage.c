@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flpage.c,v 1.2 1985/07/04 01:20:44 tom Exp $";
+static char *Id = "$Id: flpage.c,v 1.3 1995/03/19 00:54:37 tom Exp $";
 #endif
 
 /*
  * Title:	flpage.c
  * Author:	Thomas E. Dickey
  * Created:	02 May 1985 (from code in main program)
- * Last update:	03 Jul 1985, added import-definition.  Use 'scanint' to bypass
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		03 Jul 1985, added import-definition.  Use 'scanint' to bypass
  *			     bug in 'sscanf' in CC2.0
  *		04 May 1985
  *
@@ -19,21 +21,17 @@ static char *Id = "$Id: flpage.c,v 1.2 1985/07/04 01:20:44 tom Exp $";
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dds.h"
-#include	"dclarg.h"
-
-char	*scanint();	/* => after decoded integer	*/
+#include	"dircmd.h"
+#include	"strutils.h"
 
 import(numfiles);
 
-flpage (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flpage)
 {
-DCLARG	*next_	= xdcl_->dcl_next;
-int	lines	= 0, st;
-char	command = _toupper (xdcl_->dcl_text[0]),
-	*c_;
+	DCLARG	*next_	= xdcl_->dcl_next;
+	int	lines	= 0, st;
+	char	command = _toupper (xdcl_->dcl_text[0]),
+		*c_;
 
 	/*
 	 * Interpret the argument, if given, as the number of lines by which

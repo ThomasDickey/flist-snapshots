@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.4 1995/02/19 18:22:17 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.5 1995/03/19 00:56:08 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: fledit.c,v 1.4 1995/02/19 18:22:17 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	15 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		01 Jul 1988- added hack to permit us to run LSEDIT
  *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		20 Aug 1985, do 'dirent_width' scan on return from directory
@@ -70,13 +70,13 @@ static char *Id = "$Id: fledit.c,v 1.4 1995/02/19 18:22:17 tom Exp $";
 #include	"bool.h"
 #include	"crt.h"
 
-#include	"dclarg.h"
 #include	"dds.h"
-#include	"dircmd2.h"
+#include	"dircmd.h"
 #include	"dirent.h"
+#include	"dds.h"
 
-char	*dirent_dft(),		/* => wildcard default-string	*/
-	*scanint();		/* => after decoded integer	*/
+extern	char	*dirent_dft();		/* => wildcard default-string	*/
+extern	char	*scanint();		/* => after decoded integer	*/
 
 import(filelist);	import(numfiles);	import(numdlets);
 import(D_mode);		import(datechek);	import(dateflag);
@@ -89,19 +89,16 @@ import(readlist);	import(readllen);
 
 extern	int	multi_quit;
 static	int	pack_exit = 0;
-
-fledit (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+
+tDIRCMD(fledit)
 {
-FILENT	ztmp,	*z = &ztmp;
-int	inx,
-	single	= dirchk (xcmd_, xdcl_, v_1, FALSE);
-DCLARG	*dcl_;			/* arg-list pointer for built-command */
-char	path	[MAX_PATH],
-	*spec,
-	longname[MAX_PATH];
+	FILENT	ztmp,	*z = &ztmp;
+	int	inx,
+		single	= dirchk (xcmd_, xdcl_, v_1, FALSE);
+	DCLARG	*dcl_;		/* arg-list pointer for built-command */
+	char	path	[MAX_PATH],
+		*spec,
+		longname[MAX_PATH];
 
 	/*
 	 * Parse the name from 'xdcl_', test for use of wildcard.
@@ -155,7 +152,7 @@ char	path	[MAX_PATH],
 	else if (dirchk (xcmd_, xdcl_, v_M, TRUE))
 		fledit_dir (curfile_, xcmd_, xdcl_->dcl_next);
 }
-
+
 /*
  * Enter a new directory.  The 'xdcl_' linked-list begins with the first
  * actual argument, rather than the command name.
@@ -186,8 +183,8 @@ char	SAVEconv  size_conv_list,
 	/* If options given are illegal, don't go anywhere	*/
 	if (flist_opts (1, &xcmd_, xdcl_, TRUE))	return;
 
-	cpyblk (SAVEpcol, pcolumns, sizeof(pcolumns));
-	cpyblk (SAVEdflg, dateflag, sizeof(dateflag));
+	memcpy (SAVEpcol, pcolumns, sizeof(pcolumns));
+	memcpy (SAVEdflg, dateflag, sizeof(dateflag));
 	strcpy (SAVEconv, conv_list);
 
 	if (SAVEmark >= 0)	fixed_ = filelist[SAVEmark];
@@ -204,8 +201,8 @@ char	SAVEconv  size_conv_list,
 	D_mode	 = SAVEdmod;
 	D_opt	 = SAVEdopt;
 	datechek = SAVEdchk;
-	cpyblk (pcolumns, SAVEpcol, sizeof(pcolumns));
-	cpyblk (dateflag, SAVEdflg, sizeof(dateflag));
+	memcpy (pcolumns, SAVEpcol, sizeof(pcolumns));
+	memcpy (dateflag, SAVEdflg, sizeof(dateflag));
 	strcpy (conv_list, SAVEconv);
 
 	/*
@@ -250,7 +247,7 @@ char	*path_;
 	flist_info ("Read: %s", path_);
 	sleep (1);
 }
-
+
 /*
  * EDIT/VIEW a file.  Normally the user will use the default entry, which
  * edits the current file-entry.  In this case, if the file is updated,
@@ -400,7 +397,7 @@ int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 			dds_add (&zold);
 	}
 }
-
+
 /*
  * Title:	flquit.c
  *
@@ -408,13 +405,10 @@ int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
  *		it must be the number of levels to quit from (default: 1).
  *		An asterisk quits all levels (actually 999).
  */
-flquit (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;		/* (null string pointer)	*/
-DCLARG	*xdcl_;
+tDIRCMD(flquit)
 {
-int	num;
-register char	*c_, *d_;
+	int	num;
+	register char	*c_, *d_;
 
 	if (xdcl_ = xdcl_->dcl_next)
 	{

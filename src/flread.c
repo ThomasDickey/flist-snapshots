@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flread.c,v 1.3 1985/09/10 00:41:56 tom Exp $";
+static char *Id = "$Id: flread.c,v 1.4 1995/03/19 00:06:17 tom Exp $";
 #endif
 
 /*
  * Title:	flread.c
  * Author:	Thomas E. Dickey
  * Created:	24 Jul 1984
- * Last update:	03 Sep 1985, pass-thru 'UPDATE' flag to 'dirent_all'
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		03 Sep 1985, pass-thru 'UPDATE' flag to 'dirent_all'
  *		05 Feb 1985, had coded for-loop wrong.
  *		01 Feb 1985, added another "working..." call (dds_while).
  *		31 Jan 1985, use 'dirread' module to maintain read-list.
@@ -34,20 +36,17 @@ static char *Id = "$Id: flread.c,v 1.3 1985/09/10 00:41:56 tom Exp $";
 
 #include	"flist.h"
 
-#include	"dclarg.h"
+#include	"dircmd.h"
 #include	"dds.h"
 #include	"dirent.h"
 
-flread (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flread)
 {
-FILENT	ztmp,	*z = &ztmp;
-register
-int	j,
-	update	= xdcl_->dcl_text[0] == 'U';
-char	filespec[MAX_PATH];
+	FILENT	ztmp,	*z = &ztmp;
+	register
+	int	j,
+		update	= xdcl_->dcl_text[0] == 'U';
+	char	filespec[MAX_PATH];
 
 	if (xdcl_ = xdcl_->dcl_next)
 	{
