@@ -1,3 +1,11 @@
+1985-09-30  Thomas E. Dickey
+
+	* src/whoami.c: RCS_BASE
+
+1985-09-30  Thomas E. Dickey
+
+	* src/whoami.c: rcs-identifiers
+
 1985-09-24  Thomas E. Dickey
 
 	* src/debrief.c: RCS_BASE
