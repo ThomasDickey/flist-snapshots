@@ -1,3 +1,11 @@
+1995-11-15  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dds.c: added 'Size', 'Allocated' column types
+
+	* src/dirent.h: lengthend 'ccolumns[]' to 9, for 'fsize', 'fallc'
+
+	* src/acplook.c: oops: SWAP wasn't shifting the high-16 back up!
+
 1995-10-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/snapshot.c:

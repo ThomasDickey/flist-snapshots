@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.16 1995/10/26 23:48:56 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.17 1995/11/15 20:45:48 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dds.c,v 1.16 1995/10/26 23:48:56 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
+ *		15 Nov 1995, size/allocated column-widths
  *		26 Oct 1995, mods to make 'dds_while()' animated
  *		18 Mar 1995, prototyped
  *		18 Feb 1995, renamed 'beep' to avoid conflict with curses.
@@ -741,7 +742,7 @@ void	dds_add2 (FILENT *z, int curfile)
 void	dds_width (FILENT *z, int curfile)
 {
 	type_ccolumns	Ccolumns size_ccolumns;
-	static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfxu";
+	static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfxusa";
 	register j;
 
 	memcpy (Ccolumns, ccolumns, sizeof(ccolumns));
