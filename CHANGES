@@ -1,3 +1,23 @@
+1985-07-27  Thomas E. Dickey
+
+	* src/flscan.c: RCS_BASE
+
+1985-07-27  Thomas E. Dickey
+
+	* src/flscan.c: make program names consistent:FLIST,BROWSE
+
+	* src/flscan.c: rcs-identifiers
+
+1985-07-22  Thomas E. Dickey
+
+	* src/dirdata.c: RCS_BASE
+
+1985-07-22  Thomas E. Dickey
+
+	* src/dirdata.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirdata.c: rcs-identifiers
+
 1985-07-14  Thomas E. Dickey
 
 	* src/flist.cld: RCS_BASE
