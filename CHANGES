@@ -1,3 +1,37 @@
+1985-07-03  Thomas E. Dickey
+
+	* src/dclopt.c: RCS_BASE
+
+1985-07-03  Thomas E. Dickey
+
+	* src/dclopt.c: rcs-identifiers
+
+1985-07-03  Thomas E. Dickey
+
+	* src/flpage.c: RCS_BASE
+
+1985-07-03  Thomas E. Dickey
+
+	* src/flpage.c: rcs-identifiers
+
+1985-07-03  Thomas E. Dickey
+
+	* src/flmore.c: RCS_BASE
+
+1985-07-03  Thomas E. Dickey
+
+	* src/flmore.c: make program names consistent:FLIST,BROWSE
+
+	* src/flmore.c: rcs-identifiers
+
+1985-06-26  Thomas E. Dickey
+
+	* src/sybintim.c: RCS_BASE
+
+1985-06-26  Thomas E. Dickey
+
+	* src/sybintim.c: rcs-identifiers
+
 1985-06-25  Thomas E. Dickey
 
 	* src/syhour.c: RCS_BASE
