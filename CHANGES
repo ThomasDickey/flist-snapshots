@@ -1,3 +1,13 @@
+1984-09-17  Thomas E. Dickey
+
+	* src/fgetr.c: RCS_BASE
+
+1984-09-17  Thomas E. Dickey
+
+	* src/fgetr.c: make program names consistent:FLIST,BROWSE
+
+	* src/fgetr.c: rcs-identifiers
+
 1984-09-10  Thomas E. Dickey
 
 	* src/alarm.c: RCS_BASE
