@@ -11,6 +11,7 @@
  */
 
 #ifndef	main_incl
+void
 error (status, s_)
 char	*s_;
 {
