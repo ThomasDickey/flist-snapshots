@@ -1,3 +1,29 @@
+1993-04-22  dickey@software.org
+
+	* src/descrip.mms: RCS_BASE
+
+1993-04-22  Thomas E. Dickey  <dickey@software.org>
+
+	* src/descrip.mms: rcs-identifiers
+
+1993-04-22  dickey@software.org
+
+	* src/version.c: RCS_BASE
+
+1993-04-22  Thomas E. Dickey  <dickey@software.org>
+
+	* src/version.c: make program names consistent:FLIST,BROWSE
+
+	* src/version.c: rcs-identifiers
+
+1993-04-22  dickey@software.org
+
+	* setup.com: RCS_BASE
+
+1993-04-22  Thomas E. Dickey  <dickey@software.org>
+
+	* setup.com: rcs identifiers
+
 1989-12-05  dickey@software.org
 
 	* src/notes: RCS_BASE
