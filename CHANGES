@@ -1,3 +1,9 @@
+1996-09-13  Thomas E. Dickey  <dickey@clark.net>
+
+	* RELEASE: RCS_BASE
+
+	* src/dirpath.c: fix a bug in wildcards mixed with rooted logicals
+
 1995-11-16  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dirent.c: auto-adjust widths of 'size' and 'allocated' columns

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.9 1995/10/23 00:50:49 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.10 1996/09/14 00:47:50 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: dirpath.c,v 1.9 1995/10/23 00:50:49 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
  * Last update:
+ *		13 Sep 1996, corrected parsing of "[000000...]" in
+ *			     'dirpath_sort()'
  *		22 Oct 1995, modified 'dirpath_sort()' to prune extra chars
  *			     from expansion of rooted logicals (e.g., ".]["),
  *			     and extra leaf for top-level (e.g., "000000.").
@@ -158,11 +160,14 @@ PATHNT	*dirpath_sort (
 
 	while (strclip(text, ".]["))
 		/*EMPTY*/;
-	if ((s = strstr(text, "[000000.")) != 0)
+	if ((s = strstr(text, "[000000...")) != 0)
+		(void)strclip(s+1, "000000");
+	else if ((s = strstr(text, "[000000.")) != 0)
 		(void)strclip(s+1, "000000.");
 
 	len = strlen(text);
-	strcpy  (trim, text);		strcpy  (&trim[len-1], ".");
+	strcpy (trim, text);
+	strcpy (&trim[len-1], ".");
 
 	for (newP = pathlist, oldP = 0;
 		newP;
