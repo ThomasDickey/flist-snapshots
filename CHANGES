@@ -1,3 +1,11 @@
+1985-11-12  Thomas E. Dickey
+
+	* src/flist.bug: RCS_BASE
+
+1985-11-12  Thomas E. Dickey
+
+	* src/flist.bug: make program names consistent:FLIST,BROWSE
+
 1985-10-07  Thomas E. Dickey
 
 	* src/browse.bug: RCS_BASE
