@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.2 1993/04/23 19:39:30 tom Exp $
+$! $Id: build.com,v 1.3 1995/10/26 22:41:25 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE documentation
 $!
 $! Tested with:
@@ -20,26 +20,25 @@ $ endif
 $
 $ if "''p1'" .eqs. "CLEAN"
 $ then
-$	if f$search("*.brn") .nes. "" then delete *.brn;*
-$	if f$search("*.rnt") .nes. "" then delete *.rnt;*
-$	if f$search("*.rnx") .nes. "" then delete *.rnx;*
+$	call remove *.brn;*
+$	call remove *.rnt;*
+$	call remove *.rnx;*
 $	write sys$output "** made CLEAN"
 $ endif
 $
 $ if "''p1'" .eqs. "CLOBBER"
 $ then
 $	@ 'f$environment("procedure") CLEAN
-$	if f$search("*.hlp") .nes. "" then delete *.hlp;*
-$	if f$search("*.mem") .nes. "" then delete *.mem;*
+$	call remove *.hlp;*
+$	call remove *.mem;*
 $	write sys$output "** made CLOBBER"
 $ endif
 $
 $ VERIFY = F$VERIFY(VERIFY)
 $ exit
 $
-$
 $ document: subroutine
-$	if f$search("*.brn;*") .nes. "" then delete *.brn;*
+$	call remove *.brn;*
 $	opts = "/variant=""paged""
 $	part = "''p1'-parts"
 $	if f$search("''p2'.mem") .eqs. ""
@@ -50,9 +49,9 @@ $		runoff/contents/output='p1 'part
 $		runoff/index/output='p1 'part
 $		runoff'opts/output='p2.mem 'p1
 $		purge 'p2.mem
-$		if f$search("*.brn;*") .nes. "" then delete *.brn;*
-$		if f$search("''p1'.rnt;*") .nes. "" then delete 'p1.rnt;*
-$		if f$search("''p1'.rnx;*") .nes. "" then delete 'p1.rnx;*
+$		call remove *.brn;*
+$		call remove 'p1.rnt;*
+$		call remove 'p1.rnx;*
 $	endif
 $ endsubroutine
 $
@@ -60,5 +59,13 @@ $ helpfile: subroutine
 $	if f$search("''p2'.hlp") .eqs. ""
 $	then
 $		runoff/variant="lib"/output='p2.hlp 'p1
+$	endif
+$ endsubroutine
+$
+$ remove: subroutine
+$	if f$search("''p1'") .nes. ""
+$	then
+$		set file/protection=(owner:rwed) 'p1
+$		delete 'p1
 $	endif
 $ endsubroutine
