@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: argvdcl.c,v 1.4 1995/03/19 01:01:50 tom Exp $";
+static char *Id = "$Id: argvdcl.c,v 1.5 1995/05/29 00:26:38 tom Exp $";
 #endif
 
 /*
@@ -31,6 +31,8 @@ static char *Id = "$Id: argvdcl.c,v 1.4 1995/03/19 01:01:50 tom Exp $";
 
 #include	"bool.h"
 #include	"dclarg.h"
+
+#include	"strutils.h"
 
 DCLARG * argvdcl (int argc, char *argv[], char *dft_, int cmd_arg)
 {

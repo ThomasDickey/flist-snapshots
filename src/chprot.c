@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chprot.c,v 1.5 1995/03/19 22:35:18 tom Exp $";
+static char *Id = "$Id: chprot.c,v 1.6 1995/05/29 00:51:08 tom Exp $";
 #endif
 
 /*
@@ -27,13 +27,16 @@ static char *Id = "$Id: chprot.c,v 1.5 1995/03/19 22:35:18 tom Exp $";
  *		first error.)
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<stsdef.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"acp.h"
+#include	"rmsinit.h"
 
 #include	"chprot.h"
 
@@ -64,7 +67,7 @@ chprot (
 	struct	dsc$descriptor	fibDSC;
 
 	rmsinit_fab (&fab, &nam, nullC, filespec);
-	rmsinit_nam (&nam, &esa, &rsa);
+	rmsinit_nam (&nam, esa, rsa);
 
 	sys(sys$parse(&fab))			return (status);
 
@@ -81,14 +84,14 @@ chprot (
 		DSC_name.dsc$w_length = nam.nam$b_rsl;
 
 		fibDSC.dsc$w_length = sizeof(FIB);
-		fibDSC.dsc$a_pointer = &fib;
+		fibDSC.dsc$a_pointer = (char *)&fib;
 		memset (&fib, 0, sizeof(fib));
 		fib.fib$l_acctl = FIB$M_WRITECK;
 		memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
 		atr[0].atr$w_type = ATR$C_FPRO;
 		atr[0].atr$w_size = ATR$S_FPRO;
-		atr[0].atr$l_addr = &short_fpro;
+		atr[0].atr$l_addr = (char *)&short_fpro;
 		atr[1].atr$w_size = atr[1].atr$w_type = 0;
 
 		sys(sys$assign(&DSC_name, &chnl, 0, 0))	return (status);

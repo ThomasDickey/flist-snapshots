@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chrcmd.c,v 1.4 1995/03/19 01:37:14 tom Exp $";
+static char *Id = "$Id: chrcmd.c,v 1.5 1995/05/29 00:57:12 tom Exp $";
 #endif
 
 /*
@@ -17,15 +17,17 @@ static char *Id = "$Id: chrcmd.c,v 1.4 1995/03/19 01:37:14 tom Exp $";
  *		c) An FLIST sort-code
  */
 
+#include	<rms.h>
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"flist.h"
 #include	"getpad.h"
 
 #include	"dircmd.h"
 
-char	*chrcmd (command)
+char	*chrcmd (int command)
 {
 int	j;
 static	char	bfr[30];
