@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: crt.c,v 1.5 1995/05/28 00:47:35 tom Exp $";
+static char *Id = "$Id: crt.c,v 1.7 1995/06/04 18:58:12 tom Exp $";
 #endif
 
 /*
@@ -42,18 +42,39 @@ static char *Id = "$Id: crt.c,v 1.5 1995/05/28 00:47:35 tom Exp $";
  *	and BROWSE.
  */
 
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<ssdef.h>
+#include	<string.h>
 #include	<stsdef.h>
 #include	<ttdef.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"canopen.h"
 #include	"names.h"
+#include	"whoami.h"
+
+#include	"strutils.h"
+
+#include	"flist.h"	/* crt.h + error + warn */
+
+extern	void	help (char *lib, char *prg, int maxcol);
+/*
+ * Valid, but no-longer-documented screen package interface
+ */
+extern	void scr$set_scroll (int lo, int hi);
+extern	void scr$set_cursor (int y, int x);
+extern	void scr$erase_page (void);
+extern	void scr$erase_line (void);
+extern	void scr$down_scroll (void);
+extern	void scr$up_scroll (void);
+extern	void lib$put_screen(struct dsc$descriptor_s *p, ...);
+extern	void lib$screen_info (short *term_flags, short *term_type, short *width, short *lpp);
 
 /*
  * VAX/VMS terminal-independent routines know about the ANSI "Set Graphics
@@ -392,7 +413,10 @@ int	crt__lpp0 (int length)
  * This entry point is needed because the Bitgraph init (see BROWSE) cancels
  * the absorption.
  */
-crt__NL0 (flg)	{	NLflag = flg;	}
+void	crt__NL0 (int flg)
+{
+	NLflag = flg;
+}
 
 /*
  * ANSI x3.64 defines erase functions:

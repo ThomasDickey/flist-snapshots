@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrename.c,v 1.3 1995/02/19 18:14:56 tom Exp $";
+static char *Id = "$Id: syrename.c,v 1.4 1995/06/04 01:27:15 tom Exp $";
 #endif
 
 /*
@@ -26,6 +26,7 @@ static char *Id = "$Id: syrename.c,v 1.3 1995/02/19 18:14:56 tom Exp $";
  *			RENAME X X;+1	yields an error
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<stsdef.h>
 

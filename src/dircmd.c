@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.9 1995/05/28 19:22:21 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.11 1995/06/04 19:46:54 tom Exp $";
 #endif
 
 /*
@@ -93,15 +93,22 @@ static char *Id = "$Id: dircmd.c,v 1.9 1995/05/28 19:22:21 tom Exp $";
 
 #define	DEBUG
 #include	<stdlib.h>
+#include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
+
+#include	<rms.h>
 
 #include	"cmdstk.h"
 #include	"flist.h"
 #include	"getpad.h"
 
+#include	"acpcopy.h"
 #include	"dclarg.h"
 #include	"dds.h"
+#include	"freelist.h"
 #include	"dircmd.h"
+#include	"edtcmd.h"
 
 #include	"strutils.h"
 
@@ -145,18 +152,17 @@ import(filelist);
  */
 int	multi_quit;			/* Nonzero if multi-quit	*/
 
-static
-int	dir_flg	= TRUE,			/* TRUE if "forward"		*/
-	selected;			/* index to "selected" file	*/
-static
-char	read_dft[]	= "*.*;*";
+static	int	dir_flg	= TRUE;		/* TRUE if "forward"		*/
+static	int	selected;		/* index to "selected" file	*/
+
+static	char	read_dft[]	= "*.*;*";
 
 typedef	struct	{
 	unsigned char flags;		/* nonzero iff we must edit it	*/
 	char	*string;
 	} KEYDEFS;
-static
-KEYDEFS	*keydefs	= nullC;
+
+static	KEYDEFS	*keydefs	= 0;
 
 /*
  * Symbol table to relate "visible" commands to actual controls.
@@ -571,7 +577,7 @@ static
 void	dircmd_doit (int *curfile_, char *cmdbfr, int history)
 {
 DCLARG	*xdcl_	= nullS(DCLARG);	/* 'dirarg()' parsed list	*/
-int	(*DO_func)() = nullC;		/* external function to execute	*/
+tDIRCMD((*DO_func)) = 0;		/* external function to execute	*/
 int	cmdlen	= 0,			/* length of parsed keyword	*/
 	cmdnum	= EXTRN_CMD,		/* index to 'vcmd2', if used	*/
 	j,

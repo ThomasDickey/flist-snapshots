@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirread.c,v 1.4 1995/02/19 18:24:11 tom Exp $";
+static char *Id = "$Id: dirread.c,v 1.5 1995/06/04 23:11:58 tom Exp $";
 #endif
 
 /*
@@ -29,20 +29,23 @@ static char *Id = "$Id: dirread.c,v 1.4 1995/02/19 18:24:11 tom Exp $";
  *			to be replaced by the new pattern.
  */
 
+#include	<string.h>
+
 #include	<stdlib.h>
 #include	<rms.h>
 
 #include	"flist.h"
 #include	"dirent.h"
-
-char	*dirent_glue();	/* => concatenated argument	*/
+#include	"dirfind.h"
+#include	"dirread.h"
 
 import(readlist);	import(readllen);
 
 /* <init>:
  * Initialize this module for a new directory-level:
  */
-dirread_init ()
+void
+dirread_init (void)
 {
 	readllen = 0;
 }
@@ -50,13 +53,12 @@ dirread_init ()
 /* <put>:
  * Put a new entry into the read-list:
  */
-dirread_put (fab_)
-struct	FAB	*fab_;
+void
+dirread_put (struct FAB *fab_)
 {
-struct	NAM	*nam_	= fab_->fab$l_nam;	/* patch: should pass NAM */
-FILENT	fz;
-register
-int	j, k;
+	struct	NAM	*nam_	= fab_->fab$l_nam;	/* patch: should pass NAM */
+	FILENT	fz;
+	register int	j, k;
 
 	dirent_chop (&fz, nullC, nam_);
 
@@ -97,9 +99,7 @@ int	j, k;
  * Return a string pointer to the inx'th item in the read-list.  If no
  * more items remain, return null.
  */
-char	*dirread_get (filespec, inx)
-char	*filespec;
-int	inx;
+char	*dirread_get (char *filespec, int inx)
 {
 	return ((inx < readllen) ? dirent_glue (filespec, &readlist[inx]) : nullC);
 }
@@ -107,23 +107,23 @@ int	inx;
 /* <free>:
  * Release the structure on exit to a higher directory level:
  */
-dirread_free ()
+void	dirread_free (void)
 {
 	cfree (readlist);
 }
 
 #ifdef	DEBUG
-dirread_show ()
+void	dirread_show (void)
 {
-int	j;
-char	filespec[MAX_PATH];
+	int	j;
+	char	filespec[MAX_PATH];
 
 	trace ("READ-LIST:\n");
 	for (j = 0; j < readllen; j++)
 		trace ("%d: '%s'\n", j, dirent_glue(filespec, &readlist[j]));
 }
 #endif
-
+
 /* <path>:
  * Given a (potential) index into the read-list, return a pointer to the
  * pathname portion.  If the index lies beyond the end of the list, return
@@ -132,12 +132,11 @@ char	filespec[MAX_PATH];
  *
  * To permit the skip, we pass the address of the index.
  */
-char	*dirread_path (inx_)
-int	*inx_;
+char	*dirread_path (int *inx_)
 {
-FILENT	*z;
-int	j;
-char	*c_;
+	FILENT	*z;
+	int	j;
+	char	*c_;
 
 	if (*inx_ >= readllen || *inx_ < 0)
 		return (nullC);

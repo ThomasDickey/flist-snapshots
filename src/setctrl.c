@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: setctrl.c,v 1.3 1984/12/19 00:33:32 tom Exp $";
+static char *Id = "$Id: setctrl.c,v 1.4 1995/06/04 01:19:32 tom Exp $";
 #endif
 
 /*
@@ -12,11 +12,13 @@ static char *Id = "$Id: setctrl.c,v 1.3 1984/12/19 00:33:32 tom Exp $";
  *		by FLIST.
  */
 
+#include	<lib$routines.h>
+
 #define	LIB$M_CLI_CTRLT	0x00100000
 #define	LIB$M_CLI_CTRLY	0x02000000
 
-setctrl (turnon)
-int	turnon;
+void
+setctrl (int turnon)
 {
 static
 int	newmask	= (LIB$M_CLI_CTRLT | LIB$M_CLI_CTRLY),

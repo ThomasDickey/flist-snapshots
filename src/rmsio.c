@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.4 1995/03/18 22:55:51 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 #endif
 
 /*
@@ -61,6 +61,7 @@ static char *Id = "$Id: rmsio.c,v 1.4 1995/03/18 22:55:51 tom Exp $";
  *		rsize:	(?)	 Returns size of largest record of input.
  */
 
+#include	<starlet.h>
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>

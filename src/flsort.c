@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.6 1995/03/19 02:04:08 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.7 1995/06/04 01:07:38 tom Exp $";
 #endif
 
 /*
@@ -75,6 +75,7 @@ static char *Id = "$Id: flsort.c,v 1.6 1995/03/19 02:04:08 tom Exp $";
  *		changes result directly from the sort.
  */
 
+#include	<lib$routines.h>
 #include	<stdlib.h>	/* declares 'qsort()' */
 #define	QSORT
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.12 1995/05/28 21:54:48 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.13 1995/06/04 01:24:22 tom Exp $";
 #endif
 
 /*
@@ -126,6 +126,8 @@ static char *Id = "$Id: dirent.c,v 1.12 1995/05/28 21:54:48 tom Exp $";
  *		dirent__read:	read a FILENT-block, pruning if duplicates
  */
 
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>

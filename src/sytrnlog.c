@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	*Id = "$Id: sytrnlog.c,v 1.4 1995/02/19 18:13:22 tom Exp $";
+static	char	*Id = "$Id: sytrnlog.c,v 1.5 1995/06/04 01:27:52 tom Exp $";
 #endif
 
 /*
@@ -18,6 +18,7 @@ static	char	*Id = "$Id: sytrnlog.c,v 1.4 1995/02/19 18:13:22 tom Exp $";
  *		tofind	- name to find
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<iodef.h>
 #include	<descrip.h>

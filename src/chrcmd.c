@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chrcmd.c,v 1.5 1995/05/29 00:57:12 tom Exp $";
+static char *Id = "$Id: chrcmd.c,v 1.6 1995/06/04 18:49:02 tom Exp $";
 #endif
 
 /*
@@ -63,11 +63,13 @@ static	struct	{
 	}
 	else if (is_PAD(command))
 		sprintf (bfr, "<Keypad %c>", toascii(command));
+#if UNUSED
 	else if (is_sCMD(command))
 	{
 		command = toascii(command);
 		sprintf (bfr, "/%c%c", islower(command) ? 's' : 'r', command);
 	}
+#endif
 	else
 		strcpy (bfr, "<??>");
 	return (bfr);

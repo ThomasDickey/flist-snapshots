@@ -1,10 +1,12 @@
-/* $Id: sysutils.h,v 1.1 1995/02/19 18:12:07 tom Exp $ */
+/* $Id: sysutils.h,v 1.2 1995/06/04 21:57:36 tom Exp $ */
 
 #ifndef SYSUTILS_H
 #define SYSUTILS_H
 
+#include "datent.h"
+
 /* syasctim.c */
-void	sysasctim (char *buf, long *q_, int ilen);
+void	sysasctim (char *buf, DATENT *q_, int ilen);
 
 /* sybintim.c */
 int	sysbintim (char *ci_, long *obfr);

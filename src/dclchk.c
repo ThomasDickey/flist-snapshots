@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclchk.c,v 1.3 1995/02/19 18:18:28 tom Exp $";
+static char *Id = "$Id: dclchk.c,v 1.4 1995/06/04 19:06:22 tom Exp $";
 #endif
 
 /*
@@ -22,6 +22,7 @@ static char *Id = "$Id: dclchk.c,v 1.3 1995/02/19 18:18:28 tom Exp $";
  * Returns:	TRUE if an error is found, else FALSE (0).
  */
 
+#include	<stdio.h>
 #include	<string.h>
 #include	<rms.h>
 
@@ -32,25 +33,24 @@ static char *Id = "$Id: dclchk.c,v 1.3 1995/02/19 18:18:28 tom Exp $";
 #include	"strutils.h"
 #include	"sysutils.h"
 
-dclchk (dcl_, co_)
-DCLARG	*dcl_;
-char	*co_;
+int
+dclchk (DCLARG *dcl_, char *co_)
 {
-unsigned stat;
-int	j;
-char	*form_	= 0,
-	gotmsg	[CRT_COLS],
-	bfr	[CRT_COLS];
+	unsigned status;
+	int	j;
+	char	*form_	= 0,
+		gotmsg	[CRT_COLS],
+		bfr	[CRT_COLS];
 
 	for (; dcl_; dcl_ = dcl_->dcl_next)
 	{
-		if (stat = dcl_->dcl_stat)
+		if (status = dcl_->dcl_stat)
 		{
-			if (stat == -1)
+			if (status == -1)
 				form_ = dcl_->dcl_text;
 			else
 			{
-				sysgetmsg (stat, gotmsg, sizeof(gotmsg));
+				sysgetmsg (status, gotmsg, sizeof(gotmsg));
 				strform2 (bfr, sizeof(bfr),
 					gotmsg, 0, dcl_->dcl_text, 0);
 				form_	= bfr;

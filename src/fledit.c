@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.6 1995/05/28 20:01:55 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.8 1995/06/04 16:14:20 tom Exp $";
 #endif
 
 /*
@@ -70,13 +70,13 @@ static char *Id = "$Id: fledit.c,v 1.6 1995/05/28 20:01:55 tom Exp $";
 #include	"bool.h"
 #include	"crt.h"
 
+#include	"canopen.h"
 #include	"dds.h"
 #include	"dircmd.h"
 #include	"dirent.h"
 #include	"dds.h"
 
-extern	char	*dirent_dft();		/* => wildcard default-string	*/
-extern	char	*scanint();		/* => after decoded integer	*/
+#include	"strutils.h"
 
 import(filelist);	import(numfiles);	import(numdlets);
 import(D_mode);		import(datechek);	import(dateflag);
@@ -349,7 +349,7 @@ int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 		{
 			char	edtini[MAX_PATH];
 			sprintf (edtini, "%s%s", getenv("HOME"), "EDTINI.EDT");
-			if (!canopen (edtini, "r"))
+			if (!canopen (edtini))
 				sprintf (strnull(cmd), "/COMMAND=%s", edtini);
 		}
 	}

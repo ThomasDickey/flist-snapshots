@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: canopen.c,v 1.4 1995/05/29 00:32:24 tom Exp $";
+static char *Id = "$Id: canopen.c,v 1.5 1995/06/04 01:42:34 tom Exp $";
 #endif
 
 /*
@@ -25,6 +25,7 @@ static char *Id = "$Id: canopen.c,v 1.4 1995/05/29 00:32:24 tom Exp $";
 #include	<stsdef.h>
 
 #include	"rmsinit.h"
+#include	"canopen.h"
 
 #define	check(f)	status = (f);\
 			if (!$VMS_STATUS_SUCCESS(status)) goto failed;

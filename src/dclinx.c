@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclinx.c,v 1.3 1995/03/19 01:05:17 tom Exp $";
+static char *Id = "$Id: dclinx.c,v 1.4 1995/06/04 19:12:26 tom Exp $";
 #endif
 
 /*
@@ -39,7 +39,7 @@ DCLARG	*dclinx2 (DCLARG *dcl_, int mfld, int sfld)
 				return (dcl_);
 		}
 	}
-	return (nullC);
+	return (0);
 }
 
 /*

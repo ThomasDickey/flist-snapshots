@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: debrief.c,v 1.3 1995/02/19 18:20:43 tom Exp $";
+static char *Id = "$Id: debrief.c,v 1.4 1995/06/04 19:27:42 tom Exp $";
 #endif
 
 /*
@@ -34,12 +34,16 @@ static char *Id = "$Id: debrief.c,v 1.3 1995/02/19 18:20:43 tom Exp $";
 #include	<string.h>
 #include	<ctype.h>
 
+#include	"strutils.h"
+
 typedef	struct	{
 	char	*match;
 	int	brief;
 	}	VEC;
 
-#define	LOOP	for (v_=vec, k=0; k < vlast; k++, v_ = (char *)v_ + vsize)
+#define	LOOP	for (v_ = vec, k = 0;\
+			 k < vlast;\
+			 k++, v_ = (VEC *)((char *)v_ + vsize))
 #define	RANGE	4
 
 int
@@ -94,8 +98,10 @@ debrief (
 	    if (msg)
 	    {
 		range = 0;
-		for (j = 0; j < RANGE; j++)
-			fuse[j] = flen[j] = 0;
+		for (j = 0; j < RANGE; j++) {
+			fuse[j] = 0;
+			flen[j] = 0;
+		}
 		LOOP
 		{
 #define	CMP(j)	strcmp(v_->match, fuse[j])

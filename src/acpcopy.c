@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acpcopy.c,v 1.5 1995/03/19 22:32:47 tom Exp $";
+static char *Id = "$Id: acpcopy.c,v 1.6 1995/06/04 00:54:15 tom Exp $";
 #endif
 
 /*
@@ -20,15 +20,18 @@ static char *Id = "$Id: acpcopy.c,v 1.5 1995/03/19 22:32:47 tom Exp $";
  *		oname	Full name of output file
  */
 
-#include	"rmsio.h"
+#include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<stsdef.h>
+#include	<string.h>
 
 #include	"bool.h"
-
 #include	"acp.h"
+#include	"rmsio.h"
+#include	"rmsinit.h"
+#include	"acpcopy.h"
 
 /*
  * The FIB-data is static, because it is copied (by two calls on 'pipefunc2')
@@ -61,11 +64,17 @@ int	acpcopy2 (int code, char *filespec)
 	short	chnl;
 	int	j	= 0;
 	int	func;
-	$DESCRIPTOR(DSC_name,rsa);
+	struct	dsc$descriptor	DSC_name;
 	struct	dsc$descriptor	fibDSC;
 
+	/* macro $DESCRIPTOR(DSC_name, rsa) */
+	DSC_name.dsc$w_length  = sizeof(rsa) - 1;
+	DSC_name.dsc$b_dtype   = DSC$K_DTYPE_T;
+	DSC_name.dsc$b_class   = DSC$K_CLASS_S;
+	DSC_name.dsc$a_pointer = rsa;
+
 	rmsinit_fab (&fab, &nam, nullC, filespec);
-	rmsinit_nam (&nam, &esa, &rsa);
+	rmsinit_nam (&nam, esa, rsa);
 
 	sys(sys$parse(&fab))				return(FALSE);
 	sys(sys$search(&fab))				return(FALSE);
@@ -74,14 +83,14 @@ int	acpcopy2 (int code, char *filespec)
 	sys(sys$assign (&DSC_name, &chnl, 0, 0))	return(FALSE);
 
 	fibDSC.dsc$w_length = sizeof(FIB);
-	fibDSC.dsc$a_pointer = &fib;
+	fibDSC.dsc$a_pointer = (char *)&fib;
 	memset (&fib, 0, sizeof(fib));
 	memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
 #define	SET(type,size,addr) {\
 	atr[j].atr$w_type = type;\
 	atr[j].atr$w_size = size;\
-	atr[j++].atr$l_addr = addr;}
+	atr[j++].atr$l_addr = (char *)addr;}
 
 	if (!code)
 	{

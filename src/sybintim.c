@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sybintim.c,v 1.4 1995/02/19 17:46:33 tom Exp $";
+static char *Id = "$Id: sybintim.c,v 1.5 1995/06/04 02:07:02 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: sybintim.c,v 1.4 1995/02/19 17:46:33 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		03 Jun 1995, prototypes
  *		26 Jun 1985, make this recognize the DCL-style VMS date format
  *			     (keywords, fill-in-gaps).
  *		13 Jul 1984
@@ -26,9 +26,12 @@ static char *Id = "$Id: sybintim.c,v 1.4 1995/02/19 17:46:33 tom Exp $";
  *		and second are filled in, rather than using zero.
  */
 
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<ctype.h>
 #include	<ssdef.h>
 #include	<descrip.h>
+#include	<string.h>
 
 #include	"strutils.h"
 #include	"sysutils.h"
@@ -43,7 +46,8 @@ static	char	zeros[] = " 00:00:00.00";
 int
 sysbintim (char *ci_, long *obfr)
 {
-	char	bigbfr	[MAXBFR], midbfr[MAXBFR];
+	char	bigbfr[MAXBFR];
+	char	midbfr[MAXBFR];
 	$DESCRIPTOR(DSCx,bigbfr);
 	$DESCRIPTOR(midnite,midbfr);
 	long	base[2];

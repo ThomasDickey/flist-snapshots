@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.9 1995/05/28 20:11:56 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.11 1995/06/04 19:21:54 tom Exp $";
 #endif
 
 /*
@@ -64,15 +64,22 @@ static char *Id = "$Id: dds.c,v 1.9 1995/05/28 20:11:56 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
+
+#include	<lib$routines.h>
+#include	<rms.h>
 #include	<ssdef.h>
 #include	<stsdef.h>
 #include	<descrip.h>
 
 #include	"flist.h"
+#include	"canopen.h"
 #include	"dds.h"
 #include	"dirent.h"
 #include	"dirdata.h"
 #include	"dircmd.h"
+#include	"getpad.h"
+
 #include	"strutils.h"
 
 import(filelist); import(numfiles); import(numdlets);
@@ -656,7 +663,7 @@ int	dds_add (	/* returns resulting index into 'filelist[]'	*/
 	if (curfile < 0)
 		curfile = dirent_add() - 1;	/* create a new entry	*/
 
-	filelist[curfile] = nullC;
+	filelist[curfile] = 0;
 	dirdata_add (z, &filelist[curfile]);
 
 	if (curfile >= top_line && curfile <= (top_line + lpp2))

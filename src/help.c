@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: help.c,v 1.3 1985/03/21 01:54:08 tom Exp $";
+static char *Id = "$Id: help.c,v 1.4 1995/06/04 02:00:26 tom Exp $";
 #endif
 
 /*
  * Title:	help.c
  * Author:	Thomas E. Dickey
  * Created:	20 Mar 1985
- * Last update:	20 Mar 1985
+ * Last update:
+ *		03 Jun 1995, prototyped
  *
  * Function:	This code is an interface between a C-program and the
  *		help-library manager.  The librarian-routine acts almost
@@ -29,12 +30,15 @@ static char *Id = "$Id: help.c,v 1.3 1985/03/21 01:54:08 tom Exp $";
  *			   format the index listing (default: 0 => 80).
  */
 
+#include	<lib$routines.h>
 #include	<descrip.h>
 
 #include	"lbrdef.h"
 
+#if UNUSED
 int	lib$get_input(),
 	lib$put_output();
+#endif
 
 #define	DSC(f)	static	$DESCRIPTOR(f," ")
 #define	LBR(f)	status = f
@@ -42,16 +46,16 @@ int	lib$get_input(),
 			{f.dsc$a_pointer = arg; f.dsc$w_length = strlen(arg);}
 #define	USE(d,s)	((s != 0) ? &d : 0)
 
-help (lib, prg, maxcol)
-char	*lib, *prg;
+void
+help (char *lib, char *prg, int maxcol)
 {
-long	status,
-	help_index,
-	func_read = LBR$C_READ,
-	type_help = LBR$C_TYP_HLP,
-	width = maxcol;	/* default: 80 columns */
-DSC(DSC_libname);
-DSC(DSC_program);
+	long	status,
+		help_index,
+		func_read = LBR$C_READ,
+		type_help = LBR$C_TYP_HLP,
+		width = maxcol;	/* default: 80 columns */
+	DSC(DSC_libname);
+	DSC(DSC_program);
 
 	if (!lib)	lib = "SYS$HELP:HELPLIB.HLB";
 	describe(DSC_libname,lib);

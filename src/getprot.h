@@ -1,4 +1,4 @@
-/* $Id: getprot.h,v 1.3 1995/03/18 23:02:06 tom Exp $
+/* $Id: getprot.h,v 1.4 1995/06/04 21:47:28 tom Exp $
  * 
  * public interface of 'getprot.c', 'setprot.c'
  */
@@ -14,5 +14,6 @@ typedef	struct	{
 
 extern	int	getprot (GETPROT *ret_, char *name_);
 extern	int	setprot (char *filespec, char *prot_code);
+extern	int	cmpprot (GETPROT *pr_, char *mode);
 
 #endif	/* GETPROT_H */

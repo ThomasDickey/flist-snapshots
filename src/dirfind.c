@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirfind.c,v 1.5 1995/05/28 18:45:05 tom Exp $";
+static char *Id = "$Id: dirfind.c,v 1.6 1995/06/04 22:54:00 tom Exp $";
 #endif
 
 /*
@@ -86,6 +86,8 @@ static char *Id = "$Id: dirfind.c,v 1.5 1995/05/28 18:45:05 tom Exp $";
  *		PURGE, FIND.
  */
 
+#include	<string.h>
+
 #include	<rms.h>
 #include	<stsdef.h>
 
@@ -93,17 +95,22 @@ static char *Id = "$Id: dirfind.c,v 1.5 1995/05/28 18:45:05 tom Exp $";
 #include	"dirent.h"
 #include	"dclarg.h"
 #include	"dds.h"
+#include	"dircmd.h"
 
-extern	char	*dirent_glue();	/* => concatenated string	*/
+#include	"dirfind.h"
+
+#include	"scanver.h"
+#include	"strutils.h"
 
 import(filelist); import(numfiles);
 
-int	dirfind (curfile, forward, find_spec, each, must_find, unfind)
-int	curfile, forward;
-DCLARG	*find_spec;
-int	(*each)();
-int	must_find;
-int	unfind;
+int	dirfind (
+	int	curfile,
+	int	forward,
+	DCLARG	*find_spec,
+	int	(*each)(),
+	int	must_find,
+	int	unfind)
 {
 #define	FIND_FNB	find_spec->dcl$l_fnb
 #define	FIND_TEXT	find_spec->dcl_text
@@ -183,15 +190,15 @@ char	Fpath[MAX_PATH],	Fname[MAX_NAME+1],	Ftype[MAX_TYPE+1];
  * directory-search.  This routine is also used to partly-parse the search
  * target when "?FIND" is executed.
  */
-dirfind_chop (find_spec, fz_, pz_, Fpath, Fname, Ftype)
-DCLARG	*find_spec;
-FILENT	*fz_;
-PATHNT	*pz_;
-char	*Fpath, *Fname, *Ftype;
+void	dirfind_chop (
+	DCLARG	*find_spec,
+	FILENT	*fz_,
+	PATHNT	*pz_,
+	char	*Fpath, char *Fname, char *Ftype)
 {
-int	len	= 0,
-	j,
-	version;		/* value if version null or "*"		*/
+	int	len	= 0,
+		j,
+		version;	/* value if version null or "*"		*/
 
 #define	CPY(to)	if (len > 0) strncpy(to, &FIND_TEXT[j], len);\
 		to[len] = EOS; j += len
@@ -229,7 +236,7 @@ int	len	= 0,
 /*
  * Make an index to the next item to test:
  */
-dirfind_nxt (j, forward)
+int	dirfind_nxt (int j, int forward)
 {
 	if (forward)
 	{
@@ -247,8 +254,7 @@ dirfind_nxt (j, forward)
  * not explicit.  Inexplicit pathnames within FLIST are treated as a special
  * type of wildcard.
  */
-dirfind_notexp (find_spec)
-DCLARG	*find_spec;
+int	dirfind_notexp (DCLARG *find_spec)
 {
 	return (!(FIND_FNB & (NAM$M_EXP_DIR + NAM$M_EXP_DEV)));
 }
@@ -256,13 +262,14 @@ DCLARG	*find_spec;
 /*
  * Test the entry 'z' against the wildcard and exact matches in 'zref':
  */
-dirfind_tst (z, zref, lookup)
-FILENT	*z, *zref;
-int	lookup;		/* TRUE if we permit lookup for relative versions */
+int	dirfind_tst (
+	FILENT	*z,
+	FILENT	*zref,
+	int	lookup)	/* TRUE if we permit lookup for relative versions */
 {
-FILENT	ztmp;
-char	relnam[NAM$C_MAXRSS],
-	absnam[NAM$C_MAXRSS];
+	FILENT	ztmp;
+	char	relnam[NAM$C_MAXRSS];
+	char	absnam[NAM$C_MAXRSS];
 
 	if (strwcmp(zPATHOF(zref), zPATHOF(z)))	return (FALSE);
 	if (strwcmp(zref->fname,   z->fname))	return (FALSE);

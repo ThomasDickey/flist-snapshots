@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getprot.c,v 1.4 1995/03/19 22:36:48 tom Exp $";
+static char *Id = "$Id: getprot.c,v 1.5 1995/06/04 01:25:33 tom Exp $";
 #endif
 
 /*
@@ -32,6 +32,7 @@ static char *Id = "$Id: getprot.c,v 1.4 1995/03/19 22:36:48 tom Exp $";
  * Returns:	If nonzero, the RMS-status indicating the first failure.
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<iodef.h>

@@ -37,6 +37,7 @@ typedef	unsigned int WORD;
 
 extern	void	crt__ED (int y, int x);
 extern	void	crt__EL (int y, int x);
+extern	void	crt__NL0 (int flg);
 extern	int	crt_ansi (void);
 extern	void	crt_clear (void);
 extern	int	crt_end (void);
@@ -61,5 +62,8 @@ extern	int	crt_vt52 (void);
 extern	int	crt_width (void);
 extern	int	crt_x (void);
 extern	int	crt_y (void);
+extern	void	putraw (char *s_);
+extern	void	sound_alarm (void);
+extern	int	termsize (int reset, int *width_, int *length_);
 
 #endif /* CRT_H */

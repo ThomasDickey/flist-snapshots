@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarea.c,v 1.3 1995/02/19 18:25:06 tom Exp $";
+static char *Id = "$Id: dclarea.c,v 1.4 1995/06/04 01:47:57 tom Exp $";
 #endif
 
 /*
@@ -24,19 +24,15 @@ static char *Id = "$Id: dclarea.c,v 1.3 1995/02/19 18:25:06 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<string.h>
 
 #include	"dclopt.h"
 
-char	*dclarea (name, size, opt, size_opt)
-char	*name;
-DCLOPT	opt[];
-int	size_opt;
+char	*dclarea (char *name, int size, DCLOPT *opt, int size_opt)
 {
-register
-int	j,
-	maxopt	= size_opt / sizeof(DCLOPT);
-register
-char	*area;
+	register int	j;
+	register int	maxopt	= size_opt / sizeof(DCLOPT);
+	register char	*area;
 
 	area = calloc(1,size);
 	for (j = 0; j < maxopt; j++)

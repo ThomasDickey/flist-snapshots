@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: scanver.c,v 1.2 1985/06/23 23:21:06 tom Exp $";
+static char *Id = "$Id: scanver.c,v 1.3 1995/06/04 22:23:22 tom Exp $";
 #endif
 
 /*
@@ -22,13 +22,10 @@ static char *Id = "$Id: scanver.c,v 1.2 1985/06/23 23:21:06 tom Exp $";
 
 #define	WILD_VER	-32768
 
-int	scanver (vers_, len)
-char	*vers_;
-int	len;
+int	scanver (char *vers_, int len)
 {
-register
-int	value	= 0,
-	sflg	= 0;
+	register int	value	= 0;
+	register int	sflg	= 0;
 
 	if (*vers_ == ';')	vers_++, len--;
 
