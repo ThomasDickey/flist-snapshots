@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.13 1995/10/25 00:53:17 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.14 1995/10/26 23:51:07 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.13 1995/10/25 00:53:17 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
+ *		26 Oct 1995, mods for animated "Working..." message
  *		24 Oct 1995, added commands to sort-by-username
  *		27 May 1995, prototypes
  *		04 Nov 1988- added "/dexpired" table entry, and matching sort
@@ -598,10 +599,7 @@ char	*fullname = "",
 	flist_log ("$ %.80s", cmdbfr);
 
 	if (!*cmdbfr)
-	{
-		sound_alarm ();		/* Ignore ^U, etc.	*/
-		return;
-	}
+		return;		/* Ignore ^U, etc.	*/
 
 	/*
 	 * Translate & execute the command.
@@ -779,6 +777,8 @@ char	*fullname = "",
 		else
 			warn ("Illegal command: '%.30s'", cmdbfr);
 	}
+
+	dds_done();	/* clear the "Working..." message, if any */
 
 	if (xdcl_)	freelist (xdcl_);
 	if (xcmd_)	cfree (xcmd_);

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.15 1995/10/25 13:46:24 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.16 1995/10/26 23:48:56 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dds.c,v 1.15 1995/10/25 13:46:24 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
- *		25 Oct 1995, mods to make 'dds_while()' animated
+ *		26 Oct 1995, mods to make 'dds_while()' animated
  *		18 Mar 1995, prototyped
  *		18 Feb 1995, renamed 'beep' to avoid conflict with curses.
  *		23 Feb 1989, use 'flist_chdir()'
@@ -283,6 +283,11 @@ void	dds_tell (char *msg_, int ifile)
 	}
 }
 
+#define	DDS_WORKING	14	/* leaves nominal 66 columns */
+
+static	int	dds_working;	/* true iff we've displayed "Working..." */
+static	char	fmt_while[]	= "%%-%d.%ds %%-10.10s";
+
 /* <dds_while>:
  * Borrow the end of the status-line to show a short (10-char max) message
  * while executing a long process, such as spawn or sort.
@@ -291,16 +296,16 @@ void	dds_while (char *msg_)
 {
 	static	int	toggle = -1;
 	int	lpp	= crt_lpp(),
-		width	= crt_width() - 14;	/* nominally 66	*/
+		width	= crt_width() - DDS_WORKING;
 	static
-	char	sFMT1[]	= "%%-%d.%ds %%-10.10s";
 	char	msgbfr[CRT_COLS];
-	char	format[sizeof(sFMT1)+6];
+	char	format[sizeof(fmt_while)+6];
 	char	*message;
 
 	static	time_t last;
 	time_t	temp = time((time_t *)0);
 
+	dds_working = TRUE;
 	if (temp != last)
 	{
 		toggle = !toggle;
@@ -311,12 +316,33 @@ void	dds_while (char *msg_)
 	else
 		message = "Working...";
 
-	sprintf (format, sFMT1, width, width);
+	sprintf (format, fmt_while, width, width);
 	sprintf (msgbfr, format, msg_ ? msg_ : crtvec[lpp1], message);
 	crt_high (msgbfr, strlen(msgbfr));
 	crt_text (msgbfr, lpp1, 0);
 	crt_move (lpp, 1);	/* Leave cursor in known position */
-	clrbeep ();
+}
+
+/* <dds_done>:
+ * Repaint the message-line without the "Working..." text when a command is
+ * completed.
+ */
+void	dds_done (void)
+{
+	if (dds_working)
+	{
+		int	lpp	= crt_lpp(),
+			width	= crt_width() - DDS_WORKING;
+		char	msgbfr[CRT_COLS];
+		char	format[sizeof(fmt_while)+6];
+
+		dds_working = FALSE;
+		clrbeep();
+
+		sprintf (format, fmt_while, width, width);
+		sprintf (msgbfr, format, crtvec[lpp1], " ");
+		dds_tell(msgbfr, -1);
+	}
 }
 
 static	unsigned completion = 0;
