@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.14 1995/10/25 01:05:33 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.15 1995/10/25 13:46:24 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dds.c,v 1.14 1995/10/25 01:05:33 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
+ *		25 Oct 1995, mods to make 'dds_while()' animated
  *		18 Mar 1995, prototyped
  *		18 Feb 1995, renamed 'beep' to avoid conflict with curses.
  *		23 Feb 1989, use 'flist_chdir()'
@@ -64,6 +65,8 @@ static char *Id = "$Id: dds.c,v 1.14 1995/10/25 01:05:33 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<types.h>
+#include	<time.h>
 #include	<string.h>
 
 #include	<lib$routines.h>
@@ -266,10 +269,17 @@ void	dds_tell (char *msg_, int ifile)
 					dds_inx1(ifile), numfiles-numdlets);
 			}
 			else
+			{
 				sprintf (bfr, "Reading: %3d files", numfiles);
+			}
 		}
-		crt_high (bfr, strlen(bfr));
-		crt_text (bfr, lpp1, 0);
+		if (msg_ == 0 && ifile < 0)
+			dds_while(bfr);
+		else
+		{
+			crt_high (bfr, strlen(bfr));
+			crt_text (bfr, lpp1, 0);
+		}
 	}
 }
 
@@ -279,15 +289,30 @@ void	dds_tell (char *msg_, int ifile)
  */
 void	dds_while (char *msg_)
 {
+	static	int	toggle = -1;
 	int	lpp	= crt_lpp(),
 		width	= crt_width() - 14;	/* nominally 66	*/
 	static
 	char	sFMT1[]	= "%%-%d.%ds %%-10.10s";
-	char	msgbfr[CRT_COLS],
-		format[sizeof(sFMT1)+6];
+	char	msgbfr[CRT_COLS];
+	char	format[sizeof(sFMT1)+6];
+	char	*message;
+
+	static	time_t last;
+	time_t	temp = time((time_t *)0);
+
+	if (temp != last)
+	{
+		toggle = !toggle;
+		last = temp;
+	}
+	if (toggle == 0)
+		message = "...Working";
+	else
+		message = "Working...";
 
 	sprintf (format, sFMT1, width, width);
-	sprintf (msgbfr, format, crtvec[lpp1], (msg_ ? msg_ : "Working..."));
+	sprintf (msgbfr, format, msg_ ? msg_ : crtvec[lpp1], message);
 	crt_high (msgbfr, strlen(msgbfr));
 	crt_text (msgbfr, lpp1, 0);
 	crt_move (lpp, 1);	/* Leave cursor in known position */

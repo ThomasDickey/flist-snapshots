@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.8 1995/10/21 18:42:25 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.9 1995/10/25 23:46:00 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flscan.c,v 1.8 1995/10/21 18:42:25 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	24 Jul 1984
  * Last update:
+ *		25 Oct 1995, use dds_while to show animated "working" message
  *		18 Mar 1995, prototypes
  *		27 Jul 1985, make 'flscan_set'..'flscan_off' common routines to
  *			     use in tests of real directory entries against our
@@ -156,6 +157,7 @@ tDIRCMD(flscan)
 	 */
 	for (j = 0; j < numfiles; j++)
 	{
+		dds_while(nullC);
 		if (FK(j).fmisc & BIT_2)	/* File found ?	*/
 		{
 			if (LOCKED(j))		/* ...if so, check locked-files */
@@ -217,6 +219,7 @@ void	flscan_all (char *spec, int len, unsigned status)
 	int	j;
 	char	spec2[MAX_PATH];
 
+	dds_while(nullC);
 	if (status == RMS$_NORMAL)
 	{
 		strncpy (spec2, spec, len);
@@ -225,6 +228,7 @@ void	flscan_all (char *spec, int len, unsigned status)
 
 		for (j = 0; j < numfiles; j++)
 		{
+			dds_while(nullC);
 			if (DELETED(j))
 				continue;
 			if (! dirent__datechek (FK_(j)))

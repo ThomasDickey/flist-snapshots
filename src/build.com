@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.10 1995/10/24 10:54:09 tom Exp $
+$! $Id: build.com,v 1.11 1995/10/25 18:22:58 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -6,7 +6,7 @@ $!	VMS system version 5.4-2 (VAX)
 $!	VAX-C version 3.2
 $! and
 $!	OpenVMS version 6.1 (AXP)
-$!	DEC-C
+$!	DEC-C 4.1
 $
 $	VERIFY = F$VERIFY(0)
 $	set := set
@@ -156,7 +156,7 @@ $	if f$search("[-.bin]helplib.hlb") .eqs. ""
 $	then
 $		write sys$output "** making help-library"
 $		library/create/help [-.bin]helplib
-$		library/replac/help [-.bin]helplib []flist,browse
+$		library/replac/help [-.bin]helplib [-.doc]flist,browse
 $	endif
 $	write sys$output "** made ALL"
 $ endif
