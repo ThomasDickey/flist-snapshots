@@ -1,3 +1,36 @@
+1995-05-27  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dds.h: rename index/inx
+
+	* src/crt.h: prototypes for crt.c
+
+	* src/crt.c, src/browse.c: prototyped
+
+	* src/dds.c: renamed index/inx
+
+	* src/dircmd.c: prototyped
+
+	* src/dircmd.h: prototypes
+
+	* src/dirarg.c: prototyped
+
+	* src/dirent.c: include dircmd.h for prototypes
+
+	* src/cmdstk.c: split out cmdstk.h
+
+	* src/edtcmd.c: include cmdstk.h
+
+	* src/bool.h: ifdef-guard
+	removed "NOT"
+
+	* src/bool.h: rcs identifiers
+
+	* src/fl.c, src/flprot.c: include cmdstk.h
+
+	* src/cmdstk.h: RCS_BASE
+
+	* src/main.h: 'void' for prototype of main
+
 1995-03-19  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dircmd2.h: oops: accidentally changed order of VCMD2 members
