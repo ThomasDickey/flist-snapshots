@@ -1,3 +1,21 @@
+1985-05-14  Thomas E. Dickey
+
+	* src/cmdstk.c: RCS_BASE
+
+1985-05-14  Thomas E. Dickey
+
+	* src/cmdstk.c: make program names consistent:FLIST,BROWSE
+
+	* src/cmdstk.c: rcs-identifiers
+
+1985-05-05  Thomas E. Dickey
+
+	* src/flist.h: RCS_BASE
+
+1985-05-05  Thomas E. Dickey
+
+	* src/flist.h: rcs-identifiers
+
 1985-04-27  Thomas E. Dickey
 
 	* src/edtcmd.c: RCS_BASE
