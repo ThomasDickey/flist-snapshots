@@ -1,3 +1,11 @@
+1988-08-18  dickey@software.org
+
+	* src/termsize.c: RCS_BASE
+
+1988-08-18  Thomas E. Dickey  <dickey@software.org>
+
+	* src/termsize.c: rcs-identifiers
+
 1988-07-01  dickey@software.org
 
 	* src/fledit.c: RCS_BASE
