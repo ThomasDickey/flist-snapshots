@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.5 1995/05/28 20:02:00 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.6 1995/06/05 23:59:37 tom Exp $";
 #endif
 
 /*
@@ -75,13 +75,11 @@ static char *Id = "$Id: flscan.c,v 1.5 1995/05/28 20:02:00 tom Exp $";
 #include	"dirent.h"
 #include	"dds.h"
 
-/*
- * External (typed) procedures:
- */
-char	*dirent_dft();		/* => wildcard default			*/
-
-static	void	flscan_off (int j);
 static	void	flscan_all (char *spec, int len, int status);
+static	void	flscan_clr (void);
+static	void	flscan_off (int j);
+static	void	flscan_on  (int j);
+static	void	flscan_set (void);
 
 import(filelist); import(numfiles);
 import(conv_list);
@@ -170,9 +168,23 @@ tDIRCMD(flscan)
 		dds_all (crt_top(), *curfile_);
 }
 
-flscan_set ()	{ dirent_misc (-2, BIT_2);}	/* Set bit everywhere	*/
-flscan_clr ()	{ dirent_misc (-1, BIT_2);}	/* Clear bit everywhere	*/
-flscan_on  (j)	{ dirent_misc (j,  BIT_2);}	/* Set particular bit	*/
+static
+void	flscan_set (void)	/* Set bit everywhere	*/
+{
+	dirent_misc (-2, BIT_2);
+}
+
+static
+void	flscan_clr (void)	/* Clear bit everywhere	*/
+{
+	dirent_misc (-1, BIT_2);
+}
+
+static
+void	flscan_on  (int j)	/* Set particular bit	*/
+{
+	dirent_misc (j,  BIT_2);
+}
 
 /*
  * Reset a flag to indicate intersection between the user's argument list and

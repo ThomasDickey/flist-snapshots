@@ -1,46 +1,10 @@
-/*
- * Title:	rmsio.h
- * Author:	Thomas E. Dickey
- * Created:	15 Sep 1984
- * Last update:	23 Feb 1985, added 'sys', 'RMS_STUFF' defines
- *		19 Oct 1984, added 'RMSIO' define
+/* $Id: rmsio.h,v 1.6 1995/06/05 23:10:27 tom Exp $
  *
- *	Define an intercept for 'stdio' stuff so that I can compile 'BROWSE'
- *	to point to 'rmsio', without widespread source changes.
+ * interface of rmsio.c
  */
 
-#define	RMSIO	RMSIO
-
-#define	BUFSIZ	512
-#define	_NFILE	?
-
-#ifndef	NULL
-#define	NULL		0
-#endif
-
-#undef	FILE
-#define	FILE		char	/* patch */
-
-#ifndef	EOS
-#define	EOF		(-1)
-#endif
-
-#ifndef	TRUE
-#define	TRUE		1
-#define	FALSE		0
-#endif
-
-#define	fopen	ropen
-#define	fgetr	rgetr
-#define	ftell	rtell
-#define	fseek	rseek
-#define	fclose	rclose
-#define	perror	rerror
-
-#define	freopen	?
-
-extern	FILE	*fopen();
-extern	long	ftell();
+#ifndef	RMSIO_H
+#define	RMSIO_H
 
 #define	sys(f)	status = f; if (!$VMS_STATUS_SUCCESS(status))
 
@@ -49,3 +13,19 @@ extern	long	ftell();
 	struct	NAM	nam;\
 	long	status;\
 	char	esa[NAM$C_MAXRSS],	rsa[NAM$C_MAXRSS]
+
+#define	RFILE	struct	_rmsio_file
+
+extern	RFILE	*ropen (char *name_, char *mode_);
+extern	RFILE	*ropen2 (char *name_, char *dft_, char *mode_);
+extern	int	erstat (RFILE *z, char *msg, int msglen);
+extern	void	rclear (void);
+extern	int	rclose (RFILE *z);
+extern	void	rerror (void);
+extern	int	rgetr ( RFILE * z,  char * bfr,  int maxbfr,  int *mark_);
+extern	int	rputr ( RFILE *z,  char *bfr,  int maxbfr);
+extern	int	rseek (RFILE *z, int offset, int direction);
+extern	int	rsize (RFILE *z);
+extern	int	rtell (RFILE *z);
+
+#endif /* RMSIO_H */

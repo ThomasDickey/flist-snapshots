@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.11 1995/06/04 19:46:54 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.12 1995/06/05 23:29:09 tom Exp $";
 #endif
 
 /*
@@ -128,8 +128,6 @@ static	void	dircmd_read (int *curfile_, int command, char *original);
  *	xcmd_	=> lowercased-string, equal to substituted tokens & logicals.
  *	xdcl_	=> DCLARG-list (filespecs are uppercased).
  */
-
-extern	char	*crtvec[];	/* Display-frame			*/
 
 import(filelist);
 

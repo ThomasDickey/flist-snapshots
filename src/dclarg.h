@@ -1,4 +1,4 @@
-/* $Id: dclarg.h,v 1.5 1995/06/04 19:49:00 tom Exp $
+/* $Id: dclarg.h,v 1.6 1995/06/05 23:33:08 tom Exp $
  *
  *	Define structure returned by DCL/argument parser 'dclarg'
  */
@@ -25,14 +25,14 @@ DCLARG	{
 		dcl$b_ver;		/* file version string length	*/
 	};
 
-extern	DCLARG	*argvdcl (int argc, char *argv[], char *dft_, int cmd_arg);
-extern	DCLARG	*dclarg (char *inp_, char *dft_, int cmd_arg, int cpy_dft);
-extern	DCLARG	*dclarg_text (DCLARG *this_, DCLARG *last_, char *s_, int uc);
-extern	char	*dclinx (DCLARG *dcl_, int mfld, int sfld);
-extern	DCLARG	*dclinx2 (DCLARG *dcl_, int mfld, int sfld);
-extern	char	*dclarg_keyw (char *c_);
-extern	char	*dclarg_spec (char *i_, char *also);
-
+extern	DCLARG*	argvdcl (int argc, char *argv[], char *dft_, int cmd_arg);
+extern	DCLARG*	dclarg (char *inp_, char *dft_, int cmd_arg, int cpy_dft);
+extern	char*	dclarg_keyw (char *c_);
+extern	char*	dclarg_spec (char *i_, char *also);
+extern	DCLARG*	dclarg_text (DCLARG *this_, DCLARG *last_, char *s_, int uc);
+extern	int	dclchk (DCLARG *dcl_, char *co_);
+extern	char*	dclinx (DCLARG *dcl_, int mfld, int sfld);
+extern	DCLARG*	dclinx2 (DCLARG *dcl_, int mfld, int sfld);
 extern	int	dclwild (DCLARG *dcl_);
 
 #define	isopt(c) ((c == '/') || (c == '='))	/* Begins an option?	*/

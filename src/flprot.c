@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.12 1995/05/28 19:13:50 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.13 1995/06/05 23:29:17 tom Exp $";
 #endif
 
 /*
@@ -79,8 +79,6 @@ static	int	flprot_one(int, int *);	/* function via 'dirfind'	*/
 
 import(filelist);
 import(M_opt);
-
-extern	char	*crtvec[];	/* Display-frame		*/
 
 static	*savecmd = nullC;	/* Text of option-code to process	*/
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.8 1995/06/04 16:14:20 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.9 1995/06/05 23:44:24 tom Exp $";
 #endif
 
 /*
@@ -66,6 +66,7 @@ static char *Id = "$Id: fledit.c,v 1.8 1995/06/04 16:14:20 tom Exp $";
 
 #include	<stdlib.h>
 #include	<stdio.h>
+#include	<signal.h>	/* for 'sleep()' */
 
 #include	"bool.h"
 #include	"crt.h"
@@ -89,6 +90,10 @@ import(readlist);	import(readllen);
 
 extern	int	multi_quit;
 static	int	pack_exit = 0;
+
+static	void	fledit_dir (int *curfile_, char *xcmd_, DCLARG *xdcl_);
+static	void	fledit_file (int *curfile_, char *xcmd_, DCLARG *xdcl_, FILENT *z, int inlist);
+static	void	fledit_tell (char *path_);
 
 tDIRCMD(fledit)
 {
@@ -157,28 +162,29 @@ tDIRCMD(fledit)
  * Enter a new directory.  The 'xdcl_' linked-list begins with the first
  * actual argument, rather than the command name.
  */
-fledit_dir (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+static
+void	fledit_dir (
+	int	*curfile_,
+	char	*xcmd_,
+	DCLARG	*xdcl_)
 {
-FLINK	*fixed_	  = nullC;
-FILENT	*SAVEfile = filelist,
-	*SAVEread = readlist;
-DATENT	SAVEdchk  = datechek;
-int	j,
-	SAVEpack  = pack_exit,
-	SAVEmaxf  = maxfiles,
-	SAVEnumf  = numfiles,
-	SAVEnumR  = readllen,
-	SAVEdmod  = D_mode,
-	SAVEdopt  = D_opt,
-	SAVEpcol  size_pcolumns,
-	SAVEtopf  = dds_fast(DDS_U_C),
-	PACKtopf  = SAVEtopf,
-	SAVEmark  = dircmd_select(-2);
-char	SAVEconv  size_conv_list,
-	SAVEdflg  size_dateflag;
+	FLINK	*fixed_	  = nullC;
+	FILENT	*SAVEfile = filelist,
+		*SAVEread = readlist;
+	DATENT	SAVEdchk  = datechek;
+	int	j,
+		SAVEpack  = pack_exit,
+		SAVEmaxf  = maxfiles,
+		SAVEnumf  = numfiles,
+		SAVEnumR  = readllen,
+		SAVEdmod  = D_mode,
+		SAVEdopt  = D_opt,
+		SAVEpcol  size_pcolumns,
+		SAVEtopf  = dds_fast(DDS_U_C),
+		PACKtopf  = SAVEtopf,
+		SAVEmark  = dircmd_select(-2);
+	char	SAVEconv  size_conv_list,
+		SAVEdflg  size_dateflag;
 
 	/* If options given are illegal, don't go anywhere	*/
 	if (flist_opts (1, &xcmd_, xdcl_, TRUE))	return;
@@ -241,8 +247,8 @@ char	SAVEconv  size_conv_list,
  * Show the pathname in a form which will cause minimal refresh for very
  * short display-lists:
  */
-fledit_tell (path_)
-char	*path_;
+static
+void	fledit_tell (char *path_)
 {
 	flist_info ("Read: %s", path_);
 	sleep (1);
@@ -267,30 +273,28 @@ char	*path_;
  * patch: may alter this to put the updated name on the current line.
  * patch: cmd-size should be done with calloc.
  */
-fledit_file (curfile_, xcmd_, xdcl_, z, inlist)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
-FILENT	*z;		/* => data for file to edit			*/
-int	inlist;		/* >= 0 iff 'z' is found in 'filelist[]'	*/
+static
+void	fledit_file (
+	int	*curfile_,
+	char	*xcmd_,
+	DCLARG	*xdcl_,
+	FILENT	*z,		/* => data for file to edit		*/
+	int	inlist)		/* >= 0 iff 'z' is found in 'filelist[]'*/
 {
-FILENT	zold	= *z;			/* original old-file data	*/
-int	status,	curvers, j,
-	oldver	= z->fvers,
-	rmode	= (xdcl_->dcl_text[0] == 'V'),	/* "EDIT" or "VIEW"	*/
-	width	= crt_width() - 6;	/* nominally 74	*/
-static
-char	sFMT1[]	= "%%s %%-%d.%ds";
-char	fullname[MAX_PATH],
-	tstspec	[MAX_PATH],
-	*c_,
-	format	[sizeof(sFMT1)+6],
-	cmd	[(3*MAX_PATH)+CRT_COLS]; /* filenames, plus options	*/
+	FILENT	zold	= *z;		/* original old-file data	*/
+	int	status,	curvers, j,
+		oldver	= z->fvers,
+		rmode	= (xdcl_->dcl_text[0] == 'V'),	/* "EDIT" or "VIEW" */
+		width	= crt_width() - 6;	/* nominally 74	*/
+	char	fullname[MAX_PATH],
+		tstspec	[MAX_PATH],
+		*c_,
+		format	[sizeof(sFMT1)+6],
+		cmd	[(3*MAX_PATH)+CRT_COLS]; /* filenames, plus options */
 
-static
-char	*bad_type[] = {"EXE", "OBJ", "OLB"};
-static
-int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
+	static	char	sFMT1[]	= "%%s %%-%d.%ds";
+	static	char	*bad_type[] = {"EXE", "OBJ", "OLB"};
+	static	int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 
 	dirent_glue (fullname, z);
 
@@ -439,7 +443,7 @@ tDIRCMD(flquit)
  * in reading a directory.  We know that we have a new screen to display, and
  * thus, on exit from the screen, can start over again by a 'dds_pack'.
  */
-fledit_pack ()
+void	fledit_pack (void)
 {
 	pack_exit = (numfiles > 0);
 }

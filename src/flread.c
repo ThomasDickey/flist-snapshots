@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flread.c,v 1.4 1995/03/19 00:06:17 tom Exp $";
+static char *Id = "$Id: flread.c,v 1.5 1995/06/05 23:38:13 tom Exp $";
 #endif
 
 /*
@@ -33,6 +33,8 @@ static char *Id = "$Id: flread.c,v 1.4 1995/03/19 00:06:17 tom Exp $";
  *		READ	- directs the program to read only those entries which
  *			  were not previously in the database.
  */
+
+#include	<signal.h>	/* for 'sleep()' */
 
 #include	"flist.h"
 

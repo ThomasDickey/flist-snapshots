@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.6 1995/06/04 01:25:33 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.7 1995/06/05 23:20:13 tom Exp $";
 #endif
 
 /*
@@ -47,8 +47,8 @@ static char *Id = "$Id: getraw.c,v 1.6 1995/06/04 01:25:33 tom Exp $";
 
 #include	"bool.h"
 #include	"crt.h"
-
-extern	char	*ropen2();	/* (actually, *RFILE)	*/
+#include	"getraw.h"
+#include	"rmsio.h"
 
 /*
  * Local definitions:

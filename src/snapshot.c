@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
+static char *Id = "$Id: snapshot.c,v 1.7 1995/06/05 23:38:13 tom Exp $";
 #endif
 
 /*
@@ -19,13 +19,12 @@ static char *Id = "$Id: snapshot.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 
 #include	<starlet.h>
 #include	<stdio.h>
+#include	<signal.h>	/* for 'sleep()' */
 #include	<string.h>
 #include	<ctype.h>
 
 #include	"crt.h"
 #include	"sysutils.h"
-
-extern	char	*crtvec[];
 
 static	FILE	*fp	= 0;
 static	int	calls	= 0;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.7 1995/05/28 21:11:00 tom Exp $";
+static char *Id = "$Id: flrnam.c,v 1.8 1995/06/05 09:47:38 tom Exp $";
 #endif
 
 /*
@@ -80,7 +80,7 @@ static	char	*newspec;
  * no error occurred; otherwise the corresponding RMS status code.
  */
 static
-doit(char *newspec, char *oldspec, GETPROT *fprot)
+doit(char *newspec, char *oldspec, GETPROT *prot_)
 {
 	long	status;
 	int	modified = FALSE;
@@ -92,15 +92,15 @@ doit(char *newspec, char *oldspec, GETPROT *fprot)
 #define	UNMASK(name,mask) if ((status = chprot(name, mask, 0)) == RMS$_NORMAL)\
 				status = 0
 
-	if (!cmpprot(fprot, "d")) {
-		UNMASK(oldspec, fprot->p_mask & ~DELETE_MASK);
+	if (!cmpprot(prot_, "d")) {
+		UNMASK(oldspec, prot_->p_mask & ~DELETE_MASK);
 		if (status != 0)
 			return (status);
 		modified = TRUE;
 	}
 	if (!(status = sysrename(newspec, oldspec))) {
 		if (modified)
-			UNMASK(newspec, fprot->p_mask);
+			UNMASK(newspec, prot_->p_mask);
 	}
 	return (status);
 }

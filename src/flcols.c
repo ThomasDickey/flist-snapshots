@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.7 1995/03/19 01:57:16 tom Exp $";
+static char *Id = "$Id: flcols.c,v 1.8 1995/06/05 23:51:33 tom Exp $";
 #endif
 
 /*
@@ -60,7 +60,10 @@ char	*keys[]	= {
 		"OWNER",	"PATH",		"SIZE",		"XAB"};
 
 static	int	max_keys = sizeof(keys) / sizeof(keys[0]);
-
+
+static	int	flcols__add (char *out_, char c);
+static	char *	flcols__key (char c);
+
 /*
  * Decode a list of column-keywords to set/reset the display format:
  */
@@ -117,10 +120,10 @@ tDIRCMD(flcols)
 /* <__key>:
  * Return a pointer to a specific key-word, given the first character.
  */
-char	*flcols__key (c)
-char	c;
+static
+char	*flcols__key (char c)
 {
-int	j;
+	int	j;
 	for (j = 0, c = _toupper(c); j < max_keys; j++)
 	{
 		if (c == *keys[j])		return (keys[j]);
@@ -132,8 +135,8 @@ int	j;
  * Add a new character to the (temporary) conversion list.  Return TRUE if
  * an error was discovered.
  */
-flcols__add (out_, c)
-char	*out_, c;
+static
+int	flcols__add (char *out_, char c)
 {
 	if (	(strchr("bcdre", c) && !D_opt)
 	||	(strchr("m", c)    && !M_opt)
@@ -156,9 +159,9 @@ char	*out_, c;
  * (Re)initialize 'conv_list', based on the current settings of FLIST's
  * option flags.
  */
-flcols_init ()
+void	flcols_init (void)
 {
-char	*c_ = conv_list;
+	char	*c_ = conv_list;
 
 	if (A_opt)	*c_++ = 's';
 	if (D_opt)	*c_++ = 'd';
@@ -169,12 +172,12 @@ char	*c_ = conv_list;
 /* <show>:
  * Show the current contents of 'conv_list', in the summary line:
  */
-flcols_show ()
+void	flcols_show (void)
 {
-int	j;
-char	*c_ = conv_list,
-	c,
-	bfr[CRT_COLS];
+	int	j;
+	char	*c_ = conv_list,
+		c,
+		bfr[CRT_COLS];
 
 	bfr[0] = EOS;
 	while (c = *c_++)
@@ -186,7 +189,7 @@ char	*c_ = conv_list,
 	}
 	flist_tell ("Display columns: %s", bfr);
 }
-
+
 /* <left>:
  * Rotate the display-list to the left.
  */

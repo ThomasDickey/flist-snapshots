@@ -26,6 +26,7 @@ extern	void	clrwarn (void);
 extern	int	didbeep (void);
 extern	int	didwarn (void);
 extern	void	error (int status, char *msg_);
+extern	void	fledit_pack (void);
 extern	void	flist_chdir (char *path);
 extern	void	flist_date (int curfile, int opt);
 extern	void	flist_date2 (int curfile);

@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.6 1995/05/28 20:05:09 tom Exp $
+# $Id: descrip.mms,v 1.8 1995/06/05 23:35:43 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -7,7 +7,11 @@
 #	MMS version 2.6
 #	VAX-C version 3.2
 
+# VAX-C
 CFLAGS	= /Standard=VAXC /Include=([]) /Show=all /extern_model=common_block
+
+# DEC-C
+#CFLAGS	= /prefix_library_entries=all_entries /Include=([]) /Show=all
 
 ########(source-lists)#########################################################
 C_SRC	= -
@@ -46,7 +50,6 @@ C_SRC	= -
 	DOMORE.C, -
 	DSPC.C, -
 	EDTCMD.C, -
-	FGETR.C, -
 	FL.C, -
 	FLCOLS.C, -
 	FLCOPY.C, -
@@ -188,7 +191,6 @@ MODULES	= -
 	DOMORE, -
 	DSPC, -
 	EDTCMD, -
-	FGETR, -
 	FLCOLS, -
 	FLCOPY, -
 	FLDLET, -
