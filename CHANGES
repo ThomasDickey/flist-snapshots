@@ -1,3 +1,12 @@
+2004-11-05  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/build.com: add LIBS symbol so this should build on VAX.
+
+2004-11-03  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/build.com:
+	first cut of fixes to compile with IA64 (which has no vaxcrtl or vaxcurse)
+
 2000-11-05  Thomas E. Dickey  <dickey@clark.net>
 
 	* FREEWARE_README.TXT, FREEWARE_DEMO.TXT, RELEASE: update contact
