@@ -45,11 +45,6 @@ code some more.
 06-sep-84: Not sure what to do about '"' in DCLARG, since it is stripped
 before unix-argv interface gives it to me.
 
-07-sep-84: Use SYS$SETDDIR instead of the run-time routine.
-Try to get rid of direct dependency
-on the VMS-C run-time library.  It would be nice to have a command which
-displays all entries in the READ-list.
-
 23-oct-84: The PURGE command can be confused by multiple directories,
 apparently inheriting the pathname from the current default, rather than
 properly testing for explicit-pathname (see: DIRFIND.C).
@@ -68,8 +63,6 @@ DIRECTORY itself is about 5 times faster than FLIST. ???
 
 19-dec-84: It would be nice to have a control which can abort reading a long
 directory without killing the entire program.
-
-20-dec-84: 'sysrights' should take a mask, rather than v-argument.
 
 21-dec-84: It would be nice (in DELETE and PURGE) to update the number-of-files
 field in the status line, so that the user can see that something is happening.
@@ -123,19 +116,19 @@ In 'dirpath_rename', I am not checking for the use of the root-node
 '[0,0]'.  The code is not conformable with 'pathdown'; probably need a
 test for root-node.
 
-23-mar:
+23-mar-85:
 Added display of file-id.  I noticed that at the root level, there are some
 directories which are entered twice in the directory, once as a number, and
 also as a name.  This is a hole in FLIST which I don't think I should try to
 plug (yet).
 
-26-mar:
+26-mar-85:
 Limited file-id to 5+1+5+1+1 = 13 columns.  Is the high-order word ever
 nonzero?
 
 How do I clear an unused AST?
 
-29-mar:
+29-mar-85:
 Both FLIST and BROWSE should return the worst-error code, as well as printing
 the error message.  (For example, FLIST does not now return an error code
 if the first-level could not be read.)
@@ -147,28 +140,29 @@ The out-band qio stuff will let me get at CTRL/C.  However, it does not
 intercept while I am in help-library, and also it disables CTRL/C for
 a subprocess.
 
-13-apr:
+13-apr-85:
 /LOG should cover results of COPY and APPEND
 
-26-apr:
+26-apr-85:
 If I get a message from system, etc., while in BROWSE, it gets caught on
 the bottom of my screen as though it too were a scrolling region.
 Maybe I should leave scrolling margins normally set up to bracket the
 cursor-line, and enable them for scrolling only occasionally.
 
-9-may:
+9-may-85:
 Urbanski has a long-name file in his directory which cannot be found by
 acp (because it was generated on v4.1).  Shouldn't stop directory-lookup,
 but it does, because sys$search returns a no-more-files code immediately
 after.  Why does DIRECTORY give a full list?
 
-12-may: 'dirent' should give back only the worst error encountered, rather
+12-may-85:
+'dirent' should give back only the worst error encountered, rather
 than on each error (making entry to a new level nicer).
 
-18-may:
+18-may-85:
 Should extend /COLUMNS to permit user to strip off all columns (/fast).
 
-30-may:
+30-may-85:
 The (apparent) speed of FLIST could be much enhanced by doing SYS$OPEN
 on demand (when we must first use the date, etc.) rather than on entry.
 However, this would make the *total* slower, since we would have to do
@@ -176,10 +170,10 @@ SYS$SEARCH twice.  Should investigate this, to find how much time is
 involved.  Only need to modify the flsort and dirent modules; can use a
 convention of '0' in fstat for un-initialized data.
 
-08-jun:
+08-jun-85:
 Should extend 'spawn' command to 'shell' (entry to DEC-shell).
 
-10-jun:
+10-jun-85:
 Would like to show file-size in bytes; this is applicable to text files
 (but not really to indexed files, which contain a toc).
 
@@ -194,11 +188,7 @@ For the display-commands, would like to be able to use these as options.
 To do this, consider making the option-interpretation of FLIST scan
 left-to-right interpreting the commands in no-echo mode.
 
-16-jun:
-CC2.0 is source-level incompatible with CC1.5 (examples shown in test20.c,
-as well as isolated in rabrfa and xabprouic modules).
-
-23-jun:
+23-jun-85:
 In going to CC2.0, encountered flakey-bug (inconsistent) in calls on 'sscanf'.
 Coded around this with new module 'scanver'; ~10 hours of tests failed to
 isolate *any* code errors.
@@ -206,7 +196,7 @@ isolate *any* code errors.
 Should put a latched-data into 'dirfind_tst'.  Now it is called only from
 'dirread' and 'dirfind'.
 
-26-jul:
+26-jul-85:
 Must suppress /DATE, etc., in options for edit-dir (subset).
 Should provide entry for flcols to set column-list as an option-value,
 i.e., either
@@ -214,7 +204,7 @@ i.e., either
 	/c=(s,d,r)
 should be accepted by the scanner.
 
-15-aug:
+15-aug-85:
 Should provide LOG, COM (CMD?) commands to permit dynamic use of FLIST.
 Could maintain multiple log-files (put them on a linked list), one per level.
 
@@ -222,20 +212,16 @@ Should provide a mechanism for entering BROWSE from an FLIST command file
 to permit it to revert to interactive mode for the duration of the
 browse.
 
-17-aug:
-Is there any easy way to make log, crt files readable while I am also writing
-to them?
-
-27-aug:
+27-aug-85:
 If we RENAME a directory, which in turn propagates into lengthened pathnames
 for other entries, we do *not* increase 'ccolumns', since we do not scan the
 'filelist[]' array to ensure that the lengthed pathnames are displayed.
 
-16-sep:
+16-sep-85:
 STRWCMP does not check for the special case of '*' in a pathname conflicting
 with the VMS convention (i.e., '[a*b]' should not match '[a.c.b]').
 
-17-sep:
+17-sep-85:
 Looked across the net at ATCSDB::DRA0:[SYS0.], found that the netserver-log
 file cannot be examined, since it is modified by observation.  However, some
 versions will become "file-not-found" on SYS$OPEN, but are not counted
@@ -244,17 +230,14 @@ bit too early).  Sometimes, also, I get an error from RMS (on UPDATE) saying
 that the assign-channel service failed.  Could be either traffic-related,
 or because I do not $CLOSE if $OPEN fails.
 
-01-oct:
+01-oct-85:
 Must update help-file to show SET/SHOW substitution, as well as the order-of-
-evaluation of synomyms.  Should permit FLIST's help command to accept argument.
+evaluation of synonyms.  Should permit FLIST's help command to accept argument.
 Should modify EDTCMD module to treat <LF> same as in VMS 4.x
 
-02-oct:
+02-oct-85:
 Should use qio-IO$_M_TYPEAHDCNT (p-39) in 'gotraw' rather than the qio with
 timeout.
 
-12-nov:
-ISOWNER, CMPPROT code (and other stuff checking uid's) is in error: we may
-indeed have 32-bit uid+gid codes.  Must recompile FLIST to accommodate this.
-
+12-nov-85:
 Should add optional arguments to SPAWN.  Also, add /ALL option to VERIFY.

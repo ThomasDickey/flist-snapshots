@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.7 1995/06/05 00:38:58 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.8 1995/10/27 23:05:48 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dclarg.c,v 1.7 1995/06/05 00:38:58 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	24 May 1984
  * Last update:
+ *		27 Oct 1995, suppress DNF-error so "create directory" works.
  *		18 Mar 1995, prototyped
  *		05 Dec 1989, patched out VMS-bug (PATCH_DEC89)
  *		20 Mar 1989, bypass VMS bug which returns occasional illegal
@@ -247,6 +248,15 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 		    status = sys$parse(&fab);
 
 		    /*
+		     * If we're referring to a directory that doesn't exist,
+		     * the parse will return a directory-not-found (something
+		     * that we'd normally expect from sys$search).  That
+		     * breaks the "create" command.
+		     */
+		    if (status == RMS$_DNF)
+		    	status = 0;
+
+		    /*
 		     * Use the most recent name as a default name for the next
 		     * parse:
 		     */
@@ -346,7 +356,7 @@ DCLARG	*dclarg_text(
 	char	*s_,		/* Text-buffer (mustn't be null)*/
 	int	uc)		/* TRUE if uppercase		*/
 {
-	int	size	= sizeof(DCLARG) + strlen(s_) + 2;
+	size_t	size	= sizeof(DCLARG) + strlen(s_) + 2;
 	char	*text_;
 
 	if (this_)	this_	= realloc (this_, size);
@@ -376,6 +386,14 @@ DCLARG	*dclarg_text(
 	}
 	if (last_ != 0)
 		last_->dcl_next = (DCLARG *)this_;
+	/*
+	 * Don't allow empty name ".;" -- trim it off
+	 */
+	if ((size = strlen(text_ = this_->dcl_text)) > 2)
+	{
+		if (!strcmp(text_ + size - 2, ".;"))
+			text_[size-2] = EOS;
+	}
 	return (this_);
 }
 

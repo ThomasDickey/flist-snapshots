@@ -1,4 +1,4 @@
-/* $Id: dircmd2.h,v 1.6 1995/03/20 00:33:27 tom Exp $
+/* $Id: dircmd2.h,v 1.7 1995/10/27 11:37:32 tom Exp $
  *
  * Define command constraints for DCL-commands known to FLIST.
  */
@@ -44,6 +44,7 @@
 #define	v_1a	(v_1_IN + v_W_IN  + v_OMIT)		/* (find)	*/
 #define	v_1b	(v_1_IN + v_W_IN  + v_OPTS + v_FREE)	/* (protect)	*/
 #define	v_1c	(v_M_IN + v_W_IN  + v_OMIT + v_FREE)	/* (read)	*/
+#define	v_1d	(v_1_IN + v_OMIT)			/* (create)	*/
 
 /*
  * Structure for 'dircmd' commands which require arguments, or permit a

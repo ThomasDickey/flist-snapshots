@@ -1,4 +1,4 @@
-.; $Id: d2.rno,v 1.2 1985/01/12 20:50:10 tom Exp $
+.; $Id: d2.rno,v 1.3 1995/10/27 13:24:05 tom Exp $
 .req	"d0.req"
 .;	FLIST Commands
 .;
@@ -38,6 +38,13 @@ The destination (a new or modified file) is appended to the display-list.
 FLIST uses the VMS commands APPEND and COPY to implement these functions.
 However, FLIST does not permit a wildcard in the output list, to simplify
 display-list updates.
+
+.hl	CREATE (CR)
+.x File management>CREATE
+.X CREATE
+The CREATE command is simpler than the VMS command CREATE.
+It allows you to create a file or a directory.
+FLIST examines the argument to see which it is.
 
 .hl	DELETE (DEL)
 .x File management>DELETE

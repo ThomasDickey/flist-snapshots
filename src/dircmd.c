@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.14 1995/10/26 23:51:07 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.15 1995/10/27 11:37:00 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.14 1995/10/26 23:51:07 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
+ *		27 Oct 1995, added "create" command.
  *		26 Oct 1995, mods for animated "Working..." message
  *		24 Oct 1995, added commands to sort-by-username
  *		27 May 1995, prototypes
@@ -165,12 +166,11 @@ typedef	struct	{
 static	KEYDEFS	*keydefs	= 0;
 
 /*
- * Symbol table to relate "visible" commands to actual controls.
- * The actual-text may not be printing-ASCII, because this is trapped
- * by the visible-command-detection loop.  Commands which are also
- * control characters are mapped into these control characters.
- * (Those having no "actual" code are decoded on the basis of the "func"
- * component, which always overrides.)
+ * Symbol table to relate "visible" commands to actual controls.  The
+ * actual-text may not be printing-ASCII, because this is trapped by the
+ * visible-command-detection loop.  Commands which are also control characters
+ * are mapped into these control characters.  (Those having no "actual" code
+ * are decoded on the basis of the "func" component, which always overrides.)
  *
  * patch: This table could be re-structured to be initialized in 'dircmd_init'
  *	to accept a profile-file (a la FLIST), relating all visible-commands
@@ -235,6 +235,7 @@ VCMD2	vcmd2[]	= {
 	"/sbackup",	3, flsort,	OZ(0),
 	"/screated",	3, flsort,	OZ(0),
 	"/sdate",	3, flsort,	OZ(0),
+	"/sexpired",	3, flsort,	OZ(0),
 	"/sformat",	3, flsort,	OZ(0),
 	"/shour",	3, flsort,	OZ(0),
 	"/sidentifier",	3, flsort,	OZ(0),
@@ -244,7 +245,6 @@ VCMD2	vcmd2[]	= {
 	"/sowner",	3, flsort,	OZ(0),
 	"/spath",	3, flsort,	OZ(0),
 	"/srevised",	3, flsort,	OZ(0),
-	"/sexpired",	3, flsort,	OZ(0),
 	"/ssize",	3, flsort,	OZ(0),
 	"/stype",	3, flsort,	OZ(0),
 	"/suser",	3, flsort,	OZ(0),
@@ -256,16 +256,16 @@ VCMD2	vcmd2[]	= {
 	"/rbackup",	3, flsort,	OZ(0),
 	"/rcreated",	3, flsort,	OZ(0),
 	"/rdate",	3, flsort,	OZ(0),
+	"/rexpired",	3, flsort,	OZ(0),
 	"/rformat",	3, flsort,	OZ(0),
 	"/rhour",	3, flsort,	OZ(0),
 	"/ridentifier",	3, flsort,	OZ(0),
 	"/rlength",	3, flsort,	OZ(0),
 	"/rmask",	3, flsort,	OZ(0),
-	"/rowner",	3, flsort,	OZ(0),
 	"/rname",	2, flsort,	OZ(0),	/* (default)	*/
+	"/rowner",	3, flsort,	OZ(0),
 	"/rpath",	3, flsort,	OZ(0),
 	"/rrevised",	3, flsort,	OZ(0),
-	"/rexpired",	3, flsort,	OZ(0),
 	"/rsize",	3, flsort,	OZ(0),
 	"/rtype",	3, flsort,	OZ(0),
 	"/ruser",	3, flsort,	OZ(0),
@@ -281,6 +281,7 @@ VCMD2	vcmd2[]	= {
 	"append",	2, flcopy,	v_M_1,		0,
 	"browse",	1, flmore,	v_1,		0,
 	"copy",		2, flcopy,	v_M_1,		0,
+	"create",	2, flcrea,	v_1d,		0,
 	"delete",	3, fldlet,	v_M0,		0,
 #ifdef	DEBUG
 	"dump",		2, fldump,	v_OMIT,		0,

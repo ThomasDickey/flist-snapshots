@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.12 1995/10/25 18:04:52 tom Exp $
+# $Id: descrip.mms,v 1.13 1995/10/27 11:42:38 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -50,6 +50,7 @@ C_SRC	= -
 	FL.C, -
 	FLCOLS.C, -
 	FLCOPY.C, -
+	FLCREA.C, -
 	FLDLET.C, -
 	FLDUMP.C, -
 	FLEDIT.C, -
@@ -192,6 +193,7 @@ MODULES	= -
 	EDTCMD, -
 	FLCOLS, -
 	FLCOPY, -
+	FLCREA, -
 	FLDLET, -
 	FLDUMP, -
 	FLEDIT, -
@@ -536,6 +538,11 @@ $(A)(FLCOLS) : -
 		DIRENT.H
 
 $(A)(FLCOPY) : -
+		FLIST.H -
+		DIRENT.H -
+		DCLARG.H
+
+$(A)(FLCREA) : -
 		FLIST.H -
 		DIRENT.H -
 		DCLARG.H
