@@ -1,3 +1,13 @@
+1989-02-23  dickey@software.org
+
+	* src/dds.c: RCS_BASE
+
+1989-02-23  Thomas E. Dickey  <dickey@software.org>
+
+	* src/dds.c: make program names consistent:FLIST,BROWSE
+
+	* src/dds.c: rcs-identifiers
+
 1989-02-16  dickey@software.org
 
 	* src/fldlet.c: RCS_BASE
