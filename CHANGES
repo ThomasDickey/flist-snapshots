@@ -1,3 +1,23 @@
+1995-10-22  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dirpath.c:
+	mods to get rid of spurious pathname stuff, done in 'dirpath_sort()'
+	since that seems the best place...
+
+	* src/fl.c, src/browse.c: be explicit about register types
+
+	* src/flprot.c:
+	fix a place where my logic assumed that chars with 8th bit set were still
+	treated as 7-bit chars by ctype.h macros
+
+	* src/strclip.c: RCS_BASE
+
+	* src/descrip.mms, src/build.com: added module strclip
+
+	* src/strutils.h: added strclip.c
+
+	* src/scanint.c, src/dirent.c: be explicit about register types
+
 1995-10-21  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/fl.c: cleanup compiler warnings, long/unsigned fixes.

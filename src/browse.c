@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.19 1995/10/21 18:56:45 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.20 1995/10/22 22:10:02 tom Exp $";
 #endif
 
 /*
@@ -9,7 +9,7 @@ static char *Id = "$Id: browse.c,v 1.19 1995/10/21 18:56:45 tom Exp $";
  *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
- *		21 Oct 1995, DEC-C clean-compile
+ *		22 Oct 1995, DEC-C clean-compile
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		27 May 1995, prototyped
  *		18 Feb 1995	port to AXP (renamed 'alarm').
@@ -1451,7 +1451,7 @@ char	c,
 		case '\t':
 		    if (!O_opt)
 		    {
-			register j = 1 + (column | 7);
+			register int j = 1 + (column | 7);
 			while (column < j)
 			    more_char (' ');
 			break;

@@ -1,10 +1,13 @@
-/* $Id: strutils.h,v 1.5 1995/06/06 13:41:18 tom Exp $ */
+/* $Id: strutils.h,v 1.6 1995/10/22 21:41:14 tom Exp $ */
 
 /* scanint.c */
 char * scanint (char *string, int *int_);
 
 /* strabbr.c */
 int strabbr (char *tst_, char *ref_, int cmplen, int abbr);
+
+/* strclip.c */
+int strclip (char *inout, char *clip);
 
 /* strform2.c */
 void strform2 (char *out, int maxout, char *s1, int len1, char *s2, int len2);

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.14 1995/06/06 10:20:46 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.15 1995/10/22 22:07:44 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: flprot.c,v 1.14 1995/06/06 10:20:46 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	11 May 1984
  * Last update:
+ *		22 Oct 1995, DEC-C treats chars in 128-255 range different from
+ *			     VAX-C (in the latter, none are punctuation/alpha).
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (renamed 'alarm')
  *		05 Oct 1985, added key-argument to 'flist_help'.
@@ -137,7 +139,8 @@ tDIRCMD(flprot)
 	 * Note that if a field is unspecified, it is not altered.  When
 	 * complete, save this command for retrieval.
 	 */
-	if (!savecmd)	savecmd = calloc(1, CRT_COLS);
+	if (!savecmd)
+		savecmd = calloc(1, CRT_COLS);
 	if (no_edit)
 		sprintf (savecmd, "PROTECT %s", code_->dcl_text);
 	else
@@ -208,7 +211,7 @@ flprot_edit (
 		complete= FALSE,
 		cmdcol	= dirent_ccol(),
 		select	[4];		/* Override-flags for code-selection */
-	char	c, *c_, *d_,
+	char	c, d, *c_, *d_,
 		cmdbfr	[CRT_COLS];
 
 	if (!M_opt
@@ -255,7 +258,8 @@ flprot_edit (
 		case 2:	d_ = "GRP";	break;
 		case 3: d_ = "WLD";
 		}
-		for (c_ = &cmdbfr[cmdcol-1]; *d_; *c_++ = tohigh(*d_++));
+		for (c_ = &cmdbfr[cmdcol-1]; *d_; *c_++ = tohigh(*d_++))
+			/*EMPTY*/;
 
 		crt_text (cmdbfr, rline, 0);
 		crt_move (rline+1, k = ptbl[edit].col);
@@ -349,11 +353,12 @@ flprot_edit (
 		{
 			level = j/4;
 			c = ptbl[j].old;
-			c_ = &cmdbfr[ptbl[j].col-1];
-			if ((isalpha(*c_) && ispunct(c))
-			||  (ispunct(*c_) && isalpha(c)) )
+			d = toascii(cmdbfr[ptbl[j].col-1]); /* cf: 'tohigh()' */
+			if ((isalpha(d) && ispunct(c))
+			||  (ispunct(d) && isalpha(c)) )
 				select[level] = TRUE;
-			if (select[level]) didselect = TRUE;
+			if (select[level])
+				didselect = TRUE;
 		}
 
 		if (!didselect)
