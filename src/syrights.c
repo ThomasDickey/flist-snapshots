@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrights.c,v 1.4 1995/06/04 01:27:26 tom Exp $";
+static char *Id = "$Id: syrights.c,v 1.5 1995/10/19 10:35:36 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: syrights.c,v 1.4 1995/06/04 01:27:26 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	01 Aug 1984
  * Last update:
+ *		19 Oct 1995, casts needed for DEC-C on AXP.
  *		19 Feb 1995, sys utils prototypes
  *		05 Dec 1989, pass mask,word_num as args rather than vshift,
  *			     to accommodate VMS 5.1
@@ -36,9 +37,9 @@ static
 int	ret_len;
 
 static
-int	itmlst[] = {
+unsigned	itmlst[] = {	/* list of 'longword' */
 		ITEM(JPI$_CURPRIV,sizeof(QUAD)),
-		&priv_buf,	&ret_len,
+		(unsigned) &priv_buf,	(unsigned) &ret_len,
 		JPI$C_LISTEND
 		};
 

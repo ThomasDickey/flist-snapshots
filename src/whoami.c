@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: whoami.c,v 1.5 1995/06/04 01:33:36 tom Exp $";
+static char *Id = "$Id: whoami.c,v 1.6 1995/10/19 10:39:40 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: whoami.c,v 1.5 1995/06/04 01:33:36 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	29 Nov 1984
  * Last update:
+ *		19 Oct 1995, DEC-C clean-compile.
  *		18 Mar 1995, prototypes
  *		30 Sep 1985, use SYS$GETJPIw in VMS 4.x
  *		09 May 1985, return nonzero code if from system
@@ -34,6 +35,7 @@ static char *Id = "$Id: whoami.c,v 1.5 1995/06/04 01:33:36 tom Exp $";
 #include	<jpidef.h>
 #include	<string.h>
 
+#include	"rmsinit.h"
 #include	"whoami.h"
 
 int	whoami (char *name, int opt)
@@ -46,7 +48,7 @@ int	whoami (char *name, int opt)
 		short	buf_len,
 			code;
 		char	*buf_adr;
-		long	end_flag;
+		unsigned end_flag;
 		} itmlst;
 	struct	FAB	fab;
 	struct	NAM	nam;

@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	*Id = "$Id: sytrnlog.c,v 1.5 1995/06/04 01:27:52 tom Exp $";
+static	char	*Id = "$Id: sytrnlog.c,v 1.6 1995/10/19 10:39:40 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static	char	*Id = "$Id: sytrnlog.c,v 1.5 1995/06/04 01:27:52 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	11 Apr 1985
  * Last update:
+ *		19 Oct 1995, clean compile with DEC C.
  *		19 Feb 1995, str/sys utils prototypes
  *		11 Apr 1985
  *
@@ -19,6 +20,7 @@ static	char	*Id = "$Id: sytrnlog.c,v 1.5 1995/06/04 01:27:52 tom Exp $";
  */
 
 #include	<starlet.h>
+#include	<string.h>
 #include	<rms.h>
 #include	<iodef.h>
 #include	<descrip.h>

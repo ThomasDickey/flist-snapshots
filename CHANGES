@@ -1,3 +1,13 @@
+1995-10-19  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/sybintim.c, src/whoami.c: DEC-C clean-compile on AXP
+
+	* src/sytrnlog.c: include string.h
+
+	* src/syrename.c: clean-compile with DEC-C
+
+	* src/syrights.c: casts for DEC-C/AXP
+
 1995-06-06  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/browse.c: fix for BROWSE compiled standalone (missing defs)
