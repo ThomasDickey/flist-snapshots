@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flmore.c,v 1.5 1995/03/19 00:45:14 tom Exp $";
+static char *Id = "$Id: flmore.c,v 1.6 1995/06/06 10:20:46 tom Exp $";
 #endif
 
 /*
@@ -21,11 +21,15 @@ static char *Id = "$Id: flmore.c,v 1.5 1995/03/19 00:45:14 tom Exp $";
  */
 
 #include	<stdio.h>
+#include	<string.h>
 
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dircmd.h"
+#include	"dirseek.h"
 #include	"dds.h"
+
+extern	int	more (int argc, char **argv);
 
 import(filelist);
 

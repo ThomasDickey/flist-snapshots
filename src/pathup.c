@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: pathup.c,v 1.5 1995/06/04 22:55:56 tom Exp $";
+static char *Id = "$Id: pathup.c,v 1.7 1995/06/06 13:28:46 tom Exp $";
 #endif
 
 /*
@@ -34,6 +34,8 @@ static char *Id = "$Id: pathup.c,v 1.5 1995/06/04 22:55:56 tom Exp $";
 #include	<rms.h>
 
 #include	"bool.h"
+#include	"pathup.h"
+#include	"rmsinit.h"
 
 #include	"strutils.h"
 #include	"sysutils.h"

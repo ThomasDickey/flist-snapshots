@@ -1,3 +1,95 @@
+1995-06-06  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/browse.c: fix for BROWSE compiled standalone (missing defs)
+
+	* src/xabproui.c: prototyped
+
+	* src/syhour.c: first cut of DEC-C warnings (not done!)
+
+	* src/sygetsym.c: DEC-C warnings
+
+	* src/syfom.c: DEC-C (struct-foo vs FOO)
+
+	* src/sygetmsg.c: DEC-C warning
+
+	* src/sybintim.c: DEC-C warnings (descriptors)
+
+	* src/sysutils.h: corrected interface (DATENT)
+
+	* src/strutils.h: added strform1()
+
+	* src/strtrim.c, src/strwcmp.c: includes
+
+	* src/strform2.c: prototyped
+
+	* src/shoquota.c: DEC-C warnings
+
+	* src/snapshot.c: use DATENT
+
+	* src/rmslook.c: DEC-C warnings (casts)
+
+	* src/rmsio.c: DEC-C warnings; moved RFILE def to rmsio.h
+
+	* src/pathup.c: includes
+
+	* src/warning.h: RCS_BASE
+
+	* src/flist.h: rcs identifiers
+
+	* src/flist.h: split-out warning.h
+
+	* src/rmsinit.c, src/rmsinit.h: includes
+
+	* src/rmscc.c: prototyped
+
+	* src/nameheap.c: DEC-C warnings (use 'offsetof()')
+
+	* src/rabrfa.c: prototyped
+
+	* src/rabrfa.h: RCS_BASE
+
+	* src/pathdown.c: includes
+
+	* src/inspect.c: prototyped
+
+	* src/help.c: DEC-C warnings
+
+	* src/rmsio.h: moved RFILE def here
+
+	* src/rmscc.h: RCS_BASE
+
+	* src/isowner.c: prototyped
+
+	* src/getraw.c: DEC-C warnings
+
+	* src/xabproui.h: RCS_BASE
+
+	* src/getprot.c: casts/includes
+
+	* src/getpad.c, src/freelist.c: DEC-C warnings
+
+	* src/flsort.c: prototyped 'compare()'
+
+	* src/flshow.c: prototypes
+
+	* src/flscan.c: corrected prototypes of functions passed via pointer
+
+	* src/flrnam.c: DEC-C warnings
+
+	* src/dirseek.h: corrected 'for_each()' def
+
+	* src/flread.c: include dirread.h
+
+	* src/flmore.c, src/flprot.c, src/flfind.c: DEC-C warnings
+
+	* src/flnoid.c, src/flpage.c: includes
+
+	* src/fl.c: prototype flist_nest()
+
+	* src/fledit.c: corrected type of SAVEfile
+
+	* src/edtcmd.c: includes
+
 1995-06-05  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/fledit.c, src/fldump.c: DEC-C warnings

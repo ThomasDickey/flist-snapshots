@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: inspect.c,v 1.2 1985/06/16 01:57:20 tom Exp $";
+static char *Id = "$Id: inspect.c,v 1.3 1995/06/06 12:44:46 tom Exp $";
 #endif
 
 /*
@@ -29,22 +29,18 @@ static char *Id = "$Id: inspect.c,v 1.2 1985/06/16 01:57:20 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
-
-char	*ropen();
+#include	"rmsio.h"
 
 #define	LEGAL(c) (isascii(c) && ((c == '\b') || isspace(c) || isprint(c)))
 
-inspect (filespec, toscan)
-char	*filespec;
-int	toscan;
+int	inspect (char *filespec, int toscan)
 {
-int	j, c,
-	lenr,
-	mark,
-	success	= FALSE;
-char	*file_	= ropen (filespec, "r"),
-	z[1024];
-
+	int	j, c,
+		success	= FALSE;
+	long	lenr;
+	long	mark;
+	RFILE	*file_	= ropen (filespec, "r");
+	char	z[1024];
 
 	/*
 	 * We need at least one non-null record, with all legal-characters.

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sybintim.c,v 1.5 1995/06/04 02:07:02 tom Exp $";
+static char *Id = "$Id: sybintim.c,v 1.6 1995/06/06 13:43:34 tom Exp $";
 #endif
 
 /*
@@ -44,10 +44,10 @@ static	char	zeros[] = " 00:00:00.00";
 			/* 0123456789ab */
 
 int
-sysbintim (char *ci_, long *obfr)
+sysbintim (char *ci_, DATENT *obfr)
 {
-	char	bigbfr[MAXBFR];
-	char	midbfr[MAXBFR];
+	static	char	bigbfr[MAXBFR];	/* FIXME */
+	static	char	midbfr[MAXBFR];
 	$DESCRIPTOR(DSCx,bigbfr);
 	$DESCRIPTOR(midnite,midbfr);
 	long	base[2];

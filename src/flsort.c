@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.7 1995/06/04 01:07:38 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.9 1995/06/06 10:41:20 tom Exp $";
 #endif
 
 /*
@@ -75,16 +75,18 @@ static char *Id = "$Id: flsort.c,v 1.7 1995/06/04 01:07:38 tom Exp $";
  *		changes result directly from the sort.
  */
 
-#include	<lib$routines.h>
 #include	<stdlib.h>	/* declares 'qsort()' */
-#define	QSORT
-
-#include	<rmsdef.h>
 #include	<ctype.h>
+#include	<string.h>
+
+#include	<lib$routines.h>
+#include	<rmsdef.h>
 
 #include	"flist.h"
 #include	"dircmd.h"
 #include	"dds.h"
+
+#include	"sysutils.h"
 
 import(filelist); import(numfiles);
 import(A_opt);	import(D_opt);	import(M_opt);	import(O_opt);
@@ -159,11 +161,10 @@ static	int	sortopt,	/* copy of 'opt' */
 		sortord;	/* copy of 'order' */
 
 static
-int	compare(p1, p2)
-FLINK	**p1, **p2;
+int	compare(const void *p1, const void *p2)
 {
-	register FILENT	*f1	= &((*p1)->fk),
-			*f2	= &((*p2)->fk);
+	register FILENT	*f1	= &((*(FLINK **)p1)->fk),
+			*f2	= &((*(FLINK **)p2)->fk);
 	register int	cmp	= 0;
 
 	switch (sortopt)
@@ -346,30 +347,8 @@ tDIRCMD(flsort)
 	sortopt = opt;		/* set global needed in 'compare()' */
 	sortord = order;
 
-#ifdef	QSORT
 	qsort(filelist, numfiles, sizeof(filelist[0]), compare);
 	didsome++;	/* for this sort, always scroll to beginning */
-
-#else	not QSORT
-	/* old-code: selection sort */
-	for (j0 = 0; j0 < k0; j0++)
-	{
-		for (j1 = j0+1, got = j0; j1 < numfiles; j1++)
-		{
-			cmp = compare(&filelist[got], &filelist[j1]);
-			cmp = min(GTR, max(LSS, cmp));	/* 'strcmp' fix */
-			if (cmp == order)	got = j1;
-		}
-		if (got != j0)	/* If I found something to switch, do it */
-		{
-			FLINK	*tempfile;
-			tempfile	= filelist[j0];
-			filelist[j0]	= filelist[got];
-			filelist[got]	= tempfile;
-			didsome++;
-		}
-	}
-#endif	QSORT
 
 	/*
 	 * If I did a fixed-point search, find the new position of the entry,

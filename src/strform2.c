@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strform2.c,v 1.3 1995/02/19 18:18:49 tom Exp $";
+static char *Id = "$Id: strform2.c,v 1.4 1995/06/06 13:41:18 tom Exp $";
 #endif
 
 /*
@@ -19,6 +19,8 @@ static char *Id = "$Id: strform2.c,v 1.3 1995/02/19 18:18:49 tom Exp $";
  *		s2[]	= object/text portion
  *		len2	= length(s2), if > 0.
  */
+
+#include <string.h>
 
 #include "strutils.h"
 
@@ -51,9 +53,7 @@ strform2 (
  * Returns:	the space left in 'out[]' after the copy.
  */
 
-strform1 (out, maxout, s1, len1)
-char	out[], s1[];
-int	maxout, len1;
+int	strform1 (char *out, int maxout, char *s1, int len1)
 {
 	if (s1 && (maxout > 0))
 	{

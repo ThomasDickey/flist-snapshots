@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.13 1995/06/05 23:29:17 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.14 1995/06/06 10:20:46 tom Exp $";
 #endif
 
 /*
@@ -61,6 +61,7 @@ static char *Id = "$Id: flprot.c,v 1.13 1995/06/05 23:29:17 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"cmdstk.h"
 #include	"flist.h"
@@ -68,26 +69,28 @@ static char *Id = "$Id: flprot.c,v 1.13 1995/06/05 23:29:17 tom Exp $";
 #include	"getpad.h"
 #include	"getprot.h"
 #include	"dircmd.h"
+#include	"edtcmd.h"
+#include	"dirfind.h"
 #include	"dds.h"
 
 #include	"strutils.h"
 
-/*
- * External procedures and data:
- */
-static	int	flprot_one(int, int *);	/* function via 'dirfind'	*/
+extern	int	isowner(FILENT *z);
+
+static	int	flprot_edit (char *set_, int curfile);
+static	void	flprot_one(int, int *);	/* function via 'dirfind'	*/
 
 import(filelist);
 import(M_opt);
 
-static	*savecmd = nullC;	/* Text of option-code to process	*/
+static	char *	savecmd = nullC;	/* Text of option-code to process */
 
 tDIRCMD(flprot)
 {
 	FILENT	*z	= FK_(*curfile_);
-	DCLARG	*name_	= nullC,		/* => filename specification	*/
-		*code_	= nullC;		/* => protection-code		*/
-	int	no_edit	= FALSE,		/* TRUE iff code is specified	*/
+	DCLARG	*name_	= 0,		/* => filename specification	*/
+		*code_	= 0;		/* => protection-code		*/
+	int	no_edit	= FALSE,	/* TRUE iff code is specified	*/
 		flag;
 	char	msg	[CRT_COLS],
 		fullname[MAX_PATH];
@@ -155,10 +158,8 @@ tDIRCMD(flprot)
 /* <flprot_one>:
  * Process the protection code for a single file.
  */
-static int
-flprot_one (
-	int	j,
-	int	*flag_)
+static
+void	flprot_one (int j, int *flag_)
 {
 	int	status;
 	char	fullname[MAX_PATH];
@@ -195,7 +196,7 @@ typedef	struct	{
 static
 PTBL	ptbl[16];		/* protection-state-bits	*/
 
-int
+static int
 flprot_edit (
 	char	*set_,
 	int	curfile)

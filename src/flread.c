@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flread.c,v 1.5 1995/06/05 23:38:13 tom Exp $";
+static char *Id = "$Id: flread.c,v 1.6 1995/06/06 10:23:28 tom Exp $";
 #endif
 
 /*
@@ -41,6 +41,7 @@ static char *Id = "$Id: flread.c,v 1.5 1995/06/05 23:38:13 tom Exp $";
 #include	"dircmd.h"
 #include	"dds.h"
 #include	"dirent.h"
+#include	"dirread.h"
 
 tDIRCMD(flread)
 {

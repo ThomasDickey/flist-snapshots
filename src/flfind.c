@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flfind.c,v 1.7 1995/06/05 23:54:08 tom Exp $";
+static char *Id = "$Id: flfind.c,v 1.8 1995/06/06 10:18:44 tom Exp $";
 #endif
 
 /*
@@ -38,9 +38,11 @@ static char *Id = "$Id: flfind.c,v 1.7 1995/06/05 23:54:08 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<string.h>
 
 #include	"flist.h"
 #include	"dircmd.h"
+#include	"dirfind.h"
 #include	"dds.h"
 
 typedef	struct	{
@@ -92,7 +94,8 @@ tDIRCMD(flfind)
 	FindDCL->dcl_text = FindTXT;
 
 	next = dirfind (*curfile_, dircmd_dirflg(-1), pattern,
-			nullC, TRUE,		/* Need exactly one file */
+			(void(*)(int,int *))0,
+			TRUE, /* Need exactly one file */
 			FindFLG);
 
 	if (next == *curfile_)

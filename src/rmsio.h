@@ -1,10 +1,12 @@
-/* $Id: rmsio.h,v 1.6 1995/06/05 23:10:27 tom Exp $
+/* $Id: rmsio.h,v 1.8 1995/06/06 12:11:04 tom Exp $
  *
  * interface of rmsio.c
  */
 
 #ifndef	RMSIO_H
 #define	RMSIO_H
+
+#include	<rms.h>
 
 #define	sys(f)	status = f; if (!$VMS_STATUS_SUCCESS(status))
 
@@ -15,6 +17,14 @@
 	char	esa[NAM$C_MAXRSS],	rsa[NAM$C_MAXRSS]
 
 #define	RFILE	struct	_rmsio_file
+RFILE	{
+	struct	RAB	rab;
+	struct	FAB	fab;
+	struct	NAM	nam;
+	struct	XABFHC	xabfhc;
+	char	esa[NAM$C_MAXRSS],	/* expanded by SYS$PARSE	*/
+		rsa[NAM$C_MAXRSS];	/* result from SYS$SEARCH	*/
+	};
 
 extern	RFILE	*ropen (char *name_, char *mode_);
 extern	RFILE	*ropen2 (char *name_, char *dft_, char *mode_);
@@ -22,10 +32,10 @@ extern	int	erstat (RFILE *z, char *msg, int msglen);
 extern	void	rclear (void);
 extern	int	rclose (RFILE *z);
 extern	void	rerror (void);
-extern	int	rgetr ( RFILE * z,  char * bfr,  int maxbfr,  int *mark_);
-extern	int	rputr ( RFILE *z,  char *bfr,  int maxbfr);
+extern	int	rgetr (RFILE * z, char * bfr, int maxbfr, long *mark_);
+extern	int	rputr (RFILE *z, char *bfr, int maxbfr);
 extern	int	rseek (RFILE *z, int offset, int direction);
 extern	int	rsize (RFILE *z);
-extern	int	rtell (RFILE *z);
+extern	long	rtell (RFILE *z);
 
 #endif /* RMSIO_H */

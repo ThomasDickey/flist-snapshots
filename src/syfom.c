@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syfom.c,v 1.4 1995/06/04 01:18:40 tom Exp $";
+static char *Id = "$Id: syfom.c,v 1.5 1995/06/06 13:46:52 tom Exp $";
 #endif
 
 /*
@@ -27,13 +27,15 @@ static	char	bfr[256];
 static	char	*handle_ = 0;
 static	int	code	= 0;
 
-static void
-sysfom_x (
-struct {
+#define SYSFOM_DATA struct _sysfom_data
+SYSFOM_DATA {
 	short len;
 	short typ;
 	char  *c_;
-	} *dx_)
+	};
+
+static void
+sysfom_x (SYSFOM_DATA *dx_)
 {
 	int	len	= dx_->len;
 	char	*c_	= dx_->c_;

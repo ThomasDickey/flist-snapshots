@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: pathdown.c,v 1.4 1995/06/04 01:25:43 tom Exp $";
+static char *Id = "$Id: pathdown.c,v 1.6 1995/06/06 12:58:22 tom Exp $";
 #endif
 
 /*
@@ -33,14 +33,17 @@ static char *Id = "$Id: pathdown.c,v 1.4 1995/06/04 01:25:43 tom Exp $";
  *		and attempts to recur on the "[0,0]" name "000000".
  */
 
-#include	<starlet.h>
 #include	<stdio.h>
+#include	<string.h>
+
+#include	<starlet.h>
 #include	<rms.h>
 
 #include	"bool.h"
+#include	"pathup.h"
+#include	"rmsinit.h"
 
-pathdown (co_, ci_, name_)
-char	*co_, *ci_, *name_;
+int	pathdown (char	*co_, char *ci_, char *name_)
 {
 int	len;
 int	j,

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syhour.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
+static char *Id = "$Id: syhour.c,v 1.4 1995/06/06 13:56:06 tom Exp $";
 #endif
 
 /*
@@ -34,14 +34,14 @@ static char *Id = "$Id: syhour.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
 static	char	origin[] = "17-NOV-1858";
 
 unsigned
-syshour (long *q_)
+syshour (DATENT *q_)
 {
 	unsigned quad[2];
 	char	bfr[80];
 
-	if (q_[0] == 0)
+	if (!isOkDate(q_) == 0)
 		quad[0] = 0;
-	else if (q_[1] == -1)
+	else if (isBigDate(q_) == -1)
 		quad[0] = -1;
 	else
 	{

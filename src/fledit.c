@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.9 1995/06/05 23:44:24 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.12 1995/06/06 10:02:34 tom Exp $";
 #endif
 
 /*
@@ -67,15 +67,19 @@ static char *Id = "$Id: fledit.c,v 1.9 1995/06/05 23:44:24 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<signal.h>	/* for 'sleep()' */
+#include	<string.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"dclarg.h"
+#include	"flist.h"
 
 #include	"canopen.h"
 #include	"dds.h"
 #include	"dircmd.h"
 #include	"dirent.h"
 #include	"dds.h"
+#include	"pathup.h"
+#include	"scanver.h"
 
 #include	"strutils.h"
 
@@ -168,9 +172,9 @@ void	fledit_dir (
 	char	*xcmd_,
 	DCLARG	*xdcl_)
 {
-	FLINK	*fixed_	  = nullC;
-	FILENT	*SAVEfile = filelist,
-		*SAVEread = readlist;
+	FLINK	*fixed_	  = 0;
+	FLINK  **SAVEfile = filelist;
+	FILENT	*SAVEread = readlist;
 	DATENT	SAVEdchk  = datechek;
 	int	j,
 		SAVEpack  = pack_exit,
@@ -230,7 +234,7 @@ void	fledit_dir (
 	if (multi_quit <= 0)
 	{
 		if (pack_exit)	dds_pack (curfile_, TRUE);
-		dirent_width (nullC);
+		dirent_width ((FILENT *)0);
 		dds_all (PACKtopf, *curfile_);
 
 		if (fixed_) for (j = 0; j < numfiles; j++)
@@ -286,13 +290,13 @@ void	fledit_file (
 		oldver	= z->fvers,
 		rmode	= (xdcl_->dcl_text[0] == 'V'),	/* "EDIT" or "VIEW" */
 		width	= crt_width() - 6;	/* nominally 74	*/
+	static	char	sFMT1[]	= "%%s %%-%d.%ds";
 	char	fullname[MAX_PATH],
 		tstspec	[MAX_PATH],
 		*c_,
 		format	[sizeof(sFMT1)+6],
 		cmd	[(3*MAX_PATH)+CRT_COLS]; /* filenames, plus options */
 
-	static	char	sFMT1[]	= "%%s %%-%d.%ds";
 	static	char	*bad_type[] = {"EXE", "OBJ", "OLB"};
 	static	int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsinit.c,v 1.3 1995/06/04 01:03:55 tom Exp $";
+static char *Id = "$Id: rmsinit.c,v 1.4 1995/06/06 13:08:10 tom Exp $";
 #endif
 
 /*
@@ -14,7 +14,7 @@ static char *Id = "$Id: rmsinit.c,v 1.3 1995/06/04 01:03:55 tom Exp $";
  *		and directory lookup.
  */
 
-#include	<rms.h>
+#include	<string.h>
 
 #include	"rmsinit.h"
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.6 1995/06/05 22:59:53 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.8 1995/06/06 13:28:46 tom Exp $";
 #endif
 
 /*
@@ -73,12 +73,14 @@ static char *Id = "$Id: rmsio.c,v 1.6 1995/06/05 22:59:53 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
+#include	"warning.h"
+#include	"rabrfa.h"
 #include	"rmsio.h"
+#include	"rmsinit.h"
 #include	"sysutils.h"
 
 #define	DEFAULT_RSIZE	512
 
-#define	sys(f)	status = (f); if (status && !$VMS_STATUS_SUCCESS(status))
 #define	latch		if (!rmsio$err) rmsio$err = status
 #define	save_st		rmsio$err = status;
 
@@ -87,15 +89,6 @@ static char *Id = "$Id: rmsio.c,v 1.6 1995/06/05 22:59:53 tom Exp $";
 #define	ZERO(f)		sys(f)	{save_st; return(status);}
 
 #define	CHECK2(f)	sys(f)	{latch; goto failed;}
-
-RFILE	{
-	struct	RAB	rab;
-	struct	FAB	fab;
-	struct	NAM	nam;
-	struct	XABFHC	xabfhc;
-	char	esa[NAM$C_MAXRSS],	/* expanded by SYS$PARSE	*/
-		rsa[NAM$C_MAXRSS];	/* result from SYS$SEARCH	*/
-	};
 
 /*
  * Module-level data:
@@ -142,9 +135,9 @@ RFILE	*ropen2 (char *name_, char *dft_, char *mode_)
 	int	len;
 
 	rmsinit_fab (&zFAB, &zNAM, dft_, name_);
-	rmsinit_nam (&zNAM, &z->rsa, &z->esa);
+	rmsinit_nam (&zNAM, z->rsa, z->esa);
 
-	zFAB.fab$l_xab = &z->xabfhc;
+	zFAB.fab$l_xab = (char *)&z->xabfhc;
 	z->xabfhc = cc$rms_xabfhc;
 
 	zRAB = cc$rms_rab;
@@ -210,7 +203,7 @@ int	rgetr (
 	RFILE *	z,		/* file-descriptor pointer	*/
 	char *	bfr,		/* buffer to load		*/
 	int	maxbfr,		/* ...its size			*/
-	int	*mark_)		/* file-address of buffer	*/
+	long	*mark_)		/* file-address of buffer	*/
 {
 	long	status;
 	int	len	= -1;
@@ -268,7 +261,7 @@ failed:
  * Return the record-file-address translated into an offset value,
  * compatible with the 'ftell' usage.
  */
-int	rtell (RFILE *z)
+long	rtell (RFILE *z)
 {
 	return (rabrfa_get (&zRAB));
 }
@@ -364,8 +357,10 @@ int	rsize (RFILE *z)
 	struct	XABFHC	*xab_;
 	int	size;
 
-	if (isBLOCK)	return (512);
-	if (xab_ = zFAB.fab$l_xab)
+	if (isBLOCK)
+		return (512);
+
+	if ((xab_ = (struct XABFHC *)(zFAB.fab$l_xab)) != 0)
 	{
 		while (xab_)
 		{
@@ -374,7 +369,7 @@ int	rsize (RFILE *z)
 				if (size = xab_->xab$w_lrl)
 					return (size);
 			}
-			xab_ = xab_->xab$l_nxt;
+			xab_ = (struct XABFHC *)(xab_->xab$l_nxt);
 		}
 	}
 	return (DEFAULT_RSIZE);

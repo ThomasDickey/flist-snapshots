@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getpad.c,v 1.3 1995/02/19 00:55:37 tom Exp $";
+static char *Id = "$Id: getpad.c,v 1.4 1995/06/06 11:47:52 tom Exp $";
 #endif
 
 /*
@@ -43,7 +43,11 @@ static char *Id = "$Id: getpad.c,v 1.3 1995/02/19 00:55:37 tom Exp $";
  *		<fin> is a final character in the range 40-7E.
  */
 
+#include	<string.h>
+
+#include	"crt.h"
 #include	"getpad.h"
+#include	"getraw.h"
 
 typedef	struct	{
 	char	*s;
@@ -160,5 +164,5 @@ getpad_look (int min, int max)
 int
 getpad_read(void)
 {
-	return (*c_++ = raw = getraw(0,1,0));
+	return (*c_++ = raw = getraw());
 }

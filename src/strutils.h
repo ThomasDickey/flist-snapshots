@@ -1,4 +1,4 @@
-/* $Id: strutils.h,v 1.4 1995/05/29 01:00:46 tom Exp $ */
+/* $Id: strutils.h,v 1.5 1995/06/06 13:41:18 tom Exp $ */
 
 /* scanint.c */
 char * scanint (char *string, int *int_);
@@ -8,6 +8,7 @@ int strabbr (char *tst_, char *ref_, int cmplen, int abbr);
 
 /* strform2.c */
 void strform2 (char *out, int maxout, char *s1, int len1, char *s2, int len2);
+int strform1 (char *out, int maxout, char *s1, int len1);
 
 /* strlcpy.c */
 char *strlcpy (char *optr, char *iptr);

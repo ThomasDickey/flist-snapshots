@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.7 1995/06/05 23:20:13 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.8 1995/06/06 12:03:26 tom Exp $";
 #endif
 
 /*
@@ -35,20 +35,22 @@ static char *Id = "$Id: getraw.c,v 1.7 1995/06/05 23:20:13 tom Exp $";
  *		(2-3) - Discussion of escapes vs read-terminator
  */
 
-#include	<starlet.h>
-#include	<lib$routines.h>
 #include	<stdlib.h>
 #include	<ctype.h>
+#include	<string.h>
+
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<ssdef.h>
-#include	<string.h>
 #include	<stsdef.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"flist.h"
 #include	"getraw.h"
 #include	"rmsio.h"
+#include	"rmscc.h"
 
 /*
  * Local definitions:
@@ -58,8 +60,6 @@ static char *Id = "$Id: getraw.c,v 1.7 1995/06/05 23:20:13 tom Exp $";
 
 /* patch: Should I use 'lib$get_ef' ? */
 #define	ef2	2
-
-#define	CTL(c)	(037 & (c))
 
 #define	QA(efn,func,b,len,t)\
 	efn,		/* Event flag number		*/\
@@ -75,16 +75,19 @@ static char *Id = "$Id: getraw.c,v 1.7 1995/06/05 23:20:13 tom Exp $";
 
 typedef	struct	{ short	sts, count; long device; } IOSB;
 
-typedef	struct	{
-	struct	CFP	*nest;	/* linked-list to nest	*/
-	char	*file,	/* File-pointer			*/
-		*text;	/* => I/O buffer		*/
-	int	mark;	/* = record-address		*/
-	short	size,	/* I/O buffer size		*/
-		rlen,	/* = length of current record	*/
-		used,	/* number of chars used so far	*/
-		iscc;	/* TRUE if format is carriage-control */
-	}	CFP;
+#undef  CFP
+#define	CFP	struct _cmd_fp
+
+CFP	{
+	CFP	*nest;		/* linked-list to nest	*/
+	RFILE	*file;		/* File-pointer			*/
+	char	*text;		/* => I/O buffer		*/
+	long	mark;		/* = record-address		*/
+	short	size;		/* I/O buffer size		*/
+	short	rlen;		/* = length of current record	*/
+	short	used;		/* number of chars used so far	*/
+	short	iscc;		/* TRUE if format is carriage-control */
+	};
 
 #define	CFP_TEXT(n)	cfp->text[cfp->n]
 

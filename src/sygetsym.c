@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetsym.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
+static char *Id = "$Id: sygetsym.c,v 1.4 1995/06/06 13:52:24 tom Exp $";
 #endif
 
 /*
@@ -23,11 +23,15 @@ static char *Id = "$Id: sygetsym.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
  * Returns:	TRUE iff a symbol was found.
  */
 
+#include	<string.h>
+
 #include	<rms.h>
 #include	<stsdef.h>
 #include	<descrip.h>
 
 #include	"sysutils.h"
+
+extern unsigned long lib$get_symbol (struct dsc$descriptor_s *sym, struct dsc$descriptor_s *ret, short *ret_len_w);
 
 int
 sysgetsym (char *co_, char *ci_, int len)

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.8 1995/06/05 23:59:54 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.9 1995/06/06 10:38:54 tom Exp $";
 #endif
 
 /*
@@ -20,10 +20,13 @@ static char *Id = "$Id: flshow.c,v 1.8 1995/06/05 23:59:54 tom Exp $";
  *		04 May 1985
  */
 
-#include	<starlet.h>
-#include	<lib$routines.h>
 #include	<ctype.h>
 #include	<string.h>
+#include	<unixlib.h>	/* for 'getuid()' */
+
+#include	<starlet.h>
+#include	<lib$routines.h>
+#include	<descrip.h>
 #include	<stsdef.h>
 
 #include	"flist.h"
@@ -33,6 +36,10 @@ static char *Id = "$Id: flshow.c,v 1.8 1995/06/05 23:59:54 tom Exp $";
 #include	"dds.h"
 
 #include	"sysutils.h"
+
+extern	int	more(int argc, char **argv);
+extern	char	*dired_release(void);
+extern	void	shoquota(char *);
 
 import(filelist);	import(numfiles);
 
@@ -46,8 +53,8 @@ static	void	flshow_lis (int curfile);
 tDIRCMD(flshow)
 {
 #define	len_date	21
-	long	date[2],
-		j, total, total2;	/* misc variables used in commands */
+	DATENT	date;
+	long	j, total, total2;	/* misc variables used in commands */
 	char	bfr[CRT_COLS+MAX_PATH];
 
 	switch (xdcl_->dcl_text[0])
@@ -58,7 +65,7 @@ tDIRCMD(flshow)
 
 	case 'D':		/* Display current date, time	*/
 		sys$gettim (date);
-		sysasctim (bfr, date, len_date);
+		sysasctim (bfr, &date, len_date);
 		flist_tell ("Current date: %s", bfr);
 		break;
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: nameheap.c,v 1.6 1995/06/05 11:54:16 tom Exp $";
+static char *Id = "$Id: nameheap.c,v 1.7 1995/06/06 13:02:56 tom Exp $";
 #endif
 
 /*
@@ -35,7 +35,9 @@ static char *Id = "$Id: nameheap.c,v 1.6 1995/06/05 11:54:16 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<stddef.h>	/* 'offsetof()' */
 #include	<stdio.h>
+#include	<string.h>
 
 #include	"nameheap.h"
 #include	"textlink.h"
@@ -167,8 +169,8 @@ void	nameheap_clr (int old_refs, void **heap)
  */
 void	nameheap_add (int refs, char *text)
 {
-	TEXTLINK *P = (TEXTLINK *)0;
-	char	*C = text - ((char *)P->text);
+	TEXTLINK *P = (TEXTLINK *) 0;
+	void	*C = text - offsetof(TEXTLINK, text);
 	P = (TEXTLINK *) C;
 	P->refs |= refs;
 }

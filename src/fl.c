@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.18 1995/06/05 23:38:13 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.19 1995/06/06 10:05:38 tom Exp $";
 #endif
 
 /*
@@ -646,7 +646,10 @@ void	flist_log (char *format, ...)
 /*
  * Make available the nesting-level:
  */
-flist_nest () {return (nesting_lvl); }
+int	flist_nest (void)
+{
+	return (nesting_lvl);
+}
 
 /* <flist_opts>:
  * Process options for either the main entry, or for EDIT-directory (subset).

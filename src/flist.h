@@ -1,4 +1,5 @@
-/*
+/* $Id: flist.h,v 1.7 1995/06/06 13:13:06 tom Exp $
+ *
  * Title:	flist.h - misc
  * Author:	Thomas E. Dickey
  * Created:	04 May 1984
@@ -17,6 +18,7 @@
 
 #include	"bool.h"
 #include	"crt.h"
+#include	"warning.h"
 
 #define	CTL(c)	(037 & c)
 #define	is_PAD(c)	(c >= 256 && c < 512)
@@ -25,7 +27,6 @@ extern	void	clrbeep (void);
 extern	void	clrwarn (void);
 extern	int	didbeep (void);
 extern	int	didwarn (void);
-extern	void	error (int status, char *msg_);
 extern	void	fledit_pack (void);
 extern	void	flist_chdir (char *path);
 extern	void	flist_date (int curfile, int opt);
@@ -36,11 +37,11 @@ extern	void	flist_info (char *format, ...);
 extern	char*	flist_lis (char *format, ...);
 extern	void	flist_log (char *format, ...);
 extern	void	flist_move (int *curfile_, int ref, int code);
+extern	int	flist_nest (void);
 extern	void	flist_quit (int status);
 extern	int	flist_sysmsg (unsigned status);
 extern	void	flist_tell (char *format, ...);
 extern	void	set_beep (void);
-extern	void	warn (char *format, ...);
 extern	void	warn2 (char *format, ...);
 
 #ifdef $DESCRIPTOR

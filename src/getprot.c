@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getprot.c,v 1.5 1995/06/04 01:25:33 tom Exp $";
+static char *Id = "$Id: getprot.c,v 1.6 1995/06/06 11:51:36 tom Exp $";
 #endif
 
 /*
@@ -32,6 +32,8 @@ static char *Id = "$Id: getprot.c,v 1.5 1995/06/04 01:25:33 tom Exp $";
  * Returns:	If nonzero, the RMS-status indicating the first failure.
  */
 
+#include	<string.h>
+
 #include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
@@ -43,6 +45,8 @@ static char *Id = "$Id: getprot.c,v 1.5 1995/06/04 01:25:33 tom Exp $";
 
 #include	"bool.h"
 #include	"getprot.h"
+#include	"rmsinit.h"
+#include	"xabproui.h"
 
 int	getprot (
 	GETPROT	*ret_,
@@ -75,7 +79,7 @@ int	getprot (
 	rmsinit_fab (&fab, &nam, 0, name_);
 	rmsinit_nam (&nam, rsa, esa);
 	xabpro		= cc$rms_xabpro;
-	fab.fab$l_xab	= &xabpro;
+	fab.fab$l_xab	= (char *)&xabpro;
 
 	mask = group = member = 0;	/* If 0, mask is ok	*/
 
@@ -108,18 +112,18 @@ int	getprot (
 				status = sys$assign (&DSC_name, &chnl, 0, 0);
 
 				fibDSC.dsc$w_length = sizeof(FIB);
-				fibDSC.dsc$a_pointer = &fib;
+				fibDSC.dsc$a_pointer = (char *)&fib;
 				memset (&fib, 0, sizeof(FIB));
 				memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
 				memset (atr, 0, sizeof(atr));
 				atr[0].atr$w_type = ATR$C_UIC;
 				atr[0].atr$w_size = ATR$S_UIC;
-				atr[0].atr$l_addr = uic_vec;
+				atr[0].atr$l_addr = (char *)uic_vec;
 
 				atr[1].atr$w_type = ATR$C_FPRO;
 				atr[1].atr$w_size = ATR$S_FPRO;
-				atr[1].atr$l_addr = &mask;
+				atr[1].atr$l_addr = (char *)&mask;
 
 				status = sys$qiow (
 					0, chnl, IO$_ACCESS, &iosb, 0, 0,

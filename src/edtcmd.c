@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.11 1995/05/28 22:03:28 tom Exp $";
+static char *Id = "$Id: edtcmd.c,v 1.12 1995/06/06 09:44:14 tom Exp $";
 #endif
 
 /*
@@ -21,10 +21,12 @@ static char *Id = "$Id: edtcmd.c,v 1.11 1995/05/28 22:03:28 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"cmdstk.h"
 #include	"getpad.h"
+#include	"getraw.h"
 #include	"edtcmd.h"
 
 #include	"strutils.h"

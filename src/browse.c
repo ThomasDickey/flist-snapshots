@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.15 1995/06/05 23:38:13 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.17 1995/06/06 15:41:16 tom Exp $";
 #endif
 
 /*
@@ -147,6 +147,9 @@ static char *Id = "$Id: browse.c,v 1.15 1995/06/05 23:38:13 tom Exp $";
 
 #ifdef main_incl
 #include	"flist.h"
+#else
+#define	CTL(c)	(037 & c)
+#include	"warning.h"
 #endif
 
 static	void	more_0_bg (short *lpp_, short *width_);
@@ -218,7 +221,6 @@ static	void	more_show (char *format, ...);
 
 #define	STRVCMP	strvcmp(find_bfr, &i_bfr[inx], lstate_end-inx)
 
-#define	CTL(c)	(037 & (c))
 #define	BELL	CTL('G')
 #define	RUBOUT	'\177'
 #define	toshift(c)	(iscntrl(c) ? ((c) | 0100) : (c))
@@ -382,7 +384,7 @@ char	**argv)
 	dcl_ = dcl_->dcl_next;	/* Skip over program-name token	*/
 #endif
 
-	if (dclopt (msg, dcl_, &opts, sizeof(opts)))
+	if (dclopt (msg, dcl_, (DCLOPT *)&opts, sizeof(opts)))
 	{
 		warn (msg);
 		return;
@@ -1747,7 +1749,7 @@ void	more_getr (void)
 	int	len	= 0;
 	int	size	= i_size;
 	long	*rfa_	= &rstate.rfa;
-	static	int	dummy_rfa;
+	static	long	dummy_rfa;
 	char	*s_;
 
 	rstate_len = 0;
