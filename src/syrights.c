@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrights.c,v 1.3 1995/02/19 18:14:01 tom Exp $";
+static char *Id = "$Id: syrights.c,v 1.4 1995/06/04 01:27:26 tom Exp $";
 #endif
 
 /*
@@ -20,6 +20,7 @@ static char *Id = "$Id: syrights.c,v 1.3 1995/02/19 18:14:01 tom Exp $";
  *		word_num= 0 (for the one-bit masks!)
  */
 
+#include	<starlet.h>
 #include	<jpidef.h>
 
 #include	"sysutils.h"

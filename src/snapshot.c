@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.4 1995/02/19 18:20:28 tom Exp $";
+static char *Id = "$Id: snapshot.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 #endif
 
 /*
@@ -17,6 +17,7 @@ static char *Id = "$Id: snapshot.c,v 1.4 1995/02/19 18:20:28 tom Exp $";
  *		formatting to make it readable on a printer.
  */
 
+#include	<starlet.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	<ctype.h>

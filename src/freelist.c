@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: freelist.c,v 1.2 1984/05/28 13:36:06 tom Exp $";
+static char *Id = "$Id: freelist.c,v 1.3 1995/06/04 19:36:18 tom Exp $";
 #endif
 
 /*
@@ -15,14 +15,16 @@ static char *Id = "$Id: freelist.c,v 1.2 1984/05/28 13:36:06 tom Exp $";
  *		entries actually were.)
  */
 
+#include "freelist.h"
+
 typedef	struct	{
 	struct	ENTRY	*next;
 	}	ENTRY;
 
-freelist (first_)
-ENTRY	*first_;
+void	freelist (void *list)
 {
-ENTRY	*next_;
+	ENTRY	*first_ = (ENTRY *)list;
+	ENTRY	*next_;
 
 	while (first_)
 	{

@@ -1,3 +1,151 @@
+1995-06-04  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/descrip.mms: comments
+
+	* src/dirent.c: DEC-C warnings (missing includes, prototypes, casts)
+
+	* src/dclarg.c: DEC-C warnings (nullC != struct-pointer)
+
+	* src/browse.c: some DEC-C warnings (not done!)
+
+	* src/rmsio.h: try to make this work after <stdio.h>
+
+	* src/dirseek.h: RCS_BASE
+
+	* src/dirseek.c: prototyped
+
+	* src/dirent.h: mods to DATENT, GETPROT config.
+	added prototypes for dirhigh, diropen, diropen2
+	corrected some struct-pointer types
+
+	* src/dirfind.h: RCS_BASE
+
+	* src/dclopt.h: use 'void *' instead of 'char *'
+
+	* src/dirread.c: prototyped
+
+	* src/dirpath.c: "fix" warnings about nameheap interface
+
+	* src/nameheap.h: use "void *" instead of "char *"
+
+	* src/diropen.c, src/pathup.c, src/dirfind.c, src/dirhigh.c: prototyped
+
+	* src/scanver.h: corrected prototype of 'scanver()'
+
+	* src/scanver.c: prototyped
+
+	* src/sysutils.h: modified interface of sysasctim to use DATENT
+
+	* src/datent.h: RCS_BASE
+
+	* src/getprot.h: added prototype for cmpprot()
+
+	* src/cmpprot.c: prototyped
+
+	* src/dirread.h: RCS_BASE
+
+	* src/dircmd.h: added prototype for dirchk()
+
+	* src/dirdata.c: include rms
+
+	* src/dclarg.h:
+	DEC-C doesn't _believe_ that struct-foo is the same as FOO.
+
+	* src/dircmd.c: DEC-C warnings
+
+	* src/dirchk.c: prototype
+
+	* src/dirarg.c: prototypes
+
+	* src/freelist.c: prototyped
+
+	* src/freelist.h: RCS_BASE
+
+	* src/debrief.c, src/dds.c, src/dclopt.c: DEC-C warnings
+
+	* src/dclinx.c: DEC-C warning
+
+	* src/dclchk.c: DEC-C warnings
+
+	* src/crt.c: supplied missing prototypes
+
+	* src/chrcmd.c: ifdef'd some unused code
+
+	* src/putraw.c: corrected prototype of lib$put_screen()
+
+	* src/alarm.c: fix prototype of lib$put_screen
+
+	* src/fledit.c: 'canopen()' had too many args
+
+1995-06-03  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/sybintim.c, src/syasctim.c: prototypes
+
+	* src/highver.c: prototyped
+
+	* src/scanver.h: RCS_BASE
+
+	* src/sydelete.c, src/help.c: prototyped
+
+	* src/canopen.h: RCS_BASE
+
+	* src/dclarg.c: prototype sys$, rmsinit
+	removed getsyiw hack
+
+	* src/crt.h:
+	added prototypes for crt__NL0, putraw, sound_alarm, termsize
+
+	* src/crt.c: prototypes
+
+	* src/dclopt.h: added prototype for dclarea()
+
+	* src/dclarea.c: prototyped
+
+	* src/fl.c: prototype whoami, dclarea
+
+	* src/fledit.c: prototype canopen, strutils, dirent_dft
+
+	* src/dds.c: prototype lib$, canopen
+
+	* src/canopen.c: prototype
+
+	* src/alarm.c: prototyped
+
+	* src/browse.c: include whoami.h
+
+	* src/whoami.h: RCS_BASE
+
+	* src/whoami.c, src/termsize.c: includes
+
+	* src/putraw.c: prototyped
+
+	* src/sytrnlog.c, src/syrights.c: include starlet
+
+	* src/syrename.c, src/pathup.c, src/rmsio.c, src/rmslook.c, src/snapshot.c, src/pathdown.c, src/getprot.c:
+	prototype sys$
+
+	* src/getraw.c, src/flshow.c: prototype sys$, lib$
+
+	* src/dirpath.c, src/dirseek.c: prototype sys$
+
+	* src/dirent.c: prototype sys$/lib$
+
+	* src/setctrl.c: prototyped
+
+	* src/sygetmsg.c: prototype lib$
+
+	* src/syfom.c: prototypes
+
+	* src/flsort.c: prototype lib$
+
+	* src/rmsinit.c: prototyped
+
+	* src/acpcopy.h: RCS_BASE
+
+	* src/dircmd.c: added interface for acpcopy
+
+	* src/acpcopy.c: DEC-C warnings
+
 1995-05-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/cmdstk.c: DEC-C warnings

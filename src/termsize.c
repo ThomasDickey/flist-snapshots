@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: termsize.c,v 1.3 1995/02/19 01:32:54 tom Exp $";
+static char *Id = "$Id: termsize.c,v 1.4 1995/06/04 01:31:55 tom Exp $";
 #endif
 
 /*
@@ -38,6 +38,8 @@ static char *Id = "$Id: termsize.c,v 1.3 1995/02/19 01:32:54 tom Exp $";
  *		arguments.
  */
 
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<dcdef.h>
 #include	<ttdef.h>
 #include	<tt2def.h>
@@ -45,6 +47,8 @@ static char *Id = "$Id: termsize.c,v 1.3 1995/02/19 01:32:54 tom Exp $";
 #include	<descrip.h>
 #include	<iodef.h>
 #include	<stsdef.h>
+
+#include	"crt.h"
 
 /*
  * Local definitions:

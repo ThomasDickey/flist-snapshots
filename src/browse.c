@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.11 1995/05/28 19:48:00 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.12 1995/06/04 01:34:52 tom Exp $";
 #endif
 
 /*
@@ -136,6 +136,7 @@ static char *Id = "$Id: browse.c,v 1.11 1995/05/28 19:48:00 tom Exp $";
 #include	"dclopt.h"
 #include	"names.h"
 #include	"dspc.h"
+#include	"whoami.h"
 
 #include	"strutils.h"
 

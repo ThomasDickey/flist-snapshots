@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: alarm.c,v 1.4 1995/05/29 00:26:38 tom Exp $";
+static char *Id = "$Id: alarm.c,v 1.6 1995/06/04 17:08:44 tom Exp $";
 #endif
 
 /*
@@ -13,10 +13,14 @@ static char *Id = "$Id: alarm.c,v 1.4 1995/05/29 00:26:38 tom Exp $";
  *		because we wish to avoid using the VMS-C run-time support.
  */
 
-#include	<lib$routines.h>
 #include	<descrip.h>
 
-sound_alarm ()
+#include	"crt.h"
+
+extern	void	lib$put_screen(struct dsc$descriptor_s *p);
+
+void
+sound_alarm (void)
 {
 	static $DESCRIPTOR(DSC_bell,"\007");
 

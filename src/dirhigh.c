@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirhigh.c,v 1.5 1995/05/28 21:58:08 tom Exp $";
+static char *Id = "$Id: dirhigh.c,v 1.6 1995/06/04 22:42:18 tom Exp $";
 #endif
 
 /*
@@ -29,20 +29,21 @@ static char *Id = "$Id: dirhigh.c,v 1.5 1995/05/28 21:58:08 tom Exp $";
  *		assume that the file does not exist.
  */
 
+#include	<rms.h>
+
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dds.h"
 
 import(filelist); import(numfiles); import(numdlets);
 
-int	dirhigh (filespec)
-char	filespec[];
+int	dirhigh (char *filespec)
 {
-FILENT	zold, znew;
-char	highspec[MAX_PATH];
-int	j,
-	lower	= -1,			/* Set if version to "delete"	*/
-	same	= -1;			/* Set if version to update	*/
+	FILENT	zold, znew;
+	char	highspec[MAX_PATH];
+	int	j,
+		lower	= -1,		/* Set if version to "delete"	*/
+		same	= -1;		/* Set if version to update	*/
 
 	dirent_chop (&zold, filespec, 0);
 	znew	   = zold;

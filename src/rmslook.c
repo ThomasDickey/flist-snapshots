@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.4 1995/02/19 18:44:40 tom Exp $";
+static char *Id = "$Id: rmslook.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 #endif
 
 /*
@@ -28,6 +28,7 @@ static char *Id = "$Id: rmslook.c,v 1.4 1995/02/19 18:44:40 tom Exp $";
  * Returns:	The worst error found while reading the directory entry.
  */
 
+#include	<starlet.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<stsdef.h>

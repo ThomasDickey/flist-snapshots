@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirchk.c,v 1.5 1995/03/19 01:51:58 tom Exp $";
+static char *Id = "$Id: dirchk.c,v 1.6 1995/06/04 19:44:26 tom Exp $";
 #endif
 
 /*
@@ -39,13 +39,13 @@ static char *Id = "$Id: dirchk.c,v 1.5 1995/03/19 01:51:58 tom Exp $";
 #include	<stdio.h>
 #include	<ctype.h>
 
+#include	<rms.h>
+
 #include	"flist.h"
 #include	"names.h"
 #include	"dircmd.h"
 
-dirchk (cmd_, dcl_, state, flg)
-DCLARG	*dcl_;
-int	state, flg;
+int	dirchk (char *cmd_, DCLARG *dcl_, int state, int flg)
 {
 DCLARG	*d_;
 int	numinp	= 0,		/* number of items in subfield-1	*/

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syfom.c,v 1.3 1995/02/19 18:19:34 tom Exp $";
+static char *Id = "$Id: syfom.c,v 1.4 1995/06/04 01:18:40 tom Exp $";
 #endif
 
 /*
@@ -18,6 +18,9 @@ static char *Id = "$Id: syfom.c,v 1.3 1995/02/19 18:19:34 tom Exp $";
  *			   timer-control-block.
  */
 
+#include	<lib$routines.h>
+#include	<string.h>
+
 #include "sysutils.h"
 
 static	char	bfr[256];
@@ -25,15 +28,15 @@ static	char	*handle_ = 0;
 static	int	code	= 0;
 
 static void
-sysfom_x (dx_)
+sysfom_x (
 struct {
 	short len;
 	short typ;
 	char  *c_;
-	} *dx_;
+	} *dx_)
 {
-int	len	= dx_->len;
-char	*c_	= dx_->c_;
+	int	len	= dx_->len;
+	char	*c_	= dx_->c_;
 
 	strncpy (bfr, dx_->c_, len);
 	bfr[len] = '\0';
@@ -43,8 +46,7 @@ char	*c_	= dx_->c_;
  * Main procedure:
  */
 void
-sysfom (co_)
-char	*co_;
+sysfom (char *co_)
 {
 	if ((co_ == 0) || (handle_ == 0))
 		lib$init_timer(&handle_);

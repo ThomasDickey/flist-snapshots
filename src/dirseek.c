@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirseek.c,v 1.4 1995/02/19 18:22:49 tom Exp $";
+static char *Id = "$Id: dirseek.c,v 1.6 1995/06/04 23:57:30 tom Exp $";
 #endif
 
 /*
@@ -36,13 +36,17 @@ static char *Id = "$Id: dirseek.c,v 1.4 1995/02/19 18:22:49 tom Exp $";
  *		a warning message is generated.
  */
 
+#include	<starlet.h>
 #include	<stdio.h>
 #include	<rms.h>
 
 #include	"flist.h"
 #include	"dclarg.h"
+#include	"dirfind.h"
+#include	"dirread.h"
+#include	"dirseek.h"
 
-char	*dirread_path();
+#include	"rmsinit.h"
 
 #define	RMS_STUFF	struct	FAB	fab;\
 			struct	NAM	nam;\
@@ -50,21 +54,17 @@ char	*dirread_path();
 			char	rsa[NAM$C_MAXRSS],	/* resultant 	*/\
 				esa[NAM$C_MAXRSS]	/* expanded (search)*/
 
-dirseek (cmd_, d_, mfld, need)
-char	*cmd_;
-DCLARG	*d_;
-int	mfld, need;
+int	dirseek ( char *cmd_, DCLARG *d_, int mfld, int need)
 {
-static
-char	sFMT1[]	= "File(s) not found: %%.%ds";
-char	format	[sizeof(sFMT1)+6];
+	static	char	sFMT1[]	= "File(s) not found: %%.%ds";
+	static	char	format	[sizeof(sFMT1)+6];
 
 	for (; d_; d_ = d_->dcl_next)
 	{
 		if (isopt (d_->dcl_text[0]))	continue;
 		else if (d_->dcl_mfld != mfld)	continue;
 
-		if (! dirseek_spec (d_, FALSE, nullC))
+		if (! dirseek_spec (d_, FALSE, 0))
 		{
 			if (need)
 			{
@@ -76,19 +76,16 @@ char	format	[sizeof(sFMT1)+6];
 	}
 	return (TRUE);
 }
-
+
 /* <dirseek_spec>:
  * Seek all occurrences of a particular filespec.  (This is a common procedure,
  * shared with 'flscan').
  */
-dirseek_spec (spec, implicit, for_each)
-DCLARG	*spec;
-int	implicit,
-	(*for_each)();
+int	dirseek_spec (DCLARG *spec, int implicit, tDIRSEEK)
 {
-RMS_STUFF;
-int	inx, rcode;
-char	*p_;
+	RMS_STUFF;
+	int	inx, rcode;
+	char	*p_;
 
 	/*
 	 * If the 'implicit' argument is set on entry, check the pathname to
@@ -127,16 +124,14 @@ char	*p_;
 		rcode = dirseek_spec2 (spec->dcl_text, for_each);
 	return (rcode);
 }
-
+
 /* <dirseek_spec2>:
  * Seek all occurrences of a particular filespec.  (This is a common procedure,
  * shared with 'flscan').
  */
-dirseek_spec2 (spec, for_each)
-char	*spec;
-int	(*for_each)();
+int	dirseek_spec2 (char *spec, tDIRSEEK)
 {
-RMS_STUFF;
+	RMS_STUFF;
 
 	rmsinit_fab (&fab, &nam, 0, spec);
 	rmsinit_nam (&nam, rsa, esa);
@@ -146,7 +141,7 @@ RMS_STUFF;
 		for (;;)
 		{
 			status = sys$search(&fab);
-			if (for_each)
+			if (for_each != 0)
 				(*for_each) (rsa, nam.nam$b_rsl, status);
 			if (status == RMS$_NMF)
 				return (TRUE);

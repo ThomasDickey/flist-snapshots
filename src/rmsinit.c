@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsinit.c,v 1.2 1984/09/07 00:35:58 tom Exp $";
+static char *Id = "$Id: rmsinit.c,v 1.3 1995/06/04 01:03:55 tom Exp $";
 #endif
 
 /*
  * Title:	rmsinit.c
  * Author:	Thomas E. Dickey
  * Created:	05 Sep 1984 (from 'mv', 17 May 1984)
- * Last update:	06 Sep 1984
+ * Last update:
+ *		03 Jun 1994, prototyped
  *
  * Function:	These procedures do the most common type of RMS initialization,
  *		that of FAB- and NAM-block initialization for filename parsing
@@ -14,6 +15,8 @@ static char *Id = "$Id: rmsinit.c,v 1.2 1984/09/07 00:35:58 tom Exp $";
  */
 
 #include	<rms.h>
+
+#include	"rmsinit.h"
 
 /*
  * Initialize a FAB block:
@@ -23,11 +26,8 @@ static char *Id = "$Id: rmsinit.c,v 1.2 1984/09/07 00:35:58 tom Exp $";
  *	dna_	=> string to use (if nonnull) in parse-default
  *	fna_	=> string to use (if nonnull) for input filename
  */
-rmsinit_fab(fab_, nam_, dna_, fna_)
-struct	FAB *fab_;
-struct	NAM *nam_;
-char	*dna_,
-	*fna_;
+void
+rmsinit_fab(struct FAB *fab_, struct NAM *nam_, char *dna_, char *fna_)
 {
 	*fab_ = cc$rms_fab;
 
@@ -52,9 +52,8 @@ char	*dna_,
  *	rsa_	=> "resultant string" address (loaded by SYS$SEARCH)
  *	esa_	=> "expanded string" address (loaded by SYS$PARSE)
  */
-rmsinit_nam (nam_, rsa_, esa_)
-struct	NAM *nam_;
-char	*rsa_, *esa_;
+void
+rmsinit_nam (struct NAM *nam_, char *rsa_, char *esa_)
 {
 	*nam_ = cc$rms_nam;
 

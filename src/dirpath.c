@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.6 1995/05/28 21:11:43 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.8 1995/06/04 23:08:06 tom Exp $";
 #endif
 
 /*
@@ -64,6 +64,9 @@ static char *Id = "$Id: dirpath.c,v 1.6 1995/05/28 21:11:43 tom Exp $";
 #include	<stdlib.h>
 #include	<string.h>
 
+#include	<starlet.h>
+#include	<rms.h>
+
 #include	"flist.h"
 #include	"nameheap.h"
 #include	"dirent.h"
@@ -97,9 +100,9 @@ void	dirpath_init (int level)
 {
 	if (level <= 1)
 	{
-		pathlist = nullC; 	/* (no paths in list yet)	*/
-		namelist = nullC;	/* (no items in name-list)	*/
-		filelink = nullC;	/* (no items in file-linked-list)*/
+		pathlist = 0; 	/* (no paths in list yet)	*/
+		namelist = 0;	/* (no items in name-list)	*/
+		filelink = 0;	/* (no items in file-linked-list)*/
 	}
 	nameheap_set (level);
 }
@@ -113,9 +116,10 @@ void	dirpath_free (int level)
 	PATHNT	*P;
 	int	key;
 
-	nameheap_clr (level, &pathlist);
-	nameheap_clr (level, &namelist);
-	nameheap_clr (level, &filelink);
+	/* FIXME: void vs TEXTLINK */
+	nameheap_clr (level, (void *)&pathlist);
+	nameheap_clr (level, (void *)&namelist);
+	nameheap_clr (level, (void *)&filelink);
 	SORT(P,key);
 }
 
@@ -160,8 +164,8 @@ PATHNT	*dirpath_sort (
 	else
 		pathlist  = nxtP;
 	nxtP->path_next = newP;
-	nxtP->path_text = nameheap(text, len, &namelist);
-	nxtP->path_trim = nameheap(trim, len, &namelist);
+	nxtP->path_text = nameheap(text, len, (void *)&namelist);
+	nxtP->path_trim = nameheap(trim, len, (void *)&namelist);
 	newP = nxtP;
 
 	/* Update sort-key after each insertion: */
@@ -206,7 +210,7 @@ void	dirpath_rename (FILENT *znew, FILENT *zold)
 		strcpy (&bfr[newlen], &P->path_text[oldlen]);
 		len = strlen(bfr);
 #define	ADJ(p)	nameheap_add(P->path_refs,\
-			P->p = nameheap(bfr,len,&namelist));
+			P->p = nameheap(bfr, len, (void *)&namelist));
 		ADJ(path_text);
 		bfr[len-1] = ' ';
 		ADJ(path_trim);

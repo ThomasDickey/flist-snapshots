@@ -1,4 +1,4 @@
-/* $Id: dirent.h,v 1.11 1995/05/28 21:24:56 tom Exp $ */
+/* $Id: dirent.h,v 1.12 1995/06/04 23:26:52 tom Exp $ */
 
 /*
  * Title:	dirent.h
@@ -49,7 +49,10 @@
 #ifndef DIRENT_H
 #define DIRENT_H
 
+#include	<rms.h>
+
 #include	"names.h"
+
 #define	MAX_NAME	39	/* length of filename		*/
 #define	MAX_TYPE	39	/* length of filetype		*/
 #define	WILD_VER	(-32768)
@@ -66,7 +69,7 @@
  * independently of the filename, and to save space:
  */
 typedef	struct my_pathnt {
-	char	*path_next;	/* => next entry in chain	*/
+	struct my_pathnt *path_next;	/* => next entry in chain	*/
 	unsigned
 	char	path_refs;	/* level-reference flag (TEXTLINK) */
 	short	path_sort;	/* sort key, used in 'dirsrt.c'	*/
@@ -95,25 +98,8 @@ typedef	struct my_pathnt {
 #define	zDELETED(z)	(z->fstat == RMS$_FNF)
 #define	DELETED(inx)	(FK(inx).fstat == RMS$_FNF)
 
-/*
- * VMS date+time is stored as a 64-bit integer.  Use my own mode to avoid
- * long sequence of include-files for RMS.  Cover up diffs between VAX and AXP
- * by macros that use the address of the date.
- */
-#ifdef __alpha
-#define isOkDate(p) ((*p) != 0)
-#define isBigDate(p) ((*p) == -1)
-#define makeBigDate(p) (*p) = -1
-typedef __int64 DATENT;
-#else
-typedef struct	my_datent {
-	unsigned
-	long	date64[2];
-	} DATENT;
-#define isOkDate(p) ((p)->date64[1] != 0)
-#define isBigDate(p) ((p)->date64[1] == -1)
-#define makeBigDate(p) (p)->date64[1] = -1
-#endif
+#include "datent.h"
+#include "getprot.h"
 
 /*
  * FLIST stores one of these for each filename:
@@ -148,15 +134,12 @@ typedef	struct my_filent {
 	short	f_recl;		/* Record-length			*/
 	unsigned
 	short	fidnum[3];	/* File-identifier			*/
-	/*
-	 * 'fprot', 'f_grp' and 'f_mbm' align the same as the GETPROT
-	 * structure, used in 'cmpprot()'.
-	 */
-	unsigned
-	short	fprot,		/* File protection (DIR/PROT)		*/
-		f_grp,		/* Owner's GROUP			*/
-		f_mbm;		/* Owner's MEMBER number		*/
+	GETPROT	f_getprot;
 	} FILENT;
+
+#define	fprot	f_getprot.p_mask
+#define	f_grp	f_getprot.p_grp
+#define	f_mbm	f_getprot.p_mbm
 
 /*
  * Patch: There appears to be no automatic way to get 'sizeof(FILENT.fpath_)'
@@ -172,7 +155,7 @@ typedef	struct my_filent {
  * constructed from the '.file_refs' mask (see NAMEHEAP).
  */
 typedef	struct my_flink {
-	char	*file_next;	/* => next entry in chain	*/
+	struct my_flink	*file_next; /* => next entry in chain	*/
 	unsigned
 	char	file_refs;	/* level-reference flag (TEXTLINK) */
 	FILENT	fk;		/* file-data-block		*/
@@ -271,5 +254,9 @@ extern	int	dirent_width (FILENT *z);
 #ifdef	DCLARG_H
 extern	int	dirent (DCLARG *arg_);
 #endif
+
+extern	int	dirhigh (char *filespec);
+extern	int	diropen (char *name_);
+extern	int	diropen2 (FILENT *z);
 
 #endif	/* DIRENT_H */

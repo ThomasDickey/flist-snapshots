@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.5 1995/05/28 19:14:17 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.6 1995/06/04 01:25:33 tom Exp $";
 #endif
 
 /*
@@ -35,6 +35,8 @@ static char *Id = "$Id: getraw.c,v 1.5 1995/05/28 19:14:17 tom Exp $";
  *		(2-3) - Discussion of escapes vs read-terminator
  */
 
+#include	<starlet.h>
+#include	<lib$routines.h>
 #include	<stdlib.h>
 #include	<ctype.h>
 #include	<descrip.h>

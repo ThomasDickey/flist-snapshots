@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclopt.c,v 1.7 1995/03/19 01:46:28 tom Exp $";
+static char *Id = "$Id: dclopt.c,v 1.8 1995/06/04 19:17:42 tom Exp $";
 #endif
 
 /*
@@ -60,7 +60,7 @@ static char *Id = "$Id: dclopt.c,v 1.7 1995/03/19 01:46:28 tom Exp $";
 #include	<string.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"flist.h"
 #include	"dclarg.h"
 #include	"dclopt.h"
 
@@ -177,7 +177,7 @@ int	dclopt (
 			t_++;	/* Skip past punctuation	*/
 			if (size == 8)
 			{
-			    if (sysbintim (t_, v_))
+			    if (sysbintim (t_, (long *)v_) != 0)
 				err_ = e_dateq;
 			}
 			else if (size < 8)

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetmsg.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
+static char *Id = "$Id: sygetmsg.c,v 1.4 1995/06/04 01:19:09 tom Exp $";
 #endif
 
 /*
@@ -22,6 +22,7 @@ static char *Id = "$Id: sygetmsg.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
  *		tests, e.g., for "'!AS'" => "parms".
  */
 
+#include	<lib$routines.h>
 #include	<string.h>
 #include	<ssdef.h>
 #include	<descrip.h>

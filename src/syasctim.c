@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syasctim.c,v 1.3 1995/02/19 17:32:46 tom Exp $";
+static char *Id = "$Id: syasctim.c,v 1.4 1995/06/04 02:06:13 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: syasctim.c,v 1.3 1995/02/19 17:32:46 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984 (broke out of 'dirent.c')
  * Last update:
- *		19 Feb 1995, prototypes
+ *		03 Jun 1995, prototypes
  *		02 Aug 1984
  *
  * Function:	Use VMS run-time library routine to convert a 64-bit date
@@ -24,6 +24,7 @@ static char *Id = "$Id: syasctim.c,v 1.3 1995/02/19 17:32:46 tom Exp $";
  *		ilen	=  length to convert.
  */
 
+#include	<lib$routines.h>
 #include	<descrip.h>
 
 void

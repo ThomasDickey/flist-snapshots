@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.5 1995/03/19 00:42:10 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.6 1995/06/04 01:57:14 tom Exp $";
 #endif
 
 /*
@@ -112,6 +112,7 @@ static char *Id = "$Id: dclarg.c,v 1.5 1995/03/19 00:42:10 tom Exp $";
  *			COMMAND	FILE.TYP.TYP  (except as an illegal filename)
  */
 
+#include	<starlet.h>
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<rms.h>
@@ -121,6 +122,7 @@ static char *Id = "$Id: dclarg.c,v 1.5 1995/03/19 00:42:10 tom Exp $";
 #include	"bool.h"
 #include	"crt.h"
 #include	"dclarg.h"
+#include	"rmsinit.h"
 
 /*
  * Forward declarations and external procedures:
@@ -243,18 +245,6 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 
 		    rmsinit_nam (&nam, rsa, esa);
 		    status = sys$parse(&fab);
-
-/********/	    {
-struct	{ short	len,op;	char *adr; long end; } itm;
-short	iosb[4];
-long	sid = 0;
-
-	itm.len	= 4;	itm.op	= 0x201 /*SYI$_SID*/;
-	itm.adr	= &sid;	itm.end	= 0;
-
-	sys$getsyiw (0,0,0, &itm, iosb, 0,0);
-
-/********/	    }
 
 		    /*
 		     * Use the most recent name as a default name for the next

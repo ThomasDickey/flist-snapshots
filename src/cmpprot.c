@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmpprot.c,v 1.3 1995/02/19 18:14:40 tom Exp $";
+static char *Id = "$Id: cmpprot.c,v 1.4 1995/06/04 21:46:54 tom Exp $";
 #endif
 
 /*
@@ -31,6 +31,7 @@ static char *Id = "$Id: cmpprot.c,v 1.3 1995/02/19 18:14:40 tom Exp $";
 
 #include	<rms.h>
 #include	<prvdef.h>
+#include	<unixlib.h>	/* getuid/getgid */
 
 #include	"bool.h"
 #include	"getprot.h"
@@ -39,16 +40,16 @@ static char *Id = "$Id: cmpprot.c,v 1.3 1995/02/19 18:14:40 tom Exp $";
 
 #define	ACCESS(m)	(((mask << m) & pr_->p_mask) == 0)
 
-cmpprot (pr_, mode)
-GETPROT	*pr_;			/* Data to test			*/
-char	*mode;			/* List of access rights needed	*/
+int	cmpprot (
+	GETPROT	*pr_,		/* Data to test			*/
+	char	*mode)		/* List of access rights needed	*/
 {
 #define	PATCH	0xffff
-unsigned
-short	mask	= 0,		/* Start assuming nothing	*/
-	grp	= PATCH & getgid(),	/* Group-id			*/
-	mbm	= PATCH & getuid();	/* ...and member-id		*/
-char	*c_	= mode;
+	unsigned
+	short	mask	= 0,		/* Start assuming nothing	*/
+		grp	= PATCH & getgid(),	/* Group-id		*/
+		mbm	= PATCH & getuid();	/* ...and member-id	*/
+	char	*c_	= mode;
 
 	if (sysrights(PRV$M_BYPASS,0))				return (TRUE);
 

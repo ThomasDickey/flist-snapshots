@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.16 1995/05/28 22:58:26 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.17 1995/06/04 01:47:29 tom Exp $";
 #endif
 
 /*
@@ -100,6 +100,7 @@ static char *Id = "$Id: fl.c,v 1.16 1995/05/28 22:58:26 tom Exp $";
 #include	"getpad.h"
 #include	"dclarg.h"		/* FIXME */
 #include	"flist.h"
+#include	"whoami.h"
 
 #include	"dds.h"
 #include	"dirent.h"
@@ -119,8 +120,7 @@ static char *Id = "$Id: fl.c,v 1.16 1995/05/28 22:58:26 tom Exp $";
 /*
  * External functions and data:
  */
-extern	char	*dclarea(),
-		*dired_release(),
+extern	char	*dired_release(),
 		*dirent_path(),
 		*ropen2();
 

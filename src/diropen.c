@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: diropen.c,v 1.3 1984/08/25 17:49:32 tom Exp $";
+static char *Id = "$Id: diropen.c,v 1.4 1995/06/04 22:56:18 tom Exp $";
 #endif
 
 /*
@@ -35,16 +35,20 @@ static char *Id = "$Id: diropen.c,v 1.3 1984/08/25 17:49:32 tom Exp $";
  *		message is emitted via 'warn'.
  */
 
+#include	<rms.h>
+
 #include	"bool.h"
+#include	"flist.h"	/* for 'error()' */
 #include	"dirent.h"
 #include	"getprot.h"
 
-diropen (name_)
-char	*name_;
+extern	int	pathup (char *co_, char *ci_);
+
+int	diropen (char *name_)
 {
-GETPROT	prot;
-char	parent	[MAX_PATH],
-	*msg	= 0;
+	GETPROT	prot;
+	char	parent	[MAX_PATH],
+		*msg	= 0;
 
 	if (! pathup (parent, name_))
 		msg = "Illegal pathname";
@@ -67,8 +71,7 @@ char	parent	[MAX_PATH],
  * entry which is being tested.  Use this entrypoint to hide knowledge of the
  * relationship to 'pathlist'.
  */
-diropen2 (z)
-FILENT	*z;
+int	diropen2 (FILENT *z)
 {
 	return (diropen ( zPATHOF(z) ));
 }

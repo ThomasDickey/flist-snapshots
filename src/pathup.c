@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: pathup.c,v 1.3 1995/02/19 18:13:41 tom Exp $";
+static char *Id = "$Id: pathup.c,v 1.5 1995/06/04 22:55:56 tom Exp $";
 #endif
 
 /*
@@ -28,6 +28,7 @@ static char *Id = "$Id: pathup.c,v 1.3 1995/02/19 18:13:41 tom Exp $";
  * Returns:	TRUE if no error was detected.
  */
 
+#include	<starlet.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	<rms.h>
@@ -37,8 +38,7 @@ static char *Id = "$Id: pathup.c,v 1.3 1995/02/19 18:13:41 tom Exp $";
 #include	"strutils.h"
 #include	"sysutils.h"
 
-pathup (co_, ci_)
-char	*co_, *ci_;
+int	pathup (char *co_, char *ci_)
 {
 	int	len,	j,	first,	rootUIC = TRUE;
 	struct	FAB	fab;
