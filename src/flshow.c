@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.10 1995/10/21 18:58:04 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.11 1995/10/25 15:51:02 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flshow.c,v 1.10 1995/10/21 18:58:04 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1985 (from main program)
  * Last update:
+ *		25 Oct 1995, long/unsigned/DATENT fixes
  *		18 Mar 1995, prototypes
  *		04 Nov 1988, added expired date
  *		12 Nov 1985, added "?OWNER"
@@ -65,7 +66,7 @@ tDIRCMD(flshow)
 		break;
 
 	case 'D':		/* Display current date, time	*/
-		sys$gettim (date);
+		sys$gettim (&date);
 		sysasctim (bfr, &date, len_date);
 		flist_tell ("Current date: %s", bfr);
 		break;

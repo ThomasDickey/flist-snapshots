@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.11 1995/10/24 01:43:52 tom Exp $
+# $Id: descrip.mms,v 1.12 1995/10/25 18:04:52 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -8,7 +8,7 @@
 #	VAX-C version 3.2
 # and
 #	OpenVms 6.1
-#	DEC-C
+#	DEC-C 4.1
 
 ########(source-lists)#########################################################
 C_SRC	= -
@@ -261,6 +261,7 @@ MODULES	= -
 
 B	= [-.bin]
 L	= [-.lib]
+DOC	= [-.doc]
 
 DIRS	= -
 	[-]bin.dir -
@@ -298,6 +299,7 @@ all :
         @ if macro.nes."" then macro = f$extract(0,f$length(macro)-1,macro)+ ")"
         $(MMS)$(MMSQUALIFIERS)'macro' $(B)BROWSE.EXE
         $(MMS)$(MMSQUALIFIERS)'macro' $(B)FLIST.EXE
+        $(MMS)$(MMSQUALIFIERS)'macro' $(H)
 	@ write sys$output "** made $@"
 #
 # I've built on an Alpha with CC_OPTIONS set to
@@ -363,6 +365,14 @@ $(B)FLIST.EXE : FL.OBJ, $(LIB_DEP) $(DIRS)
 
 $(H) : $(H)(FLIST,BROWSE)
 	@ write sys$output "** made $@"
+
+$(H)(BROWSE) : $(DOC)BROWSE.HLP
+	if f$search("$(H)") .eqs. "" then library/create/help $(H)
+	library/replac/help $(H) $(DOC)BROWSE
+
+$(H)(FLIST) : $(DOC)FLIST.HLP
+	if f$search("$(H)") .eqs. "" then library/create/help $(H)
+	library/replac/help $(H) $(DOC)FLIST
 
 ###############################################################################
 # Nested includes

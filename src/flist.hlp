@@ -37,8 +37,8 @@
  specifying time values.  You can also use the  keywords  TODAY,  TOMORROW,
  and YESTERDAY.
 2 /COMMAND           
- Read commands from the specified file (default  FLIST.CMD  in  your  login
- directory).  On end-of-file, resume interactively.
+ Read commands from the specified file (default "SYS$LOGIN:FLIST.CMD").  On
+ end-of-file, resume interactively.
 2 /CREATED           
  Selects files based on their date of creation.  This qualifier is relevant
  only  when used with the /BEFORE or /SINCE qualifier.  Use of the /CREATED
@@ -52,7 +52,7 @@
  Suppress all fields other than the filename (*3 faster)
 2 /LOG               
  Record commands, informational- and error- messages in a log-file (default
- FLIST.LOG in your login directory).
+ "SYS$LOGIN:FLIST.LOG").
 2 /MODIFIED          
  Selects files according to the dates on which  they  were  last  modified.
  This  qualifier  is  relevant  only  when  used with the /BEFORE or /SINCE
@@ -148,9 +148,9 @@
   -------------------------------------------------------------------------
 3 Keywords
 
-  Column  keywords  include:   ALLOC,  BACKUP,  CREATED,  DATE,  EXPIRED,
-  FORMAT,  ID,  LENGTH,  MASK,  OWNER,  PATH, REVISED, SIZE, USER and XAB
-  (record attributes).  For example, the standard display is:
+  Column keywords include:  ALLOC, BACKUP,  CREATED,  DATE,  FORMAT,  ID,
+  LENGTH,   MASK,   OWNER,   PATH,  REVISED  and  SIZE  and  XAB  (record
+  attributes).  For example, the standard display is:
 
                           /columns size date mask
 
@@ -338,7 +338,6 @@
   /SBackup       /RBackup      Sort by BACKUP date
   /SCreated      /RCreated     Sort by CREATED date
   /SDate         /RDate        Sort by DATE
-  /SExpired      /RExpired     Sort by EXPIRED date
   /SFormat       /RFormat      Sort by FORMAT (of file)
   /SHour         /RHour        Sort by HOUR (of current "/D" mode)
   /SId           /RId          Sort by file-id
@@ -347,7 +346,6 @@
   /SOwner        /ROwner       Sort by OWNER
   /SRevised      /RRevised     Sort by REVISED date
   /SSize         /RSize        Sort by SIZE
-  /SUser         /RUser        Sort by file owner's user name
   /SWeek         /RWeek        Sort by day of WEEK
   /SXab          /RXab         Sort by record attributes
   -------------------------------------------------------------------------

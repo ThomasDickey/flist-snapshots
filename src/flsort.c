@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.10 1995/10/25 01:06:51 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.11 1995/10/25 13:39:18 tom Exp $";
 #endif
 
 /*
@@ -306,7 +306,7 @@ tDIRCMD(flsort)
 		}
 	}
 
-	if (numfiles > 24)	dds_while ("Sorting...");
+	if (numfiles > 24)	dds_while (nullC);
 
 	/*
 	 * If we do a sort-by-hour, update the '.fhour' components to match

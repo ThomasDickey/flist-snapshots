@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirfind.c,v 1.7 1995/06/06 00:48:54 tom Exp $";
+static char *Id = "$Id: dirfind.c,v 1.8 1995/10/25 15:40:18 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: dirfind.c,v 1.7 1995/06/06 00:48:54 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 Jul 1984 (broke off search code from 'flfind.c')
  * Last update:
+ *		25 Oct 1995, corrected missing check for deleted-files in
+ *			     'dirfind()'.
  *		18 Mar 1995, prototypes
  *		14 Sep 1985, enhanced 'strwcmp' to process "..." in pathname.
  *			     Therefore, we need substitute a "*" into the
@@ -156,6 +158,8 @@ char	Fpath[MAX_PATH],	Fname[MAX_NAME+1],	Ftype[MAX_TYPE+1];
 		}
 		LOOP
 		{
+			if (DELETED(j))		continue;
+			dds_while(nullC);
 			if (FK(j).fmisc & BIT_1)
 			{
 				(*each)(j, &flag);
