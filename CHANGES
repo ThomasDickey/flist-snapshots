@@ -1,3 +1,11 @@
+1984-12-29  Thomas E. Dickey
+
+	* src/strskps.c: RCS_BASE
+
+1984-12-29  Thomas E. Dickey
+
+	* src/strskps.c: rcs-identifiers
+
 1984-12-26  Thomas E. Dickey
 
 	* src/dclwild.c: RCS_BASE
