@@ -1,3 +1,11 @@
+1984-09-01  Thomas E. Dickey
+
+	* src/strabbr.c: RCS_BASE
+
+1984-09-01  Thomas E. Dickey
+
+	* src/strabbr.c: rcs-identifiers
+
 1984-08-29  Thomas E. Dickey
 
 	* src/strtrim.c: RCS_BASE
