@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.12 1995/10/27 11:42:06 tom Exp $
+$! $Id: build.com,v 1.14 2004/11/05 21:29:08 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -13,15 +13,24 @@ $	set := set
 $	set symbol/scope=(nolocal,noglobal)
 $	mylib := [-.lib]flist.olb
 $
-$	axp  = f$getsyi("HW_MODEL").ge.1024
 $	OPTS = ""
+$	LIBS = ",SYS$LIBRARY:VAXCRTL/Lib,SYS$LIBRARY:VAXCCURSE/Lib"
 $
-$ if axp
+$ if f$getsyi("ARCH_NAME") .eqs. "Alpha"
 $ then
 $! assume we have DEC C
-$!	CFLAGS = "/standard=VAXC /extern_model=common_block"
 $	CFLAGS = "/prefix_library_entries=all_entries"
-$ else
+$ endif
+$
+$ if f$getsyi("ARCH_NAME") .eqs. "IA64"
+$ then
+$! assume we have DEC C
+$	CFLAGS = "/prefix_library_entries=all_entries"
+$	LIBS = ""
+$ endif
+$
+$ if f$getsyi("ARCH_NAME") .eqs. "VAX"
+$ then
 $! we have either VAX C or DEC C
 $	CFLAGS = ""
 $	OPTS = ",VMSSHARE.OPT/OPTIONS"
@@ -145,14 +154,6 @@ $
 $	call	build FLIST FL
 $	call	build BROWSE BROWSE
 $
-$	if f$search("CRM.*") .nes. ""
-$	then
-$		call cc_lib  CRS
-$		call cc_lib  PIPEFUNC
-$		call compile CRM
-$		call build   SORTX CRM
-$	endif
-$
 $	if f$search("[-.bin]helplib.hlb") .eqs. ""
 $	then
 $		write sys$output "** making help-library"
@@ -206,7 +207,7 @@ $	target = "[-.bin]''p1'.exe"
 $	if f$search("''target'") .eqs. ""
 $	then
 $		write sys$output "** linking ''p1'"
-$		link/map='p1/exec='target 'p2,normal/opt,'mylib/lib,SYS$LIBRARY:VAXCRTL/Lib,SYS$LIBRARY:VAXCCURSE/Lib
+$		link/map='p1/exec='target 'p2,normal/opt,'mylib/lib 'libs
 $	endif
 $ endsubroutine
 $
