@@ -1,3 +1,11 @@
+1985-06-25  Thomas E. Dickey
+
+	* src/syhour.c: RCS_BASE
+
+1985-06-25  Thomas E. Dickey
+
+	* src/syhour.c: rcs-identifiers
+
 1985-06-23  Thomas E. Dickey
 
 	* src/highver.c: RCS_BASE
