@@ -1,3 +1,11 @@
+1984-11-12  Thomas E. Dickey
+
+	* src/getpass.c, src/putraw.c: RCS_BASE
+
+1984-11-12  Thomas E. Dickey
+
+	* src/putraw.c: rcs-identifiers
+
 1984-11-06  Thomas E. Dickey
 
 	* src/strvcmp.c: RCS_BASE
