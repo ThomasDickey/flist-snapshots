@@ -1,3 +1,35 @@
+1984-11-05  Thomas E. Dickey
+
+	* src/strvcpy.c: RCS_BASE
+
+1984-11-05  Thomas E. Dickey
+
+	* src/strvcpy.c: rcs-identifiers
+
+1984-11-05  Thomas E. Dickey
+
+	* src/trace.c: RCS_BASE
+
+1984-11-05  Thomas E. Dickey
+
+	* src/trace.c: rcs-identifiers
+
+1984-11-02  Thomas E. Dickey
+
+	* src/fibdef.h: RCS_BASE
+
+1984-11-02  Thomas E. Dickey
+
+	* src/fibdef.h: rcs-identifiers
+
+1984-11-02  Thomas E. Dickey
+
+	* src/atrdef.h: RCS_BASE
+
+1984-11-02  Thomas E. Dickey
+
+	* src/atrdef.h: rcs-identifiers
+
 1984-10-24  Thomas E. Dickey
 
 	* src/cmpblk.c: RCS_BASE
