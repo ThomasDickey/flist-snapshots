@@ -1,3 +1,11 @@
+1984-11-06  Thomas E. Dickey
+
+	* src/strvcmp.c: RCS_BASE
+
+1984-11-06  Thomas E. Dickey
+
+	* src/strvcmp.c: rcs-identifiers
+
 1984-11-05  Thomas E. Dickey
 
 	* src/strvcpy.c: RCS_BASE
