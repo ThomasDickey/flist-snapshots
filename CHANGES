@@ -1,3 +1,15 @@
+1985-02-04  Thomas E. Dickey
+
+	* src/crs.c: RCS_BASE
+
+1985-01-28  Thomas E. Dickey
+
+	* src/ttrace.c: RCS_BASE
+
+1985-01-28  Thomas E. Dickey
+
+	* src/ttrace.c: rcs-identifiers
+
 1985-01-27  Thomas E. Dickey
 
 	* src/snapshot.c: RCS_BASE
