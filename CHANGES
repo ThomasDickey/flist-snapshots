@@ -1,3 +1,11 @@
+1985-09-24  Thomas E. Dickey
+
+	* src/debrief.c: RCS_BASE
+
+1985-09-24  Thomas E. Dickey
+
+	* src/debrief.c: rcs-identifiers
+
 1985-09-19  Thomas E. Dickey
 
 	* src/dirchk.c: RCS_BASE
