@@ -1,3 +1,23 @@
+1985-09-19  Thomas E. Dickey
+
+	* src/dirchk.c: RCS_BASE
+
+1985-09-19  Thomas E. Dickey
+
+	* src/dirchk.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirchk.c: rcs-identifiers
+
+1985-09-18  Thomas E. Dickey
+
+	* src/dircmd2.h: RCS_BASE
+
+1985-09-18  Thomas E. Dickey
+
+	* src/dircmd2.h: make program names consistent:FLIST,BROWSE
+
+	* src/dircmd2.h: rcs-identifiers
+
 1985-09-14  Thomas E. Dickey
 
 	* src/dirfind.c: RCS_BASE
