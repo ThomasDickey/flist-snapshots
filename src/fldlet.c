@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldlet.c,v 1.4 1995/03/19 00:16:07 tom Exp $";
+static char *Id = "$Id: fldlet.c,v 1.5 1995/05/28 20:01:46 tom Exp $";
 #endif
 
 /*
@@ -282,7 +282,7 @@ flpurg_one (int inx, int *flag_)
 		for (j = 0; j < numfiles; j++)
 		{
 			if (DELETED(j))				continue;
-			if (cmpblk (z, FK_(j), FILENT_vers_size)) continue;
+			if (memcmp (z, FK_(j), FILENT_vers_size)) continue;
 			if (z->fvers <= FK(j).fvers)		continue;
 
 			num_try++;

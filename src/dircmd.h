@@ -1,4 +1,4 @@
-/* $Id: dircmd.h,v 1.2 1995/03/19 02:00:00 tom Exp $
+/* $Id: dircmd.h,v 1.3 1995/05/28 00:24:04 tom Exp $
  *
  * public interface of dircmd.c (and functions tabulated there)
  */
@@ -36,5 +36,14 @@ extern	tDIRCMD(flset_mark);	/* Set mark (selection) flag		*/
 extern	tDIRCMD(flshow);	/* Process "SHOW"/"?" commands		*/
 extern	tDIRCMD(flsort);	/* Process sort-commands		*/
 extern	tDIRCMD(not_impl);	/* patch				*/
+
+extern	char	*dirarg (DCLARG **dcl__, int curfile, char *argstr, char *command, int omit);
+extern	int	dircmd_dirflg (int flag);
+extern	VCMD2*	dircmd_full (int cmdnum);
+extern	int	dircmd_vcmd2 (char *cmd_, int len);
+extern	int	dircmd_ask (int curfile, char *msg_);
+extern	void	dircmd_init (void);
+extern	int	dircmd_select (int val);
+extern	void	dircmd (void);
 
 #endif	/* DIRCMD_H */

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.7 1995/03/18 20:03:25 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.11 1995/05/28 19:48:00 tom Exp $";
 #endif
 
 /*
@@ -9,7 +9,8 @@ static char *Id = "$Id: browse.c,v 1.7 1995/03/18 20:03:25 tom Exp $";
  *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
- *		19 Feb 1995, prototyped
+ *		28 May 1995, use stdarg instead of VARARGS hack.
+ *		27 May 1995, prototyped
  *		18 Feb 1995	port to AXP (renamed 'alarm').
  *		24 Feb 1989	disable /COMMAND when invoked from FLIST.
  *				added LOGFILE/LOGARGS hooks to integrate with
@@ -119,6 +120,7 @@ static char *Id = "$Id: browse.c,v 1.7 1995/03/18 20:03:25 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<stdarg.h>
 #include	<string.h>
 
 #include	"rmsio.h"
@@ -126,23 +128,53 @@ static char *Id = "$Id: browse.c,v 1.7 1995/03/18 20:03:25 tom Exp $";
 #include	<stsdef.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"cmdstk.h"
+#include	"edtcmd.h"
+#include	"getpad.h"
+
 #include	"dclarg.h"
 #include	"dclopt.h"
-#include	"getpad.h"
 #include	"names.h"
 #include	"dspc.h"
+
 #include	"strutils.h"
 
-/*
- * External (typed) procedures:
- */
-int	getpad ();		/* read terminal, filter escapes	*/
-int	more_0_vt(),		/* normal VT52/VT100 initialization	*/
-	more_0_bg();		/* BitGraph initialization		*/
-char	*cmdstk_init(),		/* Command-history init			*/
-	*edtcmd(),		/* => command-buffer after edit		*/
-	*scanint();		/* => after decoded integer		*/
+extern	void	warn(char *format, ...);
+extern	void	error (int status, char *s_);
+
+static	void	more_0_bg (short *lpp_, short *width_);
+static	void	more_0_vt (short *lpp_, short *width_);
+static	void	more_0_line (void);
+static	void	more_0_mark (void);
+static	void	more_0_page (void);
+static	void	more_char (char c);
+static	void	more_conv (void);
+static	void	more_ctlc (char *ctl_);
+static	void	more_down (int frac, int rpt);
+static	void	more_file (void);
+static	void	more_getr (void);
+static	int	more_lastp (void);
+static	int	more_limit (int val, int lo, int hi);
+static	void	more_line (void);
+static	int	more_move (int dy, int dx);
+static	int	more_msg (char *c_, int last);
+static	char*	more_name (int maxlen);
+static	void	more_next (int new);
+static	int	more_null (int inx);
+static	int	more_r_buf (char *co_, char *m1_, char *delim_);
+static	int	more_r_cmd (void);
+static	int	more_read (int rec);
+static	void	more_right (void);
+static	int	more_round (int num, int d);
+static	int	more_screen (int view_size, int dirflg);
+static	void	more_seek (int next);
+static	int	more_size (int over);
+static	int	more_skip (char *find_);
+static	void	more_this (void);
+
+#ifdef DEBUG
+static	void	more_show (char *format, ...);
+#endif
 
 /*
  * Local (static) data:
@@ -158,7 +190,6 @@ int	rsize();		/* returns record-size			*/
 #define	rsize(x)	MAXBFR
 #endif
 
-#define	VARARGS	a1,a2,a3,a4,a5,a6,a7,a8,a9,a10
 #define	MAXCOL		(colmax-7)	/* threshold used in ruler-mode	*/
 
 	/* Index to 'offset[]' for next, current previous pages */
@@ -186,18 +217,16 @@ int	rsize();		/* returns record-size			*/
 
 #define	STRVCMP	strvcmp(find_bfr, &i_bfr[inx], lstate_end-inx)
 
-#define	CTL(x)	('x' & 037)
-#define	BELL	CTL(G)
+#define	CTL(c)	(037 & (c))
+#define	BELL	CTL('G')
 #define	RUBOUT	'\177'
-#define	tocntrl(c)	(c & 037)
 #define	toshift(c)	(iscntrl(c) ? ((c) | 0100) : (c))
 
 #define	MARK_WIDTH	13	/* Columns used for 'M_OPT'	*/
 
 #define	SHOW_OFF(n)	(n),offset[n].rfa,offset[n].cra
 
-static
-FILE	*fp;
+static	FILE	*fp;
 
 typedef	struct	{
 	long	rfa;	/* Record's file-address (direct 'ftell/fseek')	*/
@@ -281,7 +310,7 @@ char	*i_bfr,		/* = input record				*/
 	*find_bfr,
 	*ruler_text,	/* Ruler text				*/
 	*fatal_msg;	/* Set iff I/O error			*/
-
+
 /*
  * Define option keywords and their flags:
  */
@@ -313,10 +342,12 @@ DCLOPT	opts[] = {
 	{"trim",	&_FALSE,	0,	SZ(T_opt), 	1, 00100},
 	{"wide",	&_FALSE,	0,	SZ(W_opt), 	1, 00001}
 	};
-
+
 #ifdef	main_incl
 #define	LOGFILE(s)	flist_log s;
 #define	LOGARGS(c,n)	logfile(c,n)
+static void logfile(int cmd, int count);
+
 main_incl
 #else
 #define	LOGFILE(s)
@@ -324,20 +355,20 @@ main_incl
 main
 #endif
 
-(argc, argv)
-int	argc;
-char	*argv[];
+(
+int	argc,
+char	**argv)
 {
 #ifdef	main_incl
-DCLARG	*dcl_	= argvdcl (argc, argv, "", 2);
+	DCLARG	*dcl_	= argvdcl (argc, argv, "", 2);
 #else
-DCLARG	*dcl_	= argvdcl (argc, argv, "", 0);
+	DCLARG	*dcl_	= argvdcl (argc, argv, "", 0);
 #endif
 
-DCLARG	*opt_;
-int	(*if_bg)() = more_0_vt;
-char	*c_,
-	msg	[MAXBFR];
+	DCLARG	*opt_;
+	int	(*if_bg)() = more_0_vt;
+	char	*c_,
+		msg	[MAXBFR];
 
 	WhatIsIt = nullC;
 
@@ -461,16 +492,17 @@ char	*c_,
 	cfree (fatal_msg);
 	freelist (dcl_);
 }
-
+
 /* <name>:
  * Given a display-buffer limit, attempt to show as much as possible of the
  * VMS filename.
  */
-char	*more_name (maxlen)
+static
+char	*more_name (int maxlen)
 {
-register char	*c_ = WhatIsIt->dcl_text;
-register int	len = strlen (c_);
-static	char	bfr[CRT_COLS];
+	register char	*c_ = WhatIsIt->dcl_text;
+	register int	len = strlen (c_);
+	static	char	bfr[CRT_COLS];
 
 	if (len <= maxlen)	return (c_);
 #define	ADJ(x)	c_ += WhatIsIt->x; len -= WhatIsIt->x;\
@@ -483,14 +515,15 @@ static	char	bfr[CRT_COLS];
 	strcpy (&bfr[len-4], " ...");
 	return (c_);
 }
-
+
 /* <file>:
  * Do all processing for a single file:
  */
-more_file ()
+static
+void	more_file (void)
 {
-int	j,
-	forward	= TRUE;
+	int	j,
+		forward	= TRUE;
 
 	find_bfr[0] = EOS;
 
@@ -898,11 +931,12 @@ int	j,
 	    }
 	}
 }
-
+
 /* <0_mark>:
  * Initialize display-width, based on terminal size and on use of '/MARK'.
  */
-more_0_mark ()
+static
+void	more_0_mark (void)
 {
 	width	= crt_width ();
 	if (M_opt)
@@ -921,7 +955,8 @@ more_0_mark ()
 /* <0_line>:
  * Re-init flags for current line (or record).
  */
-more_0_line()
+static
+void	more_0_line(void)
 {
 	obfr_	 = o_bfr; *obfr_ = EOS;
 	findmark = 0;
@@ -931,22 +966,24 @@ more_0_line()
 /* <0_page>:
  * Re-init flags for current page.
  */
-more_0_page()
+static
+void	more_0_page(void)
 {
 	onpage	= inpage = 0;
 	colmax	= colmin + width;
 	more_0_line();
 }
-
+
 /* <move>:
  * Move the cursor in the specified direction.
  */
-more_move (dy, dx)
+static
+int	more_move (int dy, int dx)
 {
-register
-int	rpt	= max(1, user_arg),
-	top	= crt_top(),
-	end	= crt_end();
+	register
+	int	rpt	= max(1, user_arg),
+		top	= crt_top(),
+		end	= crt_end();
 
 	if (ruler_mode)
 	{
@@ -979,7 +1016,8 @@ int	rpt	= max(1, user_arg),
 /* <limit>:
  * Limit a value to a specified range, sounding alarm if it falls out.
  */
-more_limit (val, lo, hi)
+static
+int	more_limit (int val, int lo, int hi)
 {
 	if (val < lo)
 	    sound_alarm(),	val = lo;
@@ -992,7 +1030,8 @@ more_limit (val, lo, hi)
  * Given a number 'num', and the granularity 'd', return the closest multiple
  * of 'd'.
  */
-more_round (num, d)
+static
+int	more_round (int num, int d)
 {
 	if (num >= 0)
 	    return ((num + d - 1) / d);
@@ -1003,17 +1042,20 @@ more_round (num, d)
 /* <lastp>:
  * Return the last seek-mark index which we may use to initiate a screen.
  */
-more_lastp ()
+static
+int	more_lastp (void)
 {
 	return (max(0, LAST_PAGE));
 }
-
+
 /* <size>:
  * Return the maximum number of characters wide, given a value of /OVER:
  */
-more_size (over)
+static
+int	more_size (int over)
 {
-int	j = i_recl;
+	int	j = i_recl;
+
 	if (over == 0)		j <<= 3;
 	else if (over <= 2)	j <<= 1;
 	return ((j | 7) + 1);	/* Allow at least one tab stop	*/
@@ -1023,10 +1065,12 @@ int	j = i_recl;
  * Shift screen right by either 1/2 screen, or by the number of columns
  * specified in 'user_arg'.
  */
-more_right()
+static
+void	more_right(void)
 {
-int	j,
-	endcol	= more_size(O_opt);
+	int	j,
+		endcol	= more_size(O_opt);
+
 	if (user_arg == 0)	user_arg = width2;
 	if (endcol > width)
 	{
@@ -1039,17 +1083,18 @@ int	j,
 	else
 	    sound_alarm();
 }
-
+
 /* <down>:
  * Combined forward-2, down-1 commands taking into account repeat-factor.
  * We permit an "X" to abort the forward-search.
  */
-more_down (frac, rpt)
+static
+void	more_down (int frac, int rpt)
 {
-register
-int	old	= TOP_NEXT,
-	target	= TOP_NEXT + ((--rpt) * frac),
-	actual;
+	register
+	int	old	= TOP_NEXT,
+		target	= TOP_NEXT + ((--rpt) * frac),
+		actual;
 
 	/*
 	 * If we haven't reached the end of the file before, we must skip
@@ -1074,7 +1119,7 @@ int	old	= TOP_NEXT,
 	else		/* Yell if I didn't go anywhere	*/
 	    sound_alarm();
 }
-
+
 /* <skip>:
  * Read through current half-page.  A page is ended when
  *	(a) The number of lines for the display screen have been passed, or
@@ -1097,12 +1142,13 @@ int	old	= TOP_NEXT,
  * the half-screen containing the search target, or the BOTTOM, depending on
  * the search state.
  */
-more_skip(find_)
-char	*find_;		/* => 'find_bfr', or null	*/
+static
+int	more_skip(
+	char	*find_)		/* => 'find_bfr', or null	*/
 {
-int	inx,
-	found	= FALSE;
-char	msgbuf[CRT_COLS];
+	int	inx,
+		found	= FALSE;
+	char	msgbuf[CRT_COLS];
 
 	if (find_)
 		sprintf (msgbuf, "%3.3d  Find: '%s'", TOP_NEXT, find_);
@@ -1145,18 +1191,19 @@ end_of_page:
 #endif
 	return (found);
 }
-
+
 /* <line>:
  * Put the portion of the output line which lies within the current column
  * limits onto the screen.
  */
-more_line ()
+static
+void	more_line (void)
 {
-int	len;
-char	msg	[MAXBFR],
-	bfr2	[MAXBFR],
-	field_0	[4],	field_1	[8],	field_2	[8],	field_r_l[8],
-	*c_;
+	int	len;
+	char	msg	[MAXBFR],
+		bfr2	[MAXBFR],
+		field_0	[4],	field_1	[8],	field_2	[8],	field_r_l[8],
+		*c_;
 
 	/*
 	 * If a search target was found on the current line, but not within
@@ -1243,7 +1290,7 @@ char	msg	[MAXBFR],
 
 	inpage++;
 }
-
+
 /* <char>:
  * Route a character into the output-display buffer, highlighting overstrikes
  * or search-targets.
@@ -1251,10 +1298,10 @@ char	msg	[MAXBFR],
  * Track the current column to avoid putting characters into the buffer unless
  * within the selected column limits.
  */
-more_char(c)
-char	c;
+static
+void	more_char(char c)
 {
-int	on_screen;
+	int	on_screen;
 
 	if (isprint(c))
 		column++;
@@ -1324,8 +1371,9 @@ int	on_screen;
  * Send a string of characters per input character, according to the setting
  * of the /OVER option:
  */
-more_ctlc (ctl_)
-char	*ctl_;
+static
+void	more_ctlc (
+	char	*ctl_)
 {
 	if (O_opt == 3)		more_char('.');
 	else
@@ -1333,11 +1381,12 @@ char	*ctl_;
 	    while (*ctl_)	more_char(*ctl_++);
 	}
 }
-
+
 /* <conv>:
  * Given an input record, translate control characters as per options.
  */
-more_conv ()
+static
+void	more_conv (void)
 {
 int	inx,
 	old_ok	= 0,
@@ -1426,11 +1475,11 @@ char	c,
 			*ctl_   = '^';
 			if (O_opt == 2) switch (c)
 			{
-			case CTL(H):	ctl_ = "<BS>";	break;
-			case CTL(I):	ctl_ = "<TAB>";	break;
-			case CTL(K):	ctl_ = "<VT>";	break;
-			case CTL(L):	ctl_ = "<FF>";	break;
-			case CTL(M):	ctl_ = "<CR>";	break;
+			case CTL('H'):	ctl_ = "<BS>";	break;
+			case CTL('I'):	ctl_ = "<TAB>";	break;
+			case CTL('K'):	ctl_ = "<VT>";	break;
+			case CTL('L'):	ctl_ = "<FF>";	break;
+			case CTL('M'):	ctl_ = "<CR>";	break;
 			case '\033':	ctl_ = "<ESC>";	break;
 			}
 			more_ctlc (ctl_);
@@ -1444,16 +1493,22 @@ char	c,
 	}
 	more_line ();
 }
-
+
 /* <screen>:
  * Read and display either a full screen (one line less than actual screen
  * size), or a half screen (on either top or bottom, with appropriate
  * pre-scrolling).
  */
-int	more_null (index)	{ crt_text ("", index-crt_top(), 0);	}
+static
+int	more_null (int inx)
+{
+	crt_text ("", inx-crt_top(), 0);
+}
 
-int	more_screen (view_size, dirflg)
-int	view_size, dirflg;
+static
+int	more_screen (
+	int	view_size,
+	int	dirflg)
 {
 int	(*ffunc)() = (dirflg > 0) ? more_null : 0;
 int	old_top = crt_top(),
@@ -1532,12 +1587,13 @@ int	old_top = crt_top(),
 	for (colend = inpage = 0; inpage < FullPage; inpage++)
 		colend = max(colend, endcol[inpage]);
 }
-
+
 /* <this>:
  * Refresh the current page.  Note that if the file is shorter than one page,
  * I must restrict the backup to the 0-mark.
  */
-more_this ()
+static
+void	more_this (void)
 {
 	more_next (max(0,TOP_THIS));
 }
@@ -1546,10 +1602,11 @@ more_this ()
  * This routine is used to display a page when jumping around in the file,
  * refreshing the current page, etc.
  */
-more_next (new)
-int	new;
+static
+void	more_next (
+	int	new)
 {
-int	old = now;
+	int	old = now;
 
 #ifdef	DEBUG
 	more_show ("(next)(%d), was %d", new, old);
@@ -1563,8 +1620,9 @@ int	old = now;
  * Re-position using 'fseek' so that the next record-read will begin at the
  * top of a half-page screen section.
  */
-more_seek (next)
-int	next;		/* next index in 'offset[]' to use	*/
+static
+void	more_seek (
+	int	next)		/* next index in 'offset[]' to use	*/
 {
 	if (next < 0 || next > end_mark)
 	{
@@ -1597,7 +1655,7 @@ int	next;		/* next index in 'offset[]' to use	*/
 	end_flag = FALSE;
 	now--;		/* first record-read will re-increment */
 }
-
+
 /* <read>:
  * Read a new line from the input file (extracting, as needed, from records).
  * Do all 'ftell' calls to obtain points to repeat or restart the sequential
@@ -1609,9 +1667,10 @@ int	next;		/* next index in 'offset[]' to use	*/
  *	lstate_1st <= index into 'i_bfr[]' of line to display.
  *	lstate_end <= index past end of line
  */
-more_read (rec)		/* Either 'i_line' or 'inpage'	*/
+static
+int	more_read (int rec)		/* Either 'i_line' or 'inpage'	*/
 {
-int	j;
+	int	j;
 
 	more_0_line();
 
@@ -1671,13 +1730,14 @@ int	j;
 
 	return (lstate_len);
 }
-
+
 /* <getr>:
  * Read a record from the input file, setting end-of-file flag, record-length,
  * and stripping parity.  If "/FEED", then read/append as long as CR ends the
  * input record.
  */
-more_getr ()
+static
+void	more_getr (void)
 {
 int	j,
 	first	= TRUE,
@@ -1783,11 +1843,12 @@ char	*s_;
 		i_bfr[j] = toascii(i_bfr[j]);
 	}
 }
-
+
 /* <r_cmd>:
  * Prompt and read a single character for commands:
  */
-int	more_r_cmd()
+static
+int	more_r_cmd(void)
 {
 int	command,
 	len,
@@ -1849,7 +1910,7 @@ char	*c_,
 	 */
 	while (((command = getpad()) == '\r')
 	||	(command == '\n'));
-	if (isascii(command) && isalpha(command)) command = tocntrl(command);
+	if (isascii(command) && isalpha(command)) command = CTL(command);
 
 	user_arg = 0;			/* Inactive if zero		*/
 	if (isascii(command) && isdigit(command))
@@ -1859,25 +1920,26 @@ char	*c_,
 		if (command > 128)
 			command += 128;	/* 128..255 => 256..getpad	*/
 		else if (isalpha(command))
-			command = tocntrl(command);
+			command = CTL(command);
 		c_ = scanint (numbfr, &user_arg);
 		if (c_ == numbfr || c_[1])
 			command = -1;	/* Force an error-return	*/
 	}
 	return toshift(command);
 }
-
+
 /* <r_buf>:
  * Read a string-buffer, for either search target, or for numeric argument.
  * If the latter, 'delim_' is set, and we must do special actions.
  */
-int	more_r_buf (co_, m1_, delim_)
-char	*co_,			/* => Output buffer	*/
-	*m1_,			/* Prompt-message	*/
-	*delim_;		/* If non-null, list of terminators */
+static
+int	more_r_buf (
+	char	*co_,			/* => Output buffer	*/
+	char	*m1_,			/* Prompt-message	*/
+	char	*delim_)		/* If non-null, list of terminators */
 {
-int	len	= strlen(m1_);
-char	prompt	[MAXBFR];
+	int	len	= strlen(m1_);
+	char	prompt	[MAXBFR];
 
 	strcpy (prompt, m1_);
 	crt_high (prompt, len);
@@ -1887,17 +1949,16 @@ char	prompt	[MAXBFR];
 	len = strlen(co_)-1;
 	return (0xff & co_[max(len,0)]);
 }
-
+
 /* <msg>:
  * Put some text on the last line of the screen (highlighted), and position
  * the cursor at the end of the string.
  */
-more_msg (c_, last)
-char	*c_;
-int	last;
+static
+int	more_msg (char *c_, int last)
 {
-int	len;
-char	bfr	[MAXBFR];
+	int	len;
+	char	bfr	[MAXBFR];
 
 	strcpy (bfr, c_);
 	crt_high (bfr, len = strlen(bfr));
@@ -1909,18 +1970,23 @@ char	bfr	[MAXBFR];
 	}
 	return (len);
 }
-
+
 #ifdef	DEBUG
 /* <show>:
  * debug: show "printf" on screen-end
  */
-more_show (VARARGS)
+static
+void	more_show (char *format, ...)
 {
-char	bfr[1024];
+	va_list	ap;
+	char	bfr[1024];
+
 	if (D_opt)
 	{
 		sleep(1);
-		sprintf (bfr, VARARGS);
+		va_start (ap, format);
+		vsprintf (bfr, format, ap);
+		va_end (ap);
 		crt_text (bfr, lpp-1, 0);
 		if (D_opt > 1)
 			getpad();
@@ -1929,18 +1995,17 @@ char	bfr[1024];
 	}
 }
 #endif
-
+
 /* <0_bg>:
  * Special terminal initialization.  These routines may be called via 'crt_init'
  * to adjust the screen on the basis of BROWSE options.
  */
 
 /* Set Bitgraph terminal to native mode, home and clear. */
-more_0_bg(lpp_, width_)
-short	*lpp_,
-	*width_;
+static
+void	more_0_bg(short	*lpp_, short *width_)
 {
-int	j;
+	int	j;
 
 	for (j = 0; j < 3; j++)
 	{
@@ -1955,32 +2020,33 @@ int	j;
 
 /* <0_vt>:
  */
-more_0_vt (lpp_, width_)
-short	*lpp_,
-	*width_;
+static
+void	more_0_vt (short *lpp_, short *width_)
 {
 	if (W_opt)	*width_ = 132;
 }
-
+
 /*
  * Define routines to make this source standalone.
  */
 #ifndef	main_incl
-warn (VARARGS)
+void	warn (char *format, ...)
 {
-char	msg[CRT_COLS+MAX_PATH];
+	va_list	ap;
+	char	msg[CRT_COLS+MAX_PATH];
 
 	whoami (msg, 3);
 	strcat (msg, "-w-");
-	sprintf (strnull(msg), VARARGS);
+	va_start(ap, format);
+	vsprintf (strnull(msg), format, ap);
+	va_end(ap);
 	putraw (msg);
 }
 
-error (status, s_)
-char	*s_;
+void	error (int status, char *s_)
 {
-char	msg[80],
-	who[80];
+	char	msg[80],
+		who[80];
 
 	whoami (who, 3);	strcat (who, "-f-");
 	if (s_)
@@ -1990,14 +2056,14 @@ char	msg[80],
 	}
 	else
 		perror (who);
-	if (did_crt_init) crt_quit();
+	if (did_crt_init) crt_quit(FALSE);
 	exit (status ? status : (STS$M_INHIB_MSG | STS$K_ERROR));
 }
 #endif
 
 #ifdef	main_incl
 static
-logfile(cmd,count)
+void	logfile(int cmd, int count)
 {
 	if (count)
 		LOGFILE(("  $ %d%c", count, cmd))

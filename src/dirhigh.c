@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirhigh.c,v 1.4 1995/03/19 01:03:43 tom Exp $";
+static char *Id = "$Id: dirhigh.c,v 1.5 1995/05/28 21:58:08 tom Exp $";
 #endif
 
 /*
@@ -49,7 +49,7 @@ int	j,
 	znew.fvers = 0;			/* Force current-version	*/
 	dirent_glue (highspec, &znew);
 
-	if (dirent_chk (&znew, highspec, 0))
+	if (dirent_chk (&znew, highspec))
 	{
 		/*
 		 * Find any occurrence of this PATH+NAME+TYPE in 'filelist[]'.

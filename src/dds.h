@@ -1,4 +1,4 @@
-/* $Id: dds.h,v 1.5 1995/03/18 22:48:48 tom Exp $
+/* $Id: dds.h,v 1.6 1995/05/28 00:49:20 tom Exp $
  *
  * public interface of dds.c (FLIST's display functions)
  */
@@ -22,7 +22,7 @@ extern	int	dds_add (FILENT *z);
 extern	int	dds_fast (int opt);
 extern	int	dds_index (int ifile);
 extern	int	dds_inx1 (int ifile);
-extern	int	dds_inx2 (int index);
+extern	int	dds_inx2 (int inx);
 extern	int	dds_last (int *curfile_);
 extern	int	dds_move (int curfile, int opt);
 extern	int	dds_pack (int *curfile_, int inscreen);
@@ -31,7 +31,7 @@ extern	void	dds_add2 (FILENT *z, int curfile);
 extern	void	dds_all (int top_set, int now_set);
 extern	void	dds_ast1 (void);
 extern	void	dds_hold (int hold);
-extern	void	dds_line(int index);
+extern	void	dds_line(int inx);
 extern	void	dds_spawn (char *cli_, int ifile, char *cmd_, char *msg_, int nowait, int refresh);
 extern	void	dds_tell (char *msg_, int ifile);
 extern	void	dds_while (char *msg_);

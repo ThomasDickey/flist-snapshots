@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: whoami.c,v 1.3 1995/03/19 00:18:35 tom Exp $";
+static char *Id = "$Id: whoami.c,v 1.4 1995/05/28 18:45:13 tom Exp $";
 #endif
 
 /*
@@ -29,7 +29,7 @@ static char *Id = "$Id: whoami.c,v 1.3 1995/03/19 00:18:35 tom Exp $";
  * Returns:	TRUE iff the image is run from a system directory
  */
 
-#include	<rms>
+#include	<rms.h>
 #include	<jpidef.h>
 
 int	whoami (char *name, int opt)

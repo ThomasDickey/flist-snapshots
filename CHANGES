@@ -1,3 +1,79 @@
+1995-05-28  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/cmdstk.c: DEC-C warnings
+
+	* src/strutils.h: added prototype for strlcpy
+
+	* src/chrcmd.c, src/chprot.c, src/canopen.c, src/alarm.c, src/argvdcl.c, src/acplook.c, src/rmsio.h:
+	DEC-C warnings
+
+	* src/rmsinit.h: RCS_BASE
+
+	* src/fl.c: added FlistTellVA
+
+	* src/edtcmd.c: corrected def of CTL
+
+	* src/dirhigh.c: DEC-C warning
+
+	* src/dirent.c, src/dirdata.c: typo
+
+	* src/flist.h: corrected def of CTL
+
+	* src/dirdata.h: typo
+
+	* src/dirent.h: corrected dirent_nul; ifdef'd dirent()
+
+	* src/dirpath.h: RCS_BASE
+
+	* src/dirpath.c: prototypes
+
+	* src/flrnam.c, src/fl.c, src/dirdata.c: include dirpath.h
+
+	* src/dirent.c: make some functions statis
+	include dirpath.h
+
+	* src/dirent.h: make some functions static
+
+	* src/dirent.h, src/dirent.c: prototypes
+
+	* src/dirdata.h: RCS_BASE
+
+	* src/flrnam.c: include dirdata.h
+
+	* src/dds.c: include dirdata
+
+	* src/dirdata.c: prototypes
+
+	* src/build.com, src/descrip.mms: obsoleted cmpblk, trace
+
+	* src/flscan.c, src/fledit.c, src/fldlet.c:
+	use memcmp instead of cmpblk
+
+	* src/ttrace.h: RCS_BASE
+
+	* src/ttrace.c, src/browse.c, src/fl.c:
+	use stdarg instead of VARARGS hack
+
+	* src/dircmd.c, src/edtcmd.c: ANSI def for CTL()
+
+	* src/dirent.h: defined 'import()' for ANSI
+
+	* src/flist.h: added prototypes for fl.c
+
+	* src/getraw.c, src/flprot.c, src/browse.c: ANSI def for CTL()
+
+	* src/fl.c: prototyped, except for VARARGS
+
+	* src/whoami.c, src/dirfind.c, src/dclwild.c: corrected include
+
+	* src/browse.c: recompile on axp
+
+	* src/main.h: prototype
+
+	* src/main.h: rcs identifiers
+
+	* src/fl.c, src/cmdstk.h: recompile on axp
+
 1995-05-27  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dds.h: rename index/inx

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.7 1995/03/18 22:51:08 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.9 1995/05/28 20:11:56 tom Exp $";
 #endif
 
 /*
@@ -71,6 +71,8 @@ static char *Id = "$Id: dds.c,v 1.7 1995/03/18 22:51:08 tom Exp $";
 #include	"flist.h"
 #include	"dds.h"
 #include	"dirent.h"
+#include	"dirdata.h"
+#include	"dircmd.h"
 #include	"strutils.h"
 
 import(filelist); import(numfiles); import(numdlets);
@@ -111,25 +113,25 @@ int	dds_inx1 (int ifile)
  * index to 'filelist[]'.  This is used in scrolling commands by index
  * number.
  */
-int	dds_inx2 (int index)
+int	dds_inx2 (int inx)
 {
 	register
 	int	j = numfiles-numdlets;
 
-	index = max(1,min(index,j));
+	inx = max(1,min(inx,j));
 
 	if (numdlets)
 	{
 		j = 0;
-		while (j < index)
+		while (j < inx)
 		{
-			if (DELETED(j))	index++;
+			if (DELETED(j))	inx++;
 			j++;
 		}
 		j--;
 	}
 	else
-		j = index - 1;
+		j = inx - 1;
 
 	return (j);
 }
@@ -138,16 +140,16 @@ int	dds_inx2 (int index)
  * Display the indicated file-index on the screen, at the indicated line
  * (numbered from 0).
  */
-void	dds_line(int index)
+void	dds_line(int inx)
 {
 	int	TOP_END,
-		line	= index - top_line;
+		line	= inx - top_line;
 	char	bfr	[CRT_COLS];
 
 	if (line >= 0 && line < lpp1)
 	{
-		dirent_conv (bfr, FK_(index));
-		if (dircmd_select(-2) == index)
+		dirent_conv (bfr, FK_(inx));
+		if (dircmd_select(-2) == inx)
 		{
 		int	col = dirent_ccol()-1;
 			bfr[col-1] = '*';	/* both marker		*/

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmdstk.c,v 1.5 1995/02/19 02:23:41 tom Exp $";
+static char *Id = "$Id: cmdstk.c,v 1.6 1995/05/28 00:05:25 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: cmdstk.c,v 1.5 1995/02/19 02:23:41 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	17 Oct 1984 (broke out of 'dircmd')
  * Last update:
+ *		27 May 1995, split-out cmdstk.h
  *		18 Feb 1995, port to AXP (renamed 'alarm')
  *		14 May 1985, was testing wrong variable in entry to '_put'.
  *		30 Apr 1985, always store commands in lower-case.
@@ -23,7 +24,7 @@ static char *Id = "$Id: cmdstk.c,v 1.5 1995/02/19 02:23:41 tom Exp $";
 #include	<stdlib.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"cmdstk.h"
 #include	"strutils.h"
 
 /*
@@ -32,19 +33,8 @@ static char *Id = "$Id: cmdstk.c,v 1.5 1995/02/19 02:23:41 tom Exp $";
  * Save FLIST "visible commands" in a stack-list in memory, to provide
  * last-command retrieval.
  */
-#define	PAGESIZE	4096
-#define	MAXSTK		((PAGESIZE-4)/(1+CRT_COLS))
-#define	byte		char
 
-typedef	struct	{
-	byte	head,	/* index of queue-head	*/
-		stored,	/* number of items actually in queue		*/
-		depth;	/* current depth back from head (0..(stored-1))	*/
-	char	text[MAXSTK][CRT_COLS+1];
-	} CMDSTK;
-
-static
-CMDSTK	*cmdstk_ = nullC;
+static	CMDSTK	*cmdstk_ = nullC;
 
 #define	HEAD	cmdstk_->head
 #define	STORED	cmdstk_->stored
@@ -52,6 +42,8 @@ CMDSTK	*cmdstk_ = nullC;
 #define	TEXT(j)	cmdstk_->text[j]
 
 #define	INDEX(j) cmdstk_index(HEAD-(j))
+
+static	int	cmdstk_index (int n);
 
 /*
  * Allocate a page-buffer for the command-stack.  We provide a hierarchy
@@ -166,7 +158,7 @@ cmdstk_chg (char *string)
 /*
  * Compute an index in the queue, accounting for wraparound.
  */
-int
+static int
 cmdstk_index (int n)
 {
 	if (n < 0)		n = MAXSTK - n;

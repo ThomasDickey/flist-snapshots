@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.5 1995/03/19 00:56:08 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.6 1995/05/28 20:01:55 tom Exp $";
 #endif
 
 /*
@@ -388,7 +388,7 @@ int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 		dirent_chk (z, tstspec);
 		if (inlist >= 0)
 		{
-			if (cmpblk (z, &zold, sizeof(FILENT)))
+			if (memcmp (z, &zold, sizeof(FILENT)))
 				dds_add2 (z, inlist);
 		}
 		else

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.12 1995/05/28 21:54:48 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
- *		18 Mar 1995, prototypes
+ *		28 May 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods)
  *		05 Dec 1989, corrected typeof(llast)
  *		04 Nov 1988, took masking from group/member code displays
@@ -85,7 +85,7 @@ static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
  *		15 Jul 1984, make sort-keys for 'pathlist'
  *		14 Jul 1984, use 'dclopt' to process options, added OWNER
  *		10 Jul 1984, added warning-option to 'dirent_old'
- *		04 Jul 1984, must clear temp in 'dirent_old' before 'cmpblk'
+ *		04 Jul 1984, must clear temp in 'dirent_old' before compare
  *		03 Jul 1984, broke out 'dirent_acc' as 'cmpprot.c', cleaned up.
  *		02 Jul 1984, broke out 'dirent_path' as 'pathdown.c'
  *		28 May 1984
@@ -136,6 +136,9 @@ static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
 #include	"flist.h"
 #define		DIRENT		/* local */
 #include	"dirent.h"
+#include	"dircmd.h"
+#include	"dirdata.h"
+#include	"dirpath.h"
 #include	"dclarg.h"
 #include	"dds.h"
 
@@ -145,18 +148,12 @@ static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
 
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
 
-/*
- * External procedures:
- */
-PATHNT	*dirpath_sort();	/* make pathspec sortkeys	*/
-
-/*
- * Forward reference:
- */
-DATENT	*dirent__date();	/* => option-selected date field	*/
-char	*dirent_dft(),		/* => V_opt-based wildcard string	*/
-	*dirent_glue(),		/* => concatenated path+name		*/
-	*dirent_glue2();
+static	void	dirent__cnv2 (int no_priv, char *c_, int number);
+static	DATENT*	dirent__date (FILENT *z, int opt);
+static	long	dirent__look (FILENT *z, char *filespec);
+static	long	dirent__one (FILENT *z, char *filespec);
+static	long	dirent__read (char *filespec, FLINK **flink, int update);
+static	int	dirent_init (void);
 
 /*
  * Public data:
@@ -211,15 +208,14 @@ char	*known_org[] = {"SEQ", "REL", "IDX", "HSH"},
 	*day_of_week[] = {"Wed ", "Thu ", "Fri ", "Sat ", "Sun ", "Mon ", "Tue "};
 static
 int	absolute_day;	/* Current day-number, for short-date computation */
-
+
 /* <dirent>:
  * Main routine, read a list of filespecs into 'filelist[]'.
  */
-int	dirent (arg_)
-DCLARG	*arg_;
+int	dirent (DCLARG *arg_)
 {
-int	j, didsome = 0;
-char	c, *c_;
+	int	j, didsome = 0;
+	char	c, *c_;
 
 	dirread_init ();
 
@@ -245,13 +241,13 @@ char	c, *c_;
 
 	return (numfiles);
 }
-
+
 /* <dirent_acc>:
  * Test a file-entry to see if the user may access the file:
  */
-int	dirent_acc (z, mode)
-FILENT	*z;			/* file to test			*/
-char	*mode;			/* List of access rights needed	*/
+int	dirent_acc (
+	FILENT	*z,		/* file to test			*/
+	char	*mode)		/* List of access rights needed	*/
 {
 	return (cmpprot (&z->fprot, mode));
 }
@@ -260,7 +256,7 @@ char	*mode;			/* List of access rights needed	*/
  * Whenever the amount of space reserved for 'filelist[]' is filled, reallocate
  * to obtain reserve.
  */
-int	dirent_add ()
+int	dirent_add (void)
 {
 	if (++numfiles >= maxfiles)
 	{
@@ -269,7 +265,7 @@ int	dirent_add ()
 	}
 	return (numfiles);
 }
-
+
 /* <dirent_all>:
  * Use a wildcard string to (possibly) examine all files in a directory.
  *
@@ -277,14 +273,14 @@ int	dirent_add ()
  * as calls on this procedure, to support the READ command (re-read all
  * specs).
  */
-long	dirent_all(filespec, update)
-char	*filespec;			/* specifies files to lookup	*/
-int	update;				/* true iff we *must* re-read	*/
+long	dirent_all(
+	char	*filespec,		/* specifies files to lookup	*/
+	int	update)			/* true iff we *must* re-read	*/
 {
-long	status;
-int	numfirst = numfiles,
-	newfiles = FALSE;		/* Latch for 'flread'	*/
-FLINK	*llast	 = nullC;
+	long	status;
+	int	numfirst = numfiles,
+		newfiles = FALSE;	/* Latch for 'flread'	*/
+	FLINK	*llast	 = nullC;
 
 	/*
 	 * Initialize file-access-block:
@@ -327,19 +323,17 @@ FLINK	*llast	 = nullC;
 			flist_sysmsg (status);
 	}
 }
-
+
 /* <dirent_cat_n>:
  */
-dirent_cat_n (s, z)
-char	*s;
-FILENT	*z;
+void	dirent_cat_n (char *s, FILENT *z)
 {
-register len = strlen(z->fname);
+	register len = strlen(z->fname);
 
 	strncpy (s += strlen(s), z->fname, len);
 	s[len-NAME_DOT] = EOS;
 }
-
+
 /* <dirent_ccol>:
  * Compute the starting column number at which "visible" commands
  * begin.  This is made a variable to support future (14-Aug-84) releases
@@ -350,21 +344,21 @@ register len = strlen(z->fname);
  * found on the right of it.
  */
 #define	PCOLUMNS(n) (pcolumns[n] ? min(pcolumns[n],ccolumns[n]) : ccolumns[n])
-int	dirent_ccol ()
+int	dirent_ccol (void)
 {
-register width = crt_width()-10,
+	register width = crt_width()-10,
 	ccol = PCOLUMNS(0) + PCOLUMNS(1) + ccolumns[2] + 6;
 	return (min(width, ccol));
 }
-
+
 /* <dirent_chk>:
  * Re-read a directory entry to obtain newer information about a file.
  */
-int	dirent_chk (z, filespec)
-FILENT	*z;			/* data block to load into	*/
-char	*filespec;		/* filename to check up on	*/
+int	dirent_chk (
+	FILENT	*z,		/* data block to load into	*/
+	char	*filespec)	/* filename to check up on	*/
 {
-char	longspec[NAM$C_MAXRSS];
+	char	longspec[NAM$C_MAXRSS];
 
 	if ((z->fstat = dirent_look (longspec, filespec)) == RMS$_NORMAL)
 	{
@@ -386,11 +380,10 @@ char	longspec[NAM$C_MAXRSS];
  * still exists, TRUE is returned.  In either case, the display-line is
  * refreshed.
  */
-int	dirent_chk2 (j)
-int	j;
+int	dirent_chk2 (int j)
 {
-int	retval;
-char	fullname[NAM$C_MAXRSS];
+	int	retval;
+	char	fullname[NAM$C_MAXRSS];
 
 	dirent_glue (fullname, FK_(j));
 	if (! (retval = dirent_chk (FK_(j), fullname)))
@@ -408,12 +401,10 @@ char	fullname[NAM$C_MAXRSS];
  * name may not necessarily be the same as that in the 'filelist[j]' entry,
  * we must re-link the data-object to load altered data.
  */
-int	dirent_chk3 (j, fullname)
-int	j;
-char	*fullname;
+int	dirent_chk3 (int j, char *fullname)
 {
-FILENT	znew;		/* Don't destroy the old FILENT block	*/
-int	retval;
+	FILENT	znew;		/* Don't destroy the old FILENT block	*/
+	int	retval;
 
 	if (retval = dirent_chk (&znew, fullname))
 		dds_add2 (&znew, j);
@@ -429,7 +420,7 @@ int	retval;
 	}
 	return (retval);
 }
-
+
 /* <dirent_chop>:
  * Parse path, name, type and version for a full filename, loading it to
  * the indicated FILENT entry.  The filespec is assumed to be syntactically
@@ -438,16 +429,13 @@ int	retval;
  * We include the trailing '.' in the filename-string to force our sort to
  * collate in the same manner as the SYS$SEARCH.
  */
-int	dirent_chop (z, filespec, nam_)
-FILENT	*z;
-char	*filespec;
-struct	NAM	*nam_;
+int	dirent_chop (FILENT *z, char *filespec, struct NAM *nam_)
 {
-struct	FAB	fab;
-struct	NAM	nam;
-int	len, num,
-	status	= RMS$_NORMAL;
-char	esa	[NAM$C_MAXRSS];
+	struct	FAB	fab;
+	struct	NAM	nam;
+	int	len, num,
+		status	= RMS$_NORMAL;
+	char	esa	[NAM$C_MAXRSS];
 
 	z->fvers = 0;
 
@@ -473,32 +461,30 @@ char	esa	[NAM$C_MAXRSS];
 				  len = nam_->nam$l_name - nam_->nam$l_node);
 	return (status);
 }
-
+
 /* <dirent_conv>:
  * Convert a FILENT entry to printing form, showing only those fields selected
  * in 'conv_list[]'.
  */
-dirent_conv (bfr, z)
-char	bfr[];
-FILENT	*z;
+void	dirent_conv (char *bfr, FILENT *z)
 {
-DATENT	*date_;
-int	j, num,
-	col0	= PCOLUMNS(0),
-	col1	= PCOLUMNS(1),
-	width	= crt_width(),
-	no_priv	= zNOPRIV(z);
-static
-char	sFMT1[]	= "%%-%d.%ds %%-%d.%ds;%%.%ds",
-	noDATE[] = "%-17s";
+	DATENT	*date_;
+	int	j, num,
+		col0	= PCOLUMNS(0),
+		col1	= PCOLUMNS(1),
+		width	= crt_width(),
+		no_priv	= zNOPRIV(z);
+	static
+	char	sFMT1[]	= "%%-%d.%ds %%-%d.%ds;%%.%ds",
+		noDATE[] = "%-17s";
 
-char	tmp[CRT_COLS+256],
-	*c_	= bfr,
-	*ccol_	= conv_list,
-	format	[sizeof(sFMT1)+20],
-	filesize[20],
-	version	[20],
-	misc	[30];
+	char	tmp[CRT_COLS+256],
+		*c_	= bfr,
+		*ccol_	= conv_list,
+		format	[sizeof(sFMT1)+20],
+		filesize[20],
+		version	[20],
+		misc	[30];
 
 #define	NXT	strnull(strcat(c_, "  "))
 #define	AFTER_NXT (width - strlen(NXT) - 2)
@@ -695,13 +681,13 @@ char	tmp[CRT_COLS+256],
 	strncpy(bfr, tmp, CRT_COLS-1);
 	bfr[CRT_COLS-1] = '\0';
 }
-
+
 /* <dirent_dft>:
  * Return a pointer to wildcard, based on V_opt (VERSION).  If NOVERSION
  * is selected, all wildcard-SYS$SEARCH activity will be coerced to seek
  * only the current-version of files.  Otherwise, any version may be selected.
  */
-char	*dirent_dft ()
+char	*dirent_dft (void)
 {
 	return (V_opt ? "*.*;*" : "*.*;");
 }
@@ -709,22 +695,19 @@ char	*dirent_dft ()
 /* <dirent_dlet>:
  * Mark an entry in 'filelist[]' deleted.
  */
-dirent_dlet (j)
-int	j;
+void	dirent_dlet (int j)
 {
 	FK(j).fstat = RMS$_FNF;
 	numdlets++;
 	if (j == dircmd_select(-2))	dircmd_select(-1);
 	dds_line (j);
 }
-
+
 /* <dirent_glue>:
  * Concatenate all substrings to make a complete file specification, for
  * the indicated FILENT entry.
  */
-char	*dirent_glue (filespec, z)
-FILENT	*z;
-char	*filespec;
+char	*dirent_glue (char *filespec, FILENT *z)
 {
 	return (dirent_glue2 (filespec, z, -1));
 }
@@ -737,12 +720,9 @@ char	*filespec;
  * entry on the screen.  (The path of the current entry is also the default
  * directory.)
  */
-char	*dirent_glue2 (filespec, z, curfile)
-FILENT	*z;
-char	*filespec;
-int	curfile;
+char	*dirent_glue2 (char *filespec, FILENT *z, int curfile)
 {
-static	char	fmt[] =
+	static	char	fmt[] =
 #if	NAME_DOT
 			"%s%s;";
 #else
@@ -764,17 +744,18 @@ static	char	fmt[] =
 		sprintf (strnull(filespec), "%d", z->fvers);
 	return (filespec);
 }
-
+
 /* <dirent_init>:
  * Initialize data structures used in this module (used only via main routine).
  */
-int	dirent_init()
+static
+int	dirent_init(void)
 {
-/*
- * Chain pointers for XAB (the "nxt" is the same offset in all variations)
- */
-struct	XABALL	*first_ = 0, *last_ = 0;
-int	today_date[2];
+	/*
+	 * Chain pointers for XAB (the "nxt" is the same offset in all variations)
+	 */
+	struct	XABALL	*first_ = 0, *last_ = 0;
+	int	today_date[2];
 
 	/* dirent_all state: */
 
@@ -823,26 +804,24 @@ int	today_date[2];
 	sys$gettim (today_date);
 	lib$day (&absolute_day, today_date);
 }
-
+
 /* <dirent_isdir>:
  * Test a FILENT block to see if it is a directory.  While ACP can do additional
  * tests, we will assume that a ".DIR" filetype is enough indication.  Note
  * that VMS insists that the version number of a directory must be "1".
  */
-dirent_isdir (z)
-FILENT	*z;
+int	dirent_isdir (FILENT *z)
 {
 	return ((strcmp ("DIR", z->ftype) == 0) && (z->fvers <= 1));
 }
-
+
 /* <dirent_look>:
  * Lookup a single file, returning (via pointer) its fully-resolved name,
  * and the lookup status.
  */
-long	dirent_look (longspec, filespec)
-char	*longspec, *filespec;
+long	dirent_look (char *longspec, char *filespec)
 {
-int	len,	status;
+	int	len,	status;
 
 	zfab.fab$l_fna = filespec;
 	zfab.fab$b_fns = strlen(filespec);
@@ -857,7 +836,7 @@ int	len,	status;
 	}
 	return (status);
 }
-
+
 /* <dirent_misc>:
  * Set/clear bits in the '.fmisc' component.  This is used to keep track of
  * wildcard searches (limited to entries in 'filelist[]').  By flagging
@@ -866,11 +845,11 @@ int	len,	status;
  *
  * Patch: This doesn't clear-specific, or do testing.
  */
-dirent_misc (inx, bitv)
-int	inx,		/* index into 'filelist[]', or negative	*/
-	bitv;		/* value with 1's where setting is needed*/
+void	dirent_misc (
+	int	inx,		/* index into 'filelist[]', or negative	*/
+	int	bitv)		/* value with 1's where setting is needed*/
 {
-int	j;
+	int	j;
 
 	if (inx >= 0)	/* If legal index, set specific bit	*/
 	{
@@ -890,16 +869,16 @@ int	j;
 		}
 	}
 }
-
+
 /* <dirent_nul>:
  * Create a dummy entry in 'filelink' so that we can mark an entry in 'filelist'
  * deleted without clobbering our database entry for the file which used to be
  * there.  For instance, we make this when we do a VERIFY and purge lots of
  * renamed entries from 'filelist[]'.
  */
-dirent_nul (inx)
+void	dirent_nul (int inx)
 {
-FILENT	ztmp = FK(inx);			/* make sure path-name is legal	*/
+	FILENT	ztmp = FK(inx);		/* make sure path-name is legal	*/
 	ztmp.fname = ztmp.ftype = "";	/* dummy-out the name, type	*/
 	ztmp.fvers = 0;			/* ...and version		*/
 	ztmp.fstat = RMS$_FNF;		/* Show a DELETED() code	*/
@@ -907,17 +886,17 @@ FILENT	ztmp = FK(inx);			/* make sure path-name is legal	*/
 	numdlets++;
 	dds_line(inx);
 }
-
+
 /* <dirent_old>:
  * Given a filespec, convert it to a FILENT structure, and attempt to find
  * it in the current 'filelist[]' array.  If found, return its index.  Else,
  * return a "-1" or "-2".
  */
-int	dirent_old (filespec, need)
-char	*filespec;
-int	need;		/* 0: no warn, 1: any file, 2: in filelist[]	*/
+int	dirent_old (
+	char	*filespec,
+	int	need)	/* 0: no warn, 1: any file, 2: in filelist[]	*/
 {
-FILENT	ztmp;
+	FILENT	ztmp;
 
 	return (dirent_old_any (&ztmp, filespec, need));
 }
@@ -927,27 +906,25 @@ FILENT	ztmp;
  * If not, flag a warning message.  If the lookup is successful, will return
  * the FILENT entry in the output argument.
  */
-int	dirent_old1 (z, spec)
-FILENT	*z;
-char	*spec;
+int	dirent_old1 (FILENT *z, char *spec)
 {
-int	inx	= dirent_old_any (z, spec, 1);
+	int	inx	= dirent_old_any (z, spec, 1);
 
 	return (! didwarn());
 }
-
+
 /* <dirent_old_any>:
  * Given a filespec, convert it to a FILENT structure, and attempt to find
  * it in the current 'filelist[]' array.  If found, return its index.  Else,
  * return a "-1" or "-2".  If the file exists, the FILENT structure '*z' is
  * loaded with the data.
  */
-int	dirent_old_any (z, filespec, need)
-FILENT	*z;		/* => buffer to load with file data		*/
-char	*filespec;	/* => file specification to lookup		*/
-int	need;		/* 0: no warn, 1: any file, 2: in filelist[]	*/
+int	dirent_old_any (
+	FILENT	*z,		/* => buffer to load with file data	*/
+	char	*filespec,	/* => file specification to lookup	*/
+	int	need)		/* 0: no warn, 1: any file, 2: in filelist[] */
 {
-char	longspec[NAM$C_MAXRSS];
+	char	longspec[NAM$C_MAXRSS];
 
 	if (dirent_look (longspec, filespec) == RMS$_FNF)
 		dirent_chop (z, filespec, nullC);
@@ -957,7 +934,7 @@ char	longspec[NAM$C_MAXRSS];
 		for (j = 0; j < numfiles; j++)
 		{
 			if (DELETED(j))				continue;
-			if (cmpblk (z, FK_(j), FILENT_name_size) == 0)
+			if (memcmp (z, FK_(j), FILENT_name_size) == 0)
 				return (j);
 		}
 		if (need >= 2)
@@ -974,7 +951,7 @@ char	longspec[NAM$C_MAXRSS];
 	}
 	return (-2);
 }
-
+
 /* <dirent_width>:
  * Latch the widest field of each type which is actually used in the display
  * list.  We call this from points at which we are actually loading a FILENT
@@ -983,11 +960,10 @@ char	longspec[NAM$C_MAXRSS];
  */
 #define	LATCH(i,f)	if ((f) > ccolumns[i])	ccolumns[i] = latch = len
 
-int	dirent_width (z)
-FILENT	*z;
+int	dirent_width (FILENT *z)
 {
-register len, num, latch;
-static	int	tens[6] = {1,10,100,1000,10000,100000};
+	register len, num, latch;
+	static	int	tens[6] = {1,10,100,1000,10000,100000};
 
 	if (z)
 	{
@@ -1030,44 +1006,43 @@ static	int	tens[6] = {1,10,100,1000,10000,100000};
 	}
 	return (latch);
 }
-
+
 /* <dirent__cnv2>:
  * Convert (for 'dirent_conv') 16-bit numbers.
  */
-dirent__cnv2 (no_priv, c_, number)
-int	no_priv, number;
-char	*c_;
+static
+void	dirent__cnv2 (int no_priv, char *c_, int number)
 {
 	if (no_priv)
 		sprintf (c_, "%-5s", " ");
 	else
 		sprintf (c_, "%5.5d", number);
 }
-
+
 /* <dirent__date>:
  * Given a date-selection option (/DC, /DB, /DR) return the appropriate
  * pointer to a date-field.  Note that this is used to control the
  * interpretation of the /AFTER and /BEFORE options.
  */
-DATENT	*dirent__date (z, opt)
-FILENT	*z;
+static
+DATENT	*dirent__date (FILENT *z, int opt)
 {
-register DATENT	*date_;
+	register DATENT	*date_;
+
 	if (opt == 4)		date_	= &z->fexpr;
 	else if (opt == 3)	date_	= &z->frevi;
 	else if (opt == 2)	date_	= &z->fback;
 	else			date_	= &z->fdate;
 	return (date_);
 }
-
+
 /* <dirent__datechek>:
  * Test a FILENT structure to see if it is permitted by the current date-
  * selection option (/AFTER or /BEFORE).
  */
-dirent__datechek (z)
-FILENT	*z;
+int	dirent__datechek (FILENT *z)
 {
-register int ok = TRUE;
+	register int ok = TRUE;
 
 	if (dateflag[0])
 	{
@@ -1085,7 +1060,7 @@ register int ok = TRUE;
 	}
 	return (ok);
 }
-
+
 /* <dirent__look>:
  * Lookup information about a particular file, to fill all fields in the
  * indicated FILENT structure, except those set in 'dirent_chop'.  Returns
@@ -1094,12 +1069,13 @@ register int ok = TRUE;
  * To make the RMS-lookup go faster, we assume that the global 'znam' block
  * is set from the SYS$SEARCH for this file.
  */
-long	dirent__look (z, filespec)
-FILENT	*z;				/* => Data block to load	*/
-char	*filespec;			/* Full, unique filename	*/
+static
+long	dirent__look (
+	FILENT	*z,			/* => Data block to load	*/
+	char	*filespec)		/* Full, unique filename	*/
 {
-long	status	= RMS$_NORMAL;		/* return-status	*/
-int	ok	= TRUE;
+	long	status	= RMS$_NORMAL;		/* return-status	*/
+	int	ok	= TRUE;
 
 	/*
 	 * Fill the FILENT block with the name, and null-data:
@@ -1127,14 +1103,15 @@ int	ok	= TRUE;
  * indicated FILENT structure.  Returns TRUE iff the file was found.
  * In all cases, the filename is parsed.
  */
-long	dirent__one (z, filespec)
-FILENT	*z;				/* => Data block to load	*/
-char	*filespec;			/* Full, unique filename	*/
+static
+long	dirent__one (
+	FILENT	*z,			/* => Data block to load	*/
+	char	*filespec)		/* Full, unique filename	*/
 {
 	dirent_chop (z, filespec, &znam);
 	return (dirent__look(z, filespec));
 }
-
+
 /* <dirent__read>:
  * Lookup information about a particular file, to fill all fields in the
  * indicated FILENT structure.  Returns TRUE iff:
@@ -1144,14 +1121,15 @@ char	*filespec;			/* Full, unique filename	*/
  * If the name (counting version) is an exact duplicate, load the newer file
  * data, to support re-reads.
  */
-long	dirent__read (filespec, flink, update)
-char	*filespec;
-FLINK	**flink;
-int	update;		/* true if we *must* re-read directory	*/
+static
+long	dirent__read (
+	char	*filespec,
+	FLINK	**flink,
+	int	update)		/* true if we *must* re-read directory	*/
 {
-FILENT	filent;
-int	j,
-	ok	= TRUE;
+	FILENT	filent;
+	int	j,
+		ok	= TRUE;
 
 	if (update)
 	{

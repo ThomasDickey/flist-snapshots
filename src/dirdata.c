@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirdata.c,v 1.6 1995/03/18 22:00:07 tom Exp $";
+static char *Id = "$Id: dirdata.c,v 1.9 1995/05/28 21:52:58 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirdata.c,v 1.6 1995/03/18 22:00:07 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1985
  * Last update:
- *		18 Mar 1995, prototypes
+ *		28 May 1995, prototypes
  *		22 Jul 1985, if rename, make sure path has same references as
  *			     the data objects, use 'dirpath_add'
  *		16 Jul 1985, added 'dirdata_one', 'dirdata_ren'.
@@ -41,9 +41,12 @@ static char *Id = "$Id: dirdata.c,v 1.6 1995/03/18 22:00:07 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<string.h>
 
 #include	"flist.h"
 #include	"dirent.h"
+#include	"dirdata.h"
+#include	"dirpath.h"
 #include	"nameheap.h"
 
 import(filelink);
@@ -58,9 +61,7 @@ import(filelink);
  * be zero.  The "-1" return value is used to distinguish the list-beginning
  * when the entry is not found in the list.
  */
-int	dirdata_find (z, lastp)
-FILENT	*z;
-FLINK	**lastp;
+int	dirdata_find (FILENT *z, FLINK **lastp)
 {
 FLINK	*now	= filelink,
 	*old	= filelink;
@@ -132,31 +133,26 @@ exit:	if (lastp)			*lastp	= now;
 #endif
 	return (found);
 }
-
+
 /* <dirdata_add>:
  * Unconditionally add/replace data in the linked-list.  We use this entry, for
  * example, when showing the result of reading a directory (without suppressing
  * lower versions).
  */
-dirdata_add (z, lastp)
-FILENT	*z;
-FLINK	**lastp;
+void	dirdata_add (FILENT *z, FLINK **lastp)
 {
 	dirdata_chg (z, lastp, dirdata_find (z, lastp));
 }
-
+
 /* <dirdata_chg>:
  * Add/replace data in the linked-list, using the return value from 'dirdata_find'
  * to guide the link-placement.  We use this entry, for example, when reading
  * a directory subject to pruning lower versions (i.e., first, '_find', then
  * '_high', then '_chg'.
  */
-dirdata_chg (z, lastp, found)
-FILENT	*z;
-FLINK	**lastp;
-int	found;
+void	dirdata_chg (FILENT *z, FLINK **lastp, int found)
 {
-FLINK	*p, *q, *r;
+	FLINK	*p, *q, *r;
 
 #ifdef	DEBUG
 trace ("CHG: %08X %d\n", *lastp, found);
@@ -193,18 +189,16 @@ trace ("CHG: %08X %d\n", *lastp, found);
 	trace ("\n");
 #endif
 }
-
+
 /* <dirdata_high>:
  * Search the list to determine if there is an entry with a higher version
  * than the FILENT-block.  Use the 'lastp' argument as a reference; don't
  * need to search past this point.
  */
-dirdata_high (z, lastp)
-FILENT	*z;
-FLINK	**lastp;
+int	dirdata_high (FILENT *z, FLINK **lastp)
 {
-FLINK	*now = filelink;
-int	cmp;
+	FLINK	*now = filelink;
+	int	cmp;
 
 	while (now)
 	{
@@ -215,32 +209,29 @@ int	cmp;
 	}
 	return (FALSE);
 }
-
+
 /* <dirdata_one>:
  * Search from list-beginning to insert/update a FILENT block.  We use this for
  * code which is not driven from a SYS$SEARCH loop.
  */
-dirdata_one (z, lastp)
-FILENT	*z;
-FLINK	**lastp;
+void	dirdata_one (FILENT *z, FLINK **lastp)
 {
 	*lastp = filelink;
 	dirdata_add (z, lastp);
 }
-
+
 /* <dirdata_ren>:
  * Rename a file.  Because entries in 'filelist' will point to the original
  * block, we do not simply allocate a new block, but re-use the old one.
  * This requires that we re-link the list.
  */
-dirdata_ren (znew, zold)
-FILENT	*znew, *zold;
+void	dirdata_ren (FILENT *znew, FILENT *zold)
 {
-FLINK	*pnew = 0,
-	*pold = 0;
-int	found = dirdata_find (znew, &pnew);
+	FLINK	*pnew = 0,
+		*pold = 0;
+	int	found = dirdata_find (znew, &pnew);
 
-	if (!cmpblk(znew, zold, sizeof(FILENT)))
+	if (!memcmp(znew, zold, sizeof(FILENT)))
 		return;		/* don't waste my time !! */
 
 	/*

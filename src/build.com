@@ -22,7 +22,6 @@ $	call	cc_lib CANOPEN
 $	call	cc_lib CHPROT
 $	call	cc_lib CHRCMD
 $	call	cc_lib CMDSTK
-$	call	cc_lib CMPBLK
 $	call	cc_lib CMPPROT
 $	call	cc_lib CRT
 $	call	cc_lib DCLAREA
@@ -112,7 +111,6 @@ $	call	cc_lib SYRIGHTS
 $	call	cc_lib SYTRNLOG
 $	call	cc_lib TABEXP
 $	call	cc_lib TERMSIZE
-$	call	cc_lib TRACE
 $	call	cc_lib TTRACE
 $	call	cc_lib VERSION
 $	call	cc_lib WHOAMI

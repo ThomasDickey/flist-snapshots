@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.4 1995/03/19 00:53:19 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.5 1995/05/28 20:02:00 tom Exp $";
 #endif
 
 /*
@@ -209,7 +209,7 @@ void	flscan_all (char *spec, int len, int status)
 				continue;
 			if (! dirent__datechek (FK_(j)))
 				continue;
-			if (cmpblk (&z2, FK_(j), FILENT_name_size) == 0)
+			if (memcmp (&z2, FK_(j), FILENT_name_size) == 0)
 			{
 				flscan_on (j);
 				if (do_inspect)

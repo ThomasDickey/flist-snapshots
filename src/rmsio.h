@@ -14,11 +14,21 @@
 #define	BUFSIZ	512
 #define	_NFILE	?
 
+#ifndef	NULL
 #define	NULL		0
+#endif
+
+#undef	FILE
 #define	FILE		char	/* patch */
+
+#ifndef	EOS
 #define	EOF		(-1)
+#endif
+
+#ifndef	TRUE
 #define	TRUE		1
 #define	FALSE		0
+#endif
 
 #define	fopen	ropen
 #define	fgetr	rgetr
@@ -29,8 +39,8 @@
 
 #define	freopen	?
 
-FILE	*fopen();
-long	ftell();
+extern	FILE	*fopen();
+extern	long	ftell();
 
 #define	sys(f)	status = f; if (!$VMS_STATUS_SUCCESS(status))
 
