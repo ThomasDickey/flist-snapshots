@@ -1,3 +1,13 @@
+1985-02-20  Thomas E. Dickey
+
+	* src/rmscc.c: RCS_BASE
+
+1985-02-20  Thomas E. Dickey
+
+	* src/rmscc.c: make program names consistent:FLIST,BROWSE
+
+	* src/rmscc.c: rcs-identifiers
+
 1985-02-05  Thomas E. Dickey
 
 	* src/dclarg.h: RCS_BASE
