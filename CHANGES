@@ -1,3 +1,19 @@
+1985-06-23  Thomas E. Dickey
+
+	* src/highver.c: RCS_BASE
+
+1985-06-23  Thomas E. Dickey
+
+	* src/highver.c: rcs-identifiers
+
+1985-06-23  Thomas E. Dickey
+
+	* src/scanver.c: RCS_BASE
+
+1985-06-23  Thomas E. Dickey
+
+	* src/scanver.c: rcs-identifiers
+
 1985-06-16  Thomas E. Dickey
 
 	* src/sharable.opt: RCS_BASE
