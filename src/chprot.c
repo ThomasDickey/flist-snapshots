@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chprot.c,v 1.4 1995/03/18 22:35:10 tom Exp $";
+static char *Id = "$Id: chprot.c,v 1.5 1995/03/19 22:35:18 tom Exp $";
 #endif
 
 /*
@@ -84,7 +84,7 @@ chprot (
 		fibDSC.dsc$a_pointer = &fib;
 		memset (&fib, 0, sizeof(fib));
 		fib.fib$l_acctl = FIB$M_WRITECK;
-		memcpy (fib.fib$w_fid, nam.nam$w_fid, sizeof(fib.fib$w_fid));
+		memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
 		atr[0].atr$w_type = ATR$C_FPRO;
 		atr[0].atr$w_size = ATR$S_FPRO;

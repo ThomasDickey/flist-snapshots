@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldump.c,v 1.4 1985/09/10 00:16:50 tom Exp $";
+static char *Id = "$Id: fldump.c,v 1.5 1995/03/19 00:09:37 tom Exp $";
 #endif
 
 /*
  * Title:	fldump.c
  * Author:	Thomas E. Dickey
  * Created:	20 Jul 1985
- * Last update:	09 Sep 1985, account for trailing '.' in FNAME
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		09 Sep 1985, account for trailing '.' in FNAME
  *		20 Jul 1985
  *
  * Function:	Dump the contents of FLIST's file database for debugging.
@@ -14,17 +16,21 @@ static char *Id = "$Id: fldump.c,v 1.4 1985/09/10 00:16:50 tom Exp $";
 
 #include	"textlink.h"
 #include	"flist.h"
-#include	"dirent.h"
+#include	"dircmd.h"
 
 import(pathlist);
 import(filelink);
 import(filelist); import(numfiles); import(numdlets);
 
-fldump ()
+static	void	fldump_link (TEXTLINK *p);
+static	void	fldump_data (FLINK *p);
+static	void	fldump_path (PATHNT *p);
+
+tDIRCMD(fldump)
 {
-PATHNT	*P;
-FLINK	*p = filelink;
-int	j;
+	PATHNT	*P;
+	FLINK	*p = filelink;
+	int	j;
 
 	trace ("\n\nDUMP\n");
 
@@ -52,19 +58,20 @@ int	j;
 	}
 }
 
-fldump_link (p)
-TEXTLINK *p;
+static
+void	fldump_link (TEXTLINK *p)
 {
-int	j;
+	int	j;
+
 	trace ("%08X ", p);
 	for (j = 1; j < 256; j <<= 1)
 		trace ("%c", p->refs & j ? '*' : '-');
 }
 
-fldump_data (p)
-FLINK	*p;
+static
+void	fldump_data (FLINK *p)
 {
-static	char	fmt[] =
+	static	char	fmt[] =
 #if	NAME_DOT
 			"%s%s;%d";
 #else
@@ -76,8 +83,8 @@ static	char	fmt[] =
 	trace ("\n");
 }
 
-fldump_path (p)
-PATHNT	*p;
+static
+void	fldump_path (PATHNT *p)
 {
 	trace (" %03d: %s", p->path_sort, p->path_text);
 }

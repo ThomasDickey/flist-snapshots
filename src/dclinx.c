@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclinx.c,v 1.2 1985/02/05 10:24:26 tom Exp $";
+static char *Id = "$Id: dclinx.c,v 1.3 1995/03/19 01:05:17 tom Exp $";
 #endif
 
 /*
  * Title:	dclinx.c
  * Author:	Thomas E. Dickey
  * Created:	30 Jun 1984
- * Last update:	05 Feb 1985, added 'dclinx2' entry to get actual DCLARG-pointer
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		05 Feb 1985, added 'dclinx2' entry to get actual DCLARG-pointer
  *		04 Jul 1984
  *
  * Function:	This module performs simple indexing for DCLARG lists.  It
@@ -25,9 +27,7 @@ static char *Id = "$Id: dclinx.c,v 1.2 1985/02/05 10:24:26 tom Exp $";
 #include	"bool.h"
 #include	"dclarg.h"
 
-DCLARG	*dclinx2 (dcl_, mfld, sfld)
-DCLARG	*dcl_;
-int	mfld, sfld;
+DCLARG	*dclinx2 (DCLARG *dcl_, int mfld, int sfld)
 {
 	for (; dcl_; dcl_ = dcl_->dcl_next)
 	{
@@ -45,10 +45,10 @@ int	mfld, sfld;
 /*
  * Return pointer to text-field only:
  */
-char	*dclinx (dcl_, mfld, sfld)
+char	*dclinx (DCLARG *dcl_, int mfld, int sfld)
 {
-register
-DCLARG	*d_	= dclinx2 (dcl_, mfld, sfld);
+	register
+	DCLARG	*d_	= dclinx2 (dcl_, mfld, sfld);
 
 	return (d_ ? d_->dcl_text : nullC);
 }

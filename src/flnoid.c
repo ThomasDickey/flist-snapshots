@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flnoid.c,v 1.3 1995/02/19 18:21:36 tom Exp $";
+static char *Id = "$Id: flnoid.c,v 1.4 1995/03/19 00:45:50 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: flnoid.c,v 1.3 1995/02/19 18:21:36 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	22 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		11 Jun 1985, added cli-argument to dds_spawn
  *		26 Jul 1984, modified 'dirseek()'
  *		16 Jul 1984
@@ -31,17 +31,15 @@ static char *Id = "$Id: flnoid.c,v 1.3 1995/02/19 18:21:36 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 static	char	format[] = "%s/noidentify";
 
-flnoid (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flnoid)
 {
-int	pr_cmd	= (strcmp ("PRINT", xdcl_->dcl_text) == 0);
-char	*full_;
+	int	pr_cmd	= (strcmp ("PRINT", xdcl_->dcl_text) == 0);
+	char	*full_;
 
 	if (! dirseek (xcmd_, xdcl_, 1, TRUE))	return;
 

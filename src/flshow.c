@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.4 1995/02/19 18:19:40 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.6 1995/03/19 02:03:08 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: flshow.c,v 1.4 1995/02/19 18:19:40 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1985 (from main program)
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		04 Nov 1988, added expired date
  *		12 Nov 1985, added "?OWNER"
  *		05 Oct 1985, added key-argument to 'flist_help'.  Use it here.
@@ -27,7 +27,8 @@ static char *Id = "$Id: flshow.c,v 1.4 1995/02/19 18:19:40 tom Exp $";
 #include	"flist.h"
 
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 #include	"sysutils.h"
 
@@ -38,17 +39,16 @@ import(M_opt);		import(P_opt);		import(V_opt);
 import(dateflag);	import(datechek);
 import(readlist);	import(readllen);
 
-int	flist_tell_dsc();
-
-flshow (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+extern	int	flist_tell_dsc();
+
+static	void	flshow_lis (int curfile);
+
+tDIRCMD(flshow)
 {
 #define	len_date	21
-long	date[2],
-	j, total, total2;	/* misc variables used in commands	*/
-char	bfr[CRT_COLS+MAX_PATH];
+	long	date[2],
+		j, total, total2;	/* misc variables used in commands */
+	char	bfr[CRT_COLS+MAX_PATH];
 
 	switch (xdcl_->dcl_text[0])
 	{
@@ -145,13 +145,14 @@ char	bfr[CRT_COLS+MAX_PATH];
 		flist_help (*curfile_, bfr);
 	}
 }
-
+
 /* <flshow_lis>:
  * Close and browse the listing file.
  */
-flshow_lis (curfile)
+static
+void	flshow_lis (int curfile)
 {
-char	*argv[3];
+	char	*argv[3];
 
 	argv[0]	=
 	argv[1]	= "BROWSE";

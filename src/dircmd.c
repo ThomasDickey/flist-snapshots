@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.6 1995/03/18 23:57:57 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.7 1995/03/19 01:53:30 tom Exp $";
 #endif
 
 /*
@@ -865,5 +865,5 @@ dircmd_dirflg (flag)
  */
 tDIRCMD(not_impl)
 {
-	warn ("?NOT implemented: %.60s", cmd_ ? cmd_ : dcl_->dcl_text);
+	warn ("?NOT implemented: %.60s", xcmd_ ? xcmd_ : xdcl_->dcl_text);
 }

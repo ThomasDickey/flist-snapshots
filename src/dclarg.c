@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.5 1995/03/19 00:42:10 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	24 May 1984
  * Last update:
- *		19 Feb 1995, prototyped
+ *		18 Mar 1995, prototyped
  *		05 Dec 1989, patched out VMS-bug (PATCH_DEC89)
  *		20 Mar 1989, bypass VMS bug which returns occasional illegal
  *			     status code.
@@ -101,11 +101,8 @@ static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
  *
  * Entry:	dclarg:		Main entry of this module
  *		dclarg_text:	Allocate/reallocate DCLARG-link
- *		dclarg_make:	Make DCLARG-link, filling in all fields
  *		dclarg_init:	Initialize 'dclarg', 'dclarg_make'
  *		dclarg_spec:	Skip string pointer past filespec
- *		dclarg_name:	Test for filespec character set
- *		dclarg_bracket:	Test for VMS pathname brackets
  *		dclarg_keyw:	Skip string pointer past option keyword.
  *
  * Patch:	This procedure does not properly detect such syntax errors as
@@ -115,6 +112,7 @@ static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
  *			COMMAND	FILE.TYP.TYP  (except as an illegal filename)
  */
 
+#include	<stdlib.h>
 #include	<stdio.h>
 #include	<rms.h>
 #include	<ctype.h>
@@ -127,12 +125,11 @@ static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 /*
  * Forward declarations and external procedures:
  */
-DCLARG	*dclarg_text(),
-	*dclarg_make();
-char	*dclarg_spec(),	
-	*dclarg_keyw(),
-	*calloc(),
-	*realloc();
+static	DCLARG	*dclarg_make (DCLARG *last_, char *s_, char *cmd, int from, int size, struct NAM *nam_);
+static	int	dclarg_bracket (char c);
+static	int	dclarg_name (char c);
+static	void	dclarg__copy (char *dft, struct NAM *nam_, int cpy_dft);
+static	void	dclarg_init (void);
 
 #define	SPC(s)	while (isspace(*s))	s++
 
@@ -141,35 +138,30 @@ char	*dclarg_spec(),
 #define	STRNCPY(out,in,xlen)	{strncpy(out, in, len = (xlen));\
 				 out[len] = EOS;}
 
-static
-DCLARG	*first_;		/* Pointer to linked-list		*/
-static
-unsigned status;		/* RMS error code, or 0 (ok) or -1 (own)*/
-static
-int	mfld,			/* Increment between grouped names	*/
-	sfld;			/* Increment after ","			*/
-static
-char	err_null[] = "null file specification",
-	err_parm[] = "invalid parameter delimiter";
-
-DCLARG	*dclarg(inp_, dft_, cmd_arg, cpy_dft)
-char	*inp_, *dft_;
-int	cmd_arg, cpy_dft;
+static	DCLARG	*first_;	/* Pointer to linked-list		*/
+static	unsigned status;	/* RMS error code, or 0 (ok) or -1 (own)*/
+static	int	mfld;		/* Increment between grouped names	*/
+static	int	sfld;		/* Increment after ","			*/
+
+static	char	err_null[] = "null file specification";
+static	char	err_parm[] = "invalid parameter delimiter";
+
+DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 {
-DCLARG	*arg_	= 0;
-struct	FAB	fab;
-struct	NAM	nam,	nam2;
-int	len,				/* (misc) string length		*/
-	use_dna2 = FALSE;		/* TRUE if 'dna2[]' is default	*/
-char	rsa	[NAM$C_MAXRSS],		/* resultant string (SYS$SEARCH)*/
-	esa	[NAM$C_MAXRSS],		/* expanded string (SYS$PARSE)	*/
-	dna	[NAM$C_MAXRSS],		/* next 'sfld' default string	*/
-	dna2	[NAM$C_MAXRSS],		/* next 'mfld' default if list	*/
-	dna3	[NAM$C_MAXRSS],		/* next 'mfld' default if single*/
-	cmdtok	[NAM$C_MAXRSS],
-	*i_	= inp_,			/* beginning of item to parse	*/
-	*j_,				/* end+1 of item to parse	*/
-	*k_;				/* miscellaneous pointer	*/
+	DCLARG	*arg_	= 0;
+	struct	FAB	fab;
+	struct	NAM	nam,	nam2;
+	int	len,			/* (misc) string length		*/
+		use_dna2 = FALSE;	/* TRUE if 'dna2[]' is default	*/
+	char	rsa	[NAM$C_MAXRSS],	/* resultant string (SYS$SEARCH)*/
+		esa	[NAM$C_MAXRSS],	/* expanded string (SYS$PARSE)	*/
+		dna	[NAM$C_MAXRSS],	/* next 'sfld' default string	*/
+		dna2	[NAM$C_MAXRSS],	/* next 'mfld' default if list	*/
+		dna3	[NAM$C_MAXRSS],	/* next 'mfld' default if single*/
+		cmdtok	[NAM$C_MAXRSS],
+		*i_	= inp_,		/* beginning of item to parse	*/
+		*j_,			/* end+1 of item to parse	*/
+		*k_;			/* miscellaneous pointer	*/
 
 	if (!dft_)	dft_ = "";
 	strcpy (dna, dft_);
@@ -329,20 +321,18 @@ long	sid = 0;
 		cmd_arg--;	/* (On zero, look for filenames) */
 	}
 }
-
+
 /* <dclarg__copy>:
  * Copy default-strings from the first file-specification in a main-field.
  * If the 'cpy_dft' flag is set, don't copy the pathname, but begin with the
  * filename.
  */
-dclarg__copy (dft, nam_, cpy_dft)
-char	*dft;
-struct	NAM	*nam_;
-int	cpy_dft;
+static
+void	dclarg__copy (char *dft, struct NAM *nam_, int cpy_dft)
 {
-char	*c_	= nam_->nam$l_node;
-int	len	= nam_->nam$b_ver + (nam_->nam$l_ver - c_),
-	adj	= 0;
+	char	*c_	= nam_->nam$l_node;
+	int	len	= nam_->nam$b_ver + (nam_->nam$l_ver - c_),
+		adj	= 0;
 
 	if (cpy_dft)
 	{
@@ -353,21 +343,21 @@ int	len	= nam_->nam$b_ver + (nam_->nam$l_ver - c_),
 	strncpy (dft, c_, len);
 	dft[len] = EOS;
 }
-
+
 /* <dclarg_text>:
  * Allocate (or re-allocate) a 'DCLARG' entry, given the text-buffer to load.
  * This procedure can be used to allocate a new entry (if 'this_' is null), or
  * to reallocate an entry when the text buffer's size has altered.  The status
  * and field indices are unaltered.
  */
-DCLARG	*dclarg_text(this_, last_, s_, uc)
-DCLARG	*this_,				/* Entry to (re)allocate	*/
-	*last_;				/* Entry containing link to it	*/
-char	*s_;				/* Text-buffer (mustn't be null)*/
-int	uc;				/* TRUE if uppercase		*/
+DCLARG	*dclarg_text(
+	DCLARG	*this_,		/* Entry to (re)allocate	*/
+	DCLARG	*last_,		/* Entry containing link to it	*/
+	char	*s_,		/* Text-buffer (mustn't be null)*/
+	int	uc)		/* TRUE if uppercase		*/
 {
-int	size	= sizeof(DCLARG) + strlen(s_) + 2;
-char	*text_;
+	int	size	= sizeof(DCLARG) + strlen(s_) + 2;
+	char	*text_;
 
 	if (this_)	this_	= realloc (this_, size);
 	else		this_	= calloc (1, size);
@@ -401,14 +391,17 @@ char	*text_;
 /* <dclarg_make>:
  * Form a new entry in the linked-list of parsed items
  */
-DCLARG	*dclarg_make (last_, s_, cmd, from, size, nam_)
-DCLARG	*last_;			/* last entry in DCLARG-list	*/
-char	*s_, *cmd;		/* option, filename, or message	*/
-int	from,	size;		/* index and length in command	*/
-struct	NAM	*nam_;		/* => NAM-block, if we use result */
+static
+DCLARG	*dclarg_make (
+	DCLARG	*last_,		/* last entry in DCLARG-list	*/
+	char	*s_,		/* option, filename, or message	*/
+	char	*cmd,
+	int	from,		/* index and length in command	*/
+	int	size,		/* index and length in command	*/
+	struct	NAM *nam_)	/* => NAM-block, if we use result */
 {
-DCLARG	*this_;
-char	bfr[CRT_COLS];		/* Assume command is narrower than screen */
+	DCLARG	*this_;
+	char	bfr[CRT_COLS];	/* Assume command is narrower than screen */
 
 #ifdef	PATCH_DEC89
 	if (status == (RMS$_NORMAL & ~7)) {
@@ -443,12 +436,13 @@ char	bfr[CRT_COLS];		/* Assume command is narrower than screen */
 		first_ = this_;
 	return (this_);
 }
-
+
 /* <dclarg_init>:
  * Initialize the state used in 'dclarg_make' to enable external use of
  * the routine:
  */
-dclarg_init ()
+static
+void	dclarg_init (void)
 {
 	status = mfld = sfld = 0;
 }
@@ -456,10 +450,9 @@ dclarg_init ()
 /* <dclarg_spec>:
  * Skip a character-pointer past a filespec, option-keyword (including date).
  */
-char	*dclarg_spec (i_, also)
-char	*i_, *also;
+char	*dclarg_spec (char *i_, char *also)
 {
-int	brackets = 0;
+	int	brackets = 0;
 
 	if (!also)	also = "$";
 
@@ -478,8 +471,8 @@ int	brackets = 0;
 /* <dclarg_name>:
  * Test a character to see if it is part of a legal VMS wildcard-file spec.
  */
-dclarg_name(c)
-char	c;
+static
+int	dclarg_name(char c)
 {
 	return (isalnum(c)
 	||	c == '-'
@@ -494,8 +487,8 @@ char	c;
  * VMS/DCL permits either '<','>' or '[',']' to delimit directory pathname.
  * Test for either.
  */
-dclarg_bracket (c)
-char	c;
+static
+int	dclarg_bracket (char c)
 {
 	switch (c)
 	{
@@ -513,8 +506,7 @@ char	c;
 /* <dclarg_keyw>:
  * Skip a character-pointer past an option keyword only.
  */
-char	*dclarg_keyw (c_)
-char	*c_;
+char	*dclarg_keyw (char *c_)
 {
 	while (isalnum(*c_) || *c_ == '_')	c_++;
 	return (c_);

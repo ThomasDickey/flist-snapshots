@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flfind.c,v 1.4 1995/02/19 18:23:50 tom Exp $";
+static char *Id = "$Id: flfind.c,v 1.6 1995/03/19 02:01:08 tom Exp $";
 #endif
 
 /*
@@ -7,13 +7,13 @@ static char *Id = "$Id: flfind.c,v 1.4 1995/02/19 18:23:50 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	21 May 1984
  * Last update:
- *		19 Feb 1995, prototyped
+ *		18 Mar 1995, prototyped
  *		14 Aug 1985, added code to make search-state nested.
  *		13 Aug 1985, corrected pointer-references to '->dcl_text' (had
  *			     '.dcl_text', which gave strange result).  Added
  *			     'flfind_show' entrypoint.
  *		16 Jun 1985, typed 'calloc' to shut up CC2.0; corrected arg
- *			     in 'cpyblk' which broke NEXT-status.
+ *			     in memory-copy which broke NEXT-status.
  *		02 May 1985, changed call on 'dircmd_dirflg'.
  *		05 Jan 1985, permit "NEXT" keyword.  Altered interface with
  *			     'dirfind'.
@@ -40,8 +40,8 @@ static char *Id = "$Id: flfind.c,v 1.4 1995/02/19 18:23:50 tom Exp $";
 #include	<stdlib.h>
 
 #include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 typedef	struct	{
 	int	findFLG;
@@ -55,15 +55,12 @@ static	int	deepest	= -1;
 #define	FindFLG	stk_[lvl].findFLG
 #define	FindDCL	stk_[lvl].findDCL
 #define	FindTXT	stk_[lvl].findTXT
-
-flfind (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+
+tDIRCMD(flfind)
 {
-register next,
-	lvl	= flist_nest() - 1;	/* 0,1,2,...	*/
-DCLARG	*pattern;
+	register int next,
+		lvl	= flist_nest() - 1;	/* 0,1,2,...	*/
+	DCLARG	*pattern;
 
 	/*
 	 * If we have a file-specification, this must be either FIND or
@@ -90,7 +87,7 @@ DCLARG	*pattern;
 	/*
 	 * Save a copy of the specification for "NEXT":
 	 */
-	cpyblk (FindDCL, pattern, sizeof(DCLARG));
+	memcpy (FindDCL, pattern, sizeof(DCLARG));
 	strcpy (FindTXT, pattern->dcl_text);
 	FindDCL->dcl_text = FindTXT;
 
@@ -103,7 +100,7 @@ DCLARG	*pattern;
 	else if (next >= 0)
 		dds_index (*curfile_ = next);
 }
-
+
 /* <flfind_init>:
  * The argument 'lvl' is numbered 0,1,2,..., for the actual number of the "prior"
  * nesting level of the directory editor.
@@ -124,7 +121,7 @@ flfind_init (lvl)
 			FindTXT = calloc (1, MAX_PATH);
 			FindDCL = calloc (1, sizeof(DCLARG));
 		}
-		cpyblk (FindDCL, stk_[lvl-1].findDCL, sizeof(DCLARG));
+		memcpy (FindDCL, stk_[lvl-1].findDCL, sizeof(DCLARG));
 		strcpy (FindTXT, stk_[lvl-1].findTXT);
 		FindFLG = stk_[lvl-1].findFLG;
 	}

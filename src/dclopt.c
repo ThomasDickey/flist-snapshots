@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclopt.c,v 1.5 1995/03/18 23:10:18 tom Exp $";
+static char *Id = "$Id: dclopt.c,v 1.7 1995/03/19 01:46:28 tom Exp $";
 #endif
 
 /*
@@ -67,8 +67,7 @@ static char *Id = "$Id: dclopt.c,v 1.5 1995/03/18 23:10:18 tom Exp $";
 #include	"strutils.h"
 #include	"sysutils.h"
 
-char	*dclarg_keyw(),		/* skip past option-keyword	*/
-	*scanint();		/* => after decoded integer	*/
+char	*scanint();		/* => after decoded integer	*/
 
 #define	OJ	opt[j]
 
@@ -99,9 +98,9 @@ void	dclopt_cpy (void *to, void *from, int size)
 		}
 	} else {
 		if (size <= 8) {
-			memset(to, 0, len);
+			memset(to, 0, size);
 		} else {
-	    		to[0] = EOS;
+	    		*(char *)to = EOS;
 		}
 	}
 }

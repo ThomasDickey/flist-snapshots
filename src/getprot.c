@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getprot.c,v 1.2 1985/06/16 02:29:32 tom Exp $";
+static char *Id = "$Id: getprot.c,v 1.4 1995/03/19 22:36:48 tom Exp $";
 #endif
 
 /*
  * Title:	getprot.c
  * Author:	Thomas E. Dickey
  * Created:	02 Jul 1984
- * Last update:	15 Jun 1985, CC2.0 changes declaration of uic-code.
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		15 Jun 1985, CC2.0 changes declaration of uic-code.
  *		14 Dec 1984, use single FAB for search, open.
  *		11 Dec 1984, use ACP if on local node
  *		09 Sep 1984, use "rmsinit"
@@ -41,38 +43,33 @@ static char *Id = "$Id: getprot.c,v 1.2 1985/06/16 02:29:32 tom Exp $";
 #include	"bool.h"
 #include	"getprot.h"
 
-getprot (ret_, name_)
-GETPROT	*ret_;
-char	*name_;			/* specifies files to lookup	*/
+int	getprot (
+	GETPROT	*ret_,
+	char	*name_)			/* specifies files to lookup	*/
 {
-struct	FAB	fab;
-struct	NAM	nam;			/* used in wildcard parsing	*/
+	struct	FAB	fab;
+	struct	NAM	nam;			/* used in wildcard parsing	*/
 
-struct	XABPRO	xabpro;			/* Protection attribute block	*/
+	struct	XABPRO	xabpro;			/* Protection attribute block	*/
 
-char	rsa[NAM$C_MAXRSS],		/* resultant string area	*/
-	esa[NAM$C_MAXRSS];		/* expanded string area (search)*/
+	char	rsa[NAM$C_MAXRSS],		/* resultant string area	*/
+		esa[NAM$C_MAXRSS];		/* expanded string area (search)*/
 
-long	status	= -1;
+	long	status	= -1;
 
-struct	{
-	short	stat,
-		unused;
-	long	jobstat;
-	}	iosb;
-short	chnl;
-FIB	fib;
-ATR	atr[4];
+	IOSB	iosb;
+	short	chnl;
+	FIB	fib;
+	ATR	atr[4];
 
-unsigned
-short	mask,
-	uic_vec[2];
+	unsigned
+	short	mask,
+		uic_vec[2];
 #define	group	uic_vec[1]
 #define	member	uic_vec[0]
 
-static
-$DESCRIPTOR(DSC_name,"");
-struct	dsc$descriptor	fibDSC;
+	static $DESCRIPTOR(DSC_name,"");
+	struct	dsc$descriptor	fibDSC;
 
 	rmsinit_fab (&fab, &nam, 0, name_);
 	rmsinit_nam (&nam, rsa, esa);
@@ -111,10 +108,10 @@ struct	dsc$descriptor	fibDSC;
 
 				fibDSC.dsc$w_length = sizeof(FIB);
 				fibDSC.dsc$a_pointer = &fib;
-				cpyblk (&fib, nullC, sizeof(FIB));
-				cpyblk (&fib.fib$w_fid, &nam.nam$w_fid, 6);
+				memset (&fib, 0, sizeof(FIB));
+				memcpy (fib.fib$w_fid, nam.nam$w_fid, 6);
 
-				cpyblk (&atr[0], nullC, 3 * sizeof(ATR));
+				memset (atr, 0, sizeof(atr));
 				atr[0].atr$w_type = ATR$C_UIC;
 				atr[0].atr$w_size = ATR$S_UIC;
 				atr[0].atr$l_addr = uic_vec;

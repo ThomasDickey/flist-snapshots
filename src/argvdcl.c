@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: argvdcl.c,v 1.3 1995/02/19 17:02:46 tom Exp $";
+static char *Id = "$Id: argvdcl.c,v 1.4 1995/03/19 01:01:50 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: argvdcl.c,v 1.3 1995/02/19 17:02:46 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		15 Dec 1984, added 'cpy_dft' argument to DCLARG.  Corrected
  *			     use of argc-count.
  *		24 Jul 1984, added 'cmd_arg' parameter to DCLARG.
@@ -32,12 +32,7 @@ static char *Id = "$Id: argvdcl.c,v 1.3 1995/02/19 17:02:46 tom Exp $";
 #include	"bool.h"
 #include	"dclarg.h"
 
-DCLARG *
-argvdcl (argc, argv, dft_, cmd_arg)
-	int	argc;
-	char	*argv[];
-	char	*dft_;
-	int	cmd_arg;
+DCLARG * argvdcl (int argc, char *argv[], char *dft_, int cmd_arg)
 {
 	DCLARG	*arg_	= 0;
 	int	len	= 0;

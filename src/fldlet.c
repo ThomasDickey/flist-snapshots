@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldlet.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
+static char *Id = "$Id: fldlet.c,v 1.4 1995/03/19 00:16:07 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: fldlet.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	13 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		16 Feb 1989, added ".SHO", "TJL" and ".DIF$*" to temp-types.
  *		24 Oct 1988, corrected 'sprintf()' format for multiple-delete
  *		11 Oct 1988, added ".DIA" to temp-file types.
@@ -44,17 +44,14 @@ static char *Id = "$Id: fldlet.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
-#include	"dclarg.h"
-#include	"dircmd2.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 #include	"strutils.h"
 #include	"sysutils.h"
 
-/*
- * External procedures:
- */
-int	fldlet_one(),		/* DELETE a particular filespec		*/
-	flpurg_one();		/* PURGE a particular filespec		*/
+static	void	fldlet_one (int inx, int *flag_);
+static	void	flpurg_one (int inx, int *flag_);
 
 import(filelist); import(numfiles);
 import(V_opt);
@@ -84,20 +81,19 @@ int	curfile,		/* Index to entry of command		*/
 	single,			/* TRUE iff only one name given		*/
 	G_prompt,		/* TRUE if no prompt for unique-delete	*/
 	tot_did;		/* Total number of files deleted	*/
-
+
 /*
  * The main loop (called from 'dircmd') processes each argument, which may
  * contain wildcards.
  */
-fldlet (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(fldlet)
 {
-int	j	= 0;
-DCLARG	*pattern;
-int	(*func)() = (strcmp (xdcl_->dcl_text, "DELETE") ? flpurg_one
-							: fldlet_one);
+	int	j	= 0;
+	DCLARG	*pattern;
+	void	(*func)(int inx, int *flag_) =
+			(strcmp (xdcl_->dcl_text, "DELETE")
+				? flpurg_one
+				: fldlet_one);
 
 	curfile	= *curfile_;
 	single	= dirchk (xcmd_, xdcl_, v_1, FALSE);
@@ -115,7 +111,7 @@ int	(*func)() = (strcmp (xdcl_->dcl_text, "DELETE") ? flpurg_one
 			flist_info ("No files deleted");
 	}
 }
-
+
 /*
  * Title:	fldlet_one
  *
@@ -129,14 +125,14 @@ int	(*func)() = (strcmp (xdcl_->dcl_text, "DELETE") ? flpurg_one
  *		(c)	Only files present in 'filelist[]' may be deleted.
  *			(patch: may add entries ?)
  */
-fldlet_one (inx,flag_)
-int	inx, *flag_;
+static
+void	fldlet_one (int inx, int *flag_)
 {
-FILENT	*z, ztmp;
-int	j, prompt, status;
-char	*c_,
-	fullname[MAX_PATH],
-	tempspec[MAX_PATH];
+	FILENT	*z, ztmp;
+	int	j, prompt, status;
+	char	*c_,
+		fullname[MAX_PATH],
+		tempspec[MAX_PATH];
 
 	z	= FK_(inx);
 	if (! diropen2 (z))
@@ -230,7 +226,7 @@ char	*c_,
 		dirent_chk3 (inx, fullname);
 	}
 }
-
+
 /*
  * Title:	flpurg_one
  *
@@ -247,20 +243,20 @@ char	*c_,
  *		of the current-file are deleted.
  */
 
-flpurg_one (inx, flag_)
-int	inx, *flag_;
+static void
+flpurg_one (int inx, int *flag_)
 {
 #define	VERBFR	5
-FILENT	*z, zprev, ztry;
-long	status;
-int	j,
-	vercnt	= 0,
-	verbfr	[VERBFR],		/* record versions which couldn't*/
-	num_try	= 0,			/* # of files found for possible */
-	num_err	= 0;			/* # which were protected, etc.	 */
-char	msg	[CRT_COLS],
-	fullname[MAX_PATH], longname[MAX_PATH];
-static	char	fmt[] =
+	FILENT	*z, zprev, ztry;
+	long	status;
+	int	j,
+		vercnt	= 0,
+		verbfr	[VERBFR],	/* record versions which couldn't*/
+		num_try	= 0,		/* # of files found for possible */
+		num_err	= 0;		/* # which were protected, etc.	 */
+	char	msg	[CRT_COLS],
+		fullname[MAX_PATH], longname[MAX_PATH];
+	static	char	fmt[] =
 #if	NAME_DOT
 			" (%s%s)";
 #else

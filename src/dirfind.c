@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirfind.c,v 1.3 1985/09/14 12:57:42 tom Exp $";
+static char *Id = "$Id: dirfind.c,v 1.4 1995/03/19 00:10:52 tom Exp $";
 #endif
 
 /*
  * Title:	dirfind.c
  * Author:	Thomas E. Dickey
  * Created:	28 Jul 1984 (broke off search code from 'flfind.c')
- * Last update:	14 Sep 1985, enhanced 'strwcmp' to process "..." in pathname.
+ * Last update:
+ *		18 Mar 1995, prototypes
+ *		14 Sep 1985, enhanced 'strwcmp' to process "..." in pathname.
  *			     Therefore, we need substitute a "*" into the
  *			     pathname only for the case of non-explicit path.
  *		09 Sep 1985, count trailing '.' in fname-field for VMS-collating
@@ -90,11 +92,12 @@ static char *Id = "$Id: dirfind.c,v 1.3 1985/09/14 12:57:42 tom Exp $";
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dclarg.h"
+#include	"dds.h"
 
 char	*dirent_glue();	/* => concatenated string	*/
 
 import(filelist); import(numfiles);
-
+
 int	dirfind (curfile, forward, find_spec, each, must_find, unfind)
 int	curfile, forward;
 DCLARG	*find_spec;
@@ -173,7 +176,7 @@ char	Fpath[MAX_PATH],	Fname[MAX_NAME+1],	Ftype[MAX_TYPE+1];
 	if (found_any)	return (found_any);
 	else		return (-2);
 }
-
+
 /*
  * Split the given DCLARG-pattern into a FILENT-block, so that the pathname,
  * filename, type and version will be readily accessible for use in the
@@ -222,7 +225,7 @@ int	len	= 0,
 	fz_->ftype  = Ftype;
 	fz_->fvers  = version;
 }
-
+
 /*
  * Make an index to the next item to test:
  */
@@ -249,7 +252,7 @@ DCLARG	*find_spec;
 {
 	return (!(FIND_FNB & (NAM$M_EXP_DIR + NAM$M_EXP_DEV)));
 }
-
+
 /*
  * Test the entry 'z' against the wildcard and exact matches in 'zref':
  */

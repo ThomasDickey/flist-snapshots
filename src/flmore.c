@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flmore.c,v 1.4 1995/02/19 18:21:46 tom Exp $";
+static char *Id = "$Id: flmore.c,v 1.5 1995/03/19 00:45:14 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: flmore.c,v 1.4 1995/02/19 18:21:46 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	20 Jun 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		03 Jul 1985, cleanup 'filelist' definition.
  *		30 Dec 1984, provide for current-entry-only call (xdcl_==0).
  *		27 Sep 1984, no need for restriction to source-filetypes.
@@ -24,19 +24,17 @@ static char *Id = "$Id: flmore.c,v 1.4 1995/02/19 18:21:46 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
-#include	"dclarg.h"
+#include	"dircmd.h"
+#include	"dds.h"
 
 import(filelist);
 
-flmore (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flmore)
 {
-FILENT	ztmp;
-int	j, argc;
-char	*argv	[3],
-	fullname[MAX_PATH],	owncmd[MAX_PATH + 10];
+	FILENT	ztmp;
+	int	j, argc;
+	char	*argv	[3],
+		fullname[MAX_PATH],	owncmd[MAX_PATH + 10];
 
 	argv[0] = "BROWSE";	/* patch: WhoAmI */
 	argv[1] = xcmd_;

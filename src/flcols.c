@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.5 1995/02/19 18:01:28 tom Exp $";
+static char *Id = "$Id: flcols.c,v 1.7 1995/03/19 01:57:16 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: flcols.c,v 1.5 1995/02/19 18:01:28 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	01 Sep 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		04 Nov 1988, added expired-date
  *		05 Oct 1985, added 'flcols_132' entrypoint.
  *		24 Aug 1985, if no argument for /CWIDTH, reset entire list
@@ -35,8 +35,8 @@ static char *Id = "$Id: flcols.c,v 1.5 1995/02/19 18:01:28 tom Exp $";
 
 #include	"bool.h"
 #include	"crt.h"
-#include	"dclarg.h"
 #include	"dds.h"
+#include	"dircmd.h"
 #include	"dirent.h"
 
 #include	"strutils.h"
@@ -64,17 +64,14 @@ static	int	max_keys = sizeof(keys) / sizeof(keys[0]);
 /*
  * Decode a list of column-keywords to set/reset the display format:
  */
-flcols (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;		/* (null string pointer)	*/
-DCLARG	*xdcl_;
+tDIRCMD(flcols)
 {
-register
-int	j;
-char	new_list[sizeof(conv_list)];
-register
-char	*k_,
-	*text_;
+	register
+	int	j;
+	char	new_list[sizeof(conv_list)];
+	register
+	char	*k_,
+		*text_;
 
 	new_list[0] = '\0';
 	if (xdcl_ = xdcl_->dcl_next)	/* Point to first argument	*/
@@ -193,10 +190,9 @@ char	*c_ = conv_list,
 /* <left>:
  * Rotate the display-list to the left.
  */
-flcols_left (curfile_)
-int	*curfile_;
+tDIRCMD(flcols_left)
 {
-char	c = conv_list[0];
+	char	c = conv_list[0];
 
 	if (conv_list[1])
 	{
@@ -208,12 +204,11 @@ char	c = conv_list[0];
 /* <right>:
  * Rotate the display-list to the right.
  */
-flcols_right (curfile_)
-int	*curfile_;
+tDIRCMD(flcols_right)
 {
-int	len	= strlen(conv_list)-1;
-char	old_list[sizeof(conv_list)],
-	c	= conv_list[len];
+	int	len	= strlen(conv_list)-1;
+	char	old_list[sizeof(conv_list)],
+		c	= conv_list[len];
 
 	if (len > 0)
 	{
@@ -223,23 +218,20 @@ char	old_list[sizeof(conv_list)],
 		dds_all (dds_fast(DDS_U_C), *curfile_);
 	}
 }
-
+
 /* <width>:
  * Decode a token of the form "n.t" where both parts are optional; specify the
  * maximum number of columns to permit for the display of filename and filetype,
  * respectively.
  */
-flcols_width (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flcols_width)
 {
-int	nlen	= -1,
-	tlen	= -1;
-register
-int	set_width = 0;
-register
-char	*text_;
+	int	nlen	= -1,
+		tlen	= -1;
+	register
+	int	set_width = 0;
+	register
+	char	*text_;
 
 	if (xdcl_ = xdcl_->dcl_next)	/* Point to first argument	*/
 	{
@@ -296,7 +288,7 @@ char	*text_;
 
 	dds_all (dds_fast(DDS_U_C), *curfile_);
 }
-
+
 /* <132>:
  * Provide 80/132 column switch on VT100-compatible terminals with AVO (or
  * equivalent).  If an argument is given, set a specific terminal-width.
@@ -304,14 +296,11 @@ char	*text_;
 #define	WIDEST	132
 #define	NARROW	80
 
-flcols_132 (curfile_, xcmd_, xdcl_)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+tDIRCMD(flcols_132)
 {
-int	width,
-	length;
-char	*text_;
+	int	width,
+		length;
+	char	*text_;
 
 	termsize (FALSE, &width, &length); /* Find current terminal-size */
 	if (xdcl_ = xdcl_->dcl_next)	/* Point to first argument	*/

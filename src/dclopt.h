@@ -1,10 +1,12 @@
-/* $Id: dclopt.h,v 1.3 1995/03/18 23:08:06 tom Exp $
+/* $Id: dclopt.h,v 1.4 1995/03/19 01:42:32 tom Exp $
  *
  * public interface of dclopt.c (DCL-option decoder)
  */
 
 #ifndef DCLOPT_H
 #define DCLOPT_H
+
+#include "dclarg.h"
 
 typedef	struct	{
 	char	*opt_name,	/* => full option name			*/
