@@ -1,3 +1,13 @@
+1985-01-17  Thomas E. Dickey
+
+	* src/dspc.c: RCS_BASE
+
+1985-01-17  Thomas E. Dickey
+
+	* src/dspc.c: make program names consistent:FLIST,BROWSE
+
+	* src/dspc.c: rcs-identifiers
+
 1985-01-14  Thomas E. Dickey
 
 	* src/domore.c: RCS_BASE
