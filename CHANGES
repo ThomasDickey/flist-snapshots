@@ -1,3 +1,11 @@
+1984-09-10  Thomas E. Dickey
+
+	* src/alarm.c: RCS_BASE
+
+1984-09-10  Thomas E. Dickey
+
+	* src/alarm.c: rcs-identifiers
+
 1984-09-08  Thomas E. Dickey
 
 	* src/syrename.c: RCS_BASE
