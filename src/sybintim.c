@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sybintim.c,v 1.6 1995/06/06 13:43:34 tom Exp $";
+static char *Id = "$Id: sybintim.c,v 1.7 1995/10/19 15:42:44 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: sybintim.c,v 1.6 1995/06/06 13:43:34 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
  * Last update:
+ *		19 Oct 1995, DEC-C clean-compile on AXP
  *		03 Jun 1995, prototypes
  *		26 Jun 1985, make this recognize the DCL-style VMS date format
  *			     (keywords, fill-in-gaps).
@@ -39,6 +40,7 @@ static char *Id = "$Id: sybintim.c,v 1.6 1995/06/06 13:43:34 tom Exp $";
 #define	MAXDAY	24
 #define	MAXBFR	80
 
+/* FIXME: AXP */
 static	int	day[2] = {0x2a69c000, 0xc9};
 static	char	zeros[] = " 00:00:00.00";
 			/* 0123456789ab */
@@ -50,13 +52,15 @@ sysbintim (char *ci_, DATENT *obfr)
 	static	char	midbfr[MAXBFR];
 	$DESCRIPTOR(DSCx,bigbfr);
 	$DESCRIPTOR(midnite,midbfr);
-	long	base[2];
-	int	j,
-		num	= strlen(ci_);
+	DATENT	base;
+	int	j;
+	int	num	= strlen(ci_);
 	char	*c_, *d_, *e_;
 
-	if (num >= (MAXBFR-1))	num = (MAXBFR-1);
-	for (j = 0; j < num; j++)	bigbfr[j] = _toupper(ci_[j]);
+	if (num >= (MAXBFR-1))
+		num = (MAXBFR-1);
+	for (j = 0; j < num; j++)
+		bigbfr[j] = _toupper(ci_[j]);
 	bigbfr[num] = '\0';
 
 	/*
@@ -68,7 +72,7 @@ sysbintim (char *ci_, DATENT *obfr)
 	midnite.dsc$a_pointer = midbfr;
 	midnite.dsc$w_length  = strlen(midbfr);
 	sys$bintim (&midnite, obfr);
-	base[0] = obfr[0], base[1] = obfr[1];
+	base = *obfr;
 
 	if (strabbr (bigbfr, "TODAY", num, 3))
 		num = 0;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrename.c,v 1.4 1995/06/04 01:27:15 tom Exp $";
+static char *Id = "$Id: syrename.c,v 1.5 1995/10/19 10:36:54 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: syrename.c,v 1.4 1995/06/04 01:27:15 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	17 May 1984
  * Last update:
+ *		19 Oct 1995, DEC C clean-compile
  *		19 Feb 1995, sys utils prototypes
  *		06 Sep 1984, permit wildcards in output-filename
  *		05 Sep 1984, fixed fatal error
@@ -27,9 +28,11 @@ static char *Id = "$Id: syrename.c,v 1.4 1995/06/04 01:27:15 tom Exp $";
  */
 
 #include	<starlet.h>
+#include	<string.h>
 #include	<rms.h>
 #include	<stsdef.h>
 
+#include	"rmsinit.h"
 #include	"sysutils.h"
 
 #define	ok(x) status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
@@ -79,8 +82,7 @@ sysrename (char *newspec, char *oldspec)
 	 * If the operation is completed normally, put the (parsed and fully
 	 * resolved) name into the output argument:
 	 */
-	strcpy (newspec, newRSA, len = newNAM.nam$b_rsl);
-	newspec[len] = '\0';
+	strncpy (newspec, newRSA, len = newNAM.nam$b_rsl)[len] = '\0';
 
 	return (0);
 }
