@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.8 1995/06/06 13:37:08 tom Exp $";
+static char *Id = "$Id: snapshot.c,v 1.9 1995/10/28 14:13:13 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: snapshot.c,v 1.8 1995/06/06 13:37:08 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	15 Oct 1984
  * Last update:
+ *		28 Oct 1995, rewrote using rmsio
  *		19 Feb 1995, prototypes
  *		18 Feb 1995, port to AXP (renamed 'alarm'). 
  *		27 Jan 1985, save old-sgr on status line to restore it.
@@ -24,15 +25,22 @@ static char *Id = "$Id: snapshot.c,v 1.8 1995/06/06 13:37:08 tom Exp $";
 #include	<ctype.h>
 
 #include	"crt.h"
+#include	"rmsio.h"
+#include	"strutils.h"
 #include	"sysutils.h"
 
-static	FILE	*fp	= 0;
+static	RFILE	*fp	= 0;
 static	int	calls	= 0;
 
-#define	out(s)	fprintf(fp,s)
-#define	CORNER	out("+")
-#define	BAR	CORNER; for(j=0; j < width; j++) out("-"); CORNER; out("\n")
-#define	VERT	out("|")
+#define PUTLINE rputr(fp, dline, strlen(dline)); dline[0] = '\0'
+#define	CORNER	strcat(dline,"+")
+#define	BAR	CORNER; \
+		for(j=0; j < width; j++) \
+			strcat(dline,"-"); \
+		CORNER; \
+		PUTLINE
+
+#define	VERT	strcat(dline, "|")
 #define	VEC(j)	((j == lpp1) ? sline : crtvec[j])
 
 void
@@ -50,13 +58,14 @@ snapshot (void)
 	int	lpp1	= lpp - 1,
 		j,	k,	over;
 	char	bfr	[CRT_COLS],
-		sline	[CRT_COLS];
+		dline	[CRT_COLS*3],	/* full-line + underlining */
+		sline	[CRT_COLS];	/* saved original message-line */
 	register
 	char	*s_,	c;
 
 	if (!fp)
 	{
-		fp = fopen ("sys$login:snapshot.crt", "w");
+		fp = ropen ("sys$login:snapshot.crt", "w");
 		if (!fp)
 		{
 			sound_alarm ();
@@ -73,8 +82,16 @@ snapshot (void)
 	sys$gettim (&date);
 	sysasctim (bfr, &date, 21);
 
-	fprintf (fp, "\f\nScreen dumped: %s\nImage top: %d  bottom: %d\n\n",
-		bfr, top, end);
+	strcpy(dline, "\f");
+	PUTLINE;
+	PUTLINE;
+
+	sprintf(dline, "Screen dumped: %s", bfr);
+	PUTLINE;
+
+	sprintf (dline, "Image top: %d  bottom: %d", top, end);
+	PUTLINE;
+	PUTLINE;
 
 	BAR;
 	for (j = 0; j < lpp; j++)
@@ -92,22 +109,23 @@ snapshot (void)
 					c = toascii(c);
 					over = k + 1;
 				}
-				fprintf (fp, "%c", c);
+				sprintf (strnull(dline), "%c", c);
 			}
 			else
-				fprintf (fp, " ");
+				strcat (dline, " ");
 		}
 		VERT;
 		if (over)
 		{
-			out("\r ");
+			strcat(dline,"\r ");
 			for (s_ = VEC(j), k = 0; k < over; k++)
 			{
 				c = *s_++;
-				fprintf (fp, "%c", isascii(c) ? ' ' : '_');
+				sprintf (strnull(dline), "%c",
+					isascii(c) ? ' ' : '_');
 			}
 		}
-		fprintf (fp, "\n");
+		PUTLINE;
 	}
 	BAR;
 

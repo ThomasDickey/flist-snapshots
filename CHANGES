@@ -1,3 +1,13 @@
+1995-10-28  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/snapshot.c:
+	rewrote using rmsio, so user can exploit the file-sharing (and inspect
+	the output of this module w/o stopping flist)
+
+	* src/rmsio.c:
+	use shared flags on write also; this lets us inspect the logfile as it's
+	being written
+
 1995-10-27  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/flcrea.c: got this to work with VAX-C (no more AXP available)

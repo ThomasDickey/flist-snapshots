@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.10 1995/10/27 10:42:24 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.11 1995/10/28 13:52:43 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: rmsio.c,v 1.10 1995/10/27 10:42:24 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	11 Sep 1984
  * Last update:
- *		27 Oct 1995, set flags to allow shared-read.
+ *		28 Oct 1995, set flags to allow shared-read/write.
  *		05 Jun 1995, prototypes
  *		28 Feb 1989, print status-code in 'rerror()' if room.
  *		16 Jun 1985, broke out CC2.0/CC1.5 difference as 'rabrfa_???'
@@ -171,6 +171,7 @@ RFILE	*ropen2 (char *name_, char *dft_, char *mode_)
 			zFAB.fab$b_rat |= FAB$M_CR;
 		}
 		zFAB.fab$b_fac = FAB$M_PUT | BLOCKED;
+		zFAB.fab$b_shr |= FAB$M_SHRGET | FAB$M_SHRPUT | FAB$M_SHRUPD ;
 		CHECK(sys$create(&zFAB));
 	}
 	else
