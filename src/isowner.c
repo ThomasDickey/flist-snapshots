@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: isowner.c,v 1.4 1995/02/19 18:14:20 tom Exp $";
+static char *Id = "$Id: isowner.c,v 1.5 1995/06/06 12:07:16 tom Exp $";
 #endif
 
 /*
@@ -21,6 +21,8 @@ static char *Id = "$Id: isowner.c,v 1.4 1995/02/19 18:14:20 tom Exp $";
 
 #include	<stdio.h>
 #include	<string.h>
+#include	<unixlib.h>	/* for 'getuid()' */
+
 #include	<prvdef.h>
 
 #include	"flist.h"
@@ -31,10 +33,9 @@ static char *Id = "$Id: isowner.c,v 1.4 1995/02/19 18:14:20 tom Exp $";
 
 #define	CMP(func,offset) (func() != z->offset)
 
-isowner (z)
-FILENT	*z;
+int	isowner (FILENT *z)
 {
-char	msg	[CRT_COLS];
+	char	msg	[CRT_COLS];
 
 	if (CMP(getgid,f_grp) || CMP(getuid,f_mbm)
 	&& ! sysrights(PRV$M_SYSPRV,0))

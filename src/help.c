@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: help.c,v 1.4 1995/06/04 02:00:26 tom Exp $";
+static char *Id = "$Id: help.c,v 1.5 1995/06/06 12:42:28 tom Exp $";
 #endif
 
 /*
@@ -30,15 +30,24 @@ static char *Id = "$Id: help.c,v 1.4 1995/06/04 02:00:26 tom Exp $";
  *			   format the index listing (default: 0 => 80).
  */
 
+#include	<string.h>
+
 #include	<lib$routines.h>
 #include	<descrip.h>
 
 #include	"lbrdef.h"
 
 #if UNUSED
-int	lib$get_input(),
-	lib$put_output();
+extern	unsigned long	lib$get_input(void/*FIXME*/);
+extern	unsigned long	lib$put_output(void/*FIXME*/);
 #endif
+extern	unsigned long	lbr$output_help(
+	unsigned (*output)(void),
+	long *width,
+	struct dsc$descriptor_s *program,
+	struct dsc$descriptor_s *libname,
+	long flags,
+	unsigned (*input)(void));
 
 #define	DSC(f)	static	$DESCRIPTOR(f," ")
 #define	LBR(f)	status = f

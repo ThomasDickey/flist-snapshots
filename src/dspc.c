@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dspc.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
+static char *Id = "$Id: dspc.c,v 1.7 1995/06/06 00:35:32 tom Exp $";
 #endif
 
 /*
@@ -16,10 +16,14 @@ static char *Id = "$Id: dspc.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"dspc.h"
 #include	"crt.h"
 #include	"getpad.h"
+#include	"getraw.h"
+
+#include	"strutils.h"
 
 /*
  * Title:	dspc_init

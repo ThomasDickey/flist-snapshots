@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcopy.c,v 1.3 1995/03/19 00:49:39 tom Exp $";
+static char *Id = "$Id: flcopy.c,v 1.4 1995/06/06 00:38:10 tom Exp $";
 #endif
 
 /*
@@ -50,9 +50,12 @@ static char *Id = "$Id: flcopy.c,v 1.3 1995/03/19 00:49:39 tom Exp $";
  *		version), my code doesn't see the new lower version.
  */
 
+#include	<string.h>
+
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dircmd.h"
+#include	"dirseek.h"
 #include	"dds.h"
 
 import(filelist);

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flscan.c,v 1.6 1995/06/05 23:59:37 tom Exp $";
+static char *Id = "$Id: flscan.c,v 1.7 1995/06/06 10:37:42 tom Exp $";
 #endif
 
 /*
@@ -67,17 +67,25 @@ static char *Id = "$Id: flscan.c,v 1.6 1995/06/05 23:59:37 tom Exp $";
  *		The '.ftext' flag is not maintained in the rest of FLIST.
  *		In particular, a READ will clear this flag.
  */
+
+#include	<string.h>
+
 #include	<rmsdef.h>
 
 #include	"flist.h"
 
 #include	"dircmd.h"
 #include	"dirent.h"
+#include	"dirfind.h"
+#include	"dirread.h"
+#include	"dirseek.h"
 #include	"dds.h"
 
-static	void	flscan_all (char *spec, int len, int status);
+extern	int	inspect (char *filespec, int toscan);
+
+static	void	flscan_all (char *spec, int len, long status);
 static	void	flscan_clr (void);
-static	void	flscan_off (int j);
+static	void	flscan_off (int j, int *unused);
 static	void	flscan_on  (int j);
 static	void	flscan_set (void);
 
@@ -192,7 +200,7 @@ void	flscan_on  (int j)	/* Set particular bit	*/
  * file in the real directory, 'flscan' will remove it from 'filelist[]'.
  */
 static
-void	flscan_off (int j)
+void	flscan_off (int j, int *unused)
 {
 	FK(j).fmisc &= (~BIT_2);
 }
@@ -203,7 +211,7 @@ void	flscan_off (int j)
  * only where a specific file-spec was found).
  */
 static
-void	flscan_all (char *spec, int len, int status)
+void	flscan_all (char *spec, int len, long status)
 {
 	FILENT	z2;
 	int	j;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldump.c,v 1.5 1995/03/19 00:09:37 tom Exp $";
+static char *Id = "$Id: fldump.c,v 1.6 1995/06/06 00:54:36 tom Exp $";
 #endif
 
 /*
@@ -17,6 +17,7 @@ static char *Id = "$Id: fldump.c,v 1.5 1995/03/19 00:09:37 tom Exp $";
 #include	"textlink.h"
 #include	"flist.h"
 #include	"dircmd.h"
+#include	"ttrace.h"
 
 import(pathlist);
 import(filelink);
@@ -37,7 +38,7 @@ tDIRCMD(fldump)
 	trace ("PathList\n");
 	for (P = pathlist; P; P = P->path_next)
 	{
-		fldump_link(P);
+		fldump_link((TEXTLINK *)P);
 		fldump_path(P);
 		trace ("\n");
 	}
@@ -53,7 +54,7 @@ tDIRCMD(fldump)
 	trace ("FileLink:\n");
 	for (p = filelink; p; p = p->file_next)
 	{
-		fldump_link(p);
+		fldump_link((TEXTLINK *)p);
 		fldump_data(p);
 	}
 }

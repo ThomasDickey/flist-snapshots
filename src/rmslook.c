@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
+static char *Id = "$Id: rmslook.c,v 1.6 1995/06/06 13:34:56 tom Exp $";
 #endif
 
 /*
@@ -36,6 +36,7 @@ static char *Id = "$Id: rmslook.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 #include	"flist.h"
 #define		DIRENT		/* local */
 #include	"dirent.h"
+#include	"xabproui.h"
 
 long
 rmslook (FILENT *z, struct FAB *fab_)
@@ -48,7 +49,7 @@ rmslook (FILENT *z, struct FAB *fab_)
 	struct	XABALL	*x_;
 	struct	NAM	*nam_;
 
-	if (!(x_ = fab_->fab$l_xab))			return (status);
+	if (!(x_ = (struct XABALL *)(fab_->fab$l_xab)))	return (status);
 
 	fab_->fab$w_ifi = 0;
 	z->fstat = status = sys$open(fab_);
@@ -60,11 +61,11 @@ rmslook (FILENT *z, struct FAB *fab_)
 			switch (x_->xab$b_cod)
 			{
 			case XAB$C_ALL:	all_ = x_;	break;
-			case XAB$C_DAT:	dat_ = x_;	break;
-			case XAB$C_FHC:	fhc_ = x_;	break;
-			case XAB$C_PRO:	pro_ = x_;	break;
+			case XAB$C_DAT:	dat_ = (struct XABDAT *)x_;	break;
+			case XAB$C_FHC:	fhc_ = (struct XABFHC *)x_;	break;
+			case XAB$C_PRO:	pro_ = (struct XABPRO *)x_;	break;
 			}
-			x_ = x_->xab$l_nxt;
+			x_ = (struct XABALL *)x_->xab$l_nxt;
 		}
 
 		if (fhc_ && all_)

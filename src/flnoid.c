@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flnoid.c,v 1.4 1995/03/19 00:45:50 tom Exp $";
+static char *Id = "$Id: flnoid.c,v 1.5 1995/06/06 10:10:06 tom Exp $";
 #endif
 
 /*
@@ -28,10 +28,12 @@ static char *Id = "$Id: flnoid.c,v 1.4 1995/03/19 00:45:50 tom Exp $";
 
 #include	<stdlib.h>
 #include	<stdio.h>
+#include	<string.h>
 
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dircmd.h"
+#include	"dirseek.h"
 #include	"dds.h"
 
 static	char	format[] = "%s/noidentify";

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.7 1995/06/05 23:38:13 tom Exp $";
+static char *Id = "$Id: snapshot.c,v 1.8 1995/06/06 13:37:08 tom Exp $";
 #endif
 
 /*
@@ -44,8 +44,8 @@ snapshot (void)
 		width	= crt_width () - 1,
 		save_x	= crt_x (),
 		save_y	= crt_y (),
-		oldsgr	= crt_qsgr(lpp-1),
-		date[2];
+		oldsgr	= crt_qsgr(lpp-1);
+	DATENT	date;
 	register
 	int	lpp1	= lpp - 1,
 		j,	k,	over;
@@ -70,8 +70,8 @@ snapshot (void)
 	crt_high (bfr, strlen(bfr));
 	crt_text (bfr, lpp1, 2);	/* Show this in REVERSE		*/
 
-	sys$gettim (date);
-	sysasctim (bfr, date, 21);
+	sys$gettim (&date);
+	sysasctim (bfr, &date, 21);
 
 	fprintf (fp, "\f\nScreen dumped: %s\nImage top: %d  bottom: %d\n\n",
 		bfr, top, end);

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rabrfa.c,v 1.2 1985/06/16 23:03:46 tom Exp $";
+static char *Id = "$Id: rabrfa.c,v 1.3 1995/06/06 13:01:48 tom Exp $";
 #endif
 
 /*
@@ -14,7 +14,7 @@ static char *Id = "$Id: rabrfa.c,v 1.2 1985/06/16 23:03:46 tom Exp $";
  *		rather than long,short
  */
 
-#include	<rms.h>
+#include	"rabrfa.h"
 
 #define	RFA0	((z->rab$w_rfa[1]<<16) + z->rab$w_rfa[0])
 #define	RFA4	z->rab$w_rfa[2]
@@ -23,8 +23,7 @@ static char *Id = "$Id: rabrfa.c,v 1.2 1985/06/16 23:03:46 tom Exp $";
  * Return the record-file-address translated into an offset value,
  * compatible with the 'ftell' usage.
  */
-int	rabrfa_get (z)
-struct	RAB	*z;
+int	rabrfa_get (struct RAB *z)
 {
 	return (((RFA0-1) << 9) + RFA4);
 }
@@ -32,11 +31,9 @@ struct	RAB	*z;
 /*
  * Translate a single-word record-address to the 48-bit RMS representation:
  */
-int	rabrfa_put (z, offset)
-struct	RAB	*z;
-int	offset;
+void	rabrfa_put (struct RAB *z, int offset)
 {
-long	rfa0;
+	long	rfa0;
 
 	rfa0 = (offset >> 9) + 1;
 	z->rab$w_rfa[0] = rfa0 & 0xffff;

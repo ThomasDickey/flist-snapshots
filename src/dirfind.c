@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirfind.c,v 1.6 1995/06/04 22:54:00 tom Exp $";
+static char *Id = "$Id: dirfind.c,v 1.7 1995/06/06 00:48:54 tom Exp $";
 #endif
 
 /*
@@ -108,7 +108,7 @@ int	dirfind (
 	int	curfile,
 	int	forward,
 	DCLARG	*find_spec,
-	int	(*each)(),
+	void	(*each)(int, int *),
 	int	must_find,
 	int	unfind)
 {

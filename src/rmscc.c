@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmscc.c,v 1.3 1985/02/20 10:58:40 tom Exp $";
+static char *Id = "$Id: rmscc.c,v 1.4 1995/06/06 13:05:34 tom Exp $";
 #endif
 
 /*
@@ -27,19 +27,15 @@ static char *Id = "$Id: rmscc.c,v 1.3 1985/02/20 10:58:40 tom Exp $";
  *			binary files on VMS).
  */
 
-#include	<rms.h>
+#include	"rmscc.h"
 
-#include	"bool.h"
-
-bool	rmscc (rab_)
-struct	RAB	*rab_;
+bool	rmscc (RFILE *fp)
 {
-register
-struct	FAB	*fab_	= rab_->rab$l_fab;
-register
-int	rfm	= fab_->fab$b_rfm,
-	rat	= fab_->fab$b_rat,
-	code	= 0;
+	register struct RAB *rab_ = &(fp->rab);
+	register struct	FAB	*fab_	= rab_->rab$l_fab;
+	register int	rfm	= fab_->fab$b_rfm;
+	register int	rat	= fab_->fab$b_rat;
+	register int	code	= 0;
 
 	if ((rfm == FAB$C_STMLF)
 	||  (rfm == FAB$C_STMCR)

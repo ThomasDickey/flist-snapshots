@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strwcmp.c,v 1.3 1995/02/19 02:24:28 tom Exp $";
+static char *Id = "$Id: strwcmp.c,v 1.4 1995/06/06 13:41:18 tom Exp $";
 #endif
 
 /*
@@ -25,6 +25,8 @@ static char *Id = "$Id: strwcmp.c,v 1.3 1995/02/19 02:24:28 tom Exp $";
  *
  * Returns:	1 (TRUE) if no match, else 0 (FALSE, or EQUAL).
  */
+
+#include <string.h>
 
 #include "strutils.h"
 

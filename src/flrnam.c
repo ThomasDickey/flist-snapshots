@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.8 1995/06/05 09:47:38 tom Exp $";
+static char *Id = "$Id: flrnam.c,v 1.9 1995/06/06 10:27:38 tom Exp $";
 #endif
 
 /*
@@ -59,6 +59,7 @@ static char *Id = "$Id: flrnam.c,v 1.8 1995/06/05 09:47:38 tom Exp $";
 #include	"dircmd.h"
 #include	"dirdata.h"
 #include	"dirpath.h"
+#include	"dirseek.h"
 #include	"dds.h"
 #include	"getprot.h"
 #include	"chprot.h"
@@ -69,7 +70,7 @@ import(filelist);
 import(V_opt);
 import(conv_list);
 
-static	void	flrnam_all (char *spec, int len, int status);
+static	void	flrnam_all (char *spec, int len, long status);
 
 static	int	curfile;
 static	char	*newspec;
@@ -122,7 +123,7 @@ tDIRCMD(flrnam)
  * This procedure is called from 'dirseek_spec' after each file-spec is found.
  */
 static
-void	flrnam_all (char *spec, int len, int status)
+void	flrnam_all (char *spec, int len, long status)
 {
 	FILENT	ztmp,	*z = &ztmp, zold;
 	char	oldspec	[MAX_PATH],
@@ -149,14 +150,14 @@ void	flrnam_all (char *spec, int len, int status)
 	strcpy (tmpspec, newspec);	/* "sysrename" alters output arg */
 
 	flist_log ("! rename %s to %s", oldspec, tmpspec);
-	if ((status = doit(tmpspec, oldspec, &z->fprot)) == 0)
+	if ((status = doit(tmpspec, oldspec, &z->f_getprot)) == 0)
 	{
 	    if (status = dirent_chk (z, tmpspec))
 	    {
 		if (wasdir ^ dirent_isdir(z))
 		{
 		    warn ("Illegal directory-rename");
-		    (void)doit(strcpy(fixspec, oldspec), tmpspec, &z->fprot);
+		    (void)doit(strcpy(fixspec, oldspec), tmpspec, &z->f_getprot);
 		    return;
 		}
 		if (wasdir)	dirpath_rename (z, &zold);

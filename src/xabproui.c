@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: xabproui.c,v 1.2 1985/06/16 02:24:32 tom Exp $";
+static char *Id = "$Id: xabproui.c,v 1.3 1995/06/06 15:38:56 tom Exp $";
 #endif
 
 /*
@@ -16,12 +16,10 @@ static char *Id = "$Id: xabproui.c,v 1.2 1985/06/16 02:24:32 tom Exp $";
  *		mbm_	=> word to load with member
  */
 
-#include	<rms.h>
+#include	"xabproui.h"
 
 void
-xabprouic (pro_, grp_, mbm_)
-struct	XABPRO	*pro_;
-short	*grp_, *mbm_;
+xabprouic (struct XABPRO *pro_, unsigned short *grp_, unsigned short *mbm_)
 {
 	*grp_	= pro_->xab$l_uic >> 16;
 	*mbm_	= pro_->xab$l_uic & 0xffff;

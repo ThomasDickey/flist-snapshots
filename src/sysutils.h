@@ -1,4 +1,4 @@
-/* $Id: sysutils.h,v 1.2 1995/06/04 21:57:36 tom Exp $ */
+/* $Id: sysutils.h,v 1.3 1995/06/06 13:42:44 tom Exp $ */
 
 #ifndef SYSUTILS_H
 #define SYSUTILS_H
@@ -9,7 +9,7 @@
 void	sysasctim (char *buf, DATENT *q_, int ilen);
 
 /* sybintim.c */
-int	sysbintim (char *ci_, long *obfr);
+int	sysbintim (char *ci_, DATENT *obfr);
 
 /* sydelete.c */
 long	sysdelete (char *dspec);
@@ -24,7 +24,7 @@ void	sysgetmsg (long status, char *msg, int size_msg);
 int	sysgetsym (char *co_, char *ci_, int len);
 
 /* syhour.c */
-unsigned syshour (long *q_);
+unsigned syshour (DATENT *q_);
 void	syshours (char *co_, unsigned q, int len);
 
 /* syrename.c */

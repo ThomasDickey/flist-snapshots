@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.8 1995/06/05 23:51:33 tom Exp $";
+static char *Id = "$Id: flcols.c,v 1.9 1995/06/06 00:36:28 tom Exp $";
 #endif
 
 /*
@@ -34,7 +34,7 @@ static char *Id = "$Id: flcols.c,v 1.8 1995/06/05 23:51:33 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"flist.h"
 #include	"dds.h"
 #include	"dircmd.h"
 #include	"dirent.h"
@@ -286,7 +286,7 @@ tDIRCMD(flcols_width)
 	else
 	{
 	    pcolumns[0] = pcolumns[1] = 0;
-	    dirent_width (nullC);
+	    dirent_width ((FILENT *)0);
 	}
 
 	dds_all (dds_fast(DDS_U_C), *curfile_);
