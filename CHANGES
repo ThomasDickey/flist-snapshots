@@ -1,3 +1,21 @@
+1985-08-24  Thomas E. Dickey
+
+	* src/dirhigh.c: RCS_BASE
+
+1985-08-24  Thomas E. Dickey
+
+	* src/dirhigh.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirhigh.c: rcs-identifiers
+
+1985-08-24  Thomas E. Dickey
+
+	* src/flcopy.c: RCS_BASE
+
+1985-08-24  Thomas E. Dickey
+
+	* src/flcopy.c: rcs-identifiers
+
 1985-08-15  Thomas E. Dickey
 
 	* src/browse.cld: RCS_BASE
