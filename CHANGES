@@ -1,3 +1,21 @@
+1985-06-11  Thomas E. Dickey
+
+	* src/flescp.c: RCS_BASE
+
+1985-06-11  Thomas E. Dickey
+
+	* src/flescp.c: make program names consistent:FLIST,BROWSE
+
+	* src/flescp.c: rcs-identifiers
+
+1985-06-11  Thomas E. Dickey
+
+	* src/flnoid.c: RCS_BASE
+
+1985-06-11  Thomas E. Dickey
+
+	* src/flnoid.c: rcs-identifiers
+
 1985-05-22  Thomas E. Dickey
 
 	* src/sydelete.c: RCS_BASE
