@@ -1,4 +1,5 @@
-/*
+/* $Id: flist.h,v 1.7 1995/06/06 13:13:06 tom Exp $
+ *
  * Title:	flist.h - misc
  * Author:	Thomas E. Dickey
  * Created:	04 May 1984

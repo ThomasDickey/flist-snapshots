@@ -1,4 +1,4 @@
-/* $Id: dirent.h,v 1.14 1995/10/24 01:52:14 tom Exp $ */
+/* $Id: dirent.h,v 1.15 1995/10/24 20:26:16 tom Exp $ */
 
 /*
  * Title:	dirent.h
@@ -134,6 +134,7 @@ typedef	struct my_filent {
 	unsigned
 	short	fidnum[3];	/* File-identifier			*/
 	GETPROT	f_getprot;
+	char	*f_user;	/* user identifier (from f_getprot)	*/
 	} FILENT;
 
 #define	fprot	f_getprot.p_mask
