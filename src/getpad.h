@@ -1,6 +1,6 @@
 /*
  * Title:	getpad.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	07 May 1984
  * Last update:	16 Apr 1985, moved secondary-def's here
  *

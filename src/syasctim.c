@@ -1,10 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<descrip.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: syasctim.c,v 1.2 1984/08/03 01:34:38 tom Exp $";
+#endif
 
 /*
  * Title:	sysasctim.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984 (broke out of 'dirent.c')
  * Last update:	02 Aug 1984
  *
@@ -21,6 +21,8 @@
  *			   to use Smithsonian time).
  *		ilen	=  length to convert.
  */
+
+#include	<descrip.h>
 
 sysasctim (buf, q_, ilen)
 char	buf[];			/* String to load into			*/

@@ -1,10 +1,10 @@
-  		 /* Copyright 1984 (C), Thomas E. Dickey */
-#include	"bool.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: argvdcl.c,v 1.2 1984/12/16 01:13:04 tom Exp $";
+#endif
 
 /*
  * Title:	argvdcl.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 May 1984
  * Last update:	15 Dec 1984, added 'cpy_dft' argument to DCLARG.  Corrected
  *			     use of argc-count.
@@ -22,6 +22,9 @@
  * Note:	This should not be used as a general replacement for the
  *		VAX/VMS DCL interface.
  */
+
+#include	"bool.h"
+#include	"dclarg.h"
 
 char	*calloc();
 

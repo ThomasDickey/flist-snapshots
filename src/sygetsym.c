@@ -1,12 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<stsdef.h>
-#include	<descrip.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: sygetsym.c,v 1.2 1984/08/25 11:36:10 tom Exp $";
+#endif
 
 /*
  * Title:	sysgetsym.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984
  * Last update:	25 Aug 1984, assume longest filename is length of symbol
  *
@@ -22,6 +20,10 @@
  *
  * Returns:	TRUE iff a symbol was found.
  */
+
+#include	<rms.h>
+#include	<stsdef.h>
+#include	<descrip.h>
 
 sysgetsym (co_, ci_, len)
 char	*co_, *ci_;

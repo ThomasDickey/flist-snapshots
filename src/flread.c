@@ -1,13 +1,10 @@
-  	/* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	"flist.h"
-
-#include	"dclarg.h"
-#include	"dds.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: flread.c,v 1.3 1985/09/10 00:41:56 tom Exp $";
+#endif
 
 /*
  * Title:	flread.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	24 Jul 1984
  * Last update:	03 Sep 1985, pass-thru 'UPDATE' flag to 'dirent_all'
  *		05 Feb 1985, had coded for-loop wrong.
@@ -17,7 +14,7 @@
  *		02 Sep 1984, use "import"
  *		27 Jul 1984
  *
- * Function:	This module performs the READ function for "DIRED".  READ
+ * Function:	This module performs the READ function for "FLIST".  READ
  *		reads new (or re-reads old) entries into the 'filelist[]'
  *		array.
  *
@@ -34,6 +31,12 @@
  *		READ	- directs the program to read only those entries which
  *			  were not previously in the database.
  */
+
+#include	"flist.h"
+
+#include	"dclarg.h"
+#include	"dds.h"
+#include	"dirent.h"
 
 flread (curfile_, xcmd_, xdcl_)
 int	*curfile_;

@@ -1,12 +1,10 @@
-	  	/* Copyright 1984 (C), Thomas E. Dickey */
-#include	<rms>
-#include	<stsdef.h>
-
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dclwild.c,v 1.2 1984/12/26 15:02:42 tom Exp $";
+#endif
 
 /*
  * Title:	dclwild.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	30 Jun 1984
  * Last update:	26 Dec 1984, use result of 'dclarg' parsing, rather than a
  *			     re-parse here.
@@ -23,6 +21,11 @@
  *		these, the actual bits are returned to test particular types
  *		of illegal wildcard use.
  */
+
+#include	<rms>
+#include	<stsdef.h>
+
+#include	"dclarg.h"
 
 dclwild (dcl_)
 DCLARG	*dcl_;

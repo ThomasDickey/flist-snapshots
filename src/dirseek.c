@@ -1,12 +1,10 @@
-  	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
-#include	<rms.h>
-
-#include	"flist.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dirseek.c,v 1.3 1985/06/16 00:13:42 tom Exp $";
+#endif
 
 /*
  * Title:	dirseek.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	16 Jul 1984
  * Last update:	15 Jun 1985, typed 'dirread_path'.  Reference 'for_each' as
  *			     '(*for_each)' to make CC2.0 happy.
@@ -18,7 +16,7 @@
  *		26 Jul 1984, added 'need' option
  *		16 Jul 1984
  *
- * Function:	This procedure is used by DIRED to verify the existence of a
+ * Function:	This procedure is used by FLIST to verify the existence of a
  *		list of files, used as arguments in an input list.  A simple
  *		search is used rather than checking (additionally) the read
  *		access due to the long time required if a wildcard is given.
@@ -35,6 +33,11 @@
  * Returns:	TRUE if all filespec's are found. If not, and if 'need' is set,
  *		a warning message is generated.
  */
+
+#include	<rms.h>
+
+#include	"flist.h"
+#include	"dclarg.h"
 
 char	*dirread_path();
 

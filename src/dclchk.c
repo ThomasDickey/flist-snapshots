@@ -1,14 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dclchk.c,v 1.2 1984/08/27 00:29:36 tom Exp $";
+#endif
 
 /*
  * Title:	dclchk.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 May 1984
  * Last update:	26 Aug 1984, cleanup buffer sizes
  *		14 Jul 1984, use $GETMSG for most messages.
@@ -23,6 +19,12 @@
  *
  * Returns:	TRUE if an error is found, else FALSE (0).
  */
+
+#include	<rms.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"dclarg.h"
 
 dclchk (dcl_, co_)
 DCLARG	*dcl_;

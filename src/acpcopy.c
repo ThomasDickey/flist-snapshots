@@ -1,17 +1,10 @@
-  		 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	"rmsio.h"
-#include	<rms.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<stsdef.h>
-
-#include	"bool.h"
-
-#include	"acp.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: acpcopy.c,v 1.2 1985/02/24 00:41:34 tom Exp $";
+#endif
 
 /*
  * Title:	ACPcopy.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	23 Feb 1985, from code in 'pipefunc' written 16 Nov 1984
  * Last update:	23 Feb 1985, to make a general-access routine
  *
@@ -24,6 +17,16 @@
  *		iname	Full name of input file
  *		oname	Full name of output file
  */
+
+#include	"rmsio.h"
+#include	<rms.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<stsdef.h>
+
+#include	"bool.h"
+
+#include	"acp.h"
 
 /*
  * The FIB-data is static, because it is copied (by two calls on 'pipefunc2')

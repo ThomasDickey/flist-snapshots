@@ -1,11 +1,11 @@
 /*
  * Title:	rmsio.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	15 Sep 1984
  * Last update:	23 Feb 1985, added 'sys', 'RMS_STUFF' defines
  *		19 Oct 1984, added 'RMSIO' define
  *
- *	Define an intercept for 'stdio' stuff so that I can compile 'more'
+ *	Define an intercept for 'stdio' stuff so that I can compile 'BROWSE'
  *	to point to 'rmsio', without widespread source changes.
  */
 

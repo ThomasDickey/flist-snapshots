@@ -1,3 +1,5 @@
+/* $Id: lbrdef.h,v 1.2 1985/03/20 01:54:32 tom Exp $ */
+
 #define	LBR$C_ADDMOD	0x1
 #define	LBR$C_CREATE	0x0
 #define	LBR$C_CTLTBLID	0xcb

@@ -1,11 +1,10 @@
-  	/* Copyright 1984 (C), Thomas E. Dickey */
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: flmore.c,v 1.3 1985/07/03 10:30:10 tom Exp $";
+#endif
 
 /*
  * Title:	flmore.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	20 Jun 1984
  * Last update:	03 Jul 1985, cleanup 'filelist' definition.
  *		30 Dec 1984, provide for current-entry-only call (xdcl_==0).
@@ -15,9 +14,13 @@
  *		03 Jul 1984, changed 'faccess' to 'dirent_acc'
  *		20 Jun 1984
  *
- * Function:	This module performs a call to the MORE program (linked) with
- *		DIRED.
+ * Function:	This module performs a call to the BROWSE program (linked) with
+ *		FLIST.
  */
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
 
 import(filelist);
 
@@ -31,7 +34,7 @@ int	j, argc;
 char	*argv	[3],
 	fullname[MAX_PATH],	owncmd[MAX_PATH + 10];
 
-	argv[0] = "more";	/* patch: WhoAmI */
+	argv[0] = "BROWSE";	/* patch: WhoAmI */
 	argv[1] = xcmd_;
 	argv[2] = 0;
 	argc = 2;
@@ -41,7 +44,7 @@ char	*argv	[3],
 	else
 	{
 		dirent_glue (fullname, FK_(*curfile_));
-		sprintf (argv[1] = owncmd, "MORE %s", fullname);
+		sprintf (argv[1] = owncmd, "BROWSE %s", fullname);
 	}
 
 	if (! dirent_old1 (&ztmp, fullname))	return;

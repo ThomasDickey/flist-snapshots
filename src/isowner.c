@@ -1,8 +1,6 @@
-  		/* Copyright 1984 (C), Thomas E. Dickey */
-#include	<prvdef.h>
-
-#include	"flist.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: isowner.c,v 1.3 1989/12/05 11:57:50 tom Exp $";
+#endif
 
 /*
  * Title:	isowner.c
@@ -13,12 +11,17 @@
  *		12 Nov 1985, patch (for v4.x) to use only low-byte of uid codes
  *		20 Dec 1984
  *
- * Function:	Test (for DIRED) a file's UIC to see if it is either owned
+ * Function:	Test (for FLIST) a file's UIC to see if it is either owned
  *		by the current process, or if the process has sufficient
  *		privilege to modify it.
  *
  * Arguments:	z	=> FILENT structure defining file.
  */
+
+#include	<prvdef.h>
+
+#include	"flist.h"
+#include	"dirent.h"
 
 /*
  * External procedures and data:

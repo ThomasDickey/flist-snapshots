@@ -1,6 +1,6 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<jpidef.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: syrights.c,v 1.2 1989/12/05 12:01:00 tom Exp $";
+#endif
 
 /*
  * Title:	sysrights.c
@@ -17,6 +17,8 @@
  * Parameters:	mask	= privilege-mask (e.g., PRV$M_BYPASS) from <prvdef.h>.
  *		word_num= 0 (for the one-bit masks!)
  */
+
+#include	<jpidef.h>
 
 #define	ITEM(code,len)	((code<<16)+len)
 

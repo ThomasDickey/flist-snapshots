@@ -1,3 +1,5 @@
+$! $Id: build.com,v 1.2 1993/04/23 20:01:12 tom Exp $
+$!
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:

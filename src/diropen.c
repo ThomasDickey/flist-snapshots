@@ -1,18 +1,16 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	"bool.h"
-#include	"dirent.h"
-#include	"getprot.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: diropen.c,v 1.3 1984/08/25 17:49:32 tom Exp $";
+#endif
 
 /*
  * Title:	diropen.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	04 Jul 1984
  * Last update:	25 Aug 1984, cleanup buffer sizes
  *		23 Jul 1984, enhanced warning messages
  *		15 Jul 1984, to provide 'diropen2' entrypoint.
  *
- * Function:	This procedure is used by DIRED to check that a directory
+ * Function:	This procedure is used by FLIST to check that a directory
  *		is both readable and writeable before attempting an operation
  *		(such as EDIT or COPY) which would modify the directory.
  *
@@ -36,6 +34,10 @@
  * Returns:	TRUE iff the directory can be modified.  If not, a warning
  *		message is emitted via 'warn'.
  */
+
+#include	"bool.h"
+#include	"dirent.h"
+#include	"getprot.h"
 
 diropen (name_)
 char	*name_;
@@ -61,7 +63,7 @@ char	parent	[MAX_PATH],
 }
 
 /*
- * Most of DIRED's calls on this module already have a specific 'filelist[]'
+ * Most of FLIST's calls on this module already have a specific 'filelist[]'
  * entry which is being tested.  Use this entrypoint to hide knowledge of the
  * relationship to 'pathlist'.
  */

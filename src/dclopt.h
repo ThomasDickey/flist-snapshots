@@ -1,6 +1,6 @@
 /*
  * Title:	dclopt.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
  * Last update:	14 Jan 1985, to add 'opt_ini2'
  *

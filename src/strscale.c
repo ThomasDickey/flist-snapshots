@@ -1,8 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
+#ifndef NO_IDENT
+static char *Id = "$Id: strscale.c,v 1.2 1984/06/06 12:38:20 tom Exp $";
+#endif
 
 /*
  * Title:	strscale.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	06 Jun 1984
  * Last update:	07 Jun 1984
  *

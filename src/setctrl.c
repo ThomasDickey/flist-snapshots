@@ -1,13 +1,15 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
+#ifndef NO_IDENT
+static char *Id = "$Id: setctrl.c,v 1.3 1984/12/19 00:33:32 tom Exp $";
+#endif
 
 /*
  * Title:	setctrl.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	18 Dec 1984
  * Last update:	18 Dec 1984
  *
  * Function:	Set/clear the VMS control functions for ^T, ^Y.  This is used
- *		by DIRED.
+ *		by FLIST.
  */
 
 #define	LIB$M_CLI_CTRLT	0x00100000

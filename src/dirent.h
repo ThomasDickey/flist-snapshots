@@ -1,6 +1,6 @@
 /*
  * Title:	dirent.h
- * Author:	T.E.Dickey
+ * Author:	Thomas E. Dickey
  * Created:	02 May 1984
  * Last update:
  *		04 Nov 1988, added field ".fexpr", enlarged .f_mbm, .f_grp
@@ -38,7 +38,7 @@
  *		03 Jul 1984, re-ordered FILENT to match GETPROT
  *		21 May 1984
  *
- *	Define structure used by DIRED to store information for a directory
+ *	Define structure used by FLIST to store information for a directory
  *	entry.
  */
 
@@ -55,7 +55,7 @@
 #define	FK_(k)	(&FK(k))	/* address of the FILENT-block */
 
 /*
- * DIRED makes a linked-list of these, to be able to test the pathname
+ * FLIST makes a linked-list of these, to be able to test the pathname
  * independently of the filename, and to save space:
  */
 typedef	struct {
@@ -98,7 +98,7 @@ typedef	struct	{
 	} DATENT;
 
 /*
- * DIRED stores one of these for each filename:
+ * FLIST stores one of these for each filename:
  */
 typedef	struct {
 	/*
@@ -148,7 +148,7 @@ typedef	struct {
 #define	FILENT_name_size	 (FILENT_vers_size + 2)
 
 /*
- * DIRED stores the FILENT blocks in a linked-list which is accessible to all
+ * FLIST stores the FILENT blocks in a linked-list which is accessible to all
  * levels of the hierarchy.  A given level uses an array of pointers (for fast
  * access) to its own subset of the FILENT-blocks.  This list can be automatically
  * constructed from the '.file_refs' mask (see NAMEHEAP).

@@ -1,12 +1,10 @@
-  	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
-
-#include	<ctype.h>
-
-#include	"bool.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: inspect.c,v 1.2 1985/06/16 01:57:20 tom Exp $";
+#endif
 
 /*
  * Title:	inspect.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	17 Nov 1984
  * Last update:	15 Jun 1985, typed 'ropen'
  *		04 Feb 1985, block-encrypted files do not have proper record
@@ -27,6 +25,10 @@
  * Returns:	TRUE iff all scanned characters are as expected, and if the
  *		longest-record length is reasonable.
  */
+
+#include	<ctype.h>
+
+#include	"bool.h"
 
 char	*ropen();
 

@@ -1,17 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<stsdef.h>
-
-
-#include	"bool.h"
-#include	"acp.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: chprot.c,v 1.2 1984/12/22 00:57:38 tom Exp $";
+#endif
 
 /*
  * Title:	chprot.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	19 Nov 1984
  * Last update:	21 Dec 1984, return status-code from I/O status-block.
  *
@@ -31,6 +24,14 @@
  * Returns:	The first error status found.  (The procedure halts on the
  *		first error.)
  */
+
+#include	<rms.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<stsdef.h>
+
+#include	"bool.h"
+#include	"acp.h"
 
 #define	sys(f)	status = f; if (! $VMS_STATUS_SUCCESS(status))
 #define	QIO(func) sys$qiow (0, chnl, func, &iosb, 0, 0,\

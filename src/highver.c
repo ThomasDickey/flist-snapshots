@@ -1,11 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<stsdef.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: highver.c,v 1.2 1985/06/23 23:34:36 tom Exp $";
+#endif
 
 /*
  * Title:	highver.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	08 Sep 1984 (from 'mv$current', 17-May-1984)
  * Last update:	23 Jun 1985, use 'scanver' to decode version number
  *		08 Sep 1984
@@ -18,6 +17,10 @@
  *
  * Returns:	the actual version, if the file is found, else 0.
  */
+
+#include	<rms.h>
+#include	<stsdef.h>
+
 highver (name_)
 char	*name_;
 {

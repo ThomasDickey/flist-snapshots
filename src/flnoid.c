@@ -1,12 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: flnoid.c,v 1.2 1985/06/11 10:43:08 tom Exp $";
+#endif
 
 /*
  * Title:	flnoid.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	22 May 1984
  * Last update:	11 Jun 1985, added cli-argument to dds_spawn
  *		26 Jul 1984, modified 'dirseek()'
@@ -25,6 +23,10 @@
  *
  * Patch:	I would rather capture and display the enqueued-message.
  */
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
 
 char	*calloc();		/* => dynamically allocated memory	*/
 

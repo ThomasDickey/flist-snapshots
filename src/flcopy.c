@@ -1,11 +1,10 @@
- 	 	 /* Copyright 1984 (C), Thomas E. Dickey */
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: flcopy.c,v 1.2 1985/08/24 10:53:48 tom Exp $";
+#endif
 
 /*
  * Title:	flcopy.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
  * Last update:	24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		19 Jul 1985, use 'dirdata_one', corrected "COPY / ;" results for
@@ -48,7 +47,11 @@
  *		but (since I am basically checking only for new highest
  *		version), my code doesn't see the new lower version.
  */
-
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
+
 import(filelist);
 import(V_opt);
 

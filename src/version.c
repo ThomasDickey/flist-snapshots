@@ -1,7 +1,10 @@
-      		/* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#ifndef NO_IDENT
+static char *Id = "$Id: version.c,v 1.3 1993/04/22 16:33:42 tom Exp $";
+#endif
+
 /*
- * Title:	dired.c - Release history
- * Author:	T.E.Dickey (ITT/ATC)
+ * Title:	dired.c - Directory-Editor Release history
+ * Author:	Thomas E. Dickey
  * Created:	28 Aug 1984
  * Last update:			In-progress: restructure 'dircmd', 'getraw'.
  *
@@ -152,9 +155,10 @@
  *				properly).  Restrict 'dirent_col' to keep at
  *				least 10 columns in command-field.
  *
- *	x1360	02 Mar 1985	Revised O (/OVER) command of MORE to do 2-state
- *				toggle, or accept argument.  Also, corrected
- *				overstrike/highlighting (space by '_').
+ *	x1360	02 Mar 1985	Revised O (/OVER) command of BROWSE to do
+ *				2-state toggle, or accept argument.  Also,
+ *				corrected overstrike/highlighting
+ *				(space by '_').
  *
  *				Added code to 'getraw' which tests the system
  *				identification register against known values,
@@ -164,12 +168,12 @@
  *				Added "magic" (undocumented) function to copy
  *				date from one file to another: If /MARK is set,
  *				then a repeated ^D on another file will cause
- *				DIRED to copy date,protection from the marked
+ *				FLIST to copy date,protection from the marked
  *				file.
  *
- *				Added fatal-error message to 'more' ('erstat'),
+ *				Added fatal-error message to 'BROWSE' ('erstat'),
  *				and truncate filename via 'more_name'.  Modified
- *				/JOIN-option in MORE to both omit binary files
+ *				/JOIN-option in BROWSE to both omit binary files
  *				(by record-size) and to do joining if no trailing
  *				linefeed was found.
  *
@@ -184,7 +188,7 @@
  *				(This seems a large stack; I tested it down to
  *				an 8-level directory.  With a 20-page stack I
  *				get a protection violation about 4-5 levels down.)
- *	x1298	02 Feb 1985	Corrected use of alarms in MORE.  Fixed ACPLOOK
+ *	x1298	02 Feb 1985	Corrected use of alarms in BROWSE.  Fixed ACPLOOK
  *				for (special?) case of 0-size of indexed files.
  *				Added 'crt_qsgr' entry to fix calls by SNAPSHOT.
  *				Reduce sys-search from 'dclarg'.  Revised the
@@ -193,7 +197,7 @@
  *				to 'crt' module (making VT100 faster).  Do
  *				better cleanup/reset of terminal on exit and
  *				spawning.
- *	x1240	20 Jan 1985	Extensions to MORE (I,J, /TRIM) and rationalized
+ *	x1240	20 Jan 1985	Extensions to BROWSE (I,J, /TRIM) and rationalized
  *				its use of scale-mode and repeat-factor.
  *				Added crt-reset code to reset scrolling margins,
  *				and smooth-scroll on entries/re-entries.
@@ -224,15 +228,15 @@
  *				"?QUOTA", "/SFORMAT", and "/SATTRIBUTE".
  *				Added 'nameheap', to manage longer names for
  *				VMS 4.0, added PATH column-type ("/columns").
- *	x1012	03 Dec 1984	Added 'X' command to MORE (abort skip/search).
+ *	x1012	03 Dec 1984	Added 'X' command to BROWSE (abort skip/search).
  *				Use 'putraw' to bypass Unix I/O bug.
  *				Added FORMAT, ATTRIBUTE column types, added
  *				INSPECT command.  Use ACP for change-protect
  *				('setprot', 'chprot' routines).
- *	x971	06 Nov 1984,	Improved crt-driver, improved MORE.
- *	x965	24 Oct 1984,	Cleanup of MORE, added 'sysfom' timer, broke
+ *	x971	06 Nov 1984,	Improved crt-driver, improved BROWSE.
+ *	x965	24 Oct 1984,	Cleanup of BROWSE, added 'sysfom' timer, broke
  *				out 'cmdstk'.
- *	x941	17 Oct 1984,	RMS-MORE, snapshot (^K), put locked-files at
+ *	x941	17 Oct 1984,	RMS-BROWSE, snapshot (^K), put locked-files at
  *				top of date-sort, put ^K, ^W into 'dircmd_GET'.
  *	x929	28 Sep 1984,	cleanup of RMS I/O (no more Unix file I/O,
  *				except via 'printf').

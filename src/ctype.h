@@ -1,6 +1,6 @@
 /*
  * Title:	ctype.h - Intercept
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	29 Aug 1984
  * Last update:	15 May 1985, prefer upper/lower macros, rather than routine
  *		29 Aug 1984

@@ -1,6 +1,6 @@
 /*
  * Title:	dircmd2.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 Jun 1984
  * Last update:	18 Sep 1985, added v_NAME
  *		27 Jul 1985, permit wildcard-rename (v_1_1)
@@ -13,7 +13,7 @@
  *		28 Aug 1984, added '.v_func' to VCMD
  *		04 Aug 1984, added 'cmdnum' tests
  *
- *	Define command constraints for DCL-commands known to DIRED.
+ *	Define command constraints for DCL-commands known to FLIST.
  */
 
 #define	v_1_IN		0001	/* Exactly one input filespec needed	*/
@@ -64,7 +64,7 @@ typedef	struct	{
 
 /*
  * Define tests on 'cmdnum' (the index into VCMD/VCMD2 tables) to permit
- * program to know about third-type (non-DIRED commands).
+ * program to know about third-type (non-FLIST commands).
  */
 #define	NOARG_CMD	(-1)
 #define	EXTRN_CMD	(-2)

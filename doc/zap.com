@@ -1,3 +1,4 @@
+$! $Id: zap.com,v 1.2 1985/01/03 00:39:20 tom Exp $
 $! DELETE all RUNOFF output files, leaving only the inputs.
 $!
 $ LOOP:

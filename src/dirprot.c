@@ -1,16 +1,14 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	"flist.h"
-#include	"dclarg.h"
-#include	"getprot.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dirprot.c,v 1.3 1984/08/26 01:45:24 tom Exp $";
+#endif
 
 /*
  * Title:	dirprot.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	10 Jul 1984
  * Last update:	25 Aug 1984, cleanup buffer sizes
  *
- * Function:	This procedure is used by DIRED to check access rights of
+ * Function:	This procedure is used by FLIST to check access rights of
  *		a list of files, specified in a DCLARG-list.  For example,
  *		to print a list of files, they must all be readable.  This
  *		code uses 'getprot' to perform wildcard (worst-case) testing.
@@ -23,6 +21,10 @@
  * Returns:	TRUE if all accesses are permitted.  If not, a warning message
  *		is generated.
  */
+
+#include	"flist.h"
+#include	"dclarg.h"
+#include	"getprot.h"
 
 dirprot (cmd_, d_, mfld, mode_)
 char	*cmd_;

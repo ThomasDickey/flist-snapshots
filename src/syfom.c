@@ -1,8 +1,12 @@
+#ifndef NO_IDENT
+static char *Id = "$Id: syfom.c,v 1.2 1983/10/27 20:00:54 tom Exp $";
+#endif
+
 /*
  * Title:	sysfom.c - Display figures-of-merit
- * Author:	T.E.Dickey
- * Created:	27 Oct 83
- * Last update:	27 Oct 83
+ * Author:	Thomas E. Dickey
+ * Created:	27 Oct 1983
+ * Last update:	27 Oct 1983
  *
  * Function:	Obtain a character string from the operating system which
  *		shows both elapsed and actual CPU times.  Return this string

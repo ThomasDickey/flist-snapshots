@@ -1,11 +1,10 @@
-  			/* Copyright 1984 (C) Thomas E. Dickey */
-#include	<rms>
-
-#include	"bool.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: pathdown.c,v 1.2 1985/09/10 10:50:00 tom Exp $";
+#endif
 
 /*
  * Title:	pathdown.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	02 Jul 1984, recode from 'dirent.c' module
  * Last update:	10 Sep 1985, calls using FILENT-arguments may have a trailing
  *			     '.' in 'name_' field.
@@ -31,6 +30,10 @@
  * Returns:	TRUE if no error was detected.  Errors include parse-errors,
  *		and attempts to recur on the "[0,0]" name "000000".
  */
+
+#include	<rms>
+
+#include	"bool.h"
 
 pathdown (co_, ci_, name_)
 char	*co_, *ci_, *name_;

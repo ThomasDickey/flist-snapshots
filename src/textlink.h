@@ -1,6 +1,6 @@
 /*
  * Title:	textlink.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	06 Dec 1984
  * Last update:	04 Jul 1985, added 'refs' mask
  *		06 Dec 1984

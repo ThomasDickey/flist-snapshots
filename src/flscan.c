@@ -1,14 +1,10 @@
- 	  /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<rmsdef.h>
-
-#include	"flist.h"
-
-#include	"dclarg.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: flscan.c,v 1.3 1985/07/27 20:04:56 tom Exp $";
+#endif
 
 /*
  * Title:	flscan.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	24 Jul 1984
  * Last update:	27 Jul 1985, make 'flscan_set'..'flscan_off' common routines to
  *			     use in tests of real directory entries against our
@@ -32,7 +28,7 @@
  *		16 Aug 1984, use 'dirent_misc'
  *		31 Jul 1984
  *
- * Function:	This module performs the VERIFY function for "DIRED".  VERIFY
+ * Function:	This module performs the VERIFY function for "FLIST".  VERIFY
  *		tests each entry in 'filelist[]' to verify that it still
  *		exists.  Unlike READ, it does not re-read the date, size, etc.,
  *		so it can operate (relatively) rapidly.
@@ -66,10 +62,16 @@
  * Patch:	This code should be redone for the full-list case to avoid
  *		the N-squared effect of the search in 'flscan_all'.
  *
- *		The '.ftext' flag is not maintained in the rest of DIRED.
+ *		The '.ftext' flag is not maintained in the rest of FLIST.
  *		In particular, a READ will clear this flag.
  */
-
+#include	<rmsdef.h>
+
+#include	"flist.h"
+
+#include	"dclarg.h"
+#include	"dirent.h"
+
 /*
  * External (typed) procedures:
  */

@@ -1,7 +1,4 @@
-#include	"atrdef.h"
-#include	"dqfdef.h"
-#include	"fchdef.h"
-#include	"fibdef.h"
+/* $Id: acp.h,v 1.2 1985/06/15 23:11:10 tom Exp $ */
 
 /*
  * Title:	fibdef.h
@@ -14,6 +11,11 @@
  * Last update:	15 Jun 1985,	typed atr-buffer address as 'char*'
  *		13 Dec 1984, 	added IOSB
  */
+
+#include	"atrdef.h"
+#include	"dqfdef.h"
+#include	"fchdef.h"
+#include	"fibdef.h"
 
 #define	byte	unsigned char
 #define	word	short

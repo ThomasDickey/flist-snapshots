@@ -1,8 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
+#ifndef NO_IDENT
+static char *Id = "$Id: freelist.c,v 1.2 1984/05/28 13:36:06 tom Exp $";
+#endif
 
 /*
  * Title:	freelist.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 May 1984
  * Last update:	28 May 1984
  *

@@ -1,12 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<ctype.h>
-
-#include	"bool.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: tabexp.c,v 1.2 1985/01/12 15:38:32 tom Exp $";
+#endif
 
 /*
  * Title:	tabexp.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	12 Jan 1985
  * Last update:	12 Jan 1985
  *
@@ -15,6 +13,10 @@
  * Arguments:	obuf	=> output buffer
  *		ibuf	=> input buffer
  */
+
+#include	<ctype.h>
+
+#include	"bool.h"
 
 tabexp (obuf, ibuf)
 char	*obuf, *ibuf;

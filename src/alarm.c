@@ -1,10 +1,10 @@
-   	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<descrip.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: alarm.c,v 1.3 1995/02/18 20:07:16 tom Exp $";
+#endif
 
 /*
  * Title:	alarm.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	10 Sep 1984
  * Last update:	10 Sep 1984
  *
@@ -13,10 +13,11 @@
  *		because we wish to avoid using the VMS-C run-time support.
  */
 
-alarm ()
+#include	<descrip.h>
+
+sound_alarm ()
 {
-static
-$DESCRIPTOR(DSC_bell,"\007");
+	static $DESCRIPTOR(DSC_bell,"\007");
 
 	lib$put_screen (&DSC_bell);
 }
