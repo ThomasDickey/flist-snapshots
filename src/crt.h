@@ -1,5 +1,4 @@
-/* $Id: crt.h,v 1.6 1995/06/05 23:28:45 tom Exp $
- *
+/*
  * Title:	crt.h
  * Author:	Thomas E. Dickey
  * Created:	24 Aug 1984, broke out of 'flist.h'

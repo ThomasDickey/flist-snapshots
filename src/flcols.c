@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.9 1995/06/06 00:36:28 tom Exp $";
+static char *Id = "$Id: flcols.c,v 1.10 1995/10/24 10:42:50 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flcols.c,v 1.9 1995/06/06 00:36:28 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	01 Sep 1984
  * Last update:
+ *		24 Oct 1995, added "USER" column
  *		18 Mar 1995, prototypes
  *		04 Nov 1988, added expired-date
  *		05 Oct 1985, added 'flcols_132' entrypoint.
@@ -57,7 +58,8 @@ char	*keys[]	= {
 		/* end subtype */
 		"ALLOC",	"FORMAT",	"IDENTIFIER",	"LENGTH",
 		"MASK",
-		"OWNER",	"PATH",		"SIZE",		"XAB"};
+		"OWNER",	"PATH",		"SIZE",		"USER",
+		"XAB"};
 
 static	int	max_keys = sizeof(keys) / sizeof(keys[0]);
 

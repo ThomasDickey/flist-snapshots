@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.9 1995/10/22 21:47:21 tom Exp $
+$! $Id: build.com,v 1.10 1995/10/24 10:54:09 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -133,6 +133,7 @@ $	call	cc_lib SYTRNLOG
 $	call	cc_lib TABEXP
 $	call	cc_lib TERMSIZE
 $	call	cc_lib TTRACE
+$	call	cc_lib UID2S
 $	call	cc_lib VERSION
 $	call	cc_lib WHOAMI
 $	call	cc_lib XABPROUI

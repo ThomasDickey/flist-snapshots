@@ -1,3 +1,28 @@
+1995-10-24  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/flsort.c: added USER-column sort
+
+	* src/dds.c: added code for user-column in dds_width()
+
+	* doc/d3.rno, doc/db.rno:
+	documented (draft) commands for EXPIRED, USER columns
+
+	* src/dircmd.c: added /suser, /ruser
+
+	* src/dirent.c: mods to make user-column loaded once per FILENT
+
+	* src/uid2s.c:
+	mods to make this work better for memory-management (return empty
+	string rather than null for unidentified users)
+
+	* src/dirent.h: added 'f_user' to allow sort-by-username
+
+	* src/build.com: added UID2S
+
+	* src/flcols.c, src/dirent.c: added "USER" column
+
+	* src/uid2s.c: RCS_BASE
+
 1995-10-23  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dirent.h: added ccolumns=7 (for user column)

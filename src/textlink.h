@@ -1,5 +1,4 @@
-/* $Id: textlink.h,v 1.4 1995/06/06 00:53:22 tom Exp $
- *
+/*
  * Title:	textlink.h
  * Author:	Thomas E. Dickey
  * Created:	06 Dec 1984

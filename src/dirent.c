@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.16 1995/10/22 19:19:07 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.17 1995/10/24 10:12:42 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.16 1995/10/22 19:19:07 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
+ *		23 Oct 1995, added 'u(ser)' column
  *		21 Oct 1995, /dlong repeated shows time in seconds.
  *		28 May 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods)
@@ -155,6 +156,8 @@ static char *Id = "$Id: dirent.c,v 1.16 1995/10/22 19:19:07 tom Exp $";
 #include	"sysutils.h"
 
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
+
+#define	LATCH(i,f)	if ((f) > ccolumns[i])	ccolumns[i] = latch = len
 
 static	void	dirent__cnv2 (int no_priv, char *c_, unsigned number);
 static	DATENT*	dirent__date (FILENT *z, int opt);
@@ -487,6 +490,7 @@ void	dirent_conv (char *bfr, FILENT *z)
 		noDATE[] = "%-17s";
 
 	char	tmp[CRT_COLS+256],
+		tempid[80],
 		*c_	= bfr,
 		*ccol_	= conv_list,
 		format	[sizeof(sFMT1)+20],
@@ -675,6 +679,24 @@ void	dirent_conv (char *bfr, FILENT *z)
 			else
 				sprintf (c_, "%4o,%4o",
 					z->f_grp, z->f_mbm);
+			break;
+
+		case 'u':		/* USER (len=18)	*/
+			if (no_priv) {
+				sprintf(c_, "%-*s", ccolumns[6], " ");
+			} else {
+				int	len, latch;
+				/*
+				 * FIXME: I'd have latched the maximum width
+				 * in 'dirent_width()', except that I'm not
+				 * caching an allocated string for the user
+				 * identifier. This is crude, but sufficient.
+				 */
+				len = strlen(
+					vms_uid2s(tempid, z->f_mbm, z->f_grp));
+				LATCH(6,len);
+				sprintf (c_, "%-*s", ccolumns[6], tempid);
+			}
 			break;
 
 		/* Patch: Limit this to 13 columns until either we extend the
@@ -970,8 +992,6 @@ int	dirent_old_any (
  * block to the display list; other points may read a FILENT block which will
  * be included in the 'dirdata' list, but not displayed.
  */
-#define	LATCH(i,f)	if ((f) > ccolumns[i])	ccolumns[i] = latch = len
-
 int	dirent_width (FILENT *z)
 {
 	register int	len, num, latch;
@@ -1013,6 +1033,7 @@ int	dirent_width (FILENT *z)
 		ccolumns[3] = 1;	/* pathname	*/
 		ccolumns[4] = 3;	/* format + (organization)	*/
 		ccolumns[5] = 1;	/* attributes	*/
+		ccolumns[6] = 18;	/* user-identifier */
 		for (num = 0; num < numfiles; num++)
 			if (!DELETED(num))
 				latch |= dirent_width (FK_(num));
