@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirdata.c,v 1.5 1995/02/19 18:25:30 tom Exp $";
+static char *Id = "$Id: dirdata.c,v 1.6 1995/03/18 22:00:07 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirdata.c,v 1.5 1995/02/19 18:25:30 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1985
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		22 Jul 1985, if rename, make sure path has same references as
  *			     the data objects, use 'dirpath_add'
  *		16 Jul 1985, added 'dirdata_one', 'dirdata_ren'.
@@ -44,6 +44,7 @@ static char *Id = "$Id: dirdata.c,v 1.5 1995/02/19 18:25:30 tom Exp $";
 
 #include	"flist.h"
 #include	"dirent.h"
+#include	"nameheap.h"
 
 import(filelink);
 

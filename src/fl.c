@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.7 1995/02/19 19:01:12 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.8 1995/03/18 22:01:20 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: fl.c,v 1.7 1995/02/19 19:01:12 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods, renamed 'alarm')
  *		28 Feb 1989, log 132-wide messages instead of 80.
  *		23 Feb 1989, use 'flist_chdir()'
@@ -102,6 +102,7 @@ static char *Id = "$Id: fl.c,v 1.7 1995/02/19 19:01:12 tom Exp $";
 #include	"dclarg.h"
 #include	"dclopt.h"
 
+#include	"nameheap.h"
 #include	"strutils.h"
 #include	"sysutils.h"
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.4 1995/02/19 18:24:39 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.5 1995/03/18 22:00:51 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirpath.c,v 1.4 1995/02/19 18:24:39 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
  * Last update:
- *		19 Feb 1995, prototyped
+ *		18 Mar 1995, prototypes
  *		12 Sep 1985, also account for implied trailing '.' in pathname
  *			     collating.
  *		10 Sep 1985, account for trailing '.' in filename-field.
@@ -65,14 +65,13 @@ static char *Id = "$Id: dirpath.c,v 1.4 1995/02/19 18:24:39 tom Exp $";
 #include	<string.h>
 
 #include	"flist.h"
+#include	"nameheap.h"
 #include	"dirent.h"
 #include	"strutils.h"
 
 import(filelink);
 import(namelist);
 import(pathlist);
-
-char	*nameheap();		/* => allocated string storage	*/
 
 #define	SORT(P,key) for (P=pathlist, key=0; P;\
 			P->path_sort = key++, P = P->path_next)

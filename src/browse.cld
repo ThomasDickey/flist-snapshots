@@ -1,3 +1,4 @@
+! $Id: browse.cld,v 1.2 1985/08/16 01:14:40 tom Exp $
 DEFINE	VERB	browse
 	IMAGE	browse
 	PARAMETER	p1,	value(required, type=$infile), Prompt="File"

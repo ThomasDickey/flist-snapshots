@@ -1,11 +1,10 @@
-/*
- * Title:	dclopt.h
- * Author:	Thomas E. Dickey
- * Created:	11 Jul 1984
- * Last update:	14 Jan 1985, to add 'opt_ini2'
+/* $Id: dclopt.h,v 1.3 1995/03/18 23:08:06 tom Exp $
  *
- *	Define structures which support the DCL-option decoder 'dclopt.c'
+ * public interface of dclopt.c (DCL-option decoder)
  */
+
+#ifndef DCLOPT_H
+#define DCLOPT_H
 
 typedef	struct	{
 	char	*opt_name,	/* => full option name			*/
@@ -17,3 +16,7 @@ typedef	struct	{
 		opt_abbr,	/* minimum length of abbreviation	*/
 		opt_flag;	/* bit-vector for disjoint option test	*/
 	} DCLOPT;
+
+extern	int	dclopt (char *msg_, DCLARG *d_, DCLOPT opt[], int size_opt);
+
+#endif /* DCLOPT_H */

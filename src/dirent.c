@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.8 1995/03/18 22:28:48 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods)
  *		05 Dec 1989, corrected typeof(llast)
  *		04 Nov 1988, took masking from group/member code displays
@@ -137,7 +137,9 @@ static char *Id = "$Id: dirent.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 #define		DIRENT		/* local */
 #include	"dirent.h"
 #include	"dclarg.h"
+#include	"dds.h"
 
+#include	"nameheap.h"
 #include	"strutils.h"
 #include	"sysutils.h"
 
@@ -147,8 +149,6 @@ static char *Id = "$Id: dirent.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
  * External procedures:
  */
 PATHNT	*dirpath_sort();	/* make pathspec sortkeys	*/
-
-char	*nameheap();		/* lookup/store name string	*/
 
 /*
  * Forward reference:
@@ -1104,7 +1104,7 @@ int	ok	= TRUE;
 	/*
 	 * Fill the FILENT block with the name, and null-data:
 	 */
-	cpyblk (((char *)z) + FILENT_name_size, nullC,
+	memset (((char *)z) + FILENT_name_size, 0,
 		sizeof(FILENT) - FILENT_name_size);
 	z->f_grp = z->f_mbm = z->fprot = -1;
 

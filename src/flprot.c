@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.9 1995/03/18 23:53:54 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: flprot.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	11 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (renamed 'alarm')
  *		05 Oct 1985, added key-argument to 'flist_help'.
  *		24 Sep 1985, corrected threshold-test on 'prot_col'.
@@ -65,14 +65,16 @@ static char *Id = "$Id: flprot.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 #include	"flist.h"
 #include	"dirent.h"
 #include	"getpad.h"
+#include	"getprot.h"
 #include	"dclarg.h"
+#include	"dds.h"
+
+#include	"strutils.h"
 
 /*
  * External procedures and data:
  */
 static	int	flprot_one(int, int *);	/* function via 'dirfind'	*/
-
-extern	char	*strnull();		/* => end of line		*/
 
 import(filelist);
 import(M_opt);
@@ -81,13 +83,7 @@ extern	char	*crtvec[];	/* Display-frame		*/
 
 static	*savecmd = nullC;	/* Text of option-code to process	*/
 
-void
-flprot (
-	int	*curfile_,
-	char	*xcmd_,
-	DCLARG	*xdcl_,
-	int	temp_fix,
-	int	history)
+tDIRCMD(flprot)
 {
 	FILENT	*z	= FK_(*curfile_);
 	DCLARG	*name_	= nullC,		/* => filename specification	*/

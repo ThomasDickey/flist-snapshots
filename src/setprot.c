@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: setprot.c,v 1.5 1995/02/19 18:46:36 tom Exp $";
+static char *Id = "$Id: setprot.c,v 1.7 1995/03/18 23:00:53 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: setprot.c,v 1.5 1995/02/19 18:46:36 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	19 Nov 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		15 Jun 1985, typed 'strchr'
  *		21 Dec 1984, make proper error-returns!
  *
@@ -23,6 +23,9 @@ static char *Id = "$Id: setprot.c,v 1.5 1995/02/19 18:46:36 tom Exp $";
 
 #include	"bool.h"
 #include	"dclarg.h"
+
+#include	"getprot.h"
+#include	"chprot.h"
 
 #include	"strutils.h"
 

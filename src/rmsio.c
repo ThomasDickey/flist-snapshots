@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.3 1995/02/19 18:17:44 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.4 1995/03/18 22:55:51 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: rmsio.c,v 1.3 1995/02/19 18:17:44 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	11 Sep 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		28 Feb 1989, print status-code in 'rerror()' if room.
  *		16 Jun 1985, broke out CC2.0/CC1.5 difference as 'rabrfa_???'
  *		15 Jun 1985, typed 'calloc'.  CC2.0 declares RAB's rfa as
@@ -235,7 +235,7 @@ int	len	= -1;
 	maxbfr--;			/* Index of last permissible	*/
 	len = zRAB.rab$w_rsz;		/* limit length of returned buffer */
 	if (len > maxbfr) len = maxbfr;	/* ...to caller's 'maxbfr' size	*/
-	cpyblk (bfr, zRAB.rab$l_rbf, len); /* ...and copy buffer	*/
+	memcpy (bfr, zRAB.rab$l_rbf, len); /* ...and copy buffer	*/
 
 failed:
 	*mark_ = rtell(z);		/* update file-mark		*/

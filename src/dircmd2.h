@@ -1,20 +1,13 @@
-/*
- * Title:	dircmd2.h
- * Author:	Thomas E. Dickey
- * Created:	28 Jun 1984
- * Last update:	18 Sep 1985, added v_NAME
- *		27 Jul 1985, permit wildcard-rename (v_1_1)
- *		07 May 1985, added support for non-DCL syntax (/columns)
- *		14 Mar 1985, no options in 'RENAME'
- *		08 Mar 1985, permit filename-argument in 'PROTECT'
- *		22 Dec 1984, added 'SET' flag.
- *		15 Dec 1984, added flag to support 'cpy_dft' argument of 'dclarg'
- *		17 Oct 1984, permit wildcard in 1-1
- *		28 Aug 1984, added '.v_func' to VCMD
- *		04 Aug 1984, added 'cmdnum' tests
+/* $Id: dircmd2.h,v 1.4 1995/03/18 23:53:14 tom Exp $
  *
- *	Define command constraints for DCL-commands known to FLIST.
+ * Define command constraints for DCL-commands known to FLIST.
  */
+
+#ifndef	DIRCMD2_H
+#define	DIRCMD2_H
+
+#define	tDIRCMD(func) \
+	void	func (int *curfile_, char *xcmd_, DCLARG *xdcl_, int fix, int history)
 
 #define	v_1_IN		0001	/* Exactly one input filespec needed	*/
 #define	v_M_IN		0002	/* Multiple input filespecs permitted	*/
@@ -56,9 +49,9 @@
  */
 typedef	struct	{
 	char	*v_full;	/* full text of command			*/
-	int	v_len,		/* abbreviation length			*/
-		(*v_func)(),	/* No passback, special			*/
-		v_mode;		/* file count bits (e.g., v_1_IN)	*/
+	int	v_len;		/* abbreviation length			*/
+	int	v_mode;		/* file count bits (e.g., v_1_IN)	*/
+	tDIRCMD(*v_func);	/* No passback, special			*/
 	char	*v_dfts;	/* default string			*/
 	} VCMD2;
 
@@ -73,3 +66,5 @@ typedef	struct	{
 #define	isDIRED_CMD(x)	((x) >= 0)
 #define	isNOARG_CMD(x)	((x) == NOARG_CMD)
 #define	isEXTRN_CMD(x)	((x) == EXTRN_CMD)
+
+#endif /* DIRCMD2_H */

@@ -24,7 +24,6 @@ $	call	cc_lib CHRCMD
 $	call	cc_lib CMDSTK
 $	call	cc_lib CMPBLK
 $	call	cc_lib CMPPROT
-$	call	cc_lib CPYBLK
 $	call	cc_lib CRT
 $	call	cc_lib DCLAREA
 $	call	cc_lib DCLARG

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: nameheap.c,v 1.4 1995/02/19 18:21:20 tom Exp $";
+static char *Id = "$Id: nameheap.c,v 1.5 1995/03/18 21:58:04 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: nameheap.c,v 1.4 1995/02/19 18:21:20 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	04 Dec 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		18 Mar 1995, prototypes
  *		06 Jul 1985, added 'nameheap_ref' and 'nameheap_add'.
  *		04 Jul 1985, added 'nameheap_set' and 'nameheap_clr'
  *			     entrypoints to support refs-mask.
@@ -37,6 +37,7 @@ static char *Id = "$Id: nameheap.c,v 1.4 1995/02/19 18:21:20 tom Exp $";
 #include	<stdlib.h>
 #include	<stdio.h>
 
+#include	"nameheap.h"
 #include	"textlink.h"
 
 #define	CHR(link)	link->text[0]
@@ -54,13 +55,11 @@ static	int	last_refs = 0;
  * Returns:	A pointer to the string component of the entry (the pointer
  *		component will be invisible to the user).
  */
-char	*nameheap (s_, len, heap)
-char	*s_, **heap;
-int	len;
+char	*nameheap (char *s_, int len, char **heap)
 {
-int	cmp, cnt;
-TEXTLINK *new, *old, *tmp;
-char	*ref_,	*tst_;
+	int	cmp, cnt;
+	TEXTLINK *new, *old, *tmp;
+	char	*ref_,	*tst_;
 
 	if (len < 0)		len = strlen (s_);
 	if (len <= 0)		return ("");
@@ -110,13 +109,13 @@ char	*ref_,	*tst_;
 exit:	new->refs |= last_refs;
 	return (ADR(new));
 }
-
+
 /* <nameheap_set>:
  * Set the current refs-level.  We expect an integer in the range 1-8, since
  * we shift it as a bit-mask ourselves.  Note that this level-mask is shared
  * by all lists maintained by this module.
  */
-nameheap_set (new_refs)
+void	nameheap_set (int new_refs)
 {
 	if (new_refs < 1)	new_refs = 1;
 	last_refs = 1 << (new_refs-1);
@@ -128,7 +127,7 @@ nameheap_set (new_refs)
 /* <nameheap_ref>:
  * Return the mask to permit caller to maintain a compatible tagged list.
  */
-int	nameheap_ref ()
+int	nameheap_ref (void)
 {
 	return (last_refs);
 }
@@ -137,11 +136,9 @@ int	nameheap_ref ()
  * Clear the specified reference-level from all items in the linked-list.
  * If a string has no more references, unlink it and deallocate the entry.
  */
-nameheap_clr (old_refs, heap)
-int	old_refs;
-char	**heap;
+void	nameheap_clr (int old_refs, char **heap)
 {
-TEXTLINK *old = 0, *new = *heap, *nxt;
+	TEXTLINK *old = 0, *new = *heap, *nxt;
 
 	if (old_refs < 1 || old_refs > 8)	return;
 	old_refs = ~(1 << (old_refs-1));
@@ -166,23 +163,19 @@ TEXTLINK *old = 0, *new = *heap, *nxt;
  * heap-descriptor.  This is used, for example, when renaming an object to
  * ensure that higher levels will refer to all parts of the object.
  */
-nameheap_add (refs, text)
-int	refs;
-char	*text;
+void	nameheap_add (int refs, char *text)
 {
-TEXTLINK *P = (TEXTLINK *)0;
-char	*C = text - ((char *)P->text);
+	TEXTLINK *P = (TEXTLINK *)0;
+	char	*C = text - ((char *)P->text);
 	P = (TEXTLINK *) C;
 	P->refs |= refs;
 }
-
+
 #ifdef	DEBUG1
-nameheap_dump (tag, heap)
-char	*tag,
-	**heap;
+void	nameheap_dump (char *tag, char **heap)
 {
-TEXTLINK *new = *heap;
-register int	j;
+	TEXTLINK *new = *heap;
+	register int	j;
 
 	trace("Names: %s %08X\n", tag, new);
 	while (new)
@@ -194,4 +187,4 @@ register int	j;
 	}
 	trace ("----\n");
 }
-#endif
+#endif	/* DEBUG1 */
