@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, port to AXP (DATENT mods)
  *		05 Dec 1989, corrected typeof(llast)
  *		04 Nov 1988, took masking from group/member code displays
  *			     (should work out maximum field length).
@@ -124,6 +126,9 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
  *		dirent__read:	read a FILENT-block, pruning if duplicates
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
+#include	<string.h>
 #include	<rms.h>
 #include	<descrip.h>
 #include	<stsdef.h>
@@ -133,6 +138,9 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
 #include	"dirent.h"
 #include	"dclarg.h"
 
+#include	"strutils.h"
+#include	"sysutils.h"
+
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
 
 /*
@@ -140,11 +148,7 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
  */
 PATHNT	*dirpath_sort();	/* make pathspec sortkeys	*/
 
-char	*calloc(),		/* allocate memory		*/
-	*realloc(),		/* reallocate memory		*/
-	*nameheap(),		/* lookup/store name string	*/
-	*strcat(),		/* => pointer to first argument */
-	*strnull();		/* => pointer to end of argument */
+char	*nameheap();		/* lookup/store name string	*/
 
 /*
  * Forward reference:
@@ -625,8 +629,8 @@ char	tmp[CRT_COLS+256],
 
 		date:
 			if ((!no_priv)
-			&&  date_->date64[1]
-			&&  (date_->date64[1] != -1))
+			&&  isOkDate(date_)
+			&&  !isBigDate(date_))
 			{
 				if (D_mode)	lib$day (&j, date_);
 				if (D_mode > 0)
@@ -1069,10 +1073,14 @@ register int ok = TRUE;
 	{
 	register
 	DATENT	*date_	= dirent__date (z, dateflag[1]);
+#ifdef __alpha
+	int	gt	= *date_ > datechek;
+#else
 	register
 	int	gt	=   (date_->date64[1]  > datechek.date64[1])
 			|| ((date_->date64[0]  > datechek.date64[0]) &&
 			    (date_->date64[1] == datechek.date64[1]));
+#endif
 		ok = (dateflag[0] > 0) ? gt : ! gt;
 	}
 	return (ok);

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	24 May 1984
  * Last update:
+ *		19 Feb 1995, prototyped
  *		05 Dec 1989, patched out VMS-bug (PATCH_DEC89)
  *		20 Mar 1989, bypass VMS bug which returns occasional illegal
  *			     status code.
@@ -114,8 +115,10 @@ static char *Id = "$Id: dclarg.c,v 1.3 1989/12/05 13:12:44 tom Exp $";
  *			COMMAND	FILE.TYP.TYP  (except as an illegal filename)
  */
 
-#include	<rms>
+#include	<stdio.h>
+#include	<rms.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"crt.h"

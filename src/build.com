@@ -1,5 +1,3 @@
-$! $Id: build.com,v 1.2 1993/04/23 20:01:12 tom Exp $
-$!
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -67,11 +65,9 @@ $	call	cc_lib FLREAD
 $	call	cc_lib FLRNAM
 $	call	cc_lib FLSCAN
 $	call	cc_lib FLSHOW
-$	call	cc_lib FLSHOW
 $	call	cc_lib FLSORT
 $	call	cc_lib FREELIST
 $	call	cc_lib GETPAD
-$	call	cc_lib GETPASS
 $	call	cc_lib GETPROT
 $	call	cc_lib GETRAW
 $	call	cc_lib HELP
@@ -93,7 +89,7 @@ $	call	cc_lib SETCTRL
 $	call	cc_lib SETPROT
 $	call	cc_lib SHOQUOTA
 $	call	cc_lib SNAPSHOT
-$	call	cc_lib STR7
+$!	call	cc_lib STR7
 $	call	cc_lib STRABBR
 $	call	cc_lib STRFORM2
 $	call	cc_lib STRLCPY
@@ -180,7 +176,7 @@ $ compile: subroutine
 $	if f$search("''p1'.obj") .eqs. ""
 $	then
 $		write sys$output "** compiling ''p1'"
-$		cc /NoListing /Include=([]) 'p1
+$		cc /Standard=VAXC /extern_model=common_block /Show=all /NoListing /Include=([]) 'p1
 $	endif
 $ endsubroutine
 $

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getpad.c,v 1.2 1984/09/18 10:25:26 tom Exp $";
+static char *Id = "$Id: getpad.c,v 1.3 1995/02/19 00:55:37 tom Exp $";
 #endif
 
 /*
  * Title:	getpad.c - Get keypad "character"
  * Author:	Thomas E. Dickey
  * Created:	07 May 1984
- * Last Update:	18 Sep 1984, use 'alarm' instead of 'putchar'
+ * Last Update:
+ *		18 Feb 1995, port to DEC C (renamed 'alarm').
+ *		18 Sep 1984, use 'alarm' instead of 'putchar'
  *		22 Jun 1984, corrections to erro handling
  *		23 May 1984, to sound alarm on illegal sequences
  *
@@ -85,11 +87,12 @@ char	bfr[80], *c_;
 
 #define	ESC	'\033'
 
-#define	START	{if (getpad_read() == ESC) {alarm(); goto escape;}}
+#define	START	{if (getpad_read() == ESC) {sound_alarm(); goto escape;}}
 
 #define	ABSORB(min,max)	while (raw >= min && raw <= max) START
-
-getpad ()
+
+int
+getpad (void)
 {
 	c_ = bfr;
 	if (getpad_read() == ESC)
@@ -97,7 +100,7 @@ getpad ()
 escape:		c_ = bfr;
 		while (getpad_read() == ESC)	/* Ignore illegal escapes */
 		{
-			alarm();
+			sound_alarm();
 			c_ = bfr;		/* (undo 'getpad_read')	  */
 		}
 
@@ -138,9 +141,10 @@ escape:		c_ = bfr;
 		return (raw);
 }
 
-getpad_look (min, max)
+int
+getpad_look (int min, int max)
 {
-int	j;
+	int	j;
 
 	if (raw >= min && raw <= max)
 	{
@@ -149,11 +153,12 @@ int	j;
 			if (strcmp(pad_table[j].s, bfr) == 0)
 				return (pad_table[j].c);
 	}
-	alarm();
+	sound_alarm();
 	return (getpad());	/* Ignore if not a keypad sequence */
 }
 
-getpad_read()
+int
+getpad_read(void)
 {
 	return (*c_++ = raw = getraw(0,1,0));
 }

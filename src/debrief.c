@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: debrief.c,v 1.2 1985/09/24 10:33:00 tom Exp $";
+static char *Id = "$Id: debrief.c,v 1.3 1995/02/19 18:20:43 tom Exp $";
 #endif
 
 /*
  * Title:	debrief.c
  * Author:	Thomas E. Dickey
  * Created:	16 Sep 1985
- * Last update:	23 Sep 1985
+ * Last update:
+ *		19 Feb 1995, prototypes
  *		21 Sep 1985	The 'vec[]' array may not be sorted.  Allow
  *				for this in generating a list of ambiguous
  *				matches.
@@ -29,6 +30,8 @@ static char *Id = "$Id: debrief.c,v 1.2 1985/09/24 10:33:00 tom Exp $";
  *		-2, if no match at all
  */
 
+#include	<stdio.h>
+#include	<string.h>
 #include	<ctype.h>
 
 typedef	struct	{
@@ -39,22 +42,27 @@ typedef	struct	{
 #define	LOOP	for (v_=vec, k=0; k < vlast; k++, v_ = (char *)v_ + vsize)
 #define	RANGE	4
 
-int	debrief (msg, vec, vsize, vlast, find, fsize)
-char	*msg;
-VEC	*vec;
-int	vsize,		/* actual number of bytes/entry	*/
-	vlast;
-char	*find;
-int	fsize;
+int
+debrief (
+	char	*msg,
+	VEC	*vec,
+	int	vsize,		/* actual number of bytes/entry	*/
+	int	vlast,
+	char	*find,
+	int	fsize)
 {
-register VEC	*v_;
-int	vlong	= 0,
-	i,j,k,range,
-    	toomany	= 0,
-	flen[RANGE];
-char	key[255],
-	*s_, *d_,
-	*fuse[RANGE];
+	register VEC	*v_;
+	int	vlong	= 0,
+		i,
+		j,
+		k,
+		range,
+    		toomany	= 0,
+		flen[RANGE];
+	char	key[255],
+		*s_,
+		*d_,
+		*fuse[RANGE];
 
 	strncpy (key, find, fsize);
 	key[fsize] = '\0';

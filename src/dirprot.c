@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirprot.c,v 1.3 1984/08/26 01:45:24 tom Exp $";
+static char *Id = "$Id: dirprot.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 #endif
 
 /*
  * Title:	dirprot.c
  * Author:	Thomas E. Dickey
  * Created:	10 Jul 1984
- * Last update:	25 Aug 1984, cleanup buffer sizes
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		25 Aug 1984, cleanup buffer sizes
  *
  * Function:	This procedure is used by FLIST to check access rights of
  *		a list of files, specified in a DCLARG-list.  For example,
@@ -21,6 +23,8 @@ static char *Id = "$Id: dirprot.c,v 1.3 1984/08/26 01:45:24 tom Exp $";
  * Returns:	TRUE if all accesses are permitted.  If not, a warning message
  *		is generated.
  */
+
+#include	<stdio.h>
 
 #include	"flist.h"
 #include	"dclarg.h"

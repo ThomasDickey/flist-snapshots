@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: nameheap.c,v 1.3 1985/07/06 18:35:00 tom Exp $";
+static char *Id = "$Id: nameheap.c,v 1.4 1995/02/19 18:21:20 tom Exp $";
 #endif
 
 /*
  * Title:	nameheap.c
  * Author:	Thomas E. Dickey
  * Created:	04 Dec 1984
- * Last update:	06 Jul 1985, added 'nameheap_ref' and 'nameheap_add'.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		06 Jul 1985, added 'nameheap_ref' and 'nameheap_add'.
  *		04 Jul 1985, added 'nameheap_set' and 'nameheap_clr'
  *			     entrypoints to support refs-mask.
  *		15 Jun 1985, typed 'calloc'
@@ -32,15 +34,16 @@ static char *Id = "$Id: nameheap.c,v 1.3 1985/07/06 18:35:00 tom Exp $";
  *	nameheap_add	Mask additional levels for a given string
  */
 
-#include	"textlink.h"
+#include	<stdlib.h>
+#include	<stdio.h>
 
-char	*calloc();
+#include	"textlink.h"
 
 #define	CHR(link)	link->text[0]
 #define	ADR(link)	&CHR(link)
 
 static	int	last_refs = 0;
-
+
 /* <nameheap>:
  * Function:	Do lookup/allocation of strings in a heap.
  *

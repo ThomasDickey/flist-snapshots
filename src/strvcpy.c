@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strvcpy.c,v 1.2 1984/11/06 00:43:26 tom Exp $";
+static char *Id = "$Id: strvcpy.c,v 1.3 1995/02/19 18:33:08 tom Exp $";
 #endif
 
 /*
  * Title:	strvcpy.c
  * Author:	Thomas E. Dickey
  * Created:	05 Nov 1984
- * Last update:	05 Nov 1984
+ * Last update:
+ *		19 Feb 1995, prototyped
  *
  * Function:	Copy a string, making it uppercase, with no more than one
  *		blank in a row.  All blanks are replaced by the space
@@ -18,11 +19,13 @@ static char *Id = "$Id: strvcpy.c,v 1.2 1984/11/06 00:43:26 tom Exp $";
 
 #include	<ctype.h>
 
-strvcpy (co_, ci_)
-char	*co_, *ci_;
+#include	"strutils.h"
+
+void
+strvcpy (char *co_, char *ci_)
 {
-register
-char	c = ' ', d = '?';
+	register
+	char	c = ' ', d = '?';
 
 	if (!ci_)	ci_ = co_;
 	do {

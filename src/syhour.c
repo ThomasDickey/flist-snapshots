@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syhour.c,v 1.2 1985/06/25 10:30:12 tom Exp $";
+static char *Id = "$Id: syhour.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
 #endif
 
 /*
  * Title:	syshour.c
  * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984
- * Last update:	25 Jun 1985, corrected comments.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		25 Jun 1985, corrected comments.
  *		21 Dec 1984, test for special cases 0, -1 which cause the system
  *			     routines to supriously generate current-time-of-day.
  *
@@ -22,16 +24,20 @@ static char *Id = "$Id: syhour.c,v 1.2 1985/06/25 10:30:12 tom Exp $";
  *		(A full day is 0xC9.2A69C000.)
  */
 
+#include <string.h>
+
+#include "sysutils.h"
+
 #define	SHR	8
 #define	WORD	32
 
 static	char	origin[] = "17-NOV-1858";
 
-unsigned syshour (q_)
-long	*q_;
+unsigned
+syshour (long *q_)
 {
-unsigned quad[2];
-char	bfr[80];
+	unsigned quad[2];
+	char	bfr[80];
 
 	if (q_[0] == 0)
 		quad[0] = 0;
@@ -56,14 +62,12 @@ char	bfr[80];
  *		q	=  single-word integer to convert
  *		len	=  maximum length of output string
  */
-syshours (co_, q, len)
-char	*co_;
-unsigned q;
-int	len;
+void
+syshours (char *co_, unsigned q, int len)
 {
-unsigned quad[2];
-int	max;
-char	bfr[80], *ci_;
+	unsigned quad[2];
+	int	max;
+	char	bfr[80], *ci_;
 
 	quad[1] = q >> (WORD-SHR);		/* Reconstruct 64-bit time */
 	quad[0] = q << SHR;

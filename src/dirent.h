@@ -1,8 +1,12 @@
+/* $Id: dirent.h,v 1.7 1995/02/19 23:54:27 tom Exp $ */
+
 /*
  * Title:	dirent.h
  * Author:	Thomas E. Dickey
  * Created:	02 May 1984
  * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, ported to DEC Alpha.
  *		04 Nov 1988, added field ".fexpr", enlarged .f_mbm, .f_grp
  *		09 Sep 1985, added NAME_DOT
  *		30 Jul 1985, removed 'numreads'
@@ -42,6 +46,9 @@
  *	entry.
  */
 
+#ifndef DIRENT_H
+#define DIRENT_H
+
 #include	"names.h"
 #define	MAX_NAME	39	/* length of filename		*/
 #define	MAX_TYPE	39	/* length of filetype		*/
@@ -58,7 +65,7 @@
  * FLIST makes a linked-list of these, to be able to test the pathname
  * independently of the filename, and to save space:
  */
-typedef	struct {
+typedef	struct my_pathnt {
 	char	*path_next;	/* => next entry in chain	*/
 	unsigned
 	char	path_refs;	/* level-reference flag (TEXTLINK) */
@@ -90,17 +97,28 @@ typedef	struct {
 
 /*
  * VMS date+time is stored as a 64-bit integer.  Use my own mode to avoid
- * long sequence of include-files for RMS.
+ * long sequence of include-files for RMS.  Cover up diffs between VAX and AXP
+ * by macros that use the address of the date.
  */
-typedef	struct	{
+#ifdef __alpha
+#define isOkDate(p) ((*p) != 0)
+#define isBigDate(p) ((*p) == -1)
+#define makeBigDate(p) (*p) = -1
+typedef __int64 DATENT;
+#else
+typedef struct	my_datent {
 	unsigned
 	long	date64[2];
 	} DATENT;
+#define isOkDate(p) ((p)->date64[1] != 0)
+#define isBigDate(p) ((p)->date64[1] == -1)
+#define makeBigDate(p) (p)->date64[1] = -1
+#endif
 
 /*
  * FLIST stores one of these for each filename:
  */
-typedef	struct {
+typedef	struct my_filent {
 	/*
 	 * Path,name,type and version are grouped for same-name lookups:
 	 */
@@ -153,7 +171,7 @@ typedef	struct {
  * access) to its own subset of the FILENT-blocks.  This list can be automatically
  * constructed from the '.file_refs' mask (see NAMEHEAP).
  */
-typedef	struct {
+typedef	struct my_flink {
 	char	*file_next;	/* => next entry in chain	*/
 	unsigned
 	char	file_refs;	/* level-reference flag (TEXTLINK) */
@@ -220,3 +238,5 @@ typedef	struct {
 #endif
 
 #define	import(x)	DIRENT	type_/**/x	x size_/**/x
+
+#endif	/* DIRENT_H */

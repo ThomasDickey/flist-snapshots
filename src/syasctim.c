@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syasctim.c,v 1.2 1984/08/03 01:34:38 tom Exp $";
+static char *Id = "$Id: syasctim.c,v 1.3 1995/02/19 17:32:46 tom Exp $";
 #endif
 
 /*
  * Title:	sysasctim.c
  * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984 (broke out of 'dirent.c')
- * Last update:	02 Aug 1984
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		02 Aug 1984
  *
  * Function:	Use VMS run-time library routine to convert a 64-bit date
  *		field to a printable string.  The string-length drives the
@@ -24,14 +26,15 @@ static char *Id = "$Id: syasctim.c,v 1.2 1984/08/03 01:34:38 tom Exp $";
 
 #include	<descrip.h>
 
-sysasctim (buf, q_, ilen)
-char	buf[];			/* String to load into			*/
-unsigned *q_;			/* => 64-bit date structure		*/
-int	ilen;			/* Length of 'buf[]', counting null	*/
+void
+sysasctim (
+	char	*buf,			/* String to load into			*/
+	unsigned *q_,			/* => 64-bit date structure		*/
+	int	ilen)			/* Length of 'buf[]', counting null	*/
 {
-short	olen;
-long	cvtflg = 0;
-static	$DESCRIPTOR(date_time,"");
+	short	olen;
+	long	cvtflg = 0;
+	static	$DESCRIPTOR(date_time,"");
 
 	date_time.dsc$a_pointer = buf;
 	date_time.dsc$w_length  = ilen - 1;

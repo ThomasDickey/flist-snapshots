@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.5 1995/02/19 15:54:58 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from test code)
  * Last update:
+ *		18 Feb 1995, port to AXP (DATENT changes).
  *		04 Nov 1988, added '.fexpr' data
  *		22 Mar 1985, added file-id, record-length
  *		27 Jan 1985, fix file-size (if negative result, assume we use
@@ -42,29 +43,28 @@ static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
 #define		DIRENT		/* local */
 #include	"dirent.h"
 
-long	acplook (z, filespec, nam_)
-FILENT	*z;
-char	*filespec;		/* specifies files to lookup	*/
-struct	NAM	*nam_;
+long	acplook (
+	FILENT	*z,
+	char	*filespec,		/* specifies files to lookup	*/
+	struct	NAM	*nam_)
 {
-long	status;
-struct	{
-	short	stat,
-		unused;
-	long	jobstat;
-	}	iosb;
-short	chnl;
-int	j;
-FIB	fib;
-ATR	atr[14];
-short	uic_vec[2];
-FAT	recattr;
-long	uchar;
+	long	status;
+	struct	{
+		short	stat,
+			unused;
+		long	jobstat;
+		}	iosb;
+	short	chnl;
+	int	j;
+	FIB	fib;
+	ATR	atr[14];
+	short	uic_vec[2];
+	FAT	recattr;
+	long	uchar;
 #define	SWAP(x)	((x >> 16) + (x & 0xffff))
 
-static
-$DESCRIPTOR(DSC_name,"");
-struct	dsc$descriptor	fibDSC;
+	static $DESCRIPTOR(DSC_name,"");
+	struct	dsc$descriptor	fibDSC;
 
 	/* patch: if 'nam_' is zero, do local parse, search */
 	DSC_name.dsc$a_pointer = filespec;
@@ -129,8 +129,8 @@ struct	dsc$descriptor	fibDSC;
 			z->f_rat = recattr.fat$b_rattrib;
 			z->f_recl= recattr.fat$w_rsize;
 
-			if (!z->fback.date64[1])
-				z->fback.date64[1] = -1; /* (big num) */
+			if (!isOkDate(&(z->fback)))
+				makeBigDate(&(z->fback)); /* (big num) */
 		}
 	}
 	status = sys$dassgn (chnl);

@@ -1,12 +1,15 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: snapshot.c,v 1.2 1985/01/27 20:35:12 tom Exp $";
+static char *Id = "$Id: snapshot.c,v 1.4 1995/02/19 18:20:28 tom Exp $";
 #endif
 
 /*
  * Title:	snapshot.c
  * Author:	Thomas E. Dickey
  * Created:	15 Oct 1984
- * Last update:	27 Jan 1985	save old-sgr on status line to restore it.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, port to AXP (renamed 'alarm'). 
+ *		27 Jan 1985, save old-sgr on status line to restore it.
  *		17 Oct 1984
  *
  * Function:	This procedure copies the current screen-contents from the
@@ -15,9 +18,11 @@ static char *Id = "$Id: snapshot.c,v 1.2 1985/01/27 20:35:12 tom Exp $";
  */
 
 #include	<stdio.h>
+#include	<string.h>
 #include	<ctype.h>
 
 #include	"crt.h"
+#include	"sysutils.h"
 
 extern	char	*crtvec[];
 
@@ -30,30 +35,31 @@ static	int	calls	= 0;
 #define	VERT	out("|")
 #define	VEC(j)	((j == lpp1) ? sline : crtvec[j])
 
-snapshot ()
+void
+snapshot (void)
 {
-int	top	= crt_top (),
-	end	= crt_end (),
-	lpp	= crt_lpp (),
-	width	= crt_width () - 1,
-	save_x	= crt_x (),
-	save_y	= crt_y (),
-	oldsgr	= crt_qsgr(lpp-1),
-	date[2];
-register
-int	lpp1	= lpp - 1,
-	j,	k,	over;
-char	bfr	[CRT_COLS],
-	sline	[CRT_COLS];
-register
-char	*s_,	c;
+	int	top	= crt_top (),
+		end	= crt_end (),
+		lpp	= crt_lpp (),
+		width	= crt_width () - 1,
+		save_x	= crt_x (),
+		save_y	= crt_y (),
+		oldsgr	= crt_qsgr(lpp-1),
+		date[2];
+	register
+	int	lpp1	= lpp - 1,
+		j,	k,	over;
+	char	bfr	[CRT_COLS],
+		sline	[CRT_COLS];
+	register
+	char	*s_,	c;
 
 	if (!fp)
 	{
 		fp = fopen ("sys$login:snapshot.crt", "w");
 		if (!fp)
 		{
-			alarm ();
+			sound_alarm ();
 			return;
 		}
 		calls = 0;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: isowner.c,v 1.3 1989/12/05 11:57:50 tom Exp $";
+static char *Id = "$Id: isowner.c,v 1.4 1995/02/19 18:14:20 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: isowner.c,v 1.3 1989/12/05 11:57:50 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	20 Dec 1984
  * Last update:
+ *		19 Feb 1995, str/sys utils prototypes
  *		04 Nov 1988, removed masking from getuid/getgid calls.
  *		12 Nov 1985, patch (for v4.x) to use only low-byte of uid codes
  *		20 Dec 1984
@@ -18,18 +19,18 @@ static char *Id = "$Id: isowner.c,v 1.3 1989/12/05 11:57:50 tom Exp $";
  * Arguments:	z	=> FILENT structure defining file.
  */
 
+#include	<stdio.h>
+#include	<string.h>
 #include	<prvdef.h>
 
 #include	"flist.h"
 #include	"dirent.h"
 
-/*
- * External procedures and data:
- */
-char	*strnull();		/* => end of line		*/
+#include	"strutils.h"
+#include	"sysutils.h"
 
 #define	CMP(func,offset) (func() != z->offset)
-
+
 isowner (z)
 FILENT	*z;
 {

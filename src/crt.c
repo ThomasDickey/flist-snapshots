@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: crt.c,v 1.3 1988/06/29 15:07:10 tom Exp $";
+static char *Id = "$Id: crt.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 #endif
 
 /*
  * Title:	crt.c - "FLIST" display routines
  * Author:	Thomas E. Dickey
  * Created:	03 May 1984
- * Last update:	07 Oct 1985, ensure that if term-size changed, LPP is ok.
+ * Last update:
+ *		07 Oct 1985, ensure that if term-size changed, LPP is ok.
  *		05 Oct 1985, added code to support 80/132-column switch.
  *		15 Jun 1985, reference functions as '(*func)' to make CC2.0 happy
  *		12 Jun 1985, reset keypad mode before entering help-routine.
@@ -40,6 +41,8 @@ static char *Id = "$Id: crt.c,v 1.3 1988/06/29 15:07:10 tom Exp $";
  *	and BROWSE.
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<iodef.h>
@@ -61,8 +64,6 @@ static char *Id = "$Id: crt.c,v 1.3 1988/06/29 15:07:10 tom Exp $";
 #define	sgrREVERSE	2
 #define	sgrBLINK	4
 #define	sgrUNDERL	8
-
-char	*calloc();		/* Obtain dynamic memory block		*/
 
 /*
  * Local (static) data:

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.3 1988/11/04 12:27:00 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.5 1995/02/19 02:30:13 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.3 1988/11/04 12:27:00 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
+ *		18 Feb 1995, prototypes
  *		04 Nov 1988- added "/dexpired" table entry, and matching sort
  *		11 Jul 1988- fix side-effect of "<number> -" from dclarg fix.
  *		01 Jul 1988- added LSEDIT command
@@ -91,6 +92,7 @@ static char *Id = "$Id: dircmd.c,v 1.3 1988/11/04 12:27:00 tom Exp $";
  */
 
 #define	DEBUG
+#include	<stdlib.h>
 #include	<ctype.h>
 
 #include	"flist.h"
@@ -101,13 +103,14 @@ static char *Id = "$Id: dircmd.c,v 1.3 1988/11/04 12:27:00 tom Exp $";
 #include	"dds.h"
 #include	"dirent.h"
 
+#include	"strutils.h"
+
 /*
  * External procedures:
  */
-char	*calloc(),	/* allocate a block of dynamic memory		*/
-	*dds_0cmd(),	/* returns pointer to reference copy of display	*/
-	*dirarg(),	/* Do parse & simple check of visible-commands	*/
-	*strskps();	/* skip spaces in a string			*/
+extern
+char	*dds_0cmd(),	/* returns pointer to reference copy of display	*/
+	*dirarg();	/* Do parse & simple check of visible-commands	*/
 
 /*
  * Special command-processing routines are called:
@@ -123,6 +126,7 @@ char	*calloc(),	/* allocate a block of dynamic memory		*/
 /*
  * Procedures which perform FLIST commands:
  */
+extern
 int	flcols(),		/* Alter the display format		*/
 	flcols_left(),
 	flcols_right(),
@@ -374,7 +378,7 @@ char	cmdbfr[CRT_COLS];
 	 * Check for a GOLD followed by a non-keypad/non-control key:
 	 */
 	if (! (is_PAD(command) || (command < ' ')))
-		alarm();		/* ...if so, ignore the key	*/
+		sound_alarm();		/* ...if so, ignore the key	*/
 
 	j = toascii(command) + (gold ? 128 : 0);
 	if (s_ = keydefs[j].string)
@@ -389,8 +393,8 @@ char	cmdbfr[CRT_COLS];
 	}
 	else
 	{
-		beep ();	/* Set flag indicating error	*/
-		alarm ();
+		set_beep ();	/* Set flag indicating error	*/
+		sound_alarm ();
 	}
 	if (multi_quit <= 0)	dds_index (*curfile_);
 }
@@ -520,7 +524,7 @@ int	command;
 		case RUBOUT:
 		case padLEFT:
 		case padRIGHT:
-			alarm ();		/* Illegal context	*/
+			sound_alarm ();		/* Illegal context	*/
 		case CTL(Q):
 		case CTL(S):
 		case 0:				/* == DO_NEXT		*/
@@ -631,7 +635,7 @@ char	*fullname = "",
 
 	if (!*cmdbfr)
 	{
-		alarm ();		/* Ignore ^U, etc.	*/
+		sound_alarm ();		/* Ignore ^U, etc.	*/
 		return;
 	}
 
@@ -842,7 +846,7 @@ char	ok[]	= "QNYG";
 		for (reply = 256; (!isascii(reply) || !isprint(reply));)
 			reply = edtcmd_get ();
 		if (s_ = strchr (ok, _toupper(reply)))	break;
-		alarm();		/* warn if incorrect reply	*/
+		sound_alarm();		/* warn if incorrect reply	*/
 	}
 
 	dds_line (curfile);		/* refresh display */

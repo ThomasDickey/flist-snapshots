@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
+static char *Id = "$Id: dirarg.c,v 1.5 1995/02/19 18:04:13 tom Exp $";
 #endif
 
 /*
  * Title:	dirarg.c
  * Author:	T.E.Dickey
  * Created:	23 Jun 1984
- * Last update:	11 Oct 1988, corrected place where "/o" alone breaks code.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		11 Oct 1988, corrected place where "/o" alone breaks code.
  *		21 Sep 1985, translate SET/SHOW to '/', '?' prefix
  *		18 Sep 1985, process non-DCL commands here also
  *		09 Sep 1985, must trim trailing '.' from FNAME-field
@@ -75,6 +77,8 @@ static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
  *		released.)
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
 #include	<ctype.h>
 
 #include	"flist.h"
@@ -82,15 +86,15 @@ static char *Id = "$Id: dirarg.c,v 1.3 1988/10/11 19:02:04 tom Exp $";
 #include	"dclarg.h"
 #include	"dircmd2.h"
 
+#include	"strutils.h"
+#include	"sysutils.h"
+
 /*
  * External procedures:
  */
 DCLARG	*dclarg_text();		/* reallocate DCLARG-link entry		*/
 VCMD2	*dircmd_full();		/* returns detailed info about command	*/
-char	*calloc(),		/* allocate block of dynamic memory	*/
-	*realloc(),		/* reallocate block to a new size	*/
-	*dclarg_spec(),		/* Skip string pointer past filespec	*/
-	*strnull();		/* point to end of a string		*/
+char	*dclarg_spec();		/* Skip string pointer past filespec	*/
 
 import(filelist);
 

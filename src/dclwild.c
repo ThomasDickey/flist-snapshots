@@ -1,12 +1,15 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclwild.c,v 1.2 1984/12/26 15:02:42 tom Exp $";
+static char *Id = "$Id: dclwild.c,v 1.3 1995/02/19 01:06:05 tom Exp $";
 #endif
 
 /*
  * Title:	dclwild.c
  * Author:	Thomas E. Dickey
  * Created:	30 Jun 1984
- * Last update:	26 Dec 1984, use result of 'dclarg' parsing, rather than a
+ * Last update:
+ *		18 Feb 1995, port to AXP with DEC C (change '+' to '|' to
+ *			     avoid integer overflow error).
+ *		26 Dec 1984, use result of 'dclarg' parsing, rather than a
  *			     re-parse here.
  *		10 Sep 1984, use "rmsinit"
  *
@@ -27,26 +30,27 @@ static char *Id = "$Id: dclwild.c,v 1.2 1984/12/26 15:02:42 tom Exp $";
 
 #include	"dclarg.h"
 
-dclwild (dcl_)
-DCLARG	*dcl_;
+int
+dclwild (
+	DCLARG	*dcl_)
 {
 	if (dcl_->dcl_stat && ! $VMS_STATUS_SUCCESS(dcl_->dcl_stat))
 		return (-1);
 	else
 		return (dcl_->dcl$l_fnb
 				& (	NAM$M_WILD_VER
-				+	NAM$M_WILD_TYPE
-				+	NAM$M_WILD_NAME
-				+	NAM$M_WILDCARD	/* inclusive test */
-				+	NAM$M_WILD_DIR
-				+	NAM$M_WILD_UFD
-				+	NAM$M_WILD_GRP
-				+	NAM$M_WILD_MBR
-				+	NAM$M_WILD_SFD1
-				+	NAM$M_WILD_SFD2
-				+	NAM$M_WILD_SFD3
-				+	NAM$M_WILD_SFD4
-				+	NAM$M_WILD_SFD5
-				+	NAM$M_WILD_SFD6
-				+	NAM$M_WILD_SFD7));
+				|	NAM$M_WILD_TYPE
+				|	NAM$M_WILD_NAME
+				|	NAM$M_WILDCARD	/* inclusive test */
+				|	NAM$M_WILD_DIR
+				|	NAM$M_WILD_UFD
+				|	NAM$M_WILD_GRP
+				|	NAM$M_WILD_MBR
+				|	NAM$M_WILD_SFD1
+				|	NAM$M_WILD_SFD2
+				|	NAM$M_WILD_SFD3
+				|	NAM$M_WILD_SFD4
+				|	NAM$M_WILD_SFD5
+				|	NAM$M_WILD_SFD6
+				|	NAM$M_WILD_SFD7));
 }

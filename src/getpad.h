@@ -39,3 +39,7 @@
 #define	GOLDKEY		padPF1
 #define	HELPKEY		padPF2
 #define	RETRIEVE	padMINUS
+
+extern	int	getpad (void);
+extern	int	getpad_look(int minc, int maxc);
+extern	int	getpad_read(void);

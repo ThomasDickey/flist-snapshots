@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flnoid.c,v 1.2 1985/06/11 10:43:08 tom Exp $";
+static char *Id = "$Id: flnoid.c,v 1.3 1995/02/19 18:21:36 tom Exp $";
 #endif
 
 /*
  * Title:	flnoid.c
  * Author:	Thomas E. Dickey
  * Created:	22 May 1984
- * Last update:	11 Jun 1985, added cli-argument to dds_spawn
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		11 Jun 1985, added cli-argument to dds_spawn
  *		26 Jul 1984, modified 'dirseek()'
  *		16 Jul 1984
  *		10 Jul 1984, re-coded to DCLARG-list.
@@ -24,14 +26,14 @@ static char *Id = "$Id: flnoid.c,v 1.2 1985/06/11 10:43:08 tom Exp $";
  * Patch:	I would rather capture and display the enqueued-message.
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
+
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dclarg.h"
 
-char	*calloc();		/* => dynamically allocated memory	*/
-
-static
-char	format[] = "%s/noidentify";
+static	char	format[] = "%s/noidentify";
 
 flnoid (curfile_, xcmd_, xdcl_)
 int	*curfile_;

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syfom.c,v 1.2 1983/10/27 20:00:54 tom Exp $";
+static char *Id = "$Id: syfom.c,v 1.3 1995/02/19 18:19:34 tom Exp $";
 #endif
 
 /*
  * Title:	sysfom.c - Display figures-of-merit
  * Author:	Thomas E. Dickey
  * Created:	27 Oct 1983
- * Last update:	27 Oct 1983
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		27 Oct 1983
  *
  * Function:	Obtain a character string from the operating system which
  *		shows both elapsed and actual CPU times.  Return this string
@@ -16,10 +18,13 @@ static char *Id = "$Id: syfom.c,v 1.2 1983/10/27 20:00:54 tom Exp $";
  *			   timer-control-block.
  */
 
+#include "sysutils.h"
+
 static	char	bfr[256];
 static	char	*handle_ = 0;
 static	int	code	= 0;
 
+static void
 sysfom_x (dx_)
 struct {
 	short len;
@@ -37,7 +42,7 @@ char	*c_	= dx_->c_;
 /*
  * Main procedure:
  */
-
+void
 sysfom (co_)
 char	*co_;
 {

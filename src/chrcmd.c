@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: chrcmd.c,v 1.2 1985/04/15 01:26:24 tom Exp $";
+static char *Id = "$Id: chrcmd.c,v 1.3 1995/02/19 18:23:38 tom Exp $";
 #endif
 
 /*
  * Title:	chrcmd.c
  * Author:	Thomas E. Dickey
  * Created:	14 Apr 1985
- * Last update:	14 Apr 1985
+ * Last update:
+ *		19 Feb 1995, prototyped
  *
  * Function:	Return a pointer to a string which interprets a code which
  *		may be one of:
@@ -16,6 +17,7 @@ static char *Id = "$Id: chrcmd.c,v 1.2 1985/04/15 01:26:24 tom Exp $";
  *		c) An FLIST sort-code
  */
 
+#include	<stdio.h>
 #include	<ctype.h>
 
 #include	"flist.h"

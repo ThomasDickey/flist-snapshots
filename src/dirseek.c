@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirseek.c,v 1.3 1985/06/16 00:13:42 tom Exp $";
+static char *Id = "$Id: dirseek.c,v 1.4 1995/02/19 18:22:49 tom Exp $";
 #endif
 
 /*
  * Title:	dirseek.c
  * Author:	Thomas E. Dickey
  * Created:	16 Jul 1984
- * Last update:	15 Jun 1985, typed 'dirread_path'.  Reference 'for_each' as
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		15 Jun 1985, typed 'dirread_path'.  Reference 'for_each' as
  *			     '(*for_each)' to make CC2.0 happy.
  *		05 Feb 1985, use DCLARG-argument in 'dirseek_spec' instead of
  *			     string, to support explicit-pathname code.
@@ -34,6 +36,7 @@ static char *Id = "$Id: dirseek.c,v 1.3 1985/06/16 00:13:42 tom Exp $";
  *		a warning message is generated.
  */
 
+#include	<stdio.h>
 #include	<rms.h>
 
 #include	"flist.h"

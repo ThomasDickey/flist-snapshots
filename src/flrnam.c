@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
+static char *Id = "$Id: flrnam.c,v 1.4 1995/02/19 18:15:26 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	15 May 1984
  * Last update:
+ *		19 Feb 1995, sys utils prototypes
  *		09 Feb 1989, for vms5.0, may have to alter protection to rename
  *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		31 Jul 1985, added log-file tracking
@@ -56,6 +57,8 @@ static char *Id = "$Id: flrnam.c,v 1.3 1989/02/09 20:24:30 tom Exp $";
 #include	"dirent.h"
 #include	"dclarg.h"
 #include	"getprot.h"
+
+#include	"sysutils.h"
 
 import(filelist);
 import(V_opt);

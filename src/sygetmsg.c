@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetmsg.c,v 1.2 1984/07/17 01:37:34 tom Exp $";
+static char *Id = "$Id: sygetmsg.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
 #endif
 
 /*
  * Title:	sysgetmsg.c
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
- * Last update:	14 Jul 1984
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		14 Jul 1984
  *
  * Function:	Use the VMS procedure LIB$SYS_GETMSG to convert a return
  *		status into the corresponding error message.
@@ -20,24 +22,25 @@ static char *Id = "$Id: sygetmsg.c,v 1.2 1984/07/17 01:37:34 tom Exp $";
  *		tests, e.g., for "'!AS'" => "parms".
  */
 
+#include	<string.h>
 #include	<ssdef.h>
 #include	<descrip.h>
+
+#include	"sysutils.h"
 
 #define	MAXBFR	256
 #define	MINBFR	(size_msg-1)
 
 static	char	fao_fix[] = "'!AS'";
 
-sysgetmsg (status, msg, size_msg)
-long	status;
-char	msg[];
-int	size_msg;
+void
+sysgetmsg (long status, char *msg, int size_msg)
 {
-char	bigbfr	[MAXBFR];
-$DESCRIPTOR(DSCx,bigbfr);
-short	retlen	= 0;
-int	j,
-	flags	= 9;	/* Show component + text only	*/
+	char	bigbfr	[MAXBFR];
+	$DESCRIPTOR(DSCx,bigbfr);
+	short	retlen	= 0;
+	int	j,
+		flags	= 9;	/* Show component + text only	*/
 
 	lib$sys_getmsg (&status, &retlen, &DSCx, &flags);
 	if (retlen > MINBFR)	retlen = MINBFR;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
+static char *Id = "$Id: fldlet.c,v 1.3 1995/02/19 18:20:09 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	13 May 1984
  * Last update:
+ *		19 Feb 1995, prototypes
  *		16 Feb 1989, added ".SHO", "TJL" and ".DIF$*" to temp-types.
  *		24 Oct 1988, corrected 'sprintf()' format for multiple-delete
  *		11 Oct 1988, added ".DIA" to temp-file types.
@@ -37,6 +38,7 @@ static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
  *		22 May 1984
  */
 
+#include	<stdio.h>
 #include	<rmsdef.h>
 #include	<string.h>
 
@@ -45,12 +47,14 @@ static char *Id = "$Id: fldlet.c,v 1.2 1989/02/16 12:20:32 tom Exp $";
 #include	"dclarg.h"
 #include	"dircmd2.h"
 
+#include	"strutils.h"
+#include	"sysutils.h"
+
 /*
  * External procedures:
  */
 int	fldlet_one(),		/* DELETE a particular filespec		*/
 	flpurg_one();		/* PURGE a particular filespec		*/
-char	*strnull ();		/* => end of a string			*/
 
 import(filelist); import(numfiles);
 import(V_opt);

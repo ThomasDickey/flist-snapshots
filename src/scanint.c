@@ -1,10 +1,14 @@
-#include	<ctype.h>
+#ifndef	NO_IDENT
+static	char	*Id = "$Id: scanint.c,v 1.3 1995/02/19 18:17:12 tom Exp $";
+#endif
 
 /*
  * Title:	scanint.c
  * Author:	Thomas E. Dickey
  * Created:	17 Jun 1985
- * Last update:	04 Jul 1985, stepped on my good copy!!
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		04 Jul 1985, stepped on my good copy!!
  *
  * Function:	Translate an unsigned decimal integer, returning a pointer past
  *		the decoded part.
@@ -15,11 +19,15 @@
  * Returns:	Address of first character past the string of decimal digits.
  */
 
-char	*scanint (string, int_)
-char	*string;
-int	*int_;
+#include	<ctype.h>
+
+#include	"strutils.h"
+
+char *
+scanint (char *string, int *int_)
 {
-register first = 1;
+	register first = 1;
+
 	while (isdigit(*string))
 	{
 		if (first)	first = *int_ = 0;

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclopt.c,v 1.2 1985/07/04 01:34:08 tom Exp $";
+static char *Id = "$Id: dclopt.c,v 1.4 1995/02/19 17:45:51 tom Exp $";
 #endif
 
 /*
  * Title:	dclopt.c
  * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
- * Last update:	03 Jul 1985, use 'scanint' instead of 'sscanf' to bypass bug
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		03 Jul 1985, use 'scanint' instead of 'sscanf' to bypass bug
  *			     in CC2.0
  *		26 Jun 1985, moved fancy date-parsing to 'sysbintim'.
  *		15 Jun 1985, typed 'strchr'
@@ -55,15 +57,18 @@ static char *Id = "$Id: dclopt.c,v 1.2 1985/07/04 01:34:08 tom Exp $";
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"crt.h"
 #include	"dclarg.h"
 #include	"dclopt.h"
 
+#include	"strutils.h"
+#include	"sysutils.h"
+
 char	*dclarg_keyw(),		/* skip past option-keyword	*/
-	*scanint(),		/* => after decoded integer	*/
-	*strchr();		/* return pointer to char in string */
+	*scanint();		/* => after decoded integer	*/
 
 #define	OJ	opt[j]
 

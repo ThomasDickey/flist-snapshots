@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: pathup.c,v 1.2 1985/04/12 01:23:42 tom Exp $";
+static char *Id = "$Id: pathup.c,v 1.3 1995/02/19 18:13:41 tom Exp $";
 #endif
 
 /*
  * Title:	pathup.c
  * Author:	Thomas E. Dickey
  * Created:	02 Jul 1984, recode from 'dirent.c' module
- * Last update:	11 Apr 1985, do a translate-logical before trying to scan the
+ * Last update:
+ *		19 Feb 1995, str/sys utils prototypes
+ *		11 Apr 1985, do a translate-logical before trying to scan the
  *			     pathname.  Some system stuff does logical-names for
  *			     subdirectories.
  *		09 Sep 1984, use 'rmsinit'
@@ -26,21 +28,24 @@ static char *Id = "$Id: pathup.c,v 1.2 1985/04/12 01:23:42 tom Exp $";
  * Returns:	TRUE if no error was detected.
  */
 
-#include	<rms>
+#include	<stdio.h>
+#include	<string.h>
+#include	<rms.h>
 
 #include	"bool.h"
 
-char	*strnull();			/* => end of string	*/
+#include	"strutils.h"
+#include	"sysutils.h"
 
 pathup (co_, ci_)
 char	*co_, *ci_;
 {
-int	len,	j,	first,	rootUIC = TRUE;
-struct	FAB	fab;
-struct	NAM	nam;
-char	delim,
-	esa	[NAM$C_MAXRSS],
-	strn	[NAM$C_MAXRSS];
+	int	len,	j,	first,	rootUIC = TRUE;
+	struct	FAB	fab;
+	struct	NAM	nam;
+	char	delim,
+		esa	[NAM$C_MAXRSS],
+		strn	[NAM$C_MAXRSS];
 
 	strcpy (co_, ci_);		/* (return something, even if bad)*/
 

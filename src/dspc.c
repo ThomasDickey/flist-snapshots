@@ -1,19 +1,23 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dspc.c,v 1.3 1985/01/17 12:40:44 tom Exp $";
+static char *Id = "$Id: dspc.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 #endif
 
 /*
  * Title:	dspc.c
  * Author:	Thomas E. Dickey
  * Created:	07 Jun 1984
- * Last update:	17 Jan 1985, recode so we only do init/move functions here,
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		17 Jan 1985, recode so we only do init/move functions here,
  *			     under control of caller.
  *		25 Aug 1984, cleanup buffer sizes
  *		18 Jun 1984
  */
 
-#include	"ctype.h"
+#include	<stdio.h>
+#include	<ctype.h>
 
+#include	"dspc.h"
 #include	"crt.h"
 #include	"getpad.h"
 
@@ -29,13 +33,12 @@ static char *Id = "$Id: dspc.c,v 1.3 1985/01/17 12:40:44 tom Exp $";
  *		col	column number of home-position on screen.
  */
 
-dspc_init (scale, coladj, col)
-char	*scale;
-int	coladj, col;
+void
+dspc_init (char *scale, int coladj, int col)
 {
-int	width	= crt_width() - coladj,
-	width2	= width - 6;
-char	sline	[CRT_COLS];
+	int	width	= crt_width() - coladj,
+		width2	= width - 6;
+	char	sline	[CRT_COLS];
 
 	if (width2 < 0)
 	{
@@ -53,7 +56,7 @@ char	sline	[CRT_COLS];
 	}
 	crt_high (&scale[coladj], strlen(&scale[coladj]));
 }
-
+
 /*
  * Function:	Move the cursor to the specified column, updating the highlight
  *		in the scale.
@@ -63,11 +66,10 @@ char	sline	[CRT_COLS];
  *			  cursor (0..width-1).
  *		line	= line number on which cursor resides (0..filesize-1)
  */
-dspc_move (scale, col, line)
-char	*scale;
-int	col, line;
+void
+dspc_move (char *scale, int col, int line)
 {
-char	sline[CRT_COLS];
+	char	sline[CRT_COLS];
 
 	line++;
 	if (*scale)
