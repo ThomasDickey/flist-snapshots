@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sybintim.c,v 1.2 1985/06/27 00:48:16 tom Exp $";
+static char *Id = "$Id: sybintim.c,v 1.4 1995/02/19 17:46:33 tom Exp $";
 #endif
 
 /*
  * Title:	sysbintim.c
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
- * Last update:	26 Jun 1985, make this recognize the DCL-style VMS date format
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		26 Jun 1985, make this recognize the DCL-style VMS date format
  *			     (keywords, fill-in-gaps).
  *		13 Jul 1984
  *
@@ -28,6 +30,9 @@ static char *Id = "$Id: sybintim.c,v 1.2 1985/06/27 00:48:16 tom Exp $";
 #include	<ssdef.h>
 #include	<descrip.h>
 
+#include	"strutils.h"
+#include	"sysutils.h"
+
 #define	MAXDAY	24
 #define	MAXBFR	80
 
@@ -35,17 +40,16 @@ static	int	day[2] = {0x2a69c000, 0xc9};
 static	char	zeros[] = " 00:00:00.00";
 			/* 0123456789ab */
 
-sysbintim (ci_, obfr)
-char	*ci_;
-int	obfr[2];
+int
+sysbintim (char *ci_, long *obfr)
 {
-char	bigbfr	[MAXBFR], midbfr[MAXBFR];
-$DESCRIPTOR(DSCx,bigbfr);
-$DESCRIPTOR(midnite,midbfr);
-long	base[2];
-int	j,
-	num	= strlen(ci_);
-char	*c_, *d_, *e_;
+	char	bigbfr	[MAXBFR], midbfr[MAXBFR];
+	$DESCRIPTOR(DSCx,bigbfr);
+	$DESCRIPTOR(midnite,midbfr);
+	long	base[2];
+	int	j,
+		num	= strlen(ci_);
+	char	*c_, *d_, *e_;
 
 	if (num >= (MAXBFR-1))	num = (MAXBFR-1);
 	for (j = 0; j < num; j++)	bigbfr[j] = _toupper(ci_[j]);

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirchk.c,v 1.3 1985/09/20 01:55:30 tom Exp $";
+static char *Id = "$Id: dirchk.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
 #endif
 
 /*
  * Title:	dirchk.c
  * Author:	Thomas E. Dickey
  * Created:	28 Jun 1984
- * Last update:	19 Sep 1985, added tests for non-DCL syntax
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		19 Sep 1985, added tests for non-DCL syntax
  *		26 Dec 1984, changed call on 'dclwild'.
  *		25 Aug 1984, cleanup of buffer sizes
  *		20 Jul 1984, added flag to make warning optional
@@ -34,6 +36,7 @@ static char *Id = "$Id: dirchk.c,v 1.3 1985/09/20 01:55:30 tom Exp $";
  *		appropriate message is emitted via 'warn'.
  */
 
+#include	<stdio.h>
 #include	<ctype.h>
 
 #include	"flist.h"

@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strvcmp.c,v 1.2 1984/11/06 10:29:54 tom Exp $";
+static char *Id = "$Id: strvcmp.c,v 1.3 1995/02/19 18:32:14 tom Exp $";
 #endif
 
 /*
  * Title:	strvcmp.c
  * Author:	Thomas E. Dickey
  * Created:	05 Nov 1984
- * Last update:	06 Nov 1984
+ * Last update:
+ *		19 Feb 1995, prototyped
  *
  * Function:	This procedure performs a string-comparison, equating
  *		upper- and lowercase, and treating any sequence of "whitespace"
@@ -29,15 +30,16 @@ static char *Id = "$Id: strvcmp.c,v 1.2 1984/11/06 10:29:54 tom Exp $";
 
 #include	<ctype.h>
 
-strvcmp (ref_, tst_, len)
-char	*ref_, *tst_;
-int	len;
+#include	"strutils.h"
+
+int
+strvcmp (char *ref_, char *tst_, int len)
 {
-register
-char	*r_	= ref_,		/* force the pointer off the stack	*/
-	*t_	= tst_;
-register
-int	matched	= 0, t;
+	register
+	char	*r_	= ref_,	/* force the pointer off the stack	*/
+		*t_	= tst_;
+	register
+	int	matched	= 0, t;
 
 	while (len > matched && *r_)
 	{

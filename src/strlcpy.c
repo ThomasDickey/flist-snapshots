@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strlcpy.c,v 1.2 1985/05/15 10:59:16 tom Exp $";
+static char *Id = "$Id: strlcpy.c,v 1.3 1995/02/19 02:23:25 tom Exp $";
 #endif
 
 /*
@@ -17,11 +17,14 @@ static char *Id = "$Id: strlcpy.c,v 1.2 1985/05/15 10:59:16 tom Exp $";
  * Returns:	Pointer to final null in output buffer.
  */
 
-#include	"ctype.h"
+#include	<ctype.h>
 
-char	*strlcpy (optr, iptr)
-char	*optr,				/* => output string		*/
-	*iptr;				/* => input string		*/
+#include	"strutils.h"
+
+char *
+strlcpy (
+	char	*optr,			/* => output string		*/
+	char	*iptr)			/* => input string		*/
 {
 	if (iptr == 0)
 		iptr = optr;

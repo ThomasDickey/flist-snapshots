@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.2 1988/11/04 11:44:08 tom Exp $";
+static char *Id = "$Id: rmslook.c,v 1.4 1995/02/19 18:44:40 tom Exp $";
 #endif
 
 /*
  * Title:	rmslook.c
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from 'dirent.c')
- * Last update:	15 Jun 1985, use 'xabprouic' for CC2.0 change
+ * Last update:
+ *		18 Feb 1995, port to AXP (DATENT mods)
+ *		15 Jun 1985, use 'xabprouic' for CC2.0 change
  *		22 Mar 1985, added file-id, record-length
  *		22 Dec 1984, set '.fallc' (file-allocation) component.
  *		20 Dec 1984, return file-format, organization in the same byte.
@@ -34,17 +36,16 @@ static char *Id = "$Id: rmslook.c,v 1.2 1988/11/04 11:44:08 tom Exp $";
 #define		DIRENT		/* local */
 #include	"dirent.h"
 
-long	rmslook (z, fab_)
-FILENT	*z;
-struct	FAB	*fab_;
+long
+rmslook (FILENT *z, struct FAB *fab_)
 {
-long	status	= RMS$_NORMAL;		/* return-status	*/
-struct	XABALL	*all_	= 0;
-struct	XABDAT	*dat_	= 0;
-struct	XABFHC	*fhc_	= 0;
-struct	XABPRO	*pro_	= 0;
-struct	XABALL	*x_;
-struct	NAM	*nam_;
+	long	status	= RMS$_NORMAL;		/* return-status	*/
+	struct	XABALL	*all_	= 0;
+	struct	XABDAT	*dat_	= 0;
+	struct	XABFHC	*fhc_	= 0;
+	struct	XABPRO	*pro_	= 0;
+	struct	XABALL	*x_;
+	struct	NAM	*nam_;
 
 	if (!(x_ = fab_->fab$l_xab))			return (status);
 
@@ -82,8 +83,8 @@ struct	NAM	*nam_;
 			z->fexpr = dat_->xab$q_edt;
 			z->frevi = dat_->xab$q_rdt;
 			z->fback = dat_->xab$q_bdt;
-			if (!z->fback.date64[1])
-				z->fback.date64[1] = -1; /* (big num)*/
+			if (!isOkDate(&(z->fback)))
+				makeBigDate(&(z->fback)); /* (big num)*/
 			z->fdate = dat_->xab$q_cdt;
 		}
 

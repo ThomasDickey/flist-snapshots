@@ -1,3 +1,37 @@
+1995-02-19  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/edtcmd.h: RCS_BASE
+
+	* src/edtcmd.c: use edtcmd.h and getpad.h for prototypes
+
+	* src/getpad.h: added ident
+
+	* src/edtcmd.c:
+	corrected order of parms in edtcmd_crt (broke when prototyping)
+
+	* src/dirent.h: comment
+
+	* src/dirent.c: recompile on AXP
+
+	* src/dspc.c, src/flprot.c: typo
+
+	* src/descrip.mms: recompile on AXP
+
+	* src/getpad.h: added function prototypes
+
+	* src/build.com: rebuilt on AXP
+
+	* src/fl.c: recompiled on AXP
+
+	* src/setprot.c: typo
+
+	* src/rmslook.c, src/getraw.c: recompiled on AXP
+
+	* src/strutils.h, src/strnull.c, src/strvcpy.c, src/strvcmp.c, src/dirdata.c, src/dclarea.c, src/browse.c, src/dirpath.c, src/dirread.c, src/flfind.c, src/crt.c, src/dclarg.c, src/dds.c, src/dirchk.c, src/dirprot.c, src/chrcmd.c, src/dirseek.c, src/edtcmd.c, src/dspc.c, src/fledit.c, src/flmore.c, src/flnoid.c, src/flprot.c, src/nameheap.c, src/dirent.h, src/pathdown.c, src/strscale.c, src/debrief.c, src/snapshot.c, src/fldlet.c, src/syhour.c, src/fl.c, src/flshow.c, src/syfom.c, src/strform2.c, src/dclchk.c, src/dirent.c, src/rmsio.c, src/scanint.c, src/setprot.c, src/sygetmsg.c, src/sygetsym.c, src/flrnam.c, src/syrename.c, src/cmpprot.c, src/isowner.c, src/syrights.c, src/pathup.c, src/sytrnlog.c, src/sysutils.h, src/dirarg.c, src/flcols.c, src/ttrace.c, src/sybintim.c, src/dclopt.c, src/syasctim.c, src/argvdcl.c:
+	includes+prototypes
+
+	* src/acplook.c: recompiled on AXP
+
 1995-02-18  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/descrip.mms, src/build.com: deleted repeated FLSHOW

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: pathdown.c,v 1.2 1985/09/10 10:50:00 tom Exp $";
+static char *Id = "$Id: pathdown.c,v 1.3 1995/02/19 18:21:04 tom Exp $";
 #endif
 
 /*
  * Title:	pathdown.c
  * Author:	Thomas E. Dickey
  * Created:	02 Jul 1984, recode from 'dirent.c' module
- * Last update:	10 Sep 1985, calls using FILENT-arguments may have a trailing
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		10 Sep 1985, calls using FILENT-arguments may have a trailing
  *			     '.' in 'name_' field.
  *		09 Sep 1984, use "rmsinit"
  *		25 Aug 1984
@@ -31,7 +33,8 @@ static char *Id = "$Id: pathdown.c,v 1.2 1985/09/10 10:50:00 tom Exp $";
  *		and attempts to recur on the "[0,0]" name "000000".
  */
 
-#include	<rms>
+#include	<stdio.h>
+#include	<rms.h>
 
 #include	"bool.h"
 

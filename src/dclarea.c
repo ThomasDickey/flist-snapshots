@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarea.c,v 1.2 1985/06/15 23:27:02 tom Exp $";
+static char *Id = "$Id: dclarea.c,v 1.3 1995/02/19 18:25:06 tom Exp $";
 #endif
 
 /*
  * Title:	dclarea.c
  * Author:	Thomas E. Dickey
  * Created:	13 Apr 1985
- * Last update:	15 Jun 1985, typed 'calloc'
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		15 Jun 1985, typed 'calloc'
  *		13 Apr 1985
  *
  * Function:	Allocate a string-area for a DCLOPT-table entry so we needn't
@@ -21,9 +23,9 @@ static char *Id = "$Id: dclarea.c,v 1.2 1985/06/15 23:27:02 tom Exp $";
  *		to this area.
  */
 
-#include	"dclopt.h"
+#include	<stdlib.h>
 
-char	*calloc();
+#include	"dclopt.h"
 
 char	*dclarea (name, size, opt, size_opt)
 char	*name;

@@ -1,10 +1,13 @@
-#include	"ctype.h"
+#ifndef	NO_IDENT
+static	char	*Id = "$Id: strtrim.c,v 1.3 1995/02/19 02:13:19 tom Exp $";
+#endif
 
 /*
  * Title:	strtrim
- * Author:	T.E.Dickey (ITT/ATC)
- * Created:	11 Aug 83
- * Last update:	11 Aug 83
+ * Author:	Thomas E. Dickey
+ * Created:	11 Aug 1983
+ * Last update:
+ *		18 Feb 1995, prototypes
  *
  * Function:	This procedure trims trailing "blank" characters from a null-
  *		ended ASCII string, by replacing the blanks with nulls.
@@ -14,14 +17,17 @@
  * Returns:	The length of the string after trimming it.
  */
 
+#include	<ctype.h>
+
+#include	"strutils.h"
+
 int
-strtrim (c_)
-char	*c_;
- {
-int	len;
+strtrim (char *c_)
+{
+	int	len;
 
 	for (len = strlen(c_--);
 		(len > 0) && isspace(*(c_+len));
 			*(c_+len--) = '\0');
 	return (len);
- }
+}

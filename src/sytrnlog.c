@@ -1,15 +1,14 @@
-#include	<rms.h>
-#include	<iodef.h>
-#include	<descrip.h>
-#include	<ssdef.h>
-
-#include	"bool.h"
+#ifndef	NO_IDENT
+static	char	*Id = "$Id: sytrnlog.c,v 1.4 1995/02/19 18:13:22 tom Exp $";
+#endif
 
 /*
  * Title:	systrnlog.c
  * Author:	Thomas E. Dickey
  * Created:	11 Apr 1985
- * Last update:	11 Apr 1985
+ * Last update:
+ *		19 Feb 1995, str/sys utils prototypes
+ *		11 Apr 1985
  *
  * Function:	Translate the given name 'tofind' until no more logical
  *		symbol substitutions can be made.  The result string must
@@ -18,13 +17,24 @@
  * Arguments:	result	- result buffer
  *		tofind	- name to find
  */
-systrnlog (result, tofind)
-char	*result, *tofind;
+
+#include	<rms.h>
+#include	<iodef.h>
+#include	<descrip.h>
+#include	<ssdef.h>
+
+#include	"bool.h"
+
+#include	"strutils.h"
+#include	"sysutils.h"
+
+void
+systrnlog (char	*result, char *tofind)
 {
-struct
-dsc$descriptor_s	Idsc, Odsc;
-int	status	= 0;
-short	rsllen;
+	struct
+	dsc$descriptor_s	Idsc, Odsc;
+	int	status	= 0;
+	short	rsllen;
 
 	strucpy (result, tofind);	/* Make sure name is in caps */
 	while (status != SS$_NOTRAN)

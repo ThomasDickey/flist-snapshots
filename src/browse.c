@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.6 1995/02/19 18:24:48 tom Exp $";
 #endif
 
 /*
@@ -9,6 +9,8 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
  *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
+ *		19 Feb 1995, prototyped
+ *		18 Feb 1995	port to AXP (renamed 'alarm').
  *		24 Feb 1989	disable /COMMAND when invoked from FLIST.
  *				added LOGFILE/LOGARGS hooks to integrate with
  *				FLIST's /COMMAND and /LOG options.
@@ -51,7 +53,7 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
  *				Added 'more_name', to restrict length of name
  *				in summary-line.
  *		02 Feb 1985	use scrolling-margins
- *		26 Jan 1985	cleanup use of alarm in out-of-bounds scroll.
+ *		26 Jan 1985	cleanup use of sound_alarm in out-of-bounds scroll.
  *		20 Jan 1985	corrected for zero-length records in /SQUEEZE.
  *		19 Jan 1985	make repeat-count work with U,D,F,B commands.
  *				Added I- and J-commands, also /TRIM option.
@@ -116,6 +118,9 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
  *		screen keeps one line the same).
  */
 
+#include	<stdlib.h>
+#include	<string.h>
+
 #include	"rmsio.h"
 #include	<ctype.h>
 #include	<stsdef.h>
@@ -126,6 +131,8 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
 #include	"dclopt.h"
 #include	"getpad.h"
 #include	"names.h"
+#include	"dspc.h"
+#include	"strutils.h"
 
 /*
  * External (typed) procedures:
@@ -133,13 +140,9 @@ static char *Id = "$Id: browse.c,v 1.3 1989/03/06 13:13:04 tom Exp $";
 int	getpad ();		/* read terminal, filter escapes	*/
 int	more_0_vt(),		/* normal VT52/VT100 initialization	*/
 	more_0_bg();		/* BitGraph initialization		*/
-char	*calloc(), *realloc(),
-	*cmdstk_init(),		/* Command-history init			*/
+char	*cmdstk_init(),		/* Command-history init			*/
 	*edtcmd(),		/* => command-buffer after edit		*/
-	*getenv(),		/* => strings for environment data	*/
-	*scanint(),		/* => after decoded integer		*/
-	*strchr(),		/* => index into string of text-char	*/
-	*strnull();		/* => end of null-ended string		*/
+	*scanint();		/* => after decoded integer		*/
 
 /*
  * Local (static) data:
@@ -579,7 +582,7 @@ int	j,
 		if (TOP_THIS > 0)
 		    more_next (TOP_THIS - user_arg);
 		else
-		    alarm ();
+		    sound_alarm ();
 		break;
 
 	    case ' ':			/* (to look like Unix-more)	*/
@@ -600,7 +603,7 @@ int	j,
 		if (TOP_THIS > 0)
 		    more_next (0);
 		else if (!ruler_y)
-		    alarm ();
+		    sound_alarm ();
 		ruler_y = 0;
 		break;
 
@@ -609,7 +612,7 @@ int	j,
 		if (TOP_THIS > 0)
 		    more_next (TOP_THIS - (2 * user_arg));
 		else
-		    alarm();
+		    sound_alarm();
 		break;
 
 	    case 'E':			/* Go to end of file		*/
@@ -623,7 +626,7 @@ int	j,
 		if ((j = more_lastp()) != TOP_THIS)
 		    more_next (j);
 		else
-		    alarm();
+		    sound_alarm();
 		ruler_y = min(last_line-1, crt_end());
 		break;
 
@@ -649,10 +652,10 @@ int	j,
 		if (find_bfr[0] == EOS)
 		{
 		    more_this ();	/* (clear old markers) */
-		    alarm ();
+		    sound_alarm ();
 		}
 		else if (user_cmd == 'P' && TOP_THIS <= 0)
-		    alarm();
+		    sound_alarm();
 		else
 		{
 		int	fwd = (user_cmd == '/' || user_cmd == 'N'),
@@ -716,7 +719,7 @@ int	j,
 		    {
 			TOP_NEXT = old;
 			more_this ();	/* refresh old	*/
-			alarm ();
+			sound_alarm ();
 		    }
 		}
 		break;
@@ -748,7 +751,7 @@ int	j,
 		    more_this ();
 		}
 		else
-		    alarm();
+		    sound_alarm();
 		break;
 
 	    case 'M':			/* Toggle mark-display mode	*/
@@ -762,7 +765,7 @@ int	j,
 		    more_this ();
 		}
 		else
-		    alarm ();
+		    sound_alarm ();
 		break;
 
 	    case 'K':			/* Make a snapshot of screen	*/
@@ -805,11 +808,11 @@ int	j,
 		    if (!more_move (-1, 0))
 		    {
 			if (TOP_THIS > 0)	more_next (TOP_THIS-1);
-			else			alarm();
+			else			sound_alarm();
 		    }
 		}
 		else
-		    alarm();
+		    sound_alarm();
 		break;
 
 	    case 'I':			/* tab right (ruler only)	*/
@@ -821,7 +824,7 @@ int	j,
 			more_right();
 		}
 		else
-		    alarm();
+		    sound_alarm();
 		break;
 
 	    case 'J':			/* tab to end-column		*/
@@ -850,7 +853,7 @@ int	j,
 					   of longest record in display	*/
 		}
 		else
-		    alarm ();		/* No action performed		*/
+		    sound_alarm ();		/* No action performed		*/
 		break;
 
 	    case padLEFT:
@@ -865,12 +868,12 @@ int	j,
 		    if (colmin < 0)
 		    {
 			colmin = 0;	/* Limit shift	*/
-			alarm ();	/* ...but yell	*/
+			sound_alarm ();	/* ...but yell	*/
 		    }
 		    more_this ();
 		}
 		else
-		    alarm();
+		    sound_alarm();
 		break;
 
 	    case padRIGHT:
@@ -891,7 +894,7 @@ int	j,
 		break;
 
 	    default:
-		alarm();
+		sound_alarm();
 	    }
 	}
 }
@@ -979,9 +982,9 @@ int	rpt	= max(1, user_arg),
 more_limit (val, lo, hi)
 {
 	if (val < lo)
-	    alarm(),	val = lo;
+	    sound_alarm(),	val = lo;
 	else if (val > hi)
-	    alarm(),	val = hi;
+	    sound_alarm(),	val = hi;
 	return (val);
 }
 
@@ -1034,7 +1037,7 @@ int	j,
 	    }
 	}
 	else
-	    alarm();
+	    sound_alarm();
 }
 
 /* <down>:
@@ -1069,7 +1072,7 @@ int	old	= TOP_NEXT,
 			? HalfPage : FullPage, 1);
 	}
 	else		/* Yell if I didn't go anywhere	*/
-	    alarm();
+	    sound_alarm();
 }
 
 /* <skip>:

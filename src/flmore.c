@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flmore.c,v 1.3 1985/07/03 10:30:10 tom Exp $";
+static char *Id = "$Id: flmore.c,v 1.4 1995/02/19 18:21:46 tom Exp $";
 #endif
 
 /*
  * Title:	flmore.c
  * Author:	Thomas E. Dickey
  * Created:	20 Jun 1984
- * Last update:	03 Jul 1985, cleanup 'filelist' definition.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		03 Jul 1985, cleanup 'filelist' definition.
  *		30 Dec 1984, provide for current-entry-only call (xdcl_==0).
  *		27 Sep 1984, no need for restriction to source-filetypes.
  *		10 Jul 1984, corrected filename determination
@@ -17,6 +19,8 @@ static char *Id = "$Id: flmore.c,v 1.3 1985/07/03 10:30:10 tom Exp $";
  * Function:	This module performs a call to the BROWSE program (linked) with
  *		FLIST.
  */
+
+#include	<stdio.h>
 
 #include	"flist.h"
 #include	"dirent.h"

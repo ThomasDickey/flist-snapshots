@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fledit.c,v 1.3 1988/07/01 10:43:46 tom Exp $";
+static char *Id = "$Id: fledit.c,v 1.4 1995/02/19 18:22:17 tom Exp $";
 #endif
 
 /*
  * Title:	fledit.c
  * Author:	T.E.Dickey
  * Created:	15 May 1984
- * Last update:	01 Jul 1988- added hack to permit us to run LSEDIT
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		01 Jul 1988- added hack to permit us to run LSEDIT
  *		24 Aug 1985, use 'dds_add2' instead of 'dirdata_one'
  *		20 Aug 1985, do 'dirent_width' scan on return from directory
  *		31 Jul 1985, added 'dateflag', 'datechek' to stack.
@@ -62,6 +64,9 @@ static char *Id = "$Id: fledit.c,v 1.3 1988/07/01 10:43:46 tom Exp $";
  *		treatment.
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
+
 #include	"bool.h"
 #include	"crt.h"
 
@@ -71,9 +76,7 @@ static char *Id = "$Id: fledit.c,v 1.3 1988/07/01 10:43:46 tom Exp $";
 #include	"dirent.h"
 
 char	*dirent_dft(),		/* => wildcard default-string	*/
-	*getenv(),		/* => misc environment stuff	*/
-	*scanint(),		/* => after decoded integer	*/
-	*strnull();		/* => end of a string		*/
+	*scanint();		/* => after decoded integer	*/
 
 import(filelist);	import(numfiles);	import(numdlets);
 import(D_mode);		import(datechek);	import(dateflag);

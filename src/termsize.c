@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: termsize.c,v 1.2 1988/08/18 20:37:58 tom Exp $";
+static char *Id = "$Id: termsize.c,v 1.3 1995/02/19 01:32:54 tom Exp $";
 #endif
 
 /*
  * Title:	termsize.c
  * Author:	T.E.Dickey
  * Created:	02 Oct 1985
- * Last update:	17 Aug 1988, use SYS$COMMAND rather than SYS$INPUT.
+ * Last update:
+ *		18 Feb 1995, port to AXP (renamed 'alarm')
+ *		17 Aug 1988, use SYS$COMMAND rather than SYS$INPUT.
  *		03 Oct 1985
  *
  * Function:	This module interrogates/alters the terminal screen size.  If
@@ -61,7 +63,7 @@ static char *Id = "$Id: termsize.c,v 1.2 1988/08/18 20:37:58 tom Exp $";
 			0,		/* P5 -- parity flags		*/\
 			0)		/* prompt-string buffer size	*/
 
-#define	FAIL	{	alarm();\
+#define	FAIL	{	sound_alarm();\
 			*width_ = width;	*length_= length;\
 			return (0);	}
 
@@ -71,26 +73,26 @@ static char *Id = "$Id: termsize.c,v 1.2 1988/08/18 20:37:58 tom Exp $";
 static	$DESCRIPTOR(tty_name,"SYS$COMMAND");
 static	unsigned short	tty_chan = 0;
 
-termsize (reset, width_, length_)
-int	reset, *width_, *length_;
+int
+termsize (int reset, int *width_, int *length_)
 {
-int	status,
-	DEC_avo,
-	width,
-	length;
-struct	{
-	short	sts,
-		count;
-	long	device;
-	}	iosb;
-struct	{
-	unsigned
-	char	class,
-		type;
-	short	width;
-	long	ttdef,		/* basic characteristics	*/
-		tt2def;		/* extended characteristics	*/
-	}	cbfr;
+	int	status,
+		DEC_avo,
+		width,
+		length;
+	struct	{
+		short	sts,
+			count;
+		long	device;
+		}	iosb;
+	struct	{
+		unsigned
+		char	class,
+			type;
+		short	width;
+		long	ttdef,		/* basic characteristics	*/
+			tt2def;		/* extended characteristics	*/
+		}	cbfr;
 
 	if (! tty_chan)
 	{

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flfind.c,v 1.3 1985/08/15 23:57:32 tom Exp $";
+static char *Id = "$Id: flfind.c,v 1.4 1995/02/19 18:23:50 tom Exp $";
 #endif
 
 /*
  * Title:	flfind.c
  * Author:	Thomas E. Dickey
  * Created:	21 May 1984
- * Last update:	14 Aug 1985, added code to make search-state nested.
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		14 Aug 1985, added code to make search-state nested.
  *		13 Aug 1985, corrected pointer-references to '->dcl_text' (had
  *			     '.dcl_text', which gave strange result).  Added
  *			     'flfind_show' entrypoint.
@@ -35,11 +37,11 @@ static char *Id = "$Id: flfind.c,v 1.3 1985/08/15 23:57:32 tom Exp $";
  *		re-substitute /P/N/T/V stuff if it is needed in NEXT.
  */
 
+#include	<stdlib.h>
+
 #include	"flist.h"
 #include	"dirent.h"
 #include	"dclarg.h"
-
-char	*calloc();
 
 typedef	struct	{
 	int	findFLG;

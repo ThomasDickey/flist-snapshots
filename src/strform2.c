@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strform2.c,v 1.2 1984/07/14 01:26:54 tom Exp $";
+static char *Id = "$Id: strform2.c,v 1.3 1995/02/19 18:18:49 tom Exp $";
 #endif
 
 /*
  * Title:	strform2.c
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
- * Last update:	13 Jul 1984
+ * Last update:
+ *		19 Feb 1995, prototypes
  *
  * Function:	Format a message into a buffer with restricted size.  The
  *		message consists of tag and text portions, with a separator.
@@ -19,11 +20,13 @@ static char *Id = "$Id: strform2.c,v 1.2 1984/07/14 01:26:54 tom Exp $";
  *		len2	= length(s2), if > 0.
  */
 
-char	*strnull();	/* => end of null-ended string	*/
+#include "strutils.h"
 
-strform2 (out, maxout, s1, len1, s2, len2)
-char	out[], s1[], s2[];
-int	maxout, len1, len2;
+void
+strform2 (
+	char	*out,	int	maxout,
+	char	*s1,	int	len1,
+	char	*s2,	int	len2)
 {
 	maxout--;	/* count one for the trailing null	*/
 	out[0]	= '\0';

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strabbr.c,v 1.2 1984/09/01 13:28:12 tom Exp $";
+static char *Id = "$Id: strabbr.c,v 1.3 1995/02/19 02:15:01 tom Exp $";
 #endif
 
 /*
  * Title:	strabbr.c
  * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
- * Last update:	01 Sep 1984, use '_toupper'
+ * Last update:
+ *		18 Feb 1995, prototyped
+ *		01 Sep 1984, use '_toupper'
  *
  * Function:	Compare two strings, ignoring case, to see if the first is
  *		an allowable abbreviation of the second.
@@ -20,11 +22,16 @@ static char *Id = "$Id: strabbr.c,v 1.2 1984/09/01 13:28:12 tom Exp $";
  * Returns:	TRUE if the strings are matched.
  */
 
-#include	"ctype.h"
+#include	<ctype.h>
 
-strabbr (tst_, ref_, cmplen, abbr)
-char	*tst_, *ref_;
-int	cmplen, abbr;
+#include	"strutils.h"
+
+int
+strabbr (
+	char	*tst_,
+	char	*ref_,
+	int	cmplen,
+	int	abbr)
 {
 	while (*tst_ && *ref_ && (cmplen > 0))
 	{

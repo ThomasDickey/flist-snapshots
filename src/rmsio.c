@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.3 1995/02/19 18:17:44 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	11 Sep 1984
  * Last update:
+ *		19 Feb 1995, prototypes
  *		28 Feb 1989, print status-code in 'rerror()' if room.
  *		16 Jun 1985, broke out CC2.0/CC1.5 difference as 'rabrfa_???'
  *		15 Jun 1985, typed 'calloc'.  CC2.0 declares RAB's rfa as
@@ -60,6 +61,10 @@ static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
  *		rsize:	(?)	 Returns size of largest record of input.
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
+#include	<string.h>
+
 #include	<rms.h>
 #include	<stsdef.h>
 #include	<descrip.h>
@@ -67,6 +72,7 @@ static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
+#include	"sysutils.h"
 
 #define	DEFAULT_RSIZE	512
 
@@ -93,7 +99,6 @@ typedef	struct	{
  * Forward and external references:
  */
 RFILE	*ropen2();
-char	*calloc();
 
 /*
  * Module-level data:

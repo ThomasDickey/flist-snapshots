@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: sygetsym.c,v 1.2 1984/08/25 11:36:10 tom Exp $";
+static char *Id = "$Id: sygetsym.c,v 1.3 1995/02/19 18:16:34 tom Exp $";
 #endif
 
 /*
  * Title:	sysgetsym.c
  * Author:	Thomas E. Dickey
  * Created:	02 Aug 1984
- * Last update:	25 Aug 1984, assume longest filename is length of symbol
+ * Last update:
+ *		19 Feb 1995, sys utils prototypes
+ *		25 Aug 1984, assume longest filename is length of symbol
  *
  * Function:	Given a character-string, this procedure performs a run-time
  *		call (LIB$GET_SYMBOL) to obtain the expansion of the string.
@@ -25,16 +27,17 @@ static char *Id = "$Id: sygetsym.c,v 1.2 1984/08/25 11:36:10 tom Exp $";
 #include	<stsdef.h>
 #include	<descrip.h>
 
-sysgetsym (co_, ci_, len)
-char	*co_, *ci_;
-int	len;
+#include	"sysutils.h"
+
+int
+sysgetsym (char *co_, char *ci_, int len)
 {
-char	ret_bfr[NAM$C_MAXRSS];
-$DESCRIPTOR(sym_desc,"");
-$DESCRIPTOR(ret_desc,"");
-static	short	ret_len_w;
-long	status;
-int	found;
+	char	ret_bfr[NAM$C_MAXRSS];
+	$DESCRIPTOR(sym_desc,"");
+	$DESCRIPTOR(ret_desc,"");
+	static	short	ret_len_w;
+	long	status;
+	int	found;
 
 	sym_desc.dsc$a_pointer = ci_;
 	sym_desc.dsc$w_length  = strlen(sym_desc.dsc$a_pointer);

@@ -1,12 +1,13 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strscale.c,v 1.2 1984/06/06 12:38:20 tom Exp $";
+static	char	*Id = "$Id: strscale.c,v 1.3 1995/02/19 18:20:55 tom Exp $";
 #endif
 
 /*
  * Title:	strscale.c
  * Author:	Thomas E. Dickey
  * Created:	06 Jun 1984
- * Last update:	07 Jun 1984
+ * Last update:
+ *		19 Feb 1995, prototypes
  *
  * Function:	This procedure creates a column-scale, with numbers for use in
  *		editors, etc.  For example, if the initial column is 1, then
@@ -22,17 +23,23 @@ static char *Id = "$Id: strscale.c,v 1.2 1984/06/06 12:38:20 tom Exp $";
  *		len	=  length of output buffer
  */
 
-static
-char	ten[] = "....+....|";
+#include <stdio.h>
+#include <string.h>
 
-strscale (co_, col, len)
-char	*co_;
-int	col, len;
+#include "strutils.h"
+
+static	char	ten[] = "....+....|";
+
+void
+strscale (
+	char	*co_,
+	int	col,
+	int	len)
 {
-int	first	= 1,		/* flag for leading 0's column	*/
-	numlen;
-char	number[20],
-	catbfr[20];
+	int	first	= 1,		/* flag for leading 0's column	*/
+		numlen;
+	char	number[20],
+		catbfr[20];
 
 	if (col < 1)	col = 1;
 	*co_ = '\0';

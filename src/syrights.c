@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrights.c,v 1.2 1989/12/05 12:01:00 tom Exp $";
+static char *Id = "$Id: syrights.c,v 1.3 1995/02/19 18:14:01 tom Exp $";
 #endif
 
 /*
  * Title:	sysrights.c
  * Author:	T.E.Dickey
  * Created:	01 Aug 1984
- * Last update:	05 Dec 1989, pass mask,word_num as args rather than vshift,
+ * Last update:
+ *		19 Feb 1995, sys utils prototypes
+ *		05 Dec 1989, pass mask,word_num as args rather than vshift,
  *			     to accommodate VMS 5.1
  *		30 Sep 1985, use SYS$GETJPIw in VMS 4.x
  *		01 Aug 1984
@@ -19,6 +21,8 @@ static char *Id = "$Id: syrights.c,v 1.2 1989/12/05 12:01:00 tom Exp $";
  */
 
 #include	<jpidef.h>
+
+#include	"sysutils.h"
 
 #define	ITEM(code,len)	((code<<16)+len)
 
@@ -37,8 +41,8 @@ int	itmlst[] = {
 		JPI$C_LISTEND
 		};
 
-sysrights (mask,word_num)
-int	mask,word_num;
+int
+sysrights (int mask, int word_num)
 {
 	sys$getjpiw (	0,	/* efn		*/
 			0,	/* pidadr	*/

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: argvdcl.c,v 1.2 1984/12/16 01:13:04 tom Exp $";
+static char *Id = "$Id: argvdcl.c,v 1.3 1995/02/19 17:02:46 tom Exp $";
 #endif
 
 /*
  * Title:	argvdcl.c
  * Author:	Thomas E. Dickey
  * Created:	28 May 1984
- * Last update:	15 Dec 1984, added 'cpy_dft' argument to DCLARG.  Corrected
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		15 Dec 1984, added 'cpy_dft' argument to DCLARG.  Corrected
  *			     use of argc-count.
  *		24 Jul 1984, added 'cmd_arg' parameter to DCLARG.
  *		26 Jun 1984
@@ -23,20 +25,24 @@ static char *Id = "$Id: argvdcl.c,v 1.2 1984/12/16 01:13:04 tom Exp $";
  *		VAX/VMS DCL interface.
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
+#include	<string.h>
+
 #include	"bool.h"
 #include	"dclarg.h"
 
-char	*calloc();
-
-DCLARG	*argvdcl (argc, argv, dft_, cmd_arg)
-int	argc;
-char	*argv[],
-	*dft_;
-int	cmd_arg;
+DCLARG *
+argvdcl (argc, argv, dft_, cmd_arg)
+	int	argc;
+	char	*argv[];
+	char	*dft_;
+	int	cmd_arg;
 {
-DCLARG	*arg_	= 0;
-int	len	= 0, j;
-char	*c_;
+	DCLARG	*arg_	= 0;
+	int	len	= 0;
+	int	j;
+	char	*c_;
 
 	if (argc > 1)
 	{

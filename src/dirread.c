@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirread.c,v 1.3 1985/06/16 00:16:32 tom Exp $";
+static char *Id = "$Id: dirread.c,v 1.4 1995/02/19 18:24:11 tom Exp $";
 #endif
 
 /*
  * Title:	dirread.c
  * Author:	Thomas E. Dickey
  * Created:	31 Jan 1985
- * Last update:	15 Jun 1985, typed 'realloc', 'calloc'.
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		15 Jun 1985, typed 'realloc', 'calloc'.
  *		05 Feb 1985, added 'dirread_path' entry.
  *		01 Feb 1985
  *
@@ -27,14 +29,13 @@ static char *Id = "$Id: dirread.c,v 1.3 1985/06/16 00:16:32 tom Exp $";
  *			to be replaced by the new pattern.
  */
 
-#include	<rms>
+#include	<stdlib.h>
+#include	<rms.h>
 
 #include	"flist.h"
 #include	"dirent.h"
 
-char	*calloc(),	/* Memory allocation		*/
-	*realloc(),	/* ...and re-allocation		*/
-	*dirent_glue();	/* => concatenated argument	*/
+char	*dirent_glue();	/* => concatenated argument	*/
 
 import(readlist);	import(readllen);
 

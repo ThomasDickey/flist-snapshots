@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.2 1989/02/24 17:12:10 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.4 1995/02/19 18:40:58 tom Exp $";
 #endif
 
 /*
@@ -7,24 +7,16 @@ static char *Id = "$Id: getraw.c,v 1.2 1989/02/24 17:12:10 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
+ *		18 Feb 1995, removed syi-testing.
  *		24 Feb 1989, when reading from a command-file, suppress lines
  *			     which do not begin with '$' (with optional blanks)
  *		17 Aug 1988, use SYS$COMMAND instead of SYS$INPUT.
- *
- *		17 Jul 1985, added sid for second atc/780
- *		15 Jun 1985, reference syi-func as '(*func)', rather than by
- *			     '(func)' to make CC2.0 happy.  Also, typed calloc.
- *		13 Jun 1985, use 2 sid's for 750 !!
  *		10 Jun 1985, ensure type-ahead is killed if CTRL/X
  *		08 Jun 1985, added code for interactive type-ahead
- *		08 May 1985, corrected sid for ATC/730 for BTM-demo
- *		27 Apr 1985, changed sid for ATC/750
- *		20 Apr 1985, added ATC/785-sid
  *		10 Apr 1985, made command-files nest, some better error checks.
  *		06 Apr 1985, added file-input, CTRL/X-ast
  *		29 Mar 1985, added 'status' to 'error'.
- *		26 Mar 1985, added ATC-730's SID
- *		24 Feb 1985, added SID-test, to restrict porting, removed ^C^C.
+ *		24 Feb 1985, removed ^C^C.
  *		02 Dec 1984, added entry 'gotraw' to do QIO (no wait)
  *		09 Jul 1984, use virtual-block instead on TTY_READALL
  *		04 Jul 1984, make debug more readable
@@ -43,6 +35,7 @@ static char *Id = "$Id: getraw.c,v 1.2 1989/02/24 17:12:10 tom Exp $";
  *		(2-3) - Discussion of escapes vs read-terminator
  */
 
+#include	<stdlib.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<iodef.h>
@@ -53,19 +46,13 @@ static char *Id = "$Id: getraw.c,v 1.2 1989/02/24 17:12:10 tom Exp $";
 #include	"bool.h"
 #include	"crt.h"
 
-/*
- * External functions:
- */
-char	*calloc(),	/* allocate memory	*/
-	*ropen2();	/* (actually, *RFILE)	*/
+extern	char	*ropen2();	/* (actually, *RFILE)	*/
 
 /*
  * Local definitions:
  */
 #define	OK(f)	$VMS_STATUS_SUCCESS(status=f)
 #define	SYS(f)	if (!OK(f)) lib$stop(status)
-
-#define	SYI$_SID	0x201	/* cf: $SYIDEF macro	*/
 
 /* patch: Should I use 'lib$get_ef' ? */
 #define	ef2	2
@@ -104,35 +91,42 @@ typedef	struct	{
  */
 $DESCRIPTOR(tty_name,"SYS$COMMAND");
 
-static
-CFP	*cfp	= nullS(CFP);	/* command-file-pointer	*/
-static
-unsigned
-short	tty_chan = 0,
-	ast_chan = 0,
-	init	= FALSE;	/* Force auto-init */
-static
-long	ctlx_flag = FALSE,
-	idv	= 0;		/* Nonzero if SID-mismatch */
-static
-char	typeahead;		/* input-buffer	*/
-
+static	CFP	*cfp	= nullS(CFP);	/* command-file-pointer	*/
+static	unsigned
+	short	tty_chan = 0,
+		ast_chan = 0,
+		init	= FALSE;	/* Force auto-init */
+static	long	ctlx_flag = FALSE;
+static	char	typeahead;		/* input-buffer	*/
+
+static	void	getraw_free (void);
+
 /*
  * Provide a publicly-testable CTRL/X-flag, which is set only if the AST-routine
  * is called:
  */
-ctlx_ast ()
+void
+ctlx_ast (void)
 {
-long	status;
+	long	status;
+
 	SYS(sys$cancel(tty_chan));
 	ctlx_flag = TRUE;
 	typeahead = EOS;
 }
 
-ctlx_clr ()	{ ctlx_flag = FALSE; }
+void
+ctlx_clr (void)
+{
+	ctlx_flag = FALSE;
+}
 
-ctlx_tst ()	{ return(ctlx_flag); }
-
+int
+ctlx_tst (void)
+{
+	return(ctlx_flag);
+}
+
 /* <getraw_init>:
  * The initialization routine for this module may be either called explicitly
  * (to call in a new command file), or implicitly (when the module is first
@@ -142,30 +136,11 @@ ctlx_tst ()	{ return(ctlx_flag); }
  *	cmd_	=> command-file name
  *	dft_	=> file-specification default
  */
-getraw_init (cmd_, dft_)
-char	*cmd_, *dft_;
+void
+getraw_init (char *cmd_, char *dft_)
 {
-static
-int	bmask[2] = {0, 0x01000000};
-#ifndef	PUBLIC
-struct	{ short	len,op;	char *adr; long end; } itm;
-IOSB	iosb;
-long	sid = 0,
-	status = ~0x7ffee430;	/* sys$getsyi */
-register j = -1;
-int	(*func)() = j ^ status;
-
-	itm.len	= 4;	itm.op	= SYI$_SID;
-	itm.adr	= &sid;	itm.end	= 0;
-
-	status = (*func) (0,0,0, &itm, &iosb, 0,0);
-	j = (iosb.sts == SS$_NORMAL) ? ~sid : 0;
-
-	if ((j != ~0x068007cb)	/* SPC			*/
-	&&  (j != ~0x0138088c))	/* DEC service		*/
-		idv = ~j;
-	idv = 0;
-#endif
+	int	bmask[2] = {0, 0x01000000};
+	long	status;
 
 	/*
 	 * If a command-file argument is provided, open the file for input.
@@ -204,16 +179,17 @@ int	(*func)() = j ^ status;
 	}
 	init = TRUE;
 }
-
+
 /*
  * Wait for, read one or more characters for commands:
  */
-getraw ()
+int
+getraw (void)
 {
-int	gotc	= FALSE,
-	status;
-char	newc;
-IOSB	iosb;
+	int	gotc	= FALSE,
+		status;
+	char	newc;
+	IOSB	iosb;
 
 	if (!init)	getraw_init(0,0);
 
@@ -276,31 +252,21 @@ get_cmd:
 		/* CTRL/X yields SS$_ABORT */
 	}
 
-#ifndef	PUBLIC
-	/* Discourage thieves via XOR:	 */
-	if (idv)
-	{
-		if (idv & 1 || idv < 0)
-			newc = 0x7f & (newc ^ idv);
-		if (idv < 0) {	idv <<= 1; idv++; }
-		else		idv <<= 1;
-	}
-#endif
-/*	trace ("%c", newc);	if (newc == '\r') trace ("\n");	*/
 	typeahead = EOS;
 	return (newc);
 }
-
+
 /* <gotraw>:
  * Return TRUE iff we have already another character in the input buffer,
  * following the one which we have (just) read.  This test lets us optimize
  * screen outputs by combining several refreshes together (e.g., postponing
  * updates of an input line until we have a carriage-return).
  */
-gotraw ()
+int
+gotraw (void)
 {
-int	status;
-IOSB	iosb;
+	int	status;
+	IOSB	iosb;
 
 	if (cfp)
 		return (cfp->used < cfp->rlen);
@@ -316,14 +282,15 @@ IOSB	iosb;
 	}
 	return (isprint(typeahead));
 }
-
+
 /* <getraw_free>:
  * Close the current command-file, returning buffer space.  If there is an
  * error, print the message.
  */
-getraw_free ()
+static void
+getraw_free (void)
 {
-char	msg[CRT_COLS];
+	char	msg[CRT_COLS];
 
 	if (cfp)
 	{
@@ -342,12 +309,13 @@ char	msg[CRT_COLS];
 	}
 	rclear();	/* Reset I/O-error latch	*/
 }
-
+
 /*
  * <getraw_flush>:
  * Discard the remainder of the current command-file line.
  */
-getraw_flush()
+void
+getraw_flush(void)
 {
 	if (cfp)
 		cfp->used = cfp->rlen + 1;

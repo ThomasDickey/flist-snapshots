@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: setprot.c,v 1.2 1985/06/16 02:33:02 tom Exp $";
+static char *Id = "$Id: setprot.c,v 1.5 1995/02/19 18:46:36 tom Exp $";
 #endif
 
 /*
  * Title:	setprot.c
  * Author:	Thomas E. Dickey
  * Created:	19 Nov 1984
- * Last update:	15 Jun 1985, typed 'strchr'
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		15 Jun 1985, typed 'strchr'
  *		21 Dec 1984, make proper error-returns!
  *
  * Function:	Given a partially-parsed "SET PROTECTION" command, perform
@@ -17,29 +19,30 @@ static char *Id = "$Id: setprot.c,v 1.2 1985/06/16 02:33:02 tom Exp $";
  */
 
 #include	<ctype.h>
+#include	<string.h>
 
 #include	"bool.h"
 #include	"dclarg.h"
 
-char	*strchr();
+#include	"strutils.h"
 
 #define	SKIP(p)	while(isspace(*p))	p++
 
-setprot (filespec, prot_code)
-char	*filespec, *prot_code;
+int
+setprot (char *filespec, char *prot_code)
 {
-int	level,
-	infield,
-	found	= FALSE,	/* flag if any access specified	*/
-	code	= 0xffff,	/* Deny any access		*/
-	mask	= 0xffff,	/* Use all old-fields		*/
-	brace	= FALSE;
-register
-char	*code_	= prot_code;
-char	*s_;
+	int	level,
+		infield,
+		found	= FALSE,	/* flag if any access specified	*/
+		code	= 0xffff,	/* Deny any access		*/
+		mask	= 0xffff,	/* Use all old-fields		*/
+		brace	= FALSE;
+	register
+	char	*code_	= prot_code;
+	char	*s_;
 
-static	char	*key[] = {"SYSTEM", "OWNER", "GROUP", "WORLD"},
-		key2[] = "aRWED";
+	static	char	*key[] = {"SYSTEM", "OWNER", "GROUP", "WORLD"},
+			key2[] = "aRWED";
 
 	/*
 	 * Skip over "PROT=":

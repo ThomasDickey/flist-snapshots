@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
+static char *Id = "$Id: flcols.c,v 1.5 1995/02/19 18:01:28 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	01 Sep 1984
  * Last update:
+ *		19 Feb 1995, prototypes
  *		04 Nov 1988, added expired-date
  *		05 Oct 1985, added 'flcols_132' entrypoint.
  *		24 Aug 1985, if no argument for /CWIDTH, reset entire list
@@ -28,6 +29,8 @@ static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
  *		permissible keys.
  */
 
+#include	<stdio.h>
+#include	<string.h>
 #include	<ctype.h>
 
 #include	"bool.h"
@@ -36,8 +39,7 @@ static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
 #include	"dds.h"
 #include	"dirent.h"
 
-char	*scanint(),		/* => past decoded integer */
-	*strchr();		/* Returns index to string of char-arg	*/
+#include	"strutils.h"
 
 import(A_opt);	import(D_opt);	import(M_opt);	import(O_opt);
 import(pcolumns);

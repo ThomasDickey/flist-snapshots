@@ -1,11 +1,15 @@
-#include	"ctype.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: strskps.c,v 1.3 1995/02/19 02:18:17 tom Exp $";
+#endif
 
 /*
  * Title:	strskps.c
- * Author:	T.E.Dickey (ITT/ATC)
- * Created:	14 Sep 83
- * Last update:	29 Dec 1984, to use ctype-include
- *		05 Dec 83
+ * Author:	Thomas E. Dickey
+ * Created:	14 Sep 1983
+ * Last update:
+ *		18 Feb 1995, prototyped
+ *		29 Dec 1984, to use ctype-include
+ *		05 Dec 1983
  *
  * Function:	Skip over spaces and other blank characters.
  *
@@ -15,8 +19,12 @@
  *		the procedure stops on null.
  */
 
-char	*strskps (c_)
-char	*c_;
+#include	<ctype.h>
+
+#include	"strutils.h"
+
+char *
+strskps (char *c_)
 {
 	if (c_)
 	{

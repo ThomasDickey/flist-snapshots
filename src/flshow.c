@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.3 1988/11/04 12:29:40 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.4 1995/02/19 18:19:40 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flshow.c,v 1.3 1988/11/04 12:29:40 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1985 (from main program)
  * Last update:
+ *		19 Feb 1995, prototypes
  *		04 Nov 1988, added expired date
  *		12 Nov 1985, added "?OWNER"
  *		05 Oct 1985, added key-argument to 'flist_help'.  Use it here.
@@ -20,12 +21,15 @@ static char *Id = "$Id: flshow.c,v 1.3 1988/11/04 12:29:40 tom Exp $";
  */
 
 #include	<ctype.h>
+#include	<string.h>
 #include	<stsdef.h>
 
 #include	"flist.h"
 
 #include	"dirent.h"
 #include	"dclarg.h"
+
+#include	"sysutils.h"
 
 import(filelist);	import(numfiles);
 

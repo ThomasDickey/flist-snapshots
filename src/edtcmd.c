@@ -1,12 +1,15 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.3 1985/04/28 00:44:08 tom Exp $";
+static char *Id = "$Id: edtcmd.c,v 1.6 1995/02/19 18:22:49 tom Exp $";
 #endif
 
 /*
  * Title:	edtcmd.c
  * Author:	Thomas E. Dickey
  * Created:	16 Apr 1985 (from DIRCMD, 10 May 1984)
- * Last update:	27 Apr 1985
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, port to AXP (renamed 'alarm').
+ *		27 Apr 1985
  *
  * Entry:	edtcmd:		Accept & edit a command
  *		edtcmd_init:	Initialize this module
@@ -16,16 +19,18 @@ static char *Id = "$Id: edtcmd.c,v 1.3 1985/04/28 00:44:08 tom Exp $";
  */
 
 #include	<stdlib.h>
+#include	<stdio.h>
 #include	<ctype.h>
 
 #include	"bool.h"
 #include	"crt.h"
 #include	"getpad.h"
+#include	"strutils.h"
 
 /*
  * External procedures:
  */
-int	getpad();	/* returns character or keypad-code	*/
+extern	int	getpad(void);	/* returns character or keypad-code	*/
 
 #define	RUBOUT	'\177'
 #define	CTL(c)	('c' & 037)
@@ -35,16 +40,15 @@ int	getpad();	/* returns character or keypad-code	*/
  *	due to repeated (or stuck) key.  The logic is tested in the main program
  *	of 'FLIST', where all commands are reduced to a single code.
  */
-static
-int	lastcommand, thiscommand;	/* 1-level stack for repeat test */
-static
-char	*cmdbfr	= nullC;
-
+static	int	lastcommand;
+static	int	thiscommand;	/* 1-level stack for repeat test */
+static	char	*cmdbfr	= nullC;
+
 /* <edtcmd_get>:
  * Read a character, saving the previous one, for repeated-key testing.
  * We do screen-dump and refresh here as well:
  */
-int	edtcmd_get ()
+int	edtcmd_get (void)
 {
 	lastcommand = thiscommand;
 	for (;;)
@@ -62,11 +66,12 @@ int	edtcmd_get ()
  * Test if the argument is the same as the previous character.  This is used
  * to latch multiple-keystroke errors (such as from a stuck key).
  */
-edtcmd_last (c)
+int
+edtcmd_last (int c)
 {
 	return ((c > 0) && (c == lastcommand));
 }
-
+
 /* <edtcmd>:
  * Read/edit a "visible" command
  */
@@ -82,24 +87,24 @@ edtcmd_last (c)
 #define	SHOWIT	edtcmd_crt (cmdbfr, refbfr, doHIGH, do_col, do_line, col)
 #define	COMMAND	(doLOWER ? _tolower(command) : _toupper(command))
 
-char	*edtcmd (command, delim, flags, do_line, do_col, do_hlp, do_1st, do_ref)
-int	command,	/* Initial and scratch value			*/
-	flags,		/* Bits: highlight, lowercase, trim		*/
-	do_line,	/* Line on which to enter command 		*/
-	do_col;		/* Column at which to begin command		*/
-char	*delim,		/* Delimiters (if used, for repeat-count)	*/
-	*do_hlp,	/* Help-interface string			*/
-	*do_1st,	/* Starting contents of command-result		*/
-	*do_ref;	/* Reference copy of command-line		*/
+char	*edtcmd (
+	int	command,	/* Initial and scratch value		*/
+	int	flags,		/* Bits: highlight, lowercase, trim	*/
+	int	do_line,	/* Line on which to enter command 	*/
+	int	do_col,		/* Column at which to begin command	*/
+	char	*delim,		/* Delimiters (if used, for repeat-count) */
+	char	*do_hlp,	/* Help-interface string		*/
+	char	*do_1st,	/* Starting contents of command-result	*/
+	char	*do_ref)	/* Reference copy of command-line	*/
 {
-int	len,				/* Current command-length	*/
-	col,				/* Edit-index into 'cmdbfr[]'	*/
-	maxcols	= crt_width()-do_col-2,	/* Maximum length of cmd-string	*/
-	complete= FALSE,
-	j,
-	get_dir	= 1;			/* Normal sense of RETRIEVE	*/
-char	refbfr[CRT_COLS],
-	tmp[CRT_COLS];
+	int	len,			/* Current command-length	*/
+		col,			/* Edit-index into 'cmdbfr[]'	*/
+		maxcols	= crt_width()-do_col-2,	/* Max length of cmd-string */
+		complete= FALSE,
+		j,
+		get_dir	= 1;		/* Normal sense of RETRIEVE	*/
+	char	refbfr[CRT_COLS],
+		tmp[CRT_COLS];
 
 
 	cmdstk_tos ();
@@ -115,7 +120,7 @@ retrieve:
 		}
 		else
 		{
-			alarm ();
+			sound_alarm ();
 			goto did_abort;
 		}
 	}
@@ -154,7 +159,7 @@ retrieve:
 			goto retrieve;
 		case RUBOUT:
 			if (col)	DELETE
-			else		alarm ();
+			else		sound_alarm ();
 			break;
 		case CTL(X):
 		case CTL(U):
@@ -169,7 +174,7 @@ retrieve:
 				if (strchr(delim, command))
 					complete = TRUE;
 				else
-					alarm();
+					sound_alarm();
 			}
 			else
 				complete = TRUE;
@@ -185,13 +190,13 @@ retrieve:
 				while (col && !isspace(PREV))
 					DELETE
 			}
-			else		alarm();
+			else		sound_alarm();
 			break;
 		case padLEFT:		/* left-arrow	*/
 			if (doARROW)	goto do_arrow;
 		case CTL(D):		/* (cf: VMS 4.0)*/
 			if (col > 0)	col--;
-			else		alarm();
+			else		sound_alarm();
 			break;
 
 		case padRIGHT:		/* right-arrow	*/
@@ -203,7 +208,7 @@ retrieve:
 					strcat (cmdbfr, " ");
 			}
 			else
-				alarm();
+				sound_alarm();
 			break;		
 
 		case '\b':
@@ -220,7 +225,7 @@ retrieve:
 		case ' ':
 			if (doTRIM && col == 0)
 			{
-				alarm ();
+				sound_alarm ();
 				break;
 			}
 		default:
@@ -250,10 +255,10 @@ retrieve:
 					col++;
 				}
 				else
-					alarm ();
+					sound_alarm ();
 			}
 			else
-				alarm ();
+				sound_alarm ();
 		}	/* end:switch(command) */
 		/*
 		 * Cursor movement may temporarily lengthen the buffer.  Trim

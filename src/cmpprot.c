@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmpprot.c,v 1.2 1989/12/05 11:56:58 tom Exp $";
+static char *Id = "$Id: cmpprot.c,v 1.3 1995/02/19 18:14:40 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: cmpprot.c,v 1.2 1989/12/05 11:56:58 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 Jul 1984 (broke out of 'dirent.c')
  * Last update:
+ *		19 Feb 1995, sys utils prototypes
  *		04 Nov 1988, undid last patch, fix by using unsigned type.
  *		12 Nov 1985, limit uid-code to single byte for quick fix
  *		01 Aug 1984, added calls to 'sysrights'
@@ -33,6 +34,8 @@ static char *Id = "$Id: cmpprot.c,v 1.2 1989/12/05 11:56:58 tom Exp $";
 
 #include	"bool.h"
 #include	"getprot.h"
+
+#include	"sysutils.h"
 
 #define	ACCESS(m)	(((mask << m) & pr_->p_mask) == 0)
 

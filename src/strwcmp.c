@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strwcmp.c,v 1.2 1985/09/14 12:49:12 tom Exp $";
+static char *Id = "$Id: strwcmp.c,v 1.3 1995/02/19 02:24:28 tom Exp $";
 #endif
 
 /*
  * Title:	strwcmp.c
  * Author:	Thomas E. Dickey
  * Created:	24 May 1984
- * Last update:	14 Sep 1985	Don't pass ALL/ONE as arguments.  Also, test for
+ * Last update:
+ *		18 Feb 1995	prototyped
+ *		14 Sep 1985	Don't pass ALL/ONE as arguments.  Also, test for
  *				pathname-wildcard "..." which matches 0 or more
  *				tokens delimited by '.'
  *		24 May 1984
@@ -24,14 +26,16 @@ static char *Id = "$Id: strwcmp.c,v 1.2 1985/09/14 12:49:12 tom Exp $";
  * Returns:	1 (TRUE) if no match, else 0 (FALSE, or EQUAL).
  */
 
+#include "strutils.h"
+
 #define	EQUAL		0
 #define	ANY		'*'
 #define	ONE		'%'
 #define	DOT		'.'
 #define	ELLIPSIS	"..."
 
-strwcmp (wild_, tame_)
-char	*wild_, *tame_;
+int
+strwcmp (char *wild_, char *tame_)
 {
 	while (*wild_ && *tame_)
 	{

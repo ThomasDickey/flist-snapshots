@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrename.c,v 1.2 1984/09/08 10:49:18 tom Exp $";
+static char *Id = "$Id: syrename.c,v 1.3 1995/02/19 18:14:56 tom Exp $";
 #endif
 
 /*
  * Title:	sysrename.c
  * Author:	Thomas E. Dickey
  * Created:	17 May 1984
- * Last update:	06 Sep 1984, permit wildcards in output-filename
+ * Last update:
+ *		19 Feb 1995, sys utils prototypes
+ *		06 Sep 1984, permit wildcards in output-filename
  *		05 Sep 1984, fixed fatal error
  *
  * Function:	Rename a file, given its file-specification, and the (maybe
@@ -27,19 +29,20 @@ static char *Id = "$Id: syrename.c,v 1.2 1984/09/08 10:49:18 tom Exp $";
 #include	<rms.h>
 #include	<stsdef.h>
 
+#include	"sysutils.h"
+
 #define	ok(x) status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
 
-long	sysrename (newspec, oldspec)
-char	*newspec,
-	*oldspec;
+long
+sysrename (char *newspec, char *oldspec)
 {
-struct	FAB	oldFAB, newFAB,	tmpFAB;
-struct	NAM	oldNAM, newNAM,	tmpNAM;
-long	status;
-int	len;
-char	oldRSA	[NAM$C_MAXRSS],	oldESA	[NAM$C_MAXRSS],
-	tmpESA	[NAM$C_MAXRSS],		/* buffer to get rid of wildcard */
-	newRSA	[NAM$C_MAXRSS],	newESA	[NAM$C_MAXRSS];
+	struct	FAB	oldFAB, newFAB,	tmpFAB;
+	struct	NAM	oldNAM, newNAM,	tmpNAM;
+	long	status;
+	int	len;
+	char	oldRSA	[NAM$C_MAXRSS],	oldESA	[NAM$C_MAXRSS],
+		tmpESA	[NAM$C_MAXRSS],	 /* buffer to get rid of wildcard */
+		newRSA	[NAM$C_MAXRSS],	newESA	[NAM$C_MAXRSS];
 
 	/*
 	 * Check for the old-name:

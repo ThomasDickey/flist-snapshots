@@ -1,12 +1,15 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.6 1995/02/19 23:54:27 tom Exp $";
 #endif
 
 /*
  * Title:	flprot.c
  * Author:	Thomas E. Dickey
  * Created:	11 May 1984
- * Last update:	05 Oct 1985, added key-argument to 'flist_help'.
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, port to AXP (renamed 'alarm')
+ *		05 Oct 1985, added key-argument to 'flist_help'.
  *		24 Sep 1985, corrected threshold-test on 'prot_col'.
  *		04 Jul 1985, cleanup 'filelist' definition.
  *		15 May 1985, use '_toupper' macro, not routine
@@ -55,6 +58,8 @@ static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
  *		ENTER, RETURN	- complete edit, submit command
  */
 
+#include	<stdlib.h>
+#include	<stdio.h>
 #include	<ctype.h>
 
 #include	"flist.h"
@@ -65,10 +70,9 @@ static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
 /*
  * External procedures and data:
  */
-int	flprot_one();		/* function via 'dirfind'	*/
+static	int	flprot_one(int, int *);	/* function via 'dirfind'	*/
 
-char	*calloc(),
-	*strnull();		/* => end of line		*/
+extern	char	*strnull();		/* => end of line		*/
 
 import(filelist);
 import(M_opt);
@@ -76,19 +80,22 @@ import(M_opt);
 extern	char	*crtvec[];	/* Display-frame		*/
 
 static	*savecmd = nullC;	/* Text of option-code to process	*/
-
-flprot (curfile_, xcmd_, xdcl_, temp_fix, history)
-int	*curfile_;
-char	*xcmd_;
-DCLARG	*xdcl_;
+
+void
+flprot (
+	int	*curfile_,
+	char	*xcmd_,
+	DCLARG	*xdcl_,
+	int	temp_fix,
+	int	history)
 {
-FILENT	*z	= FK_(*curfile_);
-DCLARG	*name_	= nullC,		/* => filename specification	*/
-	*code_	= nullC;		/* => protection-code		*/
-int	no_edit	= FALSE,		/* TRUE iff code is specified	*/
-	flag;
-char	msg	[CRT_COLS],
-	fullname[MAX_PATH];
+	FILENT	*z	= FK_(*curfile_);
+	DCLARG	*name_	= nullC,		/* => filename specification	*/
+		*code_	= nullC;		/* => protection-code		*/
+	int	no_edit	= FALSE,		/* TRUE iff code is specified	*/
+		flag;
+	char	msg	[CRT_COLS],
+		fullname[MAX_PATH];
 
 	if (!M_opt)
 	{
@@ -149,15 +156,17 @@ char	msg	[CRT_COLS],
 	if (!code_ && history)
 		cmdstk_chg (savecmd);
 }
-
+
 /* <flprot_one>:
  * Process the protection code for a single file.
  */
-flprot_one (j, flag_)
-int	j, *flag_;
+static int
+flprot_one (
+	int	j,
+	int	*flag_)
 {
-int	status;
-char	fullname[MAX_PATH];
+	int	status;
+	char	fullname[MAX_PATH];
 
 	dirent_glue (fullname, FK_(j));
 	flist_log ("%s %s", savecmd, fullname);
@@ -170,7 +179,7 @@ char	fullname[MAX_PATH];
 		flist_sysmsg(status);
 	dirent_chk2 (j);
 }
-
+
 /* <flprot_edit>:
  * If no arguments were supplied to "flprot", enter cursor-oriented edit
  * of the protection code.
@@ -191,19 +200,20 @@ typedef	struct	{
 static
 PTBL	ptbl[16];		/* protection-state-bits	*/
 
-flprot_edit (set_, curfile)
-char	*set_;
-int	curfile;
+int
+flprot_edit (
+	char	*set_,
+	int	curfile)
 {
-FILENT	*z	= FK_(curfile);
-int	rline	= curfile - crt_top(),
-	j, k, jk, edit, command, level,
-	abort	= FALSE,
-	complete= FALSE,
-	cmdcol	= dirent_ccol(),
-	select	[4];			/* Override-flags for code-selection */
-char	c, *c_, *d_,
-	cmdbfr	[CRT_COLS];
+	FILENT	*z	= FK_(curfile);
+	int	rline	= curfile - crt_top(),
+		j, k, jk, edit, command, level,
+		abort	= FALSE,
+		complete= FALSE,
+		cmdcol	= dirent_ccol(),
+		select	[4];		/* Override-flags for code-selection */
+	char	c, *c_, *d_,
+		cmdbfr	[CRT_COLS];
 
 	if (!M_opt
 	||  (prot_col < 0)
@@ -268,7 +278,7 @@ char	c, *c_, *d_,
 		case CTL(X):
 		case CTL(Y):
 			abort = TRUE;
-			alarm ();
+			sound_alarm ();
 			break;
 		case CTL(D):
 		case padLEFT:
@@ -327,7 +337,7 @@ char	c, *c_, *d_,
 			break;
 		case RUBOUT:	/* patch: would be nice to backtrack */
 		default:
-			alarm ();
+			sound_alarm ();
 		}
 	}
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.3 1989/02/02 19:32:54 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.4 1995/02/19 01:43:20 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flsort.c,v 1.3 1989/02/02 19:32:54 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1984
  * Last update:
+ *		18 Feb 1995	port to AXP (DATENT mods).
  *		02 Jan 1989	modified to use 'qsort' instead of my selection-
  *				sort.
  *		04 Nov 1988	added sort for expired-date.
@@ -126,8 +127,12 @@ int	by_hour = 0;		/* Last HOUR-mode used	*/
 
 #define	sort_V(z1,z2)	sort_NUM(z1->fvers,  z2->fvers)
 
+#ifdef __alpha
+#define	sort_D(z1,z2)	sort_NUM(z1,z2)
+#else
 #define	sort_D(z1,z2)	(sort_NUM(hi(z1),hi(z2)) ? cmp :\
 			 sort_NUM(lo(z1),lo(z2)))
+#endif
 
 #define	sort_H(z1,z2)	sort_NUM(z1->fhour,  z2->fhour)
 
@@ -312,7 +317,7 @@ DATENT	*c_;
 		    }
 		    if (cmp || ! FK(j0).fhour)
 		    {
-			if (c_->date64[1] == -1)
+			if (isBigDate(c_))
 			    FK(j0).fhour = 0xffff; /* biggest possible */
 			else
 			{

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.3 1985/09/13 01:51:14 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.4 1995/02/19 18:24:39 tom Exp $";
 #endif
 
 /*
  * Title:	dirpath.c
  * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
- * Last update:	12 Sep 1985, also account for implied trailing '.' in pathname
+ * Last update:
+ *		19 Feb 1995, prototyped
+ *		12 Sep 1985, also account for implied trailing '.' in pathname
  *			     collating.
  *		10 Sep 1985, account for trailing '.' in filename-field.
  *		22 Jul 1985, added 'dirpath_add'
@@ -59,18 +61,18 @@ static char *Id = "$Id: dirpath.c,v 1.3 1985/09/13 01:51:14 tom Exp $";
  *		dirpath_sort:	Append a new pathspec to 'pathlist'.
  */
 
+#include	<stdlib.h>
+#include	<string.h>
+
 #include	"flist.h"
 #include	"dirent.h"
+#include	"strutils.h"
 
 import(filelink);
 import(namelist);
 import(pathlist);
 
-char	*calloc(),		/* allocate memory		*/
-	*realloc(),		/* reallocate memory		*/
-	*strcat(),		/* => pointer to first argument */
-	*strnull(),		/* => pointer to end of argument */
-	*nameheap();		/* => allocated string storage	*/
+char	*nameheap();		/* => allocated string storage	*/
 
 #define	SORT(P,key) for (P=pathlist, key=0; P;\
 			P->path_sort = key++, P = P->path_next)

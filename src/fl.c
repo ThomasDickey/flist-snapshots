@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.3 1989/02/28 18:22:54 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.7 1995/02/19 19:01:12 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: fl.c,v 1.3 1989/02/28 18:22:54 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
+ *		19 Feb 1995, prototypes
+ *		18 Feb 1995, port to AXP (DATENT mods, renamed 'alarm')
  *		28 Feb 1989, log 132-wide messages instead of 80.
  *		23 Feb 1989, use 'flist_chdir()'
  *		04 Nov 1988, added expired-date
@@ -87,6 +89,7 @@ static char *Id = "$Id: fl.c,v 1.3 1989/02/28 18:22:54 tom Exp $";
  *		on IBM CMS.
  */
 
+#include	<stdio.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<stsdef.h>
@@ -98,6 +101,9 @@ static char *Id = "$Id: fl.c,v 1.3 1989/02/28 18:22:54 tom Exp $";
 #include	"dirent.h"
 #include	"dclarg.h"
 #include	"dclopt.h"
+
+#include	"strutils.h"
+#include	"sysutils.h"
 
 #define	FAILED	(STS$M_INHIB_MSG | STS$K_ERROR)
 #define	NORMAL	(STS$M_INHIB_MSG | STS$K_SUCCESS)
@@ -113,8 +119,7 @@ char	*cmdstk_init(),
 	*dclarea(),
 	*dired_release(),
 	*dirent_path(),
-	*ropen2(),
-	*strnull();
+	*ropen2();
 
 import(filelist); import(numfiles);
 import(AnyXAB);
@@ -122,6 +127,12 @@ import(A_opt);	import(D_opt);	import(M_opt);
 import(O_opt);	import(P_opt);	import(V_opt);
 import(D_mode);
 import(dateflag);	import(datechek);
+
+import(filelink);
+import(pathlist);
+import(readlist);
+import(readllen);
+
 /*
  * Local (static) data:
  */
@@ -401,7 +412,7 @@ flist_date (curfile, opt)
  *		(so that we can tell if we have the repeated single-character
  *		command).
  */
-beep()		{	beep_flag = TRUE;	}
+set_beep()	{	beep_flag = TRUE;	}
 clrbeep()	{	beep_flag = FALSE;	}
 didbeep()	{	return (beep_flag);	}
 
@@ -418,11 +429,11 @@ warn (VARARGS)
 	if (!beep_flag)
 	{
 		warn_flag = TRUE;
-		alarm();
+		sound_alarm();
 		flist_tell (VARARGS);
 	}
 	else if (++beep_flag < 99)	/* Continue beeping, but limit it */
-		alarm();
+		sound_alarm();
 }
 
 /*
@@ -632,7 +643,7 @@ char	msg[CRT_COLS + MAX_PATH];
 	 * side-effect flags 'dateflag[]'.
 	 */
 	dateflag[0] = dateflag[1] = 0;
-	if (datechek.date64[0] || datechek.date64[1])
+	if (isOkDate(&datechek))
 	{
 		if (dateflag[1] = D_opt)
 		{

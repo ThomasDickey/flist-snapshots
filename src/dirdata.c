@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirdata.c,v 1.4 1985/07/23 01:08:26 tom Exp $";
+static char *Id = "$Id: dirdata.c,v 1.5 1995/02/19 18:25:30 tom Exp $";
 #endif
 
 /*
  * Title:	dirdata.c
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1985
- * Last update:	22 Jul 1985, if rename, make sure path has same references as
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		22 Jul 1985, if rename, make sure path has same references as
  *			     the data objects, use 'dirpath_add'
  *		16 Jul 1985, added 'dirdata_one', 'dirdata_ren'.
  *
@@ -38,13 +40,13 @@ static char *Id = "$Id: dirdata.c,v 1.4 1985/07/23 01:08:26 tom Exp $";
  *		dirdata_ren:	Rename file, relinking block.
  */
 
+#include	<stdlib.h>
+
 #include	"flist.h"
 #include	"dirent.h"
 
-char	*calloc();	/* allocate a memory-block	*/
-
 import(filelink);
-
+
 /* <dirdata_find>:
  * Returns:
  *	1, iff we find the entry already in the list or

@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: cmdstk.c,v 1.3 1985/05/14 10:16:56 tom Exp $";
+static char *Id = "$Id: cmdstk.c,v 1.5 1995/02/19 02:23:41 tom Exp $";
 #endif
 
 /*
  * Title:	cmdstk.c
  * Author:	Thomas E. Dickey
  * Created:	17 Oct 1984 (broke out of 'dircmd')
- * Last update:	14 May 1985, was testing wrong variable in entry to '_put'.
+ * Last update:
+ *		18 Feb 1995, port to AXP (renamed 'alarm')
+ *		14 May 1985, was testing wrong variable in entry to '_put'.
  *		30 Apr 1985, always store commands in lower-case.
  *		27 Apr 1985, don't concat ' ' on end of stored-string!!
  *		22 Dec 1984, permit bidirectional movement in 'cmdstk_get'.
@@ -18,13 +20,11 @@ static char *Id = "$Id: cmdstk.c,v 1.3 1985/05/14 10:16:56 tom Exp $";
  *		commands for re-use or alteration.
  */
 
+#include	<stdlib.h>
+
 #include	"bool.h"
 #include	"crt.h"
-
-/*
- * External procedures:
- */
-char	*calloc();	/* allocate a block of dynamic memory		*/
+#include	"strutils.h"
 
 /*
  * Local (static) data:
@@ -59,24 +59,26 @@ CMDSTK	*cmdstk_ = nullC;
  * there is no loss of continuity on entering a new level; but on exit we
  * resume with the set of stacked commands which were present on nesting.
  */
-CMDSTK	*cmdstk_init ()
+CMDSTK *
+cmdstk_init (void)
 {
-CMDSTK	*new_ = calloc (1, PAGESIZE),
-	*old_ = cmdstk_;
+	CMDSTK	*new_ = calloc (1, PAGESIZE),
+		*old_ = cmdstk_;
 
 	if (cmdstk_)	*new_ = *cmdstk_;
 	cmdstk_ = new_;
 	return (old_);
 }
 
-cmdstk_free (old_)
-CMDSTK	*old_;
+void
+cmdstk_free (CMDSTK *old_)
 {
 	if (cmdstk_)		cfree (cmdstk_);
 	cmdstk_ = old_;
 }
 
-cmdstk_tos ()
+void
+cmdstk_tos (void)
 {
 	DEPTH = -1;		/* Provide index to most-recent	*/
 }
@@ -87,11 +89,10 @@ cmdstk_tos ()
  * Note that if no commands have been entered, we do not alter the output
  * string from whatever the caller set it to.
  */
-int	cmdstk_get (string, dir)
-char	*string;
-int	dir;
+int
+cmdstk_get (char *string, int dir)
 {
-int	deep	= DEPTH + dir;
+	int	deep	= DEPTH + dir;
 
 	if ((deep < STORED) && (deep >= 0))
 	{
@@ -99,10 +100,10 @@ int	deep	= DEPTH + dir;
 		DEPTH = deep;
 		return (TRUE);
 	}
-	alarm ();
+	sound_alarm ();
 	return (*string);
 }
-
+
 /*
  * If the current command is the same as one of the last 'RING' commands,
  * do not save it.  This permits the user to toggle between a couple
@@ -112,12 +113,12 @@ int	deep	= DEPTH + dir;
  * item to be "popped" to the top-level of the ring.  The entire stack
  * is pushed only when no match is found in the ring.
  */
-cmdstk_put (s_)
-char	*s_;
+void
+cmdstk_put (char *s_)
 {
-register
-int	j, k;
-char	string[CRT_COLS+1];
+	register
+	int	j, k;
+	char	string[CRT_COLS+1];
 #define	RING	3
 
 	if (*s_)		/* Save all "visible" commands	*/
@@ -148,8 +149,8 @@ char	string[CRT_COLS+1];
  * saved-text, for command retrieval.  In particular, it is called by the
  * protection-editor.
  */
-cmdstk_chg (string)
-char	*string;
+void
+cmdstk_chg (char *string)
 {
 	if (STORED > 0)		/* Only "change" if there is something */
 	{
@@ -159,14 +160,14 @@ char	*string;
 		cmdstk_put (string);
 	}
 	else
-		alarm ();
+		sound_alarm ();
 }
 
 /*
  * Compute an index in the queue, accounting for wraparound.
  */
-cmdstk_index (n)
-int	n;
+int
+cmdstk_index (int n)
 {
 	if (n < 0)		n = MAXSTK - n;
 	else if (n >= MAXSTK)	n = n - MAXSTK;

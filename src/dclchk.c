@@ -1,12 +1,14 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclchk.c,v 1.2 1984/08/27 00:29:36 tom Exp $";
+static char *Id = "$Id: dclchk.c,v 1.3 1995/02/19 18:18:28 tom Exp $";
 #endif
 
 /*
  * Title:	dclchk.c
  * Author:	Thomas E. Dickey
  * Created:	28 May 1984
- * Last update:	26 Aug 1984, cleanup buffer sizes
+ * Last update:
+ *		19 Feb 1995, prototypes
+ *		26 Aug 1984, cleanup buffer sizes
  *		14 Jul 1984, use $GETMSG for most messages.
  *		28 Jun 1984
  *
@@ -20,11 +22,15 @@ static char *Id = "$Id: dclchk.c,v 1.2 1984/08/27 00:29:36 tom Exp $";
  * Returns:	TRUE if an error is found, else FALSE (0).
  */
 
+#include	<string.h>
 #include	<rms.h>
 
 #include	"bool.h"
 #include	"crt.h"
 #include	"dclarg.h"
+
+#include	"strutils.h"
+#include	"sysutils.h"
 
 dclchk (dcl_, co_)
 DCLARG	*dcl_;

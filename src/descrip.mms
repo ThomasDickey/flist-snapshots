@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.2 1993/04/22 16:56:24 tom Exp $
+# $Id: descrip.mms,v 1.4 1995/02/19 23:51:23 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -7,7 +7,7 @@
 #	MMS version 2.6
 #	VAX-C version 3.2
 
-CFLAGS	= /Include=([])
+CFLAGS	= /Standard=VAXC /Include=([]) /Show=all /extern_model=common_block
 
 ########(source-lists)#########################################################
 C_SRC	= -
@@ -65,11 +65,9 @@ C_SRC	= -
 	FLRNAM.C, -
 	FLSCAN.C, -
 	FLSHOW.C, -
-	FLSHOW.C, -
 	FLSORT.C, -
 	FREELIST.C, -
 	GETPAD.C, -
-	GETPASS.C, -
 	GETPROT.C, -
 	GETRAW.C, -
 	HELP.C, -
@@ -91,7 +89,6 @@ C_SRC	= -
 	SETPROT.C, -
 	SHOQUOTA.C, -
 	SNAPSHOT.C, -
-	STR7.C, -
 	STRABBR.C, -
 	STRFORM2.C, -
 	STRLCPY.C, -
@@ -127,7 +124,6 @@ H_SRC	= -
 	BOOL.H, -
 	CREDEF.H, -
 	CRT.H, -
-	CTYPE.H, -
 	DCLARG.H, -
 	DCLOPT.H, -
 	DDS.H, -
@@ -213,11 +209,9 @@ MODULES	= -
 	FLRNAM, -
 	FLSCAN, -
 	FLSHOW, -
-	FLSHOW, -
 	FLSORT, -
 	FREELIST, -
 	GETPAD, -
-	GETPASS, -
 	GETPROT, -
 	GETRAW, -
 	HELP, -
@@ -239,7 +233,6 @@ MODULES	= -
 	SETPROT, -
 	SHOQUOTA, -
 	SNAPSHOT, -
-	STR7, -
 	STRABBR, -
 	STRFORM2, -
 	STRLCPY, -
@@ -308,10 +301,10 @@ clean :
 	@ write sys$output "** made $@"
 
 clobber : clean
-	@- if f$search("$(L)") .nes. "" then _n $(L)*.*;*
-	@- if f$search("$(B)") .nes. "" then _n $(B)*.*;*
-	@- if f$search("$(L)") .nes. "" then delete $(L)*.*;*
-	@- if f$search("$(B)") .nes. "" then delete $(B)*.*;*
+	@- if f$search("$(L)*.*") .nes. "" then _n $(L)*.*;*
+	@- if f$search("$(B)*.*") .nes. "" then _n $(B)*.*;*
+	@- if f$search("$(L)*.*") .nes. "" then delete $(L)*.*;*
+	@- if f$search("$(B)*.*") .nes. "" then delete $(B)*.*;*
 	@ write sys$output "** made $@"
 
 sources : $(SOURCES)
@@ -418,7 +411,6 @@ $(A)(DCLWILD) : -
 		DCLARG.H
 
 $(A)(DDS) : -
-		CTYPE.H -
 		FLIST.H -
 		DDS.H -
 		DIRENT.H
@@ -487,7 +479,6 @@ $(A)(DOMORE) : -
 		BROWSE.C
 
 $(A)(DSPC) : -
-		CTYPE.H -
 		CRT.H -
 		GETPAD.H
 
@@ -652,10 +643,10 @@ $(A)(SNAPSHOT) : -
 		CRT.H
 
 $(A)(STRABBR) : -
-		CTYPE.H
+		STRUTILS.H
 
 $(A)(STRLCPY) : -
-		CTYPE.H
+		STRUTILS.H
 
 $(A)(SYTRNLOG) : -
 		BOOL.H

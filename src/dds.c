@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.3 1989/02/23 18:32:04 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.5 1995/02/19 18:23:39 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: dds.c,v 1.3 1989/02/23 18:32:04 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
+ *		19 Feb 1995, prototyped
+ *		18 Feb 1995, renamed 'beep' to avoid conflict with curses.
  *		23 Feb 1989, use 'flist_chdir()'
  *		25 Aug 1985, added 'dds_width' entrypoint.
  *		24 Aug 1985, added 'dds_add2' entrypoint.
@@ -59,7 +61,9 @@ static char *Id = "$Id: dds.c,v 1.3 1989/02/23 18:32:04 tom Exp $";
  *		dds_width:	Update display if (possible) column-width change
  */
 
-#include	"ctype.h"
+#include	<stdlib.h>
+#include	<stdio.h>
+#include	<ctype.h>
 #include	<ssdef.h>
 #include	<stsdef.h>
 #include	<descrip.h>
@@ -67,11 +71,10 @@ static char *Id = "$Id: dds.c,v 1.3 1989/02/23 18:32:04 tom Exp $";
 #include	"flist.h"
 #include	"dds.h"
 #include	"dirent.h"
+#include	"strutils.h"
 
 import(filelist); import(numfiles); import(numdlets);
 import(ccolumns); import(pcolumns); import(conv_list);
-
-char	*calloc();		/* Obtain dynamic memory block		*/
 
 extern	int	multi_quit;	/* >0 iff multi-level quit in progress	*/
 extern	char	*crtvec[];	/* CRT display vectors			*/
@@ -227,7 +230,7 @@ int	j, last, TOP_END;
  *	Display the current file's pathname, and location in directory-list.
  *	Display error messages.
  *
- * This routine is used to maintain both items.  The "beep" routine both
+ * This routine is used to maintain both items.  The "set_beep" routine both
  * sounds an audible alarm, as well as sets a flag "didbeep" which is
  * cleared only after the user next types a character for command-input.
  */
@@ -247,7 +250,7 @@ char	bfr[CRT_COLS+3],
 	{
 		if (msg_)
 		{
-			beep();
+			set_beep();
 			sprintf (format, sFMT1, width, width);
 			sprintf (bfr, format, msg_);
 		}
