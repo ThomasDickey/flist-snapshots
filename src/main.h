@@ -1,4 +1,5 @@
-/*
+/* $Id: main.h,v 1.6 1995/05/28 18:12:36 tom Exp $
+ *
  * Title:	main.h
  * Author:	Thomas E. Dickey
  * Created:	29 Nov 1984
@@ -11,11 +12,9 @@
  */
 
 #ifndef	main_incl
-void
-error (status, s_)
-char	*s_;
+void error (int status, char *s_)
 {
-char	msg[80];
+	char	msg[80];
 
 	whoami (msg, 3);
 	strcat (msg, "-f-");

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.10 1995/03/19 02:08:56 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.16 1995/05/28 22:58:26 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: fl.c,v 1.10 1995/03/19 02:08:56 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
+ *		28 May 1995, use stdarg instead of VARARGS hack.
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods, renamed 'alarm')
  *		28 Feb 1989, log 132-wide messages instead of 80.
@@ -90,34 +91,38 @@ static char *Id = "$Id: fl.c,v 1.10 1995/03/19 02:08:56 tom Exp $";
  */
 
 #include	<stdio.h>
+#include	<stdarg.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<stsdef.h>
 
+#include	"cmdstk.h"
 #include	"getpad.h"
+#include	"dclarg.h"		/* FIXME */
 #include	"flist.h"
 
 #include	"dds.h"
 #include	"dirent.h"
 #include	"dircmd.h"
+#include	"dirpath.h"
 #include	"dclopt.h"
 
 #include	"nameheap.h"
 #include	"strutils.h"
 #include	"sysutils.h"
 
-#define	FAILED	(STS$M_INHIB_MSG | STS$K_ERROR)
-#define	NORMAL	(STS$M_INHIB_MSG | STS$K_SUCCESS)
+#ifndef EXIT_SUCCESS
+#define	EXIT_FAILURE	(STS$M_INHIB_MSG | STS$K_ERROR)
+#define	EXIT_SUCCESS	(STS$M_INHIB_MSG | STS$K_SUCCESS)
+#endif
 
 /*
  * External functions and data:
  */
-int	flist_tell_dsc();
-char	*cmdstk_init(),
-	*dclarea(),
-	*dired_release(),
-	*dirent_path(),
-	*ropen2();
+extern	char	*dclarea(),
+		*dired_release(),
+		*dirent_path(),
+		*ropen2();
 
 import(filelist); import(numfiles);
 import(AnyXAB);
@@ -194,19 +199,17 @@ DCLOPT	opts[] = {
 	{"versions",	&_TRUE,	0,	SZ(V_opt),	1,	00400}
 	};
 
-main (argc, argv)
-int	argc;
-char	*argv[];
+int	main (int argc, char **argv)
 {
-DCLARG	*arg_	= argvdcl (argc, argv, dftspec, 0);
-char	*path_	= getenv("PATH");
+	DCLARG	*arg_	= argvdcl (argc, argv, dftspec, 0);
+	char	*path_	= getenv("PATH");
 
 	CmdFile	= dclarea (COMMAND_,	MAX_PATH, &opts, sizeof(opts));
 	LogFile	= dclarea (LOG_,	MAX_PATH, &opts, sizeof(opts));
 	D_opt	= TRUE;		/* set default so we can inherit it	*/
 
-	if (dclchk (arg_, 0))				return(FAILED);
-	if (flist_opts (argc, argv, arg_, FALSE))	return(FAILED);
+	if (dclchk (arg_, 0))				return(EXIT_FAILURE);
+	if (flist_opts (argc, argv, arg_, FALSE))	return(EXIT_FAILURE);
 
 	sysfom (nullC);		/* Initialize timer			*/
 
@@ -221,14 +224,13 @@ char	*path_	= getenv("PATH");
 	freelist (arg_);	/* Release argument list		*/
 	if (path_)
 	    flist_chdir (path_);/* restore original working directory	*/
-	flist_quit (NORMAL);
+	flist_quit (EXIT_SUCCESS);
 }
 
 /*
  * Set default directory.
  */
-flist_chdir(path)
-char	*path;
+void	flist_chdir(char *path)
 {
 #ifdef	PATCH
 	auto	long	status;
@@ -259,25 +261,24 @@ char	*path;
 /*
  * Common error/normal exit point:
  */
-flist_quit (status)
+void	flist_quit (int status)
 {
 	if (did_crt_init)
 		crt_quit (TRUE);	/* Make a clean exit		*/
 	exit (status);
 }
 
-flist (dcl_)
-DCLARG	*dcl_;
+void	flist (DCLARG *dcl_)
 {
-int	curfile = 0,
-	Quit	= FALSE,
-	command;		/* Current command-code			*/
+	int	curfile = 0,
+		Quit	= FALSE,
+		command;	/* Current command-code			*/
 
 #define	len_date	21
-long	date[2],
-	j, total, total2;	/* misc variables used in commands	*/
-char	bfr[CRT_COLS+MAX_PATH], *c_,
-	*cmdstk_ = cmdstk_init();
+	long	date[2],
+		j, total, total2;	/* misc variables used in commands	*/
+	char	bfr[CRT_COLS+MAX_PATH], *c_;
+	CMDSTK	*cmdstk_ = cmdstk_init();
 
 	flfind_init (nesting_lvl);
 	clrwarn();
@@ -321,10 +322,9 @@ char	bfr[CRT_COLS+MAX_PATH], *c_,
  * Move the cursor to a new line.  If no actual movement results, flag an
  * error message so that the user will know what happened.
  */
-flist_move (curfile_, ref, code)
-int	*curfile_, ref, code;
+void	flist_move (int *curfile_, int ref, int code)
 {
-int	old = *curfile_;
+	int	old = *curfile_;
 	*curfile_ = dds_move (ref, code);
 	if ((ref == old) && (old == *curfile_) && (code /* 2's comp */ & 1))
 		warn ((code < 0) ? "Already at top" : "No more files");
@@ -370,7 +370,7 @@ tDIRCMD(flset_date)
 /*
  * Set flag 'D_mode', which controls the width of the data-field in the display.
  */
-flist_date2 (int curfile)
+void	flist_date2 (int curfile)
 {
 	if (D_opt)
 	{
@@ -385,7 +385,7 @@ flist_date2 (int curfile)
  * Toggle the date-display mode.  To make FLIST faster, normally only one
  * type of filedate (CREATED,BACKUP,REVISED) is shown on the screen at a time.
  */
-flist_date (curfile, opt)
+void	flist_date (int curfile, int opt)
 {
 	if (D_opt)		/* Can I toggle it ?	*/
 	{
@@ -420,28 +420,36 @@ flist_date (curfile, opt)
  *		(so that we can tell if we have the repeated single-character
  *		command).
  */
-set_beep()	{	beep_flag = TRUE;	}
-clrbeep()	{	beep_flag = FALSE;	}
-didbeep()	{	return (beep_flag);	}
+void	set_beep(void)	{	beep_flag = TRUE;	}
+void	clrbeep(void)	{	beep_flag = FALSE;	}
+int	didbeep(void)	{	return (beep_flag);	}
 
-clrwarn()	{	clrbeep();		warn_flag = FALSE;	}
-didwarn()	{	return (warn_flag);	}
+void	clrwarn(void)	{	clrbeep(); warn_flag = FALSE;	}
+int	didwarn(void)	{	return (warn_flag);	}
 
 /*
  * Display a warning message at the bottom of the screen.
  */
-#define	VARARGS	arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8
-
-warn (VARARGS)
+static
+void	WarnVA (char *format, va_list ap)
 {
 	if (!beep_flag)
 	{
 		warn_flag = TRUE;
 		sound_alarm();
-		flist_tell (VARARGS);
+		FlistTellVA (format, ap);
 	}
 	else if (++beep_flag < 99)	/* Continue beeping, but limit it */
 		sound_alarm();
+}
+
+void	warn (char *format, ...)
+{
+	va_list	ap;
+
+	va_start(ap, format);
+	WarnVA(format, ap);
+	va_end(ap);
 }
 
 /*
@@ -449,24 +457,37 @@ warn (VARARGS)
  * is requested, any of which may generate a warning message.  If a warning
  * has been posted, wait before setting a new message.
  */
-warn2 (VARARGS)
+void	warn2 (char *format, ...)
 {
+	va_list	ap;
+
 	if (didbeep())
 	{
 		clrbeep();
 		sleep(1);	/* patch: should use some type of hold */
 	}
-	warn (VARARGS);
+	va_start(ap, format);
+	WarnVA (format, ap);
+	va_end(ap);
 }
 
 /* <flist_tell>:
  * Unconditionally send a warning message, overwriting any pending text:
  */
-flist_tell (VARARGS)
+static
+void	FlistTellVA (char *format, va_list ap)
 {
 	clrbeep();
-	flist_info (VARARGS);
+	FlistInfoVA (format, ap);
 	warn_flag = TRUE;
+}
+
+void	flist_tell (char *format, ...)
+{
+	va_list ap;
+	va_start(ap, format);
+	FlistTellVA (format, ap);
+	va_end(ap);
 }
 
 /* <flist_info>:
@@ -477,11 +498,13 @@ flist_tell (VARARGS)
  * Route all error- and informational-messages through this point so that we
  * can send them to a log-file.
  */
-flist_info (VARARGS)
+static
+void	FlistInfoVA (char *format, va_list ap)
 {
-char	bfr[(3*MAX_PATH) + CRT_COLS];
+	char	bfr[(3*MAX_PATH) + CRT_COLS];
 
-	sprintf (bfr, VARARGS);
+	vsprintf (bfr, format, ap);
+
 	if (did_crt_init)
 		dds_tell (bfr,-1);
 	else
@@ -492,20 +515,28 @@ char	bfr[(3*MAX_PATH) + CRT_COLS];
 	flist_log ("%.132s", bfr);
 }
 
+void	flist_info (char *format, ...)
+{
+	va_list	ap;
+
+	va_start(ap, format);
+	FlistInfoVA(format, ap);
+	va_end(ap);
+}
+
 /*
  * Call 'flist_tell', when the argument is a VMS descriptor-string:
  */
-int	flist_tell_dsc (ds_)
-struct	dsc$descriptor_s *ds_;
+int	flist_tell_dsc (struct	dsc$descriptor_s *ds_)
 {
-char	bfr[CRT_COLS];
-int	len = ds_->dsc$w_length;
+	char	bfr[CRT_COLS];
+	int	len = ds_->dsc$w_length;
 
 	if (len > sizeof(bfr))	len = sizeof(bfr);
 	strncpy (bfr, ds_->dsc$a_pointer, len);
 	bfr[len] = EOS;
 	flist_tell ("%s", bfr);
-	return (NORMAL);
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -516,10 +547,9 @@ int	len = ds_->dsc$w_length;
  * completion as well.  We assume that legal VMS status codes are nonzero
  * unsigned integers.
  */
-flist_sysmsg (status)
-unsigned status;
+int	flist_sysmsg (unsigned status)
 {
-char	buffer[CRT_COLS];
+	char	buffer[CRT_COLS];
 
 	if (!status || $VMS_STATUS_SUCCESS(status))
 		return (TRUE);
@@ -534,8 +564,7 @@ char	buffer[CRT_COLS];
 /*
  * Display fatal-error message, exit:
  */
-error (status, msg_)
-char	*msg_;
+void	error (int status, char *msg_)
 {
 	auto	char	who[MAX_PATH];
 
@@ -551,19 +580,17 @@ char	*msg_;
 		printf ("\n%s%s\n", who, msg_);
 	else
 		perror (who);
-	flist_quit (status ? status : FAILED);
+	flist_quit (status ? status : EXIT_FAILURE);
 }
 
 /* <flist_help>:
  * Provide help for this program.  Route through this one point so we can
  * use a common-name for the program.
  */
-flist_help (curfile, key)
-int	curfile;
-char	*key;
+void	flist_help (int curfile, char *key)
 {
-char	bfr[CRT_COLS];
-int	len;
+	char	bfr[CRT_COLS];
+	int	len;
 
 	strcpy (bfr, "FLIST ");
 	if (key)
@@ -578,16 +605,18 @@ int	len;
 /* <flist_log>:
  * Write the specified information to the LOG-file, if it is open:
  */
-flist_log (VARARGS)
+static
+void	FlistLogVA (char *format, va_list ap)
 {
-	if (LogRAB)
+	if (LogRAB != 0)
 	{
-	register j,k,next;
-	char	bfr[CRT_COLS+(2*MAX_PATH)],
-		bfr2[CRT_COLS];
+		va_list	ap;
+		register j,k,next;
+		char	bfr[CRT_COLS+(2*MAX_PATH)],
+			bfr2[CRT_COLS];
 
 		strcpy (bfr2, "         ");
-		sprintf (bfr, VARARGS);
+		vsprintf (bfr, format, ap);
 
 		/*
 		 * Split the buffer if it contains embedded newlines.  Ignore
@@ -605,6 +634,14 @@ flist_log (VARARGS)
 	}
 }
 
+void	flist_log (char *format, ...)
+{
+	va_list	ap;
+	va_start(ap, format);
+	FlistLogVA (format, ap);
+	va_end(ap);
+}
+
 /*
  * Make available the nesting-level:
  */
@@ -620,11 +657,9 @@ flist_nest () {return (nesting_lvl); }
  *
  * patch: should resolve the ability to do COMMAND, LOG options within levels.
  */
-flist_opts (argc, argv, arg_, subset)
-char	*argv[];
-DCLARG	*arg_;
+int	flist_opts (int argc, char **argv, DCLARG *arg_, int subset)
 {
-char	msg[CRT_COLS + MAX_PATH];
+	char	msg[CRT_COLS + MAX_PATH];
 
 	if (subset)	subset = SUBOPT; /* Number of entries to ignore	*/
 	if (dclopt (msg, arg_, &opts[subset],
@@ -706,12 +741,14 @@ char	msg[CRT_COLS + MAX_PATH];
  * If the operation is successful, return the actual-name for use by the caller
  * (i.e., to browse it).
  */
-char	*flist_lis (VARARGS)
+char	*flist_lis (char *format, ...)
 {
-char	bfr[CRT_COLS+(2*MAX_PATH)];
+	char	bfr[CRT_COLS+(2*MAX_PATH)];
 
-	if (arg1)	/* If arguments given, open/write-to	*/
+	if (format)	/* If arguments given, open/write-to	*/
 	{
+		va_list ap;
+
 		if (! LisRAB)
 		{
 			if (!(LisRAB = ropen (LisFile, "w")))
@@ -720,8 +757,12 @@ char	bfr[CRT_COLS+(2*MAX_PATH)];
 				return (nullC);
 			}
 		}
-		flist_log (VARARGS);
-		sprintf (bfr, VARARGS);
+
+		va_start(ap, format);
+		FlistLogVA (format, ap);
+		vsprintf (bfr, format, ap);
+		va_end(ap);
+
 		rputr (LisRAB, bfr, strlen(bfr));
 	}
 	else if (LisRAB)

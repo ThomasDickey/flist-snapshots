@@ -1,14 +1,22 @@
-/*
+/* $Id: bool.h,v 1.4 1995/05/28 00:02:54 tom Exp $
+ *
  * Title:	bool.h
  * Author:	Thomas E. Dickey
  * Created:	08 Aug 1983
- * Last update:	11 Dec 1984, added SIZEOF, EOS
+ * Last update:
+ *		27 May 1995, ifdef-guard
+ *		11 Dec 1984, added SIZEOF, EOS
  *		11 Apr 1984, removed 'struct' from nullS
  *		05 Apr 1984, to added null-pointer def's
  */
+
+#ifndef BOOL_H
+#define BOOL_H
+
+#ifndef TRUE
 #define	TRUE	1
 #define	FALSE	0
-#define	NOT	FALSE ==
+#endif
 
 typedef	int	bool;
 
@@ -22,3 +30,5 @@ typedef	int	bool;
 #define	SIZEOF(array)	(sizeof(array)/sizeof(array[0]))
 
 #define	EOS	'\0'
+
+#endif /* BOOL_H */

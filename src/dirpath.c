@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.5 1995/03/18 22:00:51 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.6 1995/05/28 21:11:43 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dirpath.c,v 1.5 1995/03/18 22:00:51 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
  * Last update:
- *		18 Mar 1995, prototypes
+ *		28 May 1995, prototypes
  *		12 Sep 1985, also account for implied trailing '.' in pathname
  *			     collating.
  *		10 Sep 1985, account for trailing '.' in filename-field.
@@ -67,7 +67,11 @@ static char *Id = "$Id: dirpath.c,v 1.5 1995/03/18 22:00:51 tom Exp $";
 #include	"flist.h"
 #include	"nameheap.h"
 #include	"dirent.h"
+#include	"dirpath.h"
+
 #include	"strutils.h"
+
+static	int	dirpath_make (char *s, FILENT *z);
 
 import(filelink);
 import(namelist);
@@ -75,24 +79,21 @@ import(pathlist);
 
 #define	SORT(P,key) for (P=pathlist, key=0; P;\
 			P->path_sort = key++, P = P->path_next)
-
+
 /* <dirpath_add>:
  * Augment the given 'pathlist' entry, ensuring that it will be referenced at
  * other levels than the current one, given an appropriate refs-mask.
  */
-dirpath_add (refs, p)
-int	refs;
-PATHNT	*p;
+void	dirpath_add (int refs, PATHNT *p)
 {
 	p->path_refs |= refs;
 	nameheap_add (refs, p->path_trim);
 	nameheap_add (refs, p->path_text);
 }
-
+
 /* <dirpath_init>:
  */
-dirpath_init (level)
-int	level;
+void	dirpath_init (int level)
 {
 	if (level <= 1)
 	{
@@ -107,18 +108,17 @@ int	level;
  * Release storage used only by the level from which we are exiting, recompact
  * the pathname sorting keys.
  */
-dirpath_free (level)
-int	level;
+void	dirpath_free (int level)
 {
-PATHNT	*P;
-int	key;
+	PATHNT	*P;
+	int	key;
 
 	nameheap_clr (level, &pathlist);
 	nameheap_clr (level, &namelist);
 	nameheap_clr (level, &filelink);
 	SORT(P,key);
 }
-
+
 /* <dirpath_sort>:
  * See if the current path is found in the list.  If not, put it in.
  * Keep the list sorted, so that pathname-sorting can be done by index.
@@ -130,14 +130,14 @@ int	key;
  * Returns:	A pointer to the PATHNT structure which holds the pathspec
  *		for the new entry.
  */
-PATHNT	*dirpath_sort (esa, len)
-char	esa[];		/* (expanded string from sys$parse)	*/
-int	len;
+PATHNT	*dirpath_sort (
+	char	*esa,		/* (expanded string from sys$parse)	*/
+	int	len)
 {
-PATHNT	*newP, *oldP, *nxtP;
-int	cmp;
-char	text	[MAX_PATH],
-	trim	[MAX_PATH];
+	PATHNT	*newP, *oldP, *nxtP;
+	int	cmp;
+	char	text	[MAX_PATH],
+		trim	[MAX_PATH];
 
 	if (len < 1)		len = 1;
 	if (len >= MAX_PATH)	len = MAX_PATH-1;
@@ -169,7 +169,7 @@ char	text	[MAX_PATH],
 path:	newP->path_refs |= nameheap_ref();
 	return (newP);
 }
-
+
 /* <dirpath_rename>:
  * We are given the FILENT definitions for a new- and old-name of a renamed
  * directory.  Determine if there are any entries which used the old-name
@@ -177,18 +177,17 @@ path:	newP->path_refs |= nameheap_ref();
  * the PATHNT data to the new position in the linked-list.  Finally, make
  * a new set of sort-keys.
  */
-dirpath_rename (znew, zold)
-FILENT	*znew, *zold;
+void	dirpath_rename (FILENT *znew, FILENT *zold)
 {
-PATHNT	*P, *P0, *Q, *Q0, *R, *R0, *t;
-int	changed	= FALSE,
-	oldlen,
-	newlen,
-	len;
-char	c,
-	bfr	[MAX_PATH],
-	newpath	[MAX_PATH],
-	oldpath	[MAX_PATH];
+	PATHNT	*P, *P0, *Q, *Q0, *R, *R0, *t;
+	int	changed	= FALSE,
+		oldlen,
+		newlen,
+		len;
+	char	c,
+		bfr	[MAX_PATH],
+		newpath	[MAX_PATH],
+		oldpath	[MAX_PATH];
 
 	/* Compute the beginning of paths through the old/new directory-names,
 	   up to (but not including) the "." or "]": */
@@ -258,16 +257,15 @@ char	c,
 	    SORT(P,len);
 	}
 }
-
+
 /* dirpath_make>:
  * Given the name of a directory-file, form a path-name from it, without a
  * trailing ']', e.g.,
  *
  *	DBC4:[DICKEY]C.DIR	=>	DBC4:[DICKEY.C
  */
-int	dirpath_make (s, z)
-char	*s;
-FILENT	*z;
+static
+int	dirpath_make (char *s, FILENT *z)
 {
 	strcpy (s, zPATHOF(z));
 	strcpy (&s[strlen(s)-1], ".");	/* Trim trailing ']'		*/

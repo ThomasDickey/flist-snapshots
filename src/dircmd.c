@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.7 1995/03/19 01:53:30 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.9 1995/05/28 19:22:21 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.7 1995/03/19 01:53:30 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
- *		18 Mar 1995, prototypes
+ *		27 May 1995, prototypes
  *		04 Nov 1988- added "/dexpired" table entry, and matching sort
  *		11 Jul 1988- fix side-effect of "<number> -" from dclarg fix.
  *		01 Jul 1988- added LSEDIT command
@@ -95,21 +95,21 @@ static char *Id = "$Id: dircmd.c,v 1.7 1995/03/19 01:53:30 tom Exp $";
 #include	<stdlib.h>
 #include	<ctype.h>
 
+#include	"cmdstk.h"
 #include	"flist.h"
 #include	"getpad.h"
 
 #include	"dclarg.h"
-#include	"dircmd2.h"
 #include	"dds.h"
-#include	"dirent.h"
 #include	"dircmd.h"
 
 #include	"strutils.h"
 
-/*
- * External procedures:
- */
-extern	char	*dirarg(); /* Do parse & simple check of visible-commands */
+static	void	dircmd_doit (int *curfile_, char *cmdbfr, int history);
+static	int	dircmd_getc (int *curfile_);
+static	void	dircmd_kcmd (int *curfile_, int command);
+static	void	dircmd_keydefs (int code, int flags, char *string);
+static	void	dircmd_read (int *curfile_, int command, char *original);
 
 /*
  * Special command-processing routines are called:
@@ -301,10 +301,10 @@ VCMD2	vcmd2[]	= {
  * Loop, reading characters and executing commands until we either delete the
  * last file in the list, or we receive a QUIT-command.
  */
-dircmd ()
+void	dircmd (void)
 {
-int	command,
-	curfile	= 0;
+	int	command,
+		curfile	= 0;
 
 	while (! dds_last (&curfile))
 	{
@@ -321,13 +321,13 @@ int	command,
 /* <dircmd_kcmd>:
  * Given that a legal keypad or control code was input, complete the processing:
  */
-dircmd_kcmd (curfile_, command)
-int	*curfile_, command;
+static
+void	dircmd_kcmd (int *curfile_, int command)
 {
-register int	j,
-	gold	= (command == GOLDKEY);
-register char	*s_;
-char	cmdbfr[CRT_COLS];
+	register int	j;
+	register int	gold	= (command == GOLDKEY);
+	register char	*s_;
+	char	cmdbfr[CRT_COLS];
 
 	if (gold)
 	{
@@ -364,7 +364,7 @@ char	cmdbfr[CRT_COLS];
  * Set/Query the selected-file index.  (A "-2" will not alter the value.)
  * We use 'dds_line' to alter the display to show the selected/deselected file.
  */
-dircmd_select (val)
+int	dircmd_select (int val)
 {
 	if (val >= -1)
 	{
@@ -382,7 +382,7 @@ dircmd_select (val)
 /* <dircmd_init>:
  * Initialize this module
  */
-dircmd_init ()
+void	dircmd_init (void)
 {
 	edtcmd_init();
 	dircmd_dirflg (TRUE);		/* forward-direction	*/
@@ -390,56 +390,56 @@ dircmd_init ()
 	multi_quit= 0;			/* No "quit" in progress*/
 
 	keydefs	  = calloc (256, sizeof(KEYDEFS));
-	dircmd_keydefs (CTL(B),	0,	"/backward");
-	dircmd_keydefs (CTL(E),	0,	"/end");
-	dircmd_keydefs (CTL(F),	0,	"/forward");
-	dircmd_keydefs (CTL(G), 0,	"/width");
-	dircmd_keydefs (CTL(H),	0,	"1-");
-	dircmd_keydefs (CTL(M),	0,	"1+");
-	dircmd_keydefs (CTL(N),	0,	"next");
-	dircmd_keydefs (CTL(P),	0,	"protect");
-	dircmd_keydefs (CTL(R),	0,	"update /n./t;/v");
-	dircmd_keydefs (CTL(T),	0,	"/top");
-	dircmd_keydefs (CTL(V),	0,	"verify");
-	dircmd_keydefs (CTL(Z),	0,	"quit");
+	dircmd_keydefs (CTL('B'),	0,	"/backward");
+	dircmd_keydefs (CTL('E'),	0,	"/end");
+	dircmd_keydefs (CTL('F'),	0,	"/forward");
+	dircmd_keydefs (CTL('G'), 	0,	"/width");
+	dircmd_keydefs (CTL('H'),	0,	"1-");
+	dircmd_keydefs (CTL('M'),	0,	"1+");
+	dircmd_keydefs (CTL('N'),	0,	"next");
+	dircmd_keydefs (CTL('P'),	0,	"protect");
+	dircmd_keydefs (CTL('R'),	0,	"update /n./t;/v");
+	dircmd_keydefs (CTL('T'),	0,	"/top");
+	dircmd_keydefs (CTL('V'),	0,	"verify");
+	dircmd_keydefs (CTL('Z'),	0,	"quit");
 
-	dircmd_keydefs (padUP,	0,	"1-");
-	dircmd_keydefs (padUP,	1,	"/backward 1");
-	dircmd_keydefs (padDOWN,0,	"1+");
-	dircmd_keydefs (padDOWN,1,	"/forward 1");
+	dircmd_keydefs (padUP,		0,	"1-");
+	dircmd_keydefs (padUP,		1,	"/backward 1");
+	dircmd_keydefs (padDOWN,	0,	"1+");
+	dircmd_keydefs (padDOWN,	1,	"/forward 1");
 
-	dircmd_keydefs (HELPKEY,0,	"?help");
-	dircmd_keydefs (HELPKEY,1,	"?help");
-	dircmd_keydefs (padPF3, 0,	"next");
-	dircmd_keydefs (padPF3, 1+2,	"find ");
-	dircmd_keydefs (padPF4, 0,	"/cleft");
-	dircmd_keydefs (padPF4, 1,	"/cright");
-	dircmd_keydefs (pad0,	0,	"/sname");
-	dircmd_keydefs (pad0,	1,	"/rname");
-	dircmd_keydefs (pad1,	0,	"/stype");
-	dircmd_keydefs (pad1,	1,	"/rtype");
-	dircmd_keydefs (pad2,	0,	"/sdate");
-	dircmd_keydefs (pad2,	1,	"/rdate");
-	dircmd_keydefs (pad3,	0,	"/ssize");
-	dircmd_keydefs (pad3,	1,	"/rsize");
-	dircmd_keydefs (pad4,	0,	"/forward 0");
-	dircmd_keydefs (pad4,	1,	"/end");
-	dircmd_keydefs (pad5,	0,	"/backward 0");
-	dircmd_keydefs (pad5,	1,	"/top");
-	dircmd_keydefs (pad6,	0,	"?time");
-	dircmd_keydefs (pad6,	1,	"/time");
-	dircmd_keydefs (pad7,	0,	"edit");
-	dircmd_keydefs (pad7,	1,	"view");
-	dircmd_keydefs (pad8,	0,	"/page");
-	dircmd_keydefs (pad9,	0,	"browse");
-	dircmd_keydefs (pad9,	1,	"browse/mark/over:3");
-	dircmd_keydefs (padMINUS,0+2,	"-");
-	dircmd_keydefs (padMINUS,1+2,	"-");
-	dircmd_keydefs (padCOMMA,0,	"?memory");
-	dircmd_keydefs (padDOT,	0,	"/mark");
-	dircmd_keydefs (padDOT,	1,	"/nomark");
-	dircmd_keydefs (padENTER,0,	"1+");
-	dircmd_keydefs (padENTER,1,	"1-");
+	dircmd_keydefs (HELPKEY,	0,	"?help");
+	dircmd_keydefs (HELPKEY,	1,	"?help");
+	dircmd_keydefs (padPF3, 	0,	"next");
+	dircmd_keydefs (padPF3, 	1+2,	"find ");
+	dircmd_keydefs (padPF4, 	0,	"/cleft");
+	dircmd_keydefs (padPF4, 	1,	"/cright");
+	dircmd_keydefs (pad0,		0,	"/sname");
+	dircmd_keydefs (pad0,		1,	"/rname");
+	dircmd_keydefs (pad1,		0,	"/stype");
+	dircmd_keydefs (pad1,		1,	"/rtype");
+	dircmd_keydefs (pad2,		0,	"/sdate");
+	dircmd_keydefs (pad2,		1,	"/rdate");
+	dircmd_keydefs (pad3,		0,	"/ssize");
+	dircmd_keydefs (pad3,		1,	"/rsize");
+	dircmd_keydefs (pad4,		0,	"/forward 0");
+	dircmd_keydefs (pad4,		1,	"/end");
+	dircmd_keydefs (pad5,		0,	"/backward 0");
+	dircmd_keydefs (pad5,		1,	"/top");
+	dircmd_keydefs (pad6,		0,	"?time");
+	dircmd_keydefs (pad6,		1,	"/time");
+	dircmd_keydefs (pad7,		0,	"edit");
+	dircmd_keydefs (pad7,		1,	"view");
+	dircmd_keydefs (pad8,		0,	"/page");
+	dircmd_keydefs (pad9,		0,	"browse");
+	dircmd_keydefs (pad9,		1,	"browse/mark/over:3");
+	dircmd_keydefs (padMINUS,	0+2,	"-");
+	dircmd_keydefs (padMINUS,	1+2,	"-");
+	dircmd_keydefs (padCOMMA,	0,	"?memory");
+	dircmd_keydefs (padDOT,		0,	"/mark");
+	dircmd_keydefs (padDOT,		1,	"/nomark");
+	dircmd_keydefs (padENTER,	0,	"1+");
+	dircmd_keydefs (padENTER,	1,	"1-");
 
 	strcpy (read_dft, dirent_dft());
 }
@@ -449,11 +449,10 @@ dircmd_init ()
  * characters to themselves, and the keypad codes down to ASCII.  Use the
  * gold-key flag to drive a shift into 128-255.
  */
-dircmd_keydefs (code, flags, string)
-int	code, flags;
-char	*string;
+static
+void	dircmd_keydefs (int code, int flags, char *string)
 {
-register int c = toascii(code) + ((flags & 1) ? 128 : 0);
+	register int c = toascii(code) + ((flags & 1) ? 128 : 0);
 	keydefs[c].flags = flags & ~1;
 	keydefs[c].string = string;
 }
@@ -466,19 +465,19 @@ register int c = toascii(code) + ((flags & 1) ? 128 : 0);
  * In particular, absorb all incoming nulls, since this code is used (DO_NEXT)
  * to tell the higher-level routines to continue reading command-input.
  */
-dircmd_getc (curfile_)
-int	*curfile_;
+static
+int	dircmd_getc (int *curfile_)
 {
-int	command;
+	int	command;
 
 	for (;;)
 	{
 		switch (command = edtcmd_get())
 		{
-		case CTL(U):
-		case CTL(X):
-		case CTL(C):			/* Equate ^C, ^Y to ^U	*/
-		case CTL(Y):
+		case CTL('U'):
+		case CTL('X'):
+		case CTL('C'):			/* Equate ^C, ^Y to ^U	*/
+		case CTL('Y'):
 		case ' ':
 		case '\t':
 		case '\n':
@@ -486,8 +485,8 @@ int	command;
 		case padLEFT:
 		case padRIGHT:
 			sound_alarm ();		/* Illegal context	*/
-		case CTL(Q):
-		case CTL(S):
+		case CTL('Q'):
+		case CTL('S'):
 		case 0:				/* == DO_NEXT		*/
 			break;
 		case '-':			/* Gives 1 level w/o keypad */
@@ -519,7 +518,7 @@ got_command:
 		if (repeated
 		&&  (isel >= 0)
 		&&  (isel != *curfile_)
-		&&  (command == CTL(D))) /* PATCH !! */
+		&&  (command == CTL('D'))) /* PATCH !! */
 		{
 			char	iname[MAX_PATH],
 				oname[MAX_PATH];
@@ -543,11 +542,10 @@ got_command:
 /* <dircmd_read>:
  * Read/edit a "visible" command.  After editing it, execute it:
  */
-dircmd_read (curfile_, command, original)
-int	*curfile_, command;
-char	*original;
+static
+void	dircmd_read (int *curfile_, int command, char *original)
 {
-int	line	= *curfile_ - crt_top();
+	int	line	= *curfile_ - crt_top();
 
 	clrwarn();
 	dds_index (*curfile_);		/* clear out any prior messages */
@@ -569,10 +567,8 @@ int	line	= *curfile_ - crt_top();
 /* <dircmd_doit>:
  * Execute a command string.  Return a continuation command-code.
  */
-dircmd_doit (curfile_, cmdbfr, history)
-int	*curfile_;
-char	*cmdbfr;
-int	history;
+static
+void	dircmd_doit (int *curfile_, char *cmdbfr, int history)
 {
 DCLARG	*xdcl_	= nullS(DCLARG);	/* 'dirarg()' parsed list	*/
 int	(*DO_func)() = nullC;		/* external function to execute	*/
@@ -789,16 +785,13 @@ char	*fullname = "",
  *	N - (0) disallow this particular selection
  *	Q - (-1) same as N, but exit loop, if any
  */
-int	dircmd_ask (curfile, msg_)
-int	curfile;
-char	*msg_;
+int	dircmd_ask (int curfile, char *msg_)
 {
-int	reply	= 256,
-	rline	= curfile - crt_top();
-char	*s_,
-	tell	[80];
-static
-char	ok[]	= "QNYG";
+	int	reply	= 256,
+		rline	= curfile - crt_top();
+	char	*s_,
+		tell	[80];
+	static	char	ok[]	= "QNYG";
 
 	sprintf (tell, "%.60s (G,Y/N,Q): ", msg_);
 	edtcmd_crt (tell, crtvec[rline], TRUE, dirent_ccol(), rline, strlen(tell)-1);
@@ -825,11 +818,9 @@ char	ok[]	= "QNYG";
  * If the name is not found in FLIST's table, assume it is the name of an
  * external command.
  */
-dircmd_vcmd2 (cmd_, len)
-char	*cmd_;
-int	len;
+int	dircmd_vcmd2 (char *cmd_, int len)
 {
-int	j;
+	int	j;
 
 	for (j = 0; j < SIZEOF(vcmd2); j++)
 	{
@@ -845,7 +836,7 @@ int	j;
  * in 'dirarg', which does a lookup into 'vcmd2[]' before testing for a
  * logical-symbol.
  */
-VCMD2	*dircmd_full (cmdnum)
+VCMD2*	dircmd_full (int cmdnum)
 {
 	return (&vcmd2[cmdnum]);	/* patch: limits on 'cmdnum' ?	*/
 }
@@ -853,7 +844,7 @@ VCMD2	*dircmd_full (cmdnum)
 /* <dircmd_dirflg>:
  * Return the direction-flag to make it public:
  */
-dircmd_dirflg (flag)
+int	dircmd_dirflg (int flag)
 {
 	if (flag > 0)		dir_flg = TRUE;
 	else if (flag == 0)	dir_flg = FALSE;

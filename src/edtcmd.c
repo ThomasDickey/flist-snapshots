@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.8 1995/02/20 02:16:26 tom Exp $";
+static char *Id = "$Id: edtcmd.c,v 1.11 1995/05/28 22:03:28 tom Exp $";
 #endif
 
 /*
@@ -23,14 +23,14 @@ static char *Id = "$Id: edtcmd.c,v 1.8 1995/02/20 02:16:26 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
-#include	"crt.h"
+#include	"cmdstk.h"
 #include	"getpad.h"
 #include	"edtcmd.h"
 
 #include	"strutils.h"
 
 #define	RUBOUT	'\177'
-#define	CTL(c)	('c' & 037)
+#define	CTL(c)	(037 & (c))
 
 /*
  * 'lastcommand' is used as a 1-level stack to suppress repeated error messages
@@ -53,8 +53,8 @@ edtcmd_get (void)
 	{
 		switch (thiscommand = getpad())
 		{
-		case CTL(W):	crt_refresh ();		break;
-		case CTL(K):	snapshot ();		break;
+		case CTL('W'):	crt_refresh ();		break;
+		case CTL('K'):	snapshot ();		break;
 		default:	return (thiscommand);
 		}
 	}
@@ -160,10 +160,10 @@ retrieve:
 			if (col)	DELETE
 			else		sound_alarm ();
 			break;
-		case CTL(X):
-		case CTL(U):
-		case CTL(C):
-		case CTL(Y):
+		case CTL('X'):
+		case CTL('U'):
+		case CTL('C'):
+		case CTL('Y'):
 			cmdbfr[0] = cmdbfr[1] = col = 0;
 			break;
 		case padENTER:
@@ -193,14 +193,14 @@ retrieve:
 			break;
 		case padLEFT:		/* left-arrow	*/
 			if (doARROW)	goto do_arrow;
-		case CTL(D):		/* (cf: VMS 4.0)*/
+		case CTL('D'):		/* (cf: VMS 4.0)*/
 			if (col > 0)	col--;
 			else		sound_alarm();
 			break;
 
 		case padRIGHT:		/* right-arrow	*/
 			if (doARROW)	goto do_arrow;
-		case CTL(F):		/* (cf: VMS 4.0)*/
+		case CTL('F'):		/* (cf: VMS 4.0)*/
 			if (col < maxcols-1)
 			{
 				if (++col >= strlen(cmdbfr))
@@ -215,7 +215,7 @@ retrieve:
 			col = 0;
 			break;
 		case pad2:
-		case CTL(E):		/* (a la VMS 4.0)	*/
+		case CTL('E'):		/* (a la VMS 4.0)	*/
 			col = strlen(cmdbfr);
 			break;
 		case HELPKEY:

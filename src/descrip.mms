@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.5 1995/03/18 20:05:06 tom Exp $
+# $Id: descrip.mms,v 1.6 1995/05/28 20:05:09 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -20,7 +20,6 @@ C_SRC	= -
 	CHPROT.C, -
 	CHRCMD.C, -
 	CMDSTK.C, -
-	CMPBLK.C, -
 	CMPPROT.C, -
 	CRT.C, -
 	DCLAREA.C, -
@@ -111,7 +110,6 @@ C_SRC	= -
 	SYTRNLOG.C, -
 	TABEXP.C, -
 	TERMSIZE.C, -
-	TRACE.C, -
 	TTRACE.C, -
 	VERSION.C, -
 	WHOAMI.C, -
@@ -165,7 +163,6 @@ MODULES	= -
 	CHPROT, -
 	CHRCMD, -
 	CMDSTK, -
-	CMPBLK, -
 	CMPPROT, -
 	CRT, -
 	DCLAREA, -
@@ -254,7 +251,6 @@ MODULES	= -
 	SYTRNLOG, -
 	TABEXP, -
 	TERMSIZE, -
-	TRACE, -
 	TTRACE, -
 	VERSION, -
 	WHOAMI, -

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: crt.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
+static char *Id = "$Id: crt.c,v 1.5 1995/05/28 00:47:35 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: crt.c,v 1.4 1995/02/19 18:23:39 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	03 May 1984
  * Last update:
+ *		27 May 1995, prototypes
  *		07 Oct 1985, ensure that if term-size changed, LPP is ok.
  *		05 Oct 1985, added code to support 80/132-column switch.
  *		15 Jun 1985, reference functions as '(*func)' to make CC2.0 happy
@@ -76,9 +77,9 @@ static	char	*bigvec	= nullC; /* => crtvec[0] */
 
 /* Make the display memory public so it can be examined: */
 char	*crtvec[CRT_LINES];	/* prior-state of screen		*/
+
 static
-unsigned
-char	sgrvec[CRT_LINES];	/* last code used via 'crt_text'	*/
+BYTE	sgrvec[CRT_LINES];	/* last code used via 'crt_text'	*/
 
 static
 short	term_flags,
@@ -97,30 +98,33 @@ int	top_line,		/* index number of first line displayed	*/
 	end_margin,		/* [1..lpp] bottom scrolling margin	*/
 	NLflag,			/* TRUE iff '\n'-adjust needed		*/
 	lasty, lastx;		/* Last cursor position, for filtering	*/
-
+
+static	int	crt__lpp0 (int length);
+static	void	crt_ctl_c_ast (short *ttchan_);
+
 /* <crt_ctl_c_ast>:
  * CTRL/C AST routine.  Reset terminal characteristics, cancel pending I/O.
  */
-crt_ctl_c_ast (ttchan_)
-short	*ttchan_;
+static
+void	crt_ctl_c_ast (short *ttchan_)
 {
-unsigned status;
+	unsigned status;
+
 	crt_quit (FALSE);
 	crt_move (lpp-1, 1);
 	status = sys$cancel(*ttchan_);
 	if (! $VMS_STATUS_SUCCESS(status)) lib$stop(status);
 }
-
+
 /* <crt_init>:
  * Initialize the screen and this module:
  */
-crt_init (func)
-int	(*func)();
+void	crt_init (int (*func)(short *lpp_, short *width_))
 {
-register int	j;
-static	short	ttchan;
-unsigned status;
-static	$DESCRIPTOR(terminal,"SYS$COMMAND");
+	register int	j;
+	static	short	ttchan;
+	unsigned status;
+	static	$DESCRIPTOR(terminal,"SYS$COMMAND");
 
 	/* Assign channel to terminal	*/
 	status = sys$assign(&terminal, &ttchan, 0, 0);
@@ -168,29 +172,29 @@ static	$DESCRIPTOR(terminal,"SYS$COMMAND");
  */
 #define	GEN_TYPE ((-1) << 4)
 
-crt_vt100 ()	{	return ((term_type & GEN_TYPE) == TT$_VT100);	}
-crt_vt52 ()	{	return ((term_type & GEN_TYPE) == TT$_VT52);	}
-crt_ansi ()	{	return (term_flags & FLAG_ANSI); }
+int	crt_vt100 (void)   { return ((term_type & GEN_TYPE) == TT$_VT100); }
+int	crt_vt52 (void)	   { return ((term_type & GEN_TYPE) == TT$_VT52); }
+int	crt_ansi (void)	   { return (term_flags & FLAG_ANSI); }
 
-crt_top ()	{	return (top_line);	}
-crt_end ()	{	return (end_line);	}
+int	crt_top (void)	   { return (top_line);	}
+int	crt_end (void)	   { return (end_line);	}
 
-crt_lpp ()	{	return (lpp);		}
-crt_width ()	{	return (width);		}
+int	crt_lpp (void)	   { return (lpp);	}
+int	crt_width (void)   { return (width);	}
 
-crt_topm ()	{	return (top_margin);	}
-crt_endm ()	{	return (end_margin);	}
+int	crt_topm (void)	   { return (top_margin); }
+int	crt_endm (void)	   { return (end_margin); }
 
-crt_x ()	{	return (lastx);		}
-crt_y ()	{	return (lasty);		}
+int	crt_x (void)	   { return (lastx);	}
+int	crt_y (void)	   { return (lasty);	}
 
-crt_qsgr(index)	{	return (sgrvec[index]);	}
-
+int	crt_qsgr(int inx)  { return (sgrvec[inx]); }
+
 /* <crt_margin>:
  * If this is an ANSI terminal, we may set scrolling margins.  Both FLIST
  * and BROWSE use the special case of a status line at the end of the page.
  */
-crt_margin (lo, hi)
+void	crt_margin (int lo, int hi)
 {
 	if (crt_ansi())
 		scr$set_scroll (top_margin = lo, end_margin = hi);
@@ -201,13 +205,13 @@ crt_margin (lo, hi)
 /* <crt_set>:
  * Set top_line/end_line w/o using global variables:
  */
-crt_set (top, val)
+int	crt_set (int top, int val)
 {
 	if (top)	top_line = val;
 	else		end_line = val;
 	return (val);
 }
-
+
 /* <crt_quit>:
  * On exit, clear the path-mark line, to set the cursor there.  We also
  * reset the scrolling margins to their default value (without keeping this
@@ -219,7 +223,7 @@ crt_set (top, val)
  * one line on exit).  If not (e.g., CTRL/Z), then the program will exit
  * without scrolling.
  */
-crt_quit(erase)
+void	crt_quit(int erase)
 {
 	putraw ("\033>");		/* Exit alternate keypad mode */
 	scr$set_scroll (1, lpp);
@@ -231,24 +235,24 @@ crt_quit(erase)
  * Force screen contents to be cleared.  VT100 info-call does a clear-screen
  * for VT100, but not for VT52.
  */
-crt_clear()
+void	crt_clear(void)
 {
-register int	j;
+	register int	j;
 
 	crt_reset ();
 	crt__ED (1,1);
 	for (j = 0; j < lpp; *crtvec[j++] = EOS);
 }
-
+
 /* <crt_reset>:
  * Reset scrolling margins and graphics-rendition for ANSI terminals (which
  * may be left in funny modes by other programs).  This code is called on
  * entry to FLIST/BROWSE, and also on return from spawned subprocesses.
  */
-crt_reset ()
+void	crt_reset (void)
 {
-int	new_w, new_l,
-	adj_l, j;
+	int	new_w, new_l,
+		adj_l, j;
 
 	lastx = lasty = 999;	/* We don't really know where cursor is !! */
 	termsize (0, &new_w, &new_l);	/* Interrogate current screen size */
@@ -287,18 +291,18 @@ int	new_w, new_l,
 		putraw ("\033[?4l");		/* smooth-scroll */
 	putraw ("\033=");		/* Enter alternate Keypad mode */
 }
-
+
 /* <crt_refresh>:
  * Refresh the contents of the screen without requiring that the caller code
  * re-generate the data to drive the display.
  */
-crt_refresh ()
+void	crt_refresh (void)
 {
-register
-int	j,
-	save_x	= lastx,	/* This is where we think cursor was */
-	save_y	= lasty;
-char	sline[CRT_COLS];
+	register
+	int	j,
+		save_x	= lastx,	/* This is where we think cursor was */
+		save_y	= lasty;
+	char	sline[CRT_COLS];
 
 	lastx = lasty = 999;	/* We don't really know where cursor is !! */
 	crt_reset ();		/* Another process may have redefined TERM */
@@ -311,7 +315,7 @@ char	sline[CRT_COLS];
 	}
 	crt_move (save_y, save_x);
 }
-
+
 /* <crt_move>:
  * Set the cursor to the next position from which to manipulate text.
  * Note that the VMS screen routines do not (cannot really) do filtering
@@ -319,9 +323,9 @@ char	sline[CRT_COLS];
  * routine MUST be used for ALL cursor movement to permit it to do the
  * optimization.
  */
-crt_move (y, x)
-int	y,			/* 1 <= y <= lpp	*/
-	x;			/* 1 <= x <= width	*/
+void	crt_move (
+	int	y,			/* 1 <= y <= lpp	*/
+	int	x)			/* 1 <= x <= width	*/
 {
 	x = max(1, min(width, x));
 	y = max(1, min(lpp,   y));
@@ -365,12 +369,13 @@ int	y,			/* 1 <= y <= lpp	*/
 	lasty = y;
 	lastx = x;
 }
-
+
 /* <crt__lpp0>:
  * We need at least four lines on the screen to run BROWSE.  For the same
  * reason, the screen-length must be even.
  */
-crt__lpp0 (length)
+static
+int	crt__lpp0 (int length)
 {
 	if (length < 4)
 		error (0, "TERMINAL/PAGE must be at least four lines\n");
@@ -392,18 +397,18 @@ crt__NL0 (flg)	{	NLflag = flg;	}
 /*
  * ANSI x3.64 defines erase functions:
  */
-crt__ED (y, x)			/* Erase to end of Display	*/
+void	crt__ED (int y, int x)		/* Erase to end of Display	*/
 {
 	crt_move (y, x);
 	scr$erase_page ();
 }
 
-crt__EL (y, x)			/* Erase to end of Line	*/
+void	crt__EL (int y, int x)		/* Erase to end of Line	*/
 {
 	crt_move (y, x);
 	scr$erase_line ();
 }
-
+
 /* <crt_help>:
  * We assume that the calling program uses a HELP-library!!
  * This procedure interfaces to the HELP-dialog by clearing the screen,
@@ -415,10 +420,9 @@ crt__EL (y, x)			/* Erase to end of Line	*/
  * directory.  In this case, assume the help-library is in the same directory
  * as the program is run from.
  */
-crt_help (library, program)
-char	*library, *program;
+void	crt_help (char *library, char *program)
 {
-char	pathname[MAX_PATH], *c_;
+	char	pathname[MAX_PATH], *c_;
 
 	if (! library)
 	{
@@ -438,7 +442,7 @@ char	pathname[MAX_PATH], *c_;
 	help (library, program, crt_width());
 	crt_refresh();
 }
-
+
 /* <crt_text>:
  * Display the given text 'bfr', at the specified line (range 0..lpp-1),
  * with the 'mark' code for graphics-rendition (1=highlight, 0=normal).
@@ -452,25 +456,27 @@ char	pathname[MAX_PATH], *c_;
  * Do the blanking based on 'col_x' after all other changes have been made
  * to the line, to avoid an extra cursor movement.
  */
-crt_text(bfr, line, mode)
-char	bfr[];			/* "new" text to display		*/
-int	line,			/* index (0 to lpp-1) of line on screen	*/
-	mode;			/* sgr-code if "highlighting"		*/
+void	crt_text(
+	char*	bfr,		/* "new" text to display		*/
+	int	line,		/* index (0 to lpp-1) of line on screen	*/
+	int	mode)		/* sgr-code if "highlighting"		*/
 {
-static
-$DESCRIPTOR(DSC_line,"");
-register
-int	col_l,	col_r,	col_x;
-register
-char	*c1_	= bfr,	*c2_;
-register
-int	column = 0, eql, chg;
-char	bfr1	[CRT_COLS],
-	bfr2	[CRT_COLS];
-static
-unsigned
-char	to_chg[CRT_COLS],	/* distance til changed-column		*/
-	to_eql[CRT_COLS];	/* distance til difference		*/
+	static $DESCRIPTOR(DSC_line,"");
+
+	register int	col_l;
+	register int	col_r;
+	register int	col_x;
+	register char	*c1_	= bfr;
+	register char	*c2_;
+	register int	column = 0;
+	register int	eql;
+	register int	chg;
+
+	char	bfr1	[CRT_COLS];
+	char	bfr2	[CRT_COLS];
+	static
+	BYTE	to_chg[CRT_COLS],	/* distance til changed-column	*/
+		to_eql[CRT_COLS];	/* distance til difference	*/
 
 	line = max(0, min(lpp1, line));
 	sgrvec[line] = mode;
@@ -629,14 +635,12 @@ loop:			if ((eql = column + to_eql[column]) > col_r)
 
 	if (col_x)	crt__EL (line+1, col_x);
 }
-
+
 /* <crt_high>:
  * Mark the indicated character(s) with the highlighting bit (assume all ANSI
  * devices do some form of graphic-rendition):
  */
-crt_high (s_, len)
-char	*s_;
-int	len;
+void	crt_high (char *s_, int len)
 {
 	if (!crt_vt52())
 	{
@@ -647,7 +651,7 @@ int	len;
 		}
 	}
 }
-
+
 /* <crt_scroll>:
  * Scroll the screen up (down) to permit the index to lie within the screen.
  * If the amount to scroll is less than the screen size, do the scrolling by
@@ -656,15 +660,17 @@ int	len;
  *
  * Return the resulting line in the screen (1..endscroll).
  */
-crt__null(){};
-
-crt_scroll (iline, numlines, func)
-int	iline, numlines;
-int	(*func)();
+static
+void	crt__null(int inx)
 {
-register
-int	dif, j;
-int	close	= end_margin - top_margin - 1;
+	/*nothing*/
+}
+
+int	crt_scroll (int iline, int numlines, void (*func)(int))
+{
+	register
+	int	dif, j;
+	int	close	= end_margin - top_margin - 1;
 
 	iline = min(numlines-1, max(0, iline));
 

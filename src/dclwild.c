@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclwild.c,v 1.3 1995/02/19 01:06:05 tom Exp $";
+static char *Id = "$Id: dclwild.c,v 1.4 1995/05/28 18:44:49 tom Exp $";
 #endif
 
 /*
@@ -25,7 +25,7 @@ static char *Id = "$Id: dclwild.c,v 1.3 1995/02/19 01:06:05 tom Exp $";
  *		of illegal wildcard use.
  */
 
-#include	<rms>
+#include	<rms.h>
 #include	<stsdef.h>
 
 #include	"dclarg.h"

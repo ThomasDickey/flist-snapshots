@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.10 1995/03/19 00:04:59 tom Exp $";
+static char *Id = "$Id: flprot.c,v 1.12 1995/05/28 19:13:50 tom Exp $";
 #endif
 
 /*
@@ -62,6 +62,7 @@ static char *Id = "$Id: flprot.c,v 1.10 1995/03/19 00:04:59 tom Exp $";
 #include	<stdio.h>
 #include	<ctype.h>
 
+#include	"cmdstk.h"
 #include	"flist.h"
 #include	"dirent.h"
 #include	"getpad.h"
@@ -269,17 +270,17 @@ flprot_edit (
 		case '\r':
 			complete = TRUE;
 			break;
-		case CTL(C):
-		case CTL(U):
-		case CTL(X):
-		case CTL(Y):
+		case CTL('C'):
+		case CTL('U'):
+		case CTL('X'):
+		case CTL('Y'):
 			abort = TRUE;
 			sound_alarm ();
 			break;
-		case CTL(D):
+		case CTL('D'):
 		case padLEFT:
 			if (--edit < 0) edit = 15;	break;
-		case CTL(F):
+		case CTL('F'):
 		case padRIGHT:
 			NEXT;				break;
 		case padUP:

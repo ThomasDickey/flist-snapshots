@@ -6,11 +6,13 @@
  *
  * Interface of cmdstk.c
  *
- * $Id: cmdstk.h,v 1.1 1995/05/27 23:59:42 tom Exp $
+ * $Id: cmdstk.h,v 1.2 1995/05/28 11:19:14 tom Exp $
  */
 
 #ifndef CMDSTK_H
 #define CMDSTK_H
+
+#include "crt.h"
 
 #define	PAGESIZE	4096
 #define	MAXSTK		((PAGESIZE-4)/(1+CRT_COLS))

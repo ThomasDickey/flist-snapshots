@@ -1,11 +1,11 @@
-/* $Id: dirent.h,v 1.7 1995/02/19 23:54:27 tom Exp $ */
+/* $Id: dirent.h,v 1.11 1995/05/28 21:24:56 tom Exp $ */
 
 /*
  * Title:	dirent.h
  * Author:	Thomas E. Dickey
  * Created:	02 May 1984
  * Last update:
- *		19 Feb 1995, prototypes
+ *		28 May 1995, prototypes
  *		18 Feb 1995, ported to DEC Alpha.
  *		04 Nov 1988, added field ".fexpr", enlarged .f_mbm, .f_grp
  *		09 Sep 1985, added NAME_DOT
@@ -237,6 +237,39 @@ typedef	struct my_flink {
 #define	DIRENT	extern
 #endif
 
-#define	import(x)	DIRENT	type_/**/x	x size_/**/x
+#if __STDC__
+#define concat(a,b)  a ## b
+#define import(x)    DIRENT	concat(type_,x)	x concat(size_,x)
+#else
+#define import(x)    DIRENT	type_/**/x	x size_/**/x
+#endif
+
+extern	int	dirent__datechek (FILENT *z);
+extern	int	dirent_acc (FILENT *z, char *mode);
+extern	int	dirent_add (void);
+extern	long	dirent_all (char *filespec, int update);
+extern	void	dirent_cat_n (char *s, FILENT *z);
+extern	int	dirent_ccol (void);
+extern	int	dirent_chk (FILENT *z, char *filespec);
+extern	int	dirent_chk2 (int j);
+extern	int	dirent_chk3 (int j, char *fullname);
+extern	int	dirent_chop (FILENT *z, char *filespec, struct NAM *nam_);
+extern	void	dirent_conv (char *bfr, FILENT *z);
+extern	char*	dirent_dft (void);
+extern	void	dirent_dlet (int j);
+extern	char*	dirent_glue (char *filespec, FILENT *z);
+extern	char*	dirent_glue2 (char *filespec, FILENT *z, int curfile);
+extern	int	dirent_isdir (FILENT *z);
+extern	long	dirent_look (char *longspec, char *filespec);
+extern	void	dirent_misc (int inx, int bitv);
+extern	void	dirent_nul (int inx);
+extern	int	dirent_old (char *filespec, int need);
+extern	int	dirent_old1 (FILENT *z, char *spec);
+extern	int	dirent_old_any (FILENT *z, char *filespec, int need);
+extern	int	dirent_width (FILENT *z);
+
+#ifdef	DCLARG_H
+extern	int	dirent (DCLARG *arg_);
+#endif
 
 #endif	/* DIRENT_H */

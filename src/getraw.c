@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getraw.c,v 1.4 1995/02/19 18:40:58 tom Exp $";
+static char *Id = "$Id: getraw.c,v 1.5 1995/05/28 19:14:17 tom Exp $";
 #endif
 
 /*
@@ -57,7 +57,7 @@ extern	char	*ropen2();	/* (actually, *RFILE)	*/
 /* patch: Should I use 'lib$get_ef' ? */
 #define	ef2	2
 
-#define	CTL(c)	('c' & 037)
+#define	CTL(c)	(037 & (c))
 
 #define	QA(efn,func,b,len,t)\
 	efn,		/* Event flag number		*/\
@@ -238,7 +238,7 @@ get_cmd:
 	{
 		if (ctlx_tst())
 		{
-			newc = CTL(X);
+			newc = CTL('X');
 			ctlx_clr();		/* Reset flag after use !! */
 			break;
 		}

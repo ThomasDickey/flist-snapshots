@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirfind.c,v 1.4 1995/03/19 00:10:52 tom Exp $";
+static char *Id = "$Id: dirfind.c,v 1.5 1995/05/28 18:45:05 tom Exp $";
 #endif
 
 /*
@@ -86,7 +86,7 @@ static char *Id = "$Id: dirfind.c,v 1.4 1995/03/19 00:10:52 tom Exp $";
  *		PURGE, FIND.
  */
 
-#include	<rms>
+#include	<rms.h>
 #include	<stsdef.h>
 
 #include	"flist.h"
@@ -94,7 +94,7 @@ static char *Id = "$Id: dirfind.c,v 1.4 1995/03/19 00:10:52 tom Exp $";
 #include	"dclarg.h"
 #include	"dds.h"
 
-char	*dirent_glue();	/* => concatenated string	*/
+extern	char	*dirent_glue();	/* => concatenated string	*/
 
 import(filelist); import(numfiles);
 
