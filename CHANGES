@@ -1,3 +1,19 @@
+1985-06-16  Thomas E. Dickey
+
+	* src/sharable.opt: RCS_BASE
+
+1985-06-16  Thomas E. Dickey
+
+	* src/sharable.opt: rcs-identifiers
+
+1985-06-16  Thomas E. Dickey
+
+	* src/rabrfa.c: RCS_BASE
+
+1985-06-16  Thomas E. Dickey
+
+	* src/rabrfa.c: rcs-identifiers
+
 1985-06-15  Thomas E. Dickey
 
 	* src/setprot.c: RCS_BASE
