@@ -1,4 +1,4 @@
-/* $Id: sysutils.h,v 1.4 1995/10/21 18:27:29 tom Exp $ */
+/* $Id: sysutils.h,v 1.5 1995/10/23 21:56:52 tom Exp $ */
 
 #ifndef SYSUTILS_H
 #define SYSUTILS_H
@@ -35,5 +35,8 @@ int	sysrights (int mask, int word_num);
 
 /* sytrnlog.c */
 void	systrnlog (char *result, char *tofind);
+
+/* uid2s.c */
+char *	vms_uid2s(char *result, unsigned member, unsigned group);
 
 #endif /* SYSUTILS_H */

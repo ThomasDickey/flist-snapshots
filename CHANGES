@@ -1,3 +1,17 @@
+1995-10-23  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dirent.h: added ccolumns=7 (for user column)
+
+	* src/descrip.mms: added UID2S module
+
+	* src/sysutils.h: added uid2s.c
+
+	* doc/d4.rno: spelling
+
+	* doc/da.rno: DIRED vs FLIST names
+
+	* doc/mt.rno, doc/dt.rno: dates
+
 1995-10-22  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dirpath.c:
