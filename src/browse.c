@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.20 1995/10/22 22:10:02 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.21 1995/10/26 10:12:19 tom Exp $";
 #endif
 
 /*
@@ -812,7 +812,7 @@ void	more_file (void)
 
 	    case 'V':			/* Display current version	*/
 		LOGARGS('V',0);
-		more_msg ("BROWSE x1015 -- 07 Oct 1985", TRUE);
+		more_msg ("BROWSE (v951026)", TRUE);
 		sleep (3);
 		break;
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.18 1995/10/25 00:37:28 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.19 1995/10/26 00:08:37 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.18 1995/10/25 00:37:28 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
+ *		25 Oct 1995, workaround for DEC-C bug in sprintf.
  *		23 Oct 1995, added 'u(ser)' column
  *		21 Oct 1995, /dlong repeated shows time in seconds.
  *		28 May 1995, prototypes
@@ -310,6 +311,7 @@ void	dirent_all(
 	 */
 	for (;;)
 	{
+		dds_while(nullC);
 		if ((status = sys$search(&zfab)) == RMS$_NMF)
 			return;
 		else if (status == RMS$_NORMAL)
@@ -1022,7 +1024,7 @@ int	dirent_width (FILENT *z)
 		ccolumns[3] = 1;	/* pathname	*/
 		ccolumns[4] = 3;	/* format + (organization)	*/
 		ccolumns[5] = 1;	/* attributes	*/
-		ccolumns[6] = 18;	/* user-identifier */
+		ccolumns[6] = 8;	/* user-identifier */
 		for (num = 0; num < numfiles; num++)
 			if (!DELETED(num))
 				latch |= dirent_width (FK_(num));
@@ -1039,7 +1041,7 @@ void	dirent__cnv2 (int no_priv, char *c_, unsigned number)
 	if (no_priv)
 		sprintf (c_, "%-5s", " ");
 	else
-		sprintf (c_, "%5.5u", number);
+		sprintf (c_, "%5u", number);
 }
 
 /* <dirent__date>:

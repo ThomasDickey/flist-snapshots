@@ -1,3 +1,32 @@
+1995-10-26  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/inspect.c:
+	oops: return value from 'rgetr()' is int, not unsigned.
+
+	* src/fl.c: fixed shadowed-variable that broke FlistTellVA.
+	make better buffer-check in the loop that records command-line arguments
+	for the log-file.
+
+	* src/dircmd.c: omit the beep when user types ^U
+	added call on dds_done()
+
+	* src/dds.h: added prototype for dds_done()
+
+	* src/dds.c:
+	(from listing) added 'dds_done()' function to allow me to clear the
+	"Working..." message when command is done -- and removed the call
+	to clrbeep() that obscured this omission.
+
+	* doc/build.com:
+	use 'remove' subroutine to ensure that we make files delete-able (e.g.,
+	for the ".mem" and ".hlp" files that we store in rcs)
+
+	* release.dickey, FREEWARE_DEMO.TXT, FREEWARE_README.TXT: RCS_BASE
+
+	* src/version.c: comments up-to-date for v951026
+
+	* src/browse.c: updated version to match FLIST
+
 1995-10-25  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/isowner.c:

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: isowner.c,v 1.5 1995/06/06 12:07:16 tom Exp $";
+static char *Id = "$Id: isowner.c,v 1.6 1995/10/26 01:01:56 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: isowner.c,v 1.5 1995/06/06 12:07:16 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	20 Dec 1984
  * Last update:
+ *		25 Oct 1995, missing parenthesis
  *		19 Feb 1995, str/sys utils prototypes
  *		04 Nov 1988, removed masking from getuid/getgid calls.
  *		12 Nov 1985, patch (for v4.x) to use only low-byte of uid codes
@@ -37,7 +38,7 @@ int	isowner (FILENT *z)
 {
 	char	msg	[CRT_COLS];
 
-	if (CMP(getgid,f_grp) || CMP(getuid,f_mbm)
+	if ((CMP(getgid,f_grp) || CMP(getuid,f_mbm))
 	&& ! sysrights(PRV$M_SYSPRV,0))
 	{
 		strcpy (msg, "You are not the file's owner");
