@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: getprot.c,v 1.6 1995/06/06 11:51:36 tom Exp $";
+static char *Id = "$Id: getprot.c,v 1.7 1995/10/21 19:00:38 tom Exp $";
 #endif
 
 /*
@@ -60,7 +60,7 @@ int	getprot (
 	char	rsa[NAM$C_MAXRSS],		/* resultant string area	*/
 		esa[NAM$C_MAXRSS];		/* expanded string area (search)*/
 
-	long	status	= -1;
+	unsigned status;
 
 	IOSB	iosb;
 	short	chnl;
@@ -131,7 +131,7 @@ int	getprot (
 				sys$dassgn (chnl);
 
 				if (! $VMS_STATUS_SUCCESS(status)
-				||    iosb.stat == SS$_NOPRIV)
+				||    iosb.sts == SS$_NOPRIV)
 					break;	/* Access will fail	*/
 			}
 		}

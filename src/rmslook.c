@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmslook.c,v 1.6 1995/06/06 13:34:56 tom Exp $";
+static char *Id = "$Id: rmslook.c,v 1.7 1995/10/21 18:46:44 tom Exp $";
 #endif
 
 /*
@@ -34,14 +34,13 @@ static char *Id = "$Id: rmslook.c,v 1.6 1995/06/06 13:34:56 tom Exp $";
 #include	<stsdef.h>
 
 #include	"flist.h"
-#define		DIRENT		/* local */
 #include	"dirent.h"
 #include	"xabproui.h"
 
-long
+unsigned 
 rmslook (FILENT *z, struct FAB *fab_)
 {
-	long	status	= RMS$_NORMAL;		/* return-status	*/
+	unsigned status	= RMS$_NORMAL;		/* return-status	*/
 	struct	XABALL	*all_	= 0;
 	struct	XABDAT	*dat_	= 0;
 	struct	XABFHC	*fhc_	= 0;

@@ -1,4 +1,4 @@
-/* $Id: acp.h,v 1.2 1985/06/15 23:11:10 tom Exp $ */
+/* $Id: acp.h,v 1.3 1995/10/21 19:00:38 tom Exp $ */
 
 /*
  * Title:	fibdef.h
@@ -18,12 +18,13 @@
 #include	"fibdef.h"
 
 #define	byte	unsigned char
-#define	word	short
+#define	word	unsigned short
+#define uint	unsigned int		/* 32 bits on both AXP and VAX */
 
 typedef	struct	{
 	union	{
 		byte	u1a[4];
-		long	u1b;
+		uint	u1b;
 		}	u1;
 #define	fib$l_acctl	u1.u1b		/* file-access control bits	*/
 #define	fib$b_wsize	u1.u1a[3]	/* size of file window to map disk file */
@@ -40,15 +41,15 @@ typedef	struct	{
 	byte	fib$b_did_rvn;		/* relative volume number	*/
 	byte	fib$b_did_nmx;		/* file-number extension (disk)	*/
 
-	long	fib$l_wcc;		/* wild-card context		*/
+	uint	fib$l_wcc;		/* wild-card context		*/
 	word	fib$w_nmctl;		/* directory-search name-flags	*/
 
 	word	fib$w_exctl;
-	long	fib$l_exsz;
+	uint	fib$l_exsz;
 #define	fib$w_cntrlfunc	fib$w_exctl
 #define	fib$l_cntrlval	fib$l_exsz
 
-	long	fib$l_exvbn;		/* starting virtual block number, truncation */
+	uint	fib$l_exvbn;		/* starting virtual block number, truncation */
 	byte	fib$b_alopts;		/* allocation-placement options	*/
 	byte	fib$b_alalign;		/* interpretation mode of 'w_alloc' */
 
@@ -58,7 +59,7 @@ typedef	struct	{
 	word	fib$w_loc_seq;		/* related file sequence number	*/
 	byte	fib$b_loc_rvn;		/* related file/placement RVN	*/
 	byte	fib$b_loc_nmx;		/* related file number extension*/
-	long	fib$l_loc_addr;		/* Placement LBN, cylinder, or VBN */
+	uint	fib$l_loc_addr;		/* Placement LBN, cylinder, or VBN */
 #define	fib$w_alloc	fib$w_loc_fid[0]
 
 	word	fib$w_verlimit;		/* version limit of directory entry */
@@ -82,8 +83,8 @@ typedef	struct	{
 	byte	fat$b_rtype;
 	byte	fat$b_rattrib;
 	word	fat$w_rsize;
-	long	fat$l_hiblk;
-	long	fat$l_efblk;
+	uint	fat$l_hiblk;
+	uint	fat$l_efblk;
 	word	fat$w_ffbyte;
 	byte	fat$b_bktsize;
 	byte	fat$b_vfcsize;
@@ -99,18 +100,18 @@ typedef	struct	{
  * ACP Disk Quotas
  */
 typedef	struct	{
-	long	dqf$l_flags;		/* operation flags	*/
+	uint	dqf$l_flags;		/* operation flags	*/
 	word	dqf$w_uic[2];		/* User identification	*/
-	long	dqf$l_usage;		/* current usage	*/
-	long	dqf$l_permquota;	/* permanent quota	*/
-	long	dqf$l_overdraft;	/* overdraft limit	*/
+	uint	dqf$l_usage;		/* current usage	*/
+	uint	dqf$l_permquota;	/* permanent quota	*/
+	uint	dqf$l_overdraft;	/* overdraft limit	*/
 	}	DQF;
 
 /*
  * I/O Status Block:
  */
 typedef	struct	{
-	short	stat,
+	short	sts,
 		unused;
-	long	jobstat;
+	uint	jobstat;
 	}	IOSB;

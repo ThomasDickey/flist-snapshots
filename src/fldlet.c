@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fldlet.c,v 1.6 1995/06/06 00:43:16 tom Exp $";
+static char *Id = "$Id: fldlet.c,v 1.7 1995/10/21 18:41:45 tom Exp $";
 #endif
 
 /*
@@ -250,7 +250,7 @@ flpurg_one (int inx, int *flag_)
 {
 #define	VERBFR	5
 	FILENT	*z, zprev, ztry;
-	long	status;
+	unsigned status;
 	int	j,
 		vercnt	= 0,
 		verbfr	[VERBFR],	/* record versions which couldn't*/

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syrename.c,v 1.5 1995/10/19 10:36:54 tom Exp $";
+static char *Id = "$Id: syrename.c,v 1.6 1995/10/21 18:40:13 tom Exp $";
 #endif
 
 /*
@@ -37,12 +37,11 @@ static char *Id = "$Id: syrename.c,v 1.5 1995/10/19 10:36:54 tom Exp $";
 
 #define	ok(x) status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
 
-long
-sysrename (char *newspec, char *oldspec)
+unsigned sysrename (char *newspec, char *oldspec)
 {
 	struct	FAB	oldFAB, newFAB,	tmpFAB;
 	struct	NAM	oldNAM, newNAM,	tmpNAM;
-	long	status;
+	unsigned status;
 	int	len;
 	char	oldRSA	[NAM$C_MAXRSS],	oldESA	[NAM$C_MAXRSS],
 		tmpESA	[NAM$C_MAXRSS],	 /* buffer to get rid of wildcard */

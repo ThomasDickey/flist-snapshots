@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acpcopy.c,v 1.6 1995/06/04 00:54:15 tom Exp $";
+static char *Id = "$Id: acpcopy.c,v 1.7 1995/10/21 18:23:59 tom Exp $";
 #endif
 
 /*
@@ -40,7 +40,7 @@ static char *Id = "$Id: acpcopy.c,v 1.6 1995/06/04 00:54:15 tom Exp $";
 static	FIB	fib;
 static	ATR	atr[3];			/* Size: 1 more than max attributes */
 static	short	short_fpro;		/* 1: File-protection		    */
-static	long	quad_credate[2];	/* 2: File-creation-date	    */
+static	uint	quad_credate[2];	/* 2: File-creation-date	    */
 
 static	int	acpcopy2 (int code, char *filespec);
 
@@ -60,7 +60,7 @@ static
 int	acpcopy2 (int code, char *filespec)
 {
 	RMS_STUFF;
-	long	iosb[2];
+	uint	iosb[2];
 	short	chnl;
 	int	j	= 0;
 	int	func;

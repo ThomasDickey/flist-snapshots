@@ -1,4 +1,4 @@
-# $Id: descrip.mms,v 1.8 1995/06/05 23:35:43 tom Exp $
+# $Id: descrip.mms,v 1.9 1995/10/21 18:44:08 tom Exp $
 #
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
@@ -6,12 +6,9 @@
 #	VMS system version 5.4-2
 #	MMS version 2.6
 #	VAX-C version 3.2
-
-# VAX-C
-CFLAGS	= /Standard=VAXC /Include=([]) /Show=all /extern_model=common_block
-
-# DEC-C
-#CFLAGS	= /prefix_library_entries=all_entries /Include=([]) /Show=all
+# and
+#	OpenVms 6.1
+#	DEC-C
 
 ########(source-lists)#########################################################
 C_SRC	= -
@@ -274,7 +271,7 @@ PROGRAMS = -
 	$(B)FLIST.EXE -
 	$(B)BROWSE.EXE
 
-ALL	= $(DIRS) $(A)($(MODULES)) $(LIBRARIES) $(PROGRAMS)
+ALL	= $(DIRS) $(LIBRARIES) $(PROGRAMS)
 
 ###############################################################################
 # Link from regular libraries rather than sharable, to allow the executable
@@ -287,8 +284,34 @@ LINKFLAGS = /MAP='F$PARSE("$(MMS$TARGET_NAME)",,,"NAME")/EXEC=$@
 
 ###############################################################################
 
-all :	$(ALL)
+all :
+        @ decc = f$search("SYS$SYSTEM:DECC$COMPILER.EXE").nes.""
+        @ axp = f$getsyi("HW_MODEL").ge.1024
+        @ macro = ""
+        @ if axp.or.decc then macro = "/MACRO=("
+        @ if decc then macro = macro + "__DECC__=1,"
+        @ if axp then macro = macro + "__ALPHA__=1,"
+        @ if macro.nes."" then macro = f$extract(0,f$length(macro)-1,macro)+ ")"
+        $(MMS)$(MMSQUALIFIERS)'macro' $(B)BROWSE.EXE
+        $(MMS)$(MMSQUALIFIERS)'macro' $(B)FLIST.EXE
 	@ write sys$output "** made $@"
+#
+# I've built on an Alpha with CC_OPTIONS set to
+#	CC_OPTIONS = "/standard=VAXC /extern_model=common_block" (VAX-C)
+#	CC_OPTIONS = /PREFIX_LIBRARY_ENTRIES=ALL_ENTRIES	(DEC-C)
+# The latter (DEC-C) gives better type-checking -- T.Dickey
+#
+.IFDEF __ALPHA__
+CC_OPTIONS = /PREFIX_LIBRARY_ENTRIES=ALL_ENTRIES
+.ELSE
+.IFDEF __DECC__
+CC_OPTIONS = /STANDARD=VAXC
+.ELSE
+CC_OPTIONS =
+.ENDIF
+.ENDIF
+
+CFLAGS = /Include=([]) /NoList /Show=all /Object=$@ $(CC_OPTIONS)
 
 clean :
 	@- if f$search("*.lis") .nes. "" then delete *.lis;*
@@ -328,10 +351,10 @@ sources : $(SOURCES)
 [-]lib.dir :
 	create/directory [-.lib]
 
-$(B)BROWSE.EXE : BROWSE.OBJ, $(LIB_DEP)
+$(B)BROWSE.EXE : BROWSE.OBJ, $(LIB_DEP) $(DIRS)
 	LINK $(LINKFLAGS) BROWSE,$(LIB_ARG)
 
-$(B)FLIST.EXE : FL.OBJ, $(LIB_DEP)
+$(B)FLIST.EXE : FL.OBJ, $(LIB_DEP) $(DIRS)
 	LINK $(LINKFLAGS) FL,NORMAL/Opt,$(LIB_ARG)
 
 $(H) : $(H)(FLIST,BROWSE)

@@ -1,4 +1,4 @@
-/* $Id: rmsio.h,v 1.8 1995/06/06 12:11:04 tom Exp $
+/* $Id: rmsio.h,v 1.9 1995/10/21 18:52:08 tom Exp $
  *
  * interface of rmsio.c
  */
@@ -13,7 +13,7 @@
 #define	RMS_STUFF\
 	struct	FAB	fab;\
 	struct	NAM	nam;\
-	long	status;\
+	unsigned status;\
 	char	esa[NAM$C_MAXRSS],	rsa[NAM$C_MAXRSS]
 
 #define	RFILE	struct	_rmsio_file
@@ -32,10 +32,10 @@ extern	int	erstat (RFILE *z, char *msg, int msglen);
 extern	void	rclear (void);
 extern	int	rclose (RFILE *z);
 extern	void	rerror (void);
-extern	int	rgetr (RFILE * z, char * bfr, int maxbfr, long *mark_);
+extern	int	rgetr (RFILE * z, char * bfr, int maxbfr, unsigned *mark_);
 extern	int	rputr (RFILE *z, char *bfr, int maxbfr);
 extern	int	rseek (RFILE *z, int offset, int direction);
 extern	int	rsize (RFILE *z);
-extern	long	rtell (RFILE *z);
+extern	unsigned rtell (RFILE *z);
 
 #endif /* RMSIO_H */

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclopt.c,v 1.8 1995/06/04 19:17:42 tom Exp $";
+static char *Id = "$Id: dclopt.c,v 1.9 1995/10/21 17:03:40 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: dclopt.c,v 1.8 1995/06/04 19:17:42 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
  * Last update:
- *		18 Mar 1995, prototypes
+ *		21 Oct 1995, prototypes
  *		03 Jul 1985, use 'scanint' instead of 'sscanf' to bypass bug
  *			     in CC2.0
  *		26 Jun 1985, moved fancy date-parsing to 'sysbintim'.
@@ -66,8 +66,6 @@ static char *Id = "$Id: dclopt.c,v 1.8 1995/06/04 19:17:42 tom Exp $";
 
 #include	"strutils.h"
 #include	"sysutils.h"
-
-char	*scanint();		/* => after decoded integer	*/
 
 #define	OJ	opt[j]
 
@@ -177,7 +175,7 @@ int	dclopt (
 			t_++;	/* Skip past punctuation	*/
 			if (size == 8)
 			{
-			    if (sysbintim (t_, (long *)v_) != 0)
+			    if (sysbintim (t_, (DATENT *)v_) != 0)
 				err_ = e_dateq;
 			}
 			else if (size < 8)

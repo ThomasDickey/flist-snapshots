@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: highver.c,v 1.3 1995/06/04 02:05:30 tom Exp $";
+static char *Id = "$Id: highver.c,v 1.4 1995/10/21 18:53:22 tom Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ highver (char *name_)
 {
 	struct	FAB	tmpFAB;
 	struct	NAM	tmpNAM;
-	unsigned long	status;
+	unsigned status;
 	int	len;			/* length to ending ";" */
 	char	tmpRSA	[NAM$C_MAXRSS];
 	char	tmpESA	[NAM$C_MAXRSS];

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: diropen.c,v 1.4 1995/06/04 22:56:18 tom Exp $";
+static char *Id = "$Id: diropen.c,v 1.5 1995/10/21 17:48:35 tom Exp $";
 #endif
 
 /*
@@ -41,8 +41,7 @@ static char *Id = "$Id: diropen.c,v 1.4 1995/06/04 22:56:18 tom Exp $";
 #include	"flist.h"	/* for 'error()' */
 #include	"dirent.h"
 #include	"getprot.h"
-
-extern	int	pathup (char *co_, char *ci_);
+#include	"pathup.h"
 
 int	diropen (char *name_)
 {

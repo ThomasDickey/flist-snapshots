@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: canopen.c,v 1.5 1995/06/04 01:42:34 tom Exp $";
+static char *Id = "$Id: canopen.c,v 1.6 1995/10/21 18:25:53 tom Exp $";
 #endif
 
 /*
@@ -32,11 +32,11 @@ static char *Id = "$Id: canopen.c,v 1.5 1995/06/04 01:42:34 tom Exp $";
 
 int	canopen (char *name_)
 {
-struct	FAB	fab;
-struct	NAM	nam;
-char	esa[NAM$C_MAXRSS],	/* expanded by SYS$PARSE	*/
-	rsa[NAM$C_MAXRSS];	/* result from SYS$SEARCH	*/
-long	status;
+	struct	FAB	fab;
+	struct	NAM	nam;
+	char	esa[NAM$C_MAXRSS],	/* expanded by SYS$PARSE	*/
+		rsa[NAM$C_MAXRSS];	/* result from SYS$SEARCH	*/
+	unsigned status;
 
 	rmsinit_fab (&fab, &nam, 0, name_);
 	rmsinit_nam (&nam, rsa, esa);

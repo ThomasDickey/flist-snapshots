@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: version.c,v 1.3 1993/04/22 16:33:42 tom Exp $";
+static char *Id = "$Id: version.c,v 1.4 1995/10/21 19:37:28 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,10 @@ static char *Id = "$Id: version.c,v 1.3 1993/04/22 16:33:42 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 Aug 1984
  * Last update:			In-progress: restructure 'dircmd', 'getraw'.
+ *
+ *	v950319 ported to AXP in VAX-C compatibility mode
+ *
+ *	----- stopped keeping track of absolute build numbers, converted to rcs
  *
  *	x2149	22 Apr 1993	Rebuilt at Software Productivity Consortium
  *
@@ -249,5 +253,5 @@ static char *Id = "$Id: version.c,v 1.3 1993/04/22 16:33:42 tom Exp $";
 char
 *dired_release()
 {
-	return ("FLIST x2149 (22 Apr 1993)");
+	return ("FLIST (21 Oct 1995)");
 }

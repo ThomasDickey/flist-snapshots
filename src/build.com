@@ -1,13 +1,35 @@
+$! $Id: build.com,v 1.8 1995/10/21 19:05:44 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
-$!	VMS system version 5.4-2
+$!	VMS system version 5.4-2 (VAX)
 $!	VAX-C version 3.2
+$! and
+$!	OpenVMS version 6.1 (AXP)
+$!	DEC-C
 $
 $	VERIFY = F$VERIFY(0)
 $	set := set
 $	set symbol/scope=(nolocal,noglobal)
 $	mylib := [-.lib]flist.olb
+$
+$	axp  = f$getsyi("HW_MODEL").ge.1024
+$	OPTS = ""
+$
+$ if axp
+$ then
+$! assume we have DEC C
+$!	CFLAGS = "/standard=VAXC /extern_model=common_block"
+$	CFLAGS = "/prefix_library_entries=all_entries"
+$ else
+$! we have either VAX C or DEC C
+$	CFLAGS = ""
+$	OPTS = ",VMSSHARE.OPT/OPTIONS"
+$	if (f$search("SYS$SYSTEM:VAXC.EXE").eqs.""
+$	then
+$		CFLAGS = "/prefix_library_entries=all_entries"
+$	endif
+$ endif
 $
 $ if "''p1'" .eqs. "" .or. "''p1'" .eqs. "ALL"
 $ then
@@ -86,7 +108,6 @@ $	call	cc_lib SETCTRL
 $	call	cc_lib SETPROT
 $	call	cc_lib SHOQUOTA
 $	call	cc_lib SNAPSHOT
-$!	call	cc_lib STR7
 $	call	cc_lib STRABBR
 $	call	cc_lib STRFORM2
 $	call	cc_lib STRLCPY
@@ -172,7 +193,7 @@ $ compile: subroutine
 $	if f$search("''p1'.obj") .eqs. ""
 $	then
 $		write sys$output "** compiling ''p1'"
-$		cc /Standard=VAXC /extern_model=common_block /Show=all /NoListing /Include=([]) 'p1
+$		cc 'CFLAGS /Show=all /NoListing /Include=([]) 'p1
 $	endif
 $ endsubroutine
 $

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.19 1995/06/06 10:05:38 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.20 1995/10/21 12:26:00 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: fl.c,v 1.19 1995/06/06 10:05:38 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
+ *		21 Oct 1995, DEC-C clean-compile
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT mods, renamed 'alarm')
@@ -90,9 +91,15 @@ static char *Id = "$Id: fl.c,v 1.19 1995/06/06 10:05:38 tom Exp $";
  *		on IBM CMS.
  */
 
+#define DIRENT
+
+#include	<stdlib.h>
 #include	<stdio.h>
+#include	<unixio.h>
+#include	<unixlib.h>	/* for 'getcwd()' */
 #include	<signal.h>	/* for 'sleep()' */
 #include	<stdarg.h>
+#include	<string.h>
 #include	<ctype.h>
 #include	<descrip.h>
 #include	<stsdef.h>
@@ -101,30 +108,31 @@ static char *Id = "$Id: fl.c,v 1.19 1995/06/06 10:05:38 tom Exp $";
 #include	"getpad.h"
 #include	"dclarg.h"		/* FIXME */
 #include	"flist.h"
+#include	"rmsio.h"
 #include	"whoami.h"
 
 #include	"dds.h"
 #include	"dirent.h"
 #include	"dircmd.h"
 #include	"dirpath.h"
+#include	"dirread.h"
 #include	"dclopt.h"
 
+#include	"getraw.h"
+#include	"freelist.h"
 #include	"nameheap.h"
 #include	"strutils.h"
 #include	"sysutils.h"
 
-#ifndef EXIT_SUCCESS
+#undef  EXIT_SUCCESS
+#undef  EXIT_FAILURE
+
 #define	EXIT_FAILURE	(STS$M_INHIB_MSG | STS$K_ERROR)
 #define	EXIT_SUCCESS	(STS$M_INHIB_MSG | STS$K_SUCCESS)
-#endif
 
 /*
- * External functions and data:
+ * External data:
  */
-extern	char	*dired_release(),
-		*dirent_path(),
-		*ropen2();
-
 import(filelist); import(numfiles);
 import(AnyXAB);
 import(A_opt);	import(D_opt);	import(M_opt);
@@ -136,6 +144,9 @@ import(filelink);
 import(pathlist);
 import(readlist);
 import(readllen);
+
+static	void	FlistTellVA (char *format, va_list ap);
+static	void	FlistInfoVA (char *format, va_list ap);
 
 /*
  * Local (static) data:
@@ -170,10 +181,17 @@ int	_FALSE	= FALSE,
 
 #define	COMMAND_	"command"
 #define	LOG_		"log"
-static
-char	*LogFile,	LogDft[] = "SYS$LOGIN:FLIST.LOG",	*LogRAB=nullC,
-	*CmdFile,	CmdDft[] = "SYS$LOGIN:FLIST.CMD",
-	*LisRAB=nullC,	LisFile[]= "SYS$LOGIN:FLIST.LIS";
+
+static	int	H_opt;
+
+static	RFILE	*LisRAB;
+static	RFILE	*LogRAB;
+
+static	char	*LogFile;
+static	char	*CmdFile;
+static	char	LogDft[] = "SYS$LOGIN:FLIST.LOG",
+		CmdDft[] = "SYS$LOGIN:FLIST.CMD",
+		LisFile[]= "SYS$LOGIN:FLIST.LIS";
 
 #define	SZ(n)	&n,sizeof(n)
 static
@@ -195,6 +213,7 @@ DCLOPT	opts[] = {
 	{"dbackup",	&_FALSE,0,	SZ(D_opt2),	2,	00001},
 	{"drevised",	&_FALSE,0,	SZ(D_opt3),	2,	00001},
 	{"dexpired",	&_FALSE,0,	SZ(D_opt4),	2,	00001},
+	{"help",	&_FALSE,0,	SZ(H_opt),	1,	07777},
 	{"modified",	&_FALSE,0,	SZ(D_opt3),	1,	00001},
 	{"since",	0,	0,	SZ(datechek),	3,	01000},
 	{"versions",	&_TRUE,	0,	SZ(V_opt),	1,	00400}
@@ -205,8 +224,8 @@ int	main (int argc, char **argv)
 	DCLARG	*arg_	= argvdcl (argc, argv, dftspec, 0);
 	char	*path_	= getenv("PATH");
 
-	CmdFile	= dclarea (COMMAND_,	MAX_PATH, &opts, sizeof(opts));
-	LogFile	= dclarea (LOG_,	MAX_PATH, &opts, sizeof(opts));
+	CmdFile	= dclarea (COMMAND_,	MAX_PATH, (DCLOPT *)&opts, sizeof(opts));
+	LogFile	= dclarea (LOG_,	MAX_PATH, (DCLOPT *)&opts, sizeof(opts));
 	D_opt	= TRUE;		/* set default so we can inherit it	*/
 
 	if (dclchk (arg_, 0))				return(EXIT_FAILURE);
@@ -246,7 +265,7 @@ void	flist_chdir(char *path)
 	flist_log("! cur default %.*s", length, buffer);
 	/* this did not work, since the device-part was lost!! */
 	return (flist_sysmsg(status));
-#endif	PATCH
+#endif	/* PATCH */
 	static	char	old_path[MAX_PATH];
 	auto	char	new_path[MAX_PATH];
 
@@ -283,7 +302,7 @@ void	flist (DCLARG *dcl_)
 
 	flfind_init (nesting_lvl);
 	clrwarn();
-	filelist = nullC;
+	filelist = 0;
 	if (Quit = (++nesting_lvl > 8))
 		warn ("Too many display levels");
 	else
@@ -674,6 +693,17 @@ int	flist_opts (int argc, char **argv, DCLARG *arg_, int subset)
 		return (TRUE);
 	}
 
+	if (H_opt) {
+		int	n;
+		printf("FLIST -- File List -- built %s\n", __DATE__);
+		printf("\nOptions:\n");
+		for (n = 0; n < sizeof(opts) / sizeof(opts[0]); n++)
+		{
+			printf("\t/%s\n", opts[n].opt_name);
+		}
+		exit(EXIT_SUCCESS);
+	}
+
 	if (D_opt1)	D_opt = 1;
 	if (D_opt2)	D_opt = 2;
 	if (D_opt3)	D_opt = 3;
@@ -772,7 +802,7 @@ char	*flist_lis (char *format, ...)
 	else if (LisRAB)
 	{
 		rclose (LisRAB);
-		LisRAB	= nullC;
+		LisRAB	= 0;
 	}
 	return (LisFile);
 }

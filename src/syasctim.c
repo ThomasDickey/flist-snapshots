@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: syasctim.c,v 1.4 1995/06/04 02:06:13 tom Exp $";
+static char *Id = "$Id: syasctim.c,v 1.5 1995/10/21 18:39:50 tom Exp $";
 #endif
 
 /*
@@ -34,7 +34,7 @@ sysasctim (
 	int	ilen)			/* Length of 'buf[]', counting null	*/
 {
 	short	olen;
-	long	cvtflg = 0;
+	unsigned cvtflg = 0;
 	static	$DESCRIPTOR(date_time,"");
 
 	date_time.dsc$a_pointer = buf;

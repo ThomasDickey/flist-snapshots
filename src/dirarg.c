@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirarg.c,v 1.7 1995/06/04 19:36:46 tom Exp $";
+static char *Id = "$Id: dirarg.c,v 1.8 1995/10/21 18:17:55 tom Exp $";
 #endif
 
 /*
@@ -91,12 +91,6 @@ static char *Id = "$Id: dirarg.c,v 1.7 1995/06/04 19:36:46 tom Exp $";
 
 #include	"strutils.h"
 #include	"sysutils.h"
-
-/*
- * External procedures:
- */
-DCLARG	*dclarg_text();		/* reallocate DCLARG-link entry		*/
-char	*dclarg_spec();		/* Skip string pointer past filespec	*/
 
 import(filelist);
 
