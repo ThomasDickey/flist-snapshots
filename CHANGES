@@ -1,3 +1,7 @@
+1995-11-16  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/dirent.c: auto-adjust widths of 'size' and 'allocated' columns
+
 1995-11-15  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/dds.c: added 'Size', 'Allocated' column types
