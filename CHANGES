@@ -1,3 +1,39 @@
+1984-12-11  Thomas E. Dickey
+
+	* src/bool.h: RCS_BASE
+
+1984-12-11  Thomas E. Dickey
+
+	* src/bool.h: rcs-identifiers
+
+1984-12-11  Thomas E. Dickey
+
+	* src/shoquota.c: RCS_BASE
+
+1984-12-11  Thomas E. Dickey
+
+	* src/shoquota.c: rcs-identifiers
+
+1984-12-07  Thomas E. Dickey
+
+	* src/dqfdef.h: RCS_BASE
+
+1984-12-07  Thomas E. Dickey
+
+	* src/dqfdef.h: rcs-identifiers
+
+1984-12-07  Thomas E. Dickey
+
+	* src/fchdef.h: RCS_BASE
+
+1984-12-07  Thomas E. Dickey
+
+	* src/fchdef.h: rcs-identifiers
+
+1984-12-07  Thomas E. Dickey
+
+	* src/fatdef.h: RCS_BASE
+
 1984-11-12  Thomas E. Dickey
 
 	* src/getpass.c, src/putraw.c: RCS_BASE
