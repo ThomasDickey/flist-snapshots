@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: version.c,v 1.6 1995/10/25 10:58:38 tom Exp $";
+static char *Id = "$Id: version.c,v 1.7 1995/10/26 10:14:27 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,14 @@ static char *Id = "$Id: version.c,v 1.6 1995/10/25 10:58:38 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 Aug 1984
  * Last update:			In-progress: restructure 'dircmd', 'getraw'.
+ *
+ *	v951026 - prerelease testing
+ *
+ *	----	25 Oct 1995	Corrected checks for deleted files in
+ *				'dirfind()'.  Corrected parenthesis in
+ *				'isowner()' that prevented privileged users
+ *				from setting file-protection.  Animated the
+ *				"Working..." message.   
  *
  * 	----	24 Oct 1995	added "USER" column and corresponding sort
  *				commands.
@@ -417,5 +425,5 @@ static char *Id = "$Id: version.c,v 1.6 1995/10/25 10:58:38 tom Exp $";
 char
 *dired_release()
 {
-	return ("FLIST (21 Oct 1995)");
+	return ("FLIST (v951026)");
 }
