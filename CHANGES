@@ -1,3 +1,19 @@
+1984-12-26  Thomas E. Dickey
+
+	* src/dclwild.c: RCS_BASE
+
+1984-12-26  Thomas E. Dickey
+
+	* src/dclwild.c: rcs-identifiers
+
+1984-12-21  Thomas E. Dickey
+
+	* src/chprot.c: RCS_BASE
+
+1984-12-21  Thomas E. Dickey
+
+	* src/chprot.c: rcs-identifiers
+
 1984-12-18  Thomas E. Dickey
 
 	* src/setctrl.c: RCS_BASE
