@@ -47,7 +47,6 @@ $	call	cc_lib DIRSEEK
 $	call	cc_lib DOMORE
 $	call	cc_lib DSPC
 $	call	cc_lib EDTCMD
-$	call	cc_lib FGETR
 $	call	cc_lib FLCOLS
 $	call	cc_lib FLCOPY
 $	call	cc_lib FLDLET

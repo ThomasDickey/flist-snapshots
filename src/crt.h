@@ -1,4 +1,5 @@
-/*
+/* $Id: crt.h,v 1.6 1995/06/05 23:28:45 tom Exp $
+ *
  * Title:	crt.h
  * Author:	Thomas E. Dickey
  * Created:	24 Aug 1984, broke out of 'flist.h'
@@ -35,6 +36,8 @@ typedef	unsigned int WORD;
 #define	CRT_COLS	133	/* Length of screen line-buffers	*/
 #define	CRT_LINES	256	/* Allow a lot of lines			*/
 
+extern	char	*crtvec[];
+
 extern	void	crt__ED (int y, int x);
 extern	void	crt__EL (int y, int x);
 extern	void	crt__NL0 (int flg);
@@ -63,6 +66,7 @@ extern	int	crt_width (void);
 extern	int	crt_x (void);
 extern	int	crt_y (void);
 extern	void	putraw (char *s_);
+extern	void	snapshot (void);
 extern	void	sound_alarm (void);
 extern	int	termsize (int reset, int *width_, int *length_);
 

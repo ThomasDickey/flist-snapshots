@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.6 1995/06/04 01:57:14 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.7 1995/06/05 00:38:58 tom Exp $";
 #endif
 
 /*
@@ -213,7 +213,7 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 		}
 		status = 0;
 		STRNCPY(esa, j_, i_ - j_);
-		arg_ = dclarg_make (arg_, esa, FROM, nullC);
+		arg_ = dclarg_make (arg_, esa, FROM, (struct NAM *)0);
 	    }
 	    /*
 	     * File names contain a mixture of ".", ":", ";", alphanumeric
@@ -231,7 +231,7 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 		if (cmd_arg > 0)
 		{
 		    STRNCPY(cmdtok, j_, i_ - j_);
-		    arg_ = dclarg_make (arg_, cmdtok, FROM, nullC);
+		    arg_ = dclarg_make (arg_, cmdtok, FROM, (struct NAM *)0);
 		}
 		else
 		{
@@ -280,7 +280,7 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 	    {
 		while (!dclarg_name(*i_) && !isopt(*i_))	i_++;
 		status = -1;
-		arg_ = dclarg_make (arg_, err_parm, FROM, nullC);
+		arg_ = dclarg_make (arg_, err_parm, FROM, (struct NAM *)0);
 	    }
 
 	    SPC(i_);
@@ -294,7 +294,7 @@ DCLARG	*dclarg(char *inp_, char *dft_, int cmd_arg, int cpy_dft)
 		if (j_ != i_ || isopt(*i_))
 		{
 		    status = -1;
-		    arg_ = dclarg_make (arg_, err_null, FROM, nullC);
+		    arg_ = dclarg_make (arg_, err_null, FROM, (struct NAM *)0);
 		}
 	    }
 	    else if (!isopt(*i_))
@@ -374,7 +374,8 @@ DCLARG	*dclarg_text(
 		for (text_ = this_->dcl_text; *text_; text_++)
 			*text_ = _toupper(*text_);
 	}
-	if (last_)	last_->dcl_next = this_;
+	if (last_ != 0)
+		last_->dcl_next = (DCLARG *)this_;
 	return (this_);
 }
 

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
+static char *Id = "$Id: rmsio.c,v 1.6 1995/06/05 22:59:53 tom Exp $";
 #endif
 
 /*
@@ -7,7 +7,7 @@ static char *Id = "$Id: rmsio.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	11 Sep 1984
  * Last update:
- *		18 Mar 1995, prototypes
+ *		05 Jun 1995, prototypes
  *		28 Feb 1989, print status-code in 'rerror()' if room.
  *		16 Jun 1985, broke out CC2.0/CC1.5 difference as 'rabrfa_???'
  *		15 Jun 1985, typed 'calloc'.  CC2.0 declares RAB's rfa as
@@ -73,6 +73,7 @@ static char *Id = "$Id: rmsio.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 #include	<ctype.h>
 
 #include	"bool.h"
+#include	"rmsio.h"
 #include	"sysutils.h"
 
 #define	DEFAULT_RSIZE	512
@@ -87,27 +88,20 @@ static char *Id = "$Id: rmsio.c,v 1.5 1995/06/04 01:26:30 tom Exp $";
 
 #define	CHECK2(f)	sys(f)	{latch; goto failed;}
 
-typedef	struct	{
+RFILE	{
 	struct	RAB	rab;
 	struct	FAB	fab;
 	struct	NAM	nam;
 	struct	XABFHC	xabfhc;
 	char	esa[NAM$C_MAXRSS],	/* expanded by SYS$PARSE	*/
 		rsa[NAM$C_MAXRSS];	/* result from SYS$SEARCH	*/
-	} RFILE;
-
-/*
- * Forward and external references:
- */
-RFILE	*ropen2();
+	};
 
 /*
  * Module-level data:
  */
-static
-long	rmsio$err = 0;
-static
-char	rmsio$nam[NAM$C_MAXRSS] = "";	/* Last filename used in parse */
+static	long	rmsio$err = 0;
+static	char	rmsio$nam[NAM$C_MAXRSS] = ""; /* Last filename used in parse */
 
 #define	zFAB	z->fab
 #define	zNAM	z->nam
@@ -115,7 +109,7 @@ char	rmsio$nam[NAM$C_MAXRSS] = "";	/* Last filename used in parse */
 
 #define	BLOCKED	(blocked ? FAB$M_BRO : 0)
 #define	isBLOCK	(zFAB.fab$b_fac & FAB$M_BRO)
-
+
 /* <ropen>:
  * Open a file for record I/O:
  *
@@ -125,12 +119,11 @@ char	rmsio$nam[NAM$C_MAXRSS] = "";	/* Last filename used in parse */
  *	"R" - read, block (512)
  *	"W" - write, block
  */
-RFILE	*ropen (name_, mode_)
-char	*name_, *mode_;
+RFILE	*ropen (char *name_, char *mode_)
 {
 	return (ropen2(name_, nullC, mode_));
 }
-
+
 /* <ropen>:
  * Open a file for record I/O, giving a default file specification.
  *
@@ -138,16 +131,15 @@ char	*name_, *mode_;
  *	dft_	=> default specification
  *	mode_	=> Unix-style (record/block) mode (see: 'ropen')
  */
-RFILE	*ropen2 (name_, dft_, mode_)
-char	*name_, *dft_, *mode_;
+RFILE	*ropen2 (char *name_, char *dft_, char *mode_)
 {
-RFILE	*z = calloc(1, sizeof(RFILE));
-long	status;
-int	newfile	= (_tolower(*mode_) == 'w'),
-	blocked	= (isupper(*mode_)),
-	no_old	= FALSE,
-	recsize = DEFAULT_RSIZE,
-	len;
+	RFILE	*z = calloc(1, sizeof(RFILE));
+	long	status;
+	int	newfile	= (_tolower(*mode_) == 'w');
+	int	blocked	= (isupper(*mode_));
+	int	no_old	= FALSE;
+	int	recsize = DEFAULT_RSIZE;
+	int	len;
 
 	rmsinit_fab (&zFAB, &zNAM, dft_, name_);
 	rmsinit_nam (&zNAM, &z->rsa, &z->esa);
@@ -209,19 +201,19 @@ int	newfile	= (_tolower(*mode_) == 'w'),
 failed:	rclose (z);
 	return (0);
 }
-
+
 /* <rgetr>:
  * Read a record, returning the number of bytes read, and returning to the
  * caller the file-address of the record.
  */
-int	rgetr (z, bfr, maxbfr, mark_)
-RFILE	*z;		/* file-descriptor pointer	*/
-char	bfr[];		/* buffer to load		*/
-int	maxbfr,		/* ...its size			*/
-	*mark_;		/* file-address of buffer	*/
+int	rgetr (
+	RFILE *	z,		/* file-descriptor pointer	*/
+	char *	bfr,		/* buffer to load		*/
+	int	maxbfr,		/* ...its size			*/
+	int	*mark_)		/* file-address of buffer	*/
 {
-long	status;
-int	len	= -1;
+	long	status;
+	int	len	= -1;
 
 	zRAB.rab$b_rac = RAB$C_SEQ;
 	if (isBLOCK)			/* return zero if error or EOF	*/
@@ -242,17 +234,17 @@ failed:
 	*mark_ = rtell(z);		/* update file-mark		*/
 	return (len);
 }
-
+
 /* <rputr>:
  * Write a record, given the buffer address and number of characters to
  * write.
  */
-int	rputr (z, bfr, maxbfr)
-RFILE	*z;		/* file-descriptor pointer	*/
-char	bfr[];		/* buffer to load		*/
-int	maxbfr;		/* ...its size			*/
+int	rputr (
+	RFILE	*z,		/* file-descriptor pointer	*/
+	char	*bfr,		/* buffer to load		*/
+	int	maxbfr)		/* ...its size			*/
 {
-long	status;
+	long	status;
 
 	zRAB.rab$b_rac = RAB$C_SEQ;
 
@@ -271,13 +263,12 @@ failed:
 	if (status)	rerror();
 	return (status);
 }
-
+
 /* <rtell>:
  * Return the record-file-address translated into an offset value,
  * compatible with the 'ftell' usage.
  */
-int	rtell (z)
-RFILE	*z;
+int	rtell (RFILE *z)
 {
 	return (rabrfa_get (&zRAB));
 }
@@ -289,11 +280,9 @@ RFILE	*z;
  * Patch: The 'direction' argument is not implemented.  We assume that it is
  *	0, for absolute positioning.
  */
-int	rseek (z, offset, direction)
-RFILE	*z;
-int	offset, direction;
+int	rseek (RFILE *z, int offset, int direction)
 {
-long	status;
+	long	status;
 
 	zRAB.rab$b_rac = RAB$C_RFA;
 	rabrfa_put (&zRAB, offset);
@@ -304,11 +293,10 @@ long	status;
 /* <rclose>:
  * Close the file, returning nonzero status iff an error occurs.
  */
-int	rclose (z)
-RFILE	*z;
+int	rclose (RFILE *z)
 {
-long	status;
-char	*ubf_	= zRAB.rab$l_ubf;
+	long	status;
+	char	*ubf_	= zRAB.rab$l_ubf;
 
 	CHECK2(sys$disconnect(&zRAB));
 	CHECK2(sys$close(&zFAB));
@@ -318,18 +306,15 @@ failed:
 	if (ubf_)	cfree (ubf_);
 	return (status);
 }
-
+
 /* <erstat>:
  * If the last record operation (put/get) failed, show its status-message.
  * If the given RFILE-pointer is null, show any error condition (so we can
  * use this on a failed-open, or in place of 'rerror').
  */
-erstat (z, msg, msglen)
-RFILE	*z;
-char	*msg;
-int	msglen;
+int	erstat (RFILE *z, char *msg, int msglen)
 {
-long	status	= z ? zRAB.rab$l_sts : rmsio$err;
+	long	status	= z ? zRAB.rab$l_sts : rmsio$err;
 
 	if (($VMS_STATUS_SEVERITY(status) == STS$K_SEVERE)
 	||  (!z && !$VMS_STATUS_SUCCESS(status)) )
@@ -344,7 +329,7 @@ long	status	= z ? zRAB.rab$l_sts : rmsio$err;
 /* <rerror>:
  * Display the cause of the last error condition, like 'perror'
  */
-rerror ()
+void	rerror (void)
 {
 #define	MAX_MSG	132
 	auto    char	msg[MAX_MSG+NAM$C_MAXRSS];
@@ -366,19 +351,18 @@ rerror ()
  * all files together, we must be careful to test the latch when we need it,
  * and to reset it otherwise.
  */
-rclear ()
+void	rclear (void)
 {
 	rmsio$err = 0;
 }
-
+
 /* <rsize>:
  * Return the length of the longest record in (an input) file:
  */
-rsize (z)
-RFILE	*z;
+int	rsize (RFILE *z)
 {
-struct	XABFHC	*xab_;
-int	size;
+	struct	XABFHC	*xab_;
+	int	size;
 
 	if (isBLOCK)	return (512);
 	if (xab_ = zFAB.fab$l_xab)

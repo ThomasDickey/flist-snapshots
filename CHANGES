@@ -1,3 +1,71 @@
+1995-06-05  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/fledit.c, src/fldump.c: DEC-C warnings
+
+	* src/textlink.h: rcs identifiers
+
+	* src/textlink.h: use struct-foo form of definition
+
+	* src/dirfind.c: corrected 'each' prototype
+
+	* src/dirfind.h: corrected function-pointer in 'dirfind()'
+
+	* src/fldlet.c: DEC-C warnings
+
+	* src/pathup.h: RCS_BASE
+
+	* src/pathup.c: prototype
+
+	* src/pathdown.c: prototyped
+
+	* src/flcopy.c, src/flcols.c: DEC-C warnings
+
+	* src/dspc.c: includes
+
+	* src/browse.c, src/rmsio.c, src/rmsio.h: long vs int
+
+	* src/dircmd.h: flcols, flfind prototypes
+
+	* src/flsort.c: prototyped 'compare()'
+
+	* src/flshow.c: trash
+
+	* src/flscan.c, src/flfind.c, src/flcols.c: prototypes
+
+	* src/fledit.c: prototyped
+
+	* src/flist.h: added fledit_pack()
+
+	* src/browse.c, src/fl.c, src/flread.c, src/snapshot.c:
+	signal for sleep
+
+	* src/descrip.mms, src/build.com: removed fgetr.c
+
+	* src/dclarg.h: added prototype for dclchk; sorted prototypes
+
+	* src/flprot.c: move crtvec to crt.h
+
+	* src/dircmd.c, src/dds.c, src/snapshot.c: move crtvec[] to crt.h
+
+	* src/crt.h: added prototype for snapshot
+	added def for crtvec[]
+
+	* src/crt.h: rcs identifiers
+
+	* src/browse.c: cleanup most DEC-C warnings
+
+	* src/getraw.c: include getraw.h, rmsio.h
+
+	* src/getraw.h: RCS_BASE
+
+	* src/rmsio.h: prototyped interface of rmsio.c
+
+	* src/rmsio.c: prototyped
+
+	* src/nameheap.c: use "void *" instead of "char *"
+
+	* src/flrnam.c: rename variable to avoid definition of 'fprot'
+
 1995-06-04  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/descrip.mms: comments

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: nameheap.c,v 1.5 1995/03/18 21:58:04 tom Exp $";
+static char *Id = "$Id: nameheap.c,v 1.6 1995/06/05 11:54:16 tom Exp $";
 #endif
 
 /*
@@ -55,7 +55,7 @@ static	int	last_refs = 0;
  * Returns:	A pointer to the string component of the entry (the pointer
  *		component will be invisible to the user).
  */
-char	*nameheap (char *s_, int len, char **heap)
+char	*nameheap (char *s_, int len, void **heap)
 {
 	int	cmp, cnt;
 	TEXTLINK *new, *old, *tmp;
@@ -136,9 +136,11 @@ int	nameheap_ref (void)
  * Clear the specified reference-level from all items in the linked-list.
  * If a string has no more references, unlink it and deallocate the entry.
  */
-void	nameheap_clr (int old_refs, char **heap)
+void	nameheap_clr (int old_refs, void **heap)
 {
-	TEXTLINK *old = 0, *new = *heap, *nxt;
+	TEXTLINK *old = 0;
+	TEXTLINK *new = *heap;
+	TEXTLINK *nxt;
 
 	if (old_refs < 1 || old_refs > 8)	return;
 	old_refs = ~(1 << (old_refs-1));
@@ -172,7 +174,7 @@ void	nameheap_add (int refs, char *text)
 }
 
 #ifdef	DEBUG1
-void	nameheap_dump (char *tag, char **heap)
+void	nameheap_dump (char *tag, void **heap)
 {
 	TEXTLINK *new = *heap;
 	register int	j;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.13 1995/06/04 01:24:22 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.14 1995/06/05 00:51:42 tom Exp $";
 #endif
 
 /*
@@ -141,12 +141,20 @@ static char *Id = "$Id: dirent.c,v 1.13 1995/06/04 01:24:22 tom Exp $";
 #include	"dircmd.h"
 #include	"dirdata.h"
 #include	"dirpath.h"
+#include	"dirread.h"
 #include	"dclarg.h"
 #include	"dds.h"
 
+#include	"getprot.h"
+#include	"rmsinit.h"
 #include	"nameheap.h"
+#include	"scanver.h"
+
 #include	"strutils.h"
 #include	"sysutils.h"
+
+extern	long	acplook (FILENT *z, char *filespec, struct NAM *nam_);
+extern	long	rmslook (FILENT *z, struct FAB *fab_);
 
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
 
@@ -155,7 +163,7 @@ static	DATENT*	dirent__date (FILENT *z, int opt);
 static	long	dirent__look (FILENT *z, char *filespec);
 static	long	dirent__one (FILENT *z, char *filespec);
 static	long	dirent__read (char *filespec, FLINK **flink, int update);
-static	int	dirent_init (void);
+static	void	dirent_init (void);
 
 /*
  * Public data:
@@ -224,7 +232,7 @@ int	dirent (DCLARG *arg_)
 	numfiles =		/* (no files in list yet)	*/
 	numdlets = 0;		/* (of course, none deleted yet)*/
 
-	dirent_width (nullC);	/* Set nominal widths for entries*/
+	dirent_width ((FILENT *)0);	/* Set nominal widths for entries*/
 
 	filelist = calloc(maxfiles = MAXFILES, sizeof(filelist[0]));
 
@@ -251,7 +259,7 @@ int	dirent_acc (
 	FILENT	*z,		/* file to test			*/
 	char	*mode)		/* List of access rights needed	*/
 {
-	return (cmpprot (&z->fprot, mode));
+	return (cmpprot (&z->f_getprot, mode));
 }
 
 /* <dirent_add>:
@@ -282,7 +290,7 @@ long	dirent_all(
 	long	status;
 	int	numfirst = numfiles,
 		newfiles = FALSE;	/* Latch for 'flread'	*/
-	FLINK	*llast	 = nullC;
+	FLINK	*llast	 = 0;
 
 	/*
 	 * Initialize file-access-block:
@@ -453,7 +461,7 @@ int	dirent_chop (FILENT *z, char *filespec, struct NAM *nam_)
 		nam_ = &nam;
 	}
 
-#define	HEAP(n,l)	nameheap(nam_->n,nam_->l,&namelist)
+#define	HEAP(n,l)	nameheap(nam_->n, nam_->l, (void *)&namelist)
 
 	z->fvers = scanver (nam_->nam$l_ver, nam_->nam$b_ver);
 	z->ftype = HEAP(nam$l_type+1,nam$b_type-1);
@@ -751,7 +759,7 @@ char	*dirent_glue2 (char *filespec, FILENT *z, int curfile)
  * Initialize data structures used in this module (used only via main routine).
  */
 static
-int	dirent_init(void)
+void	dirent_init(void)
 {
 	/*
 	 * Chain pointers for XAB (the "nxt" is the same offset in all variations)
@@ -778,27 +786,27 @@ int	dirent_init(void)
 	 */
 	if (A_opt)
 	{
-		if (first_ == 0) first_ = &xaball;
-		if (last_  != 0) last_->xab$l_nxt = &xaball;
-		xaball.xab$l_nxt = &xabfhc;
-		last_	= &xabfhc;
+		if (first_ == 0) first_           = (struct XABALL *)&xaball;
+		if (last_  != 0) last_->xab$l_nxt = (char *)&xaball;
+		xaball.xab$l_nxt = (char *)&xabfhc;
+		last_	= (struct XABALL *)&xabfhc;
 	}
 	if (D_opt)
 	{
-		if (first_ == 0) first_ = &xabdat;
-		if (last_  != 0) last_->xab$l_nxt = &xabdat;
-		last_	= &xabdat;
+		if (first_ == 0) first_           = (struct XABALL *)&xabdat;
+		if (last_  != 0) last_->xab$l_nxt = (char *)&xabdat;
+		last_	= (struct XABALL *)&xabdat;
 	}
 	if (M_opt || O_opt)
 	{
-		if (first_ == 0) first_ = &xabpro;
-		if (last_  != 0) last_->xab$l_nxt = &xabpro;
-		last_	= &xabpro;
+		if (first_ == 0) first_           = (struct XABALL *)&xabpro;
+		if (last_  != 0) last_->xab$l_nxt = (char *)&xabpro;
+		last_	= (struct XABALL *)&xabpro;
 	}
 	if (first_)
 	{
 		AnyXAB = TRUE;
-		zfab.fab$l_xab = first_; 	/* ...and => XAB chain	*/
+		zfab.fab$l_xab = (char *)first_; /* ...and => XAB chain	*/
 	}
 
 	pcolumns[0] = pcolumns[1] = 0;	/* Show name,type as-is	*/
@@ -929,7 +937,7 @@ int	dirent_old_any (
 	char	longspec[NAM$C_MAXRSS];
 
 	if (dirent_look (longspec, filespec) == RMS$_FNF)
-		dirent_chop (z, filespec, nullC);
+		dirent_chop (z, filespec, (struct NAM *)0);
 	else if (dirent__one (z, longspec))
 	{
 		int	j;

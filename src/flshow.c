@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flshow.c,v 1.7 1995/06/04 01:24:53 tom Exp $";
+static char *Id = "$Id: flshow.c,v 1.8 1995/06/05 23:59:54 tom Exp $";
 #endif
 
 /*
@@ -40,8 +40,6 @@ import(AnyXAB);		import(A_opt);		import(D_opt);
 import(M_opt);		import(P_opt);		import(V_opt);
 import(dateflag);	import(datechek);
 import(readlist);	import(readllen);
-
-extern	int	flist_tell_dsc();
 
 static	void	flshow_lis (int curfile);
 

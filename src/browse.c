@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.12 1995/06/04 01:34:52 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.15 1995/06/05 23:38:13 tom Exp $";
 #endif
 
 /*
@@ -119,6 +119,9 @@ static char *Id = "$Id: browse.c,v 1.12 1995/06/04 01:34:52 tom Exp $";
  *		screen keeps one line the same).
  */
 
+#include	<stdio.h>	/* for 'sprintf()' */
+#include	<signal.h>	/* for 'sleep()' */
+
 #include	<stdlib.h>
 #include	<stdarg.h>
 #include	<string.h>
@@ -131,17 +134,20 @@ static char *Id = "$Id: browse.c,v 1.12 1995/06/04 01:34:52 tom Exp $";
 #include	"cmdstk.h"
 #include	"edtcmd.h"
 #include	"getpad.h"
+#include	"getraw.h"
 
 #include	"dclarg.h"
 #include	"dclopt.h"
+#include	"freelist.h"
 #include	"names.h"
 #include	"dspc.h"
 #include	"whoami.h"
 
 #include	"strutils.h"
 
-extern	void	warn(char *format, ...);
-extern	void	error (int status, char *s_);
+#ifdef main_incl
+#include	"flist.h"
+#endif
 
 static	void	more_0_bg (short *lpp_, short *width_);
 static	void	more_0_vt (short *lpp_, short *width_);
@@ -161,13 +167,13 @@ static	int	more_move (int dy, int dx);
 static	int	more_msg (char *c_, int last);
 static	char*	more_name (int maxlen);
 static	void	more_next (int new);
-static	int	more_null (int inx);
+static	void	more_null (int inx);
 static	int	more_r_buf (char *co_, char *m1_, char *delim_);
 static	int	more_r_cmd (void);
 static	int	more_read (int rec);
 static	void	more_right (void);
 static	int	more_round (int num, int d);
-static	int	more_screen (int view_size, int dirflg);
+static	void	more_screen (int view_size, int dirflg);
 static	void	more_seek (int next);
 static	int	more_size (int over);
 static	int	more_skip (char *find_);
@@ -184,12 +190,6 @@ static	void	more_show (char *format, ...);
 #define	MAXREC		999999	/* maximum record # this program reads	*/
 #define	MAXBFR		513	/* size of input/output buffers		*/
 #define	MAXVEC		1024	/* granularity of seek-mark array	*/
-
-#ifdef	RMSIO
-int	rsize();		/* returns record-size			*/
-#else
-#define	rsize(x)	MAXBFR
-#endif
 
 #define	MAXCOL		(colmax-7)	/* threshold used in ruler-mode	*/
 
@@ -227,7 +227,7 @@ int	rsize();		/* returns record-size			*/
 
 #define	SHOW_OFF(n)	(n),offset[n].rfa,offset[n].cra
 
-static	FILE	*fp;
+static	RFILE	*fp;
 
 typedef	struct	{
 	long	rfa;	/* Record's file-address (direct 'ftell/fseek')	*/
@@ -367,11 +367,11 @@ char	**argv)
 #endif
 
 	DCLARG	*opt_;
-	int	(*if_bg)() = more_0_vt;
+	void	(*if_bg)(short *lpp, short *width) = more_0_vt;
 	char	*c_,
 		msg	[MAXBFR];
 
-	WhatIsIt = nullC;
+	WhatIsIt = 0;
 
 	if (dclchk (dcl_, msg))
 	{
@@ -433,9 +433,9 @@ char	**argv)
 		return;
 	}
 
-	if ((fp = fopen (WhatIsIt->dcl_text, "r")))
+	if ((fp = ropen (WhatIsIt->dcl_text, "r")))
 	{
-	char	*oldcmd_ = cmdstk_init ();
+	CMDSTK	*oldcmd_ = cmdstk_init ();
 #ifdef main_incl
 	int	oldtop = crt_top(),
 		oldend = crt_end();
@@ -467,7 +467,7 @@ char	**argv)
 	    endcol	= calloc(crt_lpp(), sizeof(endcol[0]));
 
 	    more_file ();
-	    fclose (fp);
+	    rclose (fp);
 
 	    cfree (i_bfr);
 	    cfree (o_bfr);
@@ -682,7 +682,7 @@ void	more_file (void)
 		else {
 			LOGARGS(user_cmd,user_arg);
 		}
-#endif	main_incl
+#endif/*main_incl*/
 		if (find_bfr[0] == EOS)
 		{
 		    more_this ();	/* (clear old markers) */
@@ -1501,21 +1501,21 @@ char	c,
  * pre-scrolling).
  */
 static
-int	more_null (int inx)
+void	more_null (int inx)
 {
 	crt_text ("", inx-crt_top(), 0);
 }
 
 static
-int	more_screen (
+void	more_screen (
 	int	view_size,
 	int	dirflg)
 {
-int	(*ffunc)() = (dirflg > 0) ? more_null : 0;
-int	old_top = crt_top(),
-	old_end = crt_end(),
-	new_top = max(0, (old_top + 1 - view_size)),
-	new_end	= i_line + view_size - 1;
+	void	(*ffunc)(int) = (dirflg > 0) ? more_null : 0;
+	int	old_top = crt_top(),
+		old_end = crt_end(),
+		new_top = max(0, (old_top + 1 - view_size)),
+		new_end	= i_line + view_size - 1;
 
 	more_0_page();
 #ifdef	DEBUG
@@ -1637,7 +1637,7 @@ void	more_seek (
 		SHOW_OFF(next), LINEMARK(next),
 		SHOW_OFF(now),  LINEMARK(now));
 #endif
-	fseek(fp, offset[now=next].rfa, 0);
+	rseek(fp, offset[now=next].rfa, 0);
 
 	/*
 	 * Force the next call on 'more_read' to return the line which I
@@ -1740,21 +1740,20 @@ int	more_read (int rec)		/* Either 'i_line' or 'inpage'	*/
 static
 void	more_getr (void)
 {
-int	j,
-	first	= TRUE,
-	join,
-	skip,
-	len	= 0,
-	size	= i_size,
-	*rfa_	= &rstate.rfa;
-static
-int	dummy_rfa;
-char	*s_;
+	int	j;
+	int	first	= TRUE;
+	int	join;
+	int	skip;
+	int	len	= 0;
+	int	size	= i_size;
+	long	*rfa_	= &rstate.rfa;
+	static	int	dummy_rfa;
+	char	*s_;
 
 	rstate_len = 0;
 	for (;;)
 	{
-	    len = fgetr (fp, &i_bfr[rstate_len], size, rfa_);
+	    len = rgetr (fp, &i_bfr[rstate_len], size, rfa_);
 	    erstat (fp, fatal_msg, CRT_COLS);
 	    if (first)		rstate_len = len;
 	    else if (len >= 0)	rstate_len += len;
@@ -2071,4 +2070,4 @@ void	logfile(int cmd, int count)
 	else
 		LOGFILE(("  $ %c", cmd))
 }
-#endif	main_incl
+#endif/*main_incl*/

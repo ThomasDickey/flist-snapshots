@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.11 1995/06/04 19:21:54 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.12 1995/06/05 23:28:59 tom Exp $";
 #endif
 
 /*
@@ -86,7 +86,6 @@ import(filelist); import(numfiles); import(numdlets);
 import(ccolumns); import(pcolumns); import(conv_list);
 
 extern	int	multi_quit;	/* >0 iff multi-level quit in progress	*/
-extern	char	*crtvec[];	/* CRT display vectors			*/
 
 #define	TOP_END	top_line = crt_top(), end_line = crt_end(), lpp = crt_lpp()
 #define	lpp2	(lpp-2)

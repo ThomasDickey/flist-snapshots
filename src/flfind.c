@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flfind.c,v 1.6 1995/03/19 02:01:08 tom Exp $";
+static char *Id = "$Id: flfind.c,v 1.7 1995/06/05 23:54:08 tom Exp $";
 #endif
 
 /*
@@ -49,7 +49,7 @@ typedef	struct	{
 	char	*findTXT;
 	}	STK;
 
-static	STK	*stk_	= nullC;
+static	STK	*stk_	= 0;
 static	int	deepest	= -1;
 
 #define	FindFLG	stk_[lvl].findFLG
@@ -105,7 +105,7 @@ tDIRCMD(flfind)
  * The argument 'lvl' is numbered 0,1,2,..., for the actual number of the "prior"
  * nesting level of the directory editor.
  */
-flfind_init (lvl)
+void	flfind_init (int lvl)
 {
 	if (lvl == 0)
 	{
@@ -127,14 +127,14 @@ flfind_init (lvl)
 	}
 	FindDCL->dcl_text = FindTXT;
 }
-
+
 /* <flfind_show>:
  * Display current search-target: "?FIND".  Use 'dirfind_chop' to parse it
  * to show the actual interpretation of wildcards and implicit pathnames.
  */
-flfind_show ()
+void	flfind_show (void)
 {
-register lvl	= flist_nest() -1;
+	register lvl	= flist_nest() -1;
 
 	if (FindDCL)
 	{

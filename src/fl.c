@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.17 1995/06/04 01:47:29 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.18 1995/06/05 23:38:13 tom Exp $";
 #endif
 
 /*
@@ -91,6 +91,7 @@ static char *Id = "$Id: fl.c,v 1.17 1995/06/04 01:47:29 tom Exp $";
  */
 
 #include	<stdio.h>
+#include	<signal.h>	/* for 'sleep()' */
 #include	<stdarg.h>
 #include	<ctype.h>
 #include	<descrip.h>
