@@ -1,3 +1,13 @@
+1985-07-06  Thomas E. Dickey
+
+	* src/nameheap.c: RCS_BASE
+
+1985-07-06  Thomas E. Dickey
+
+	* src/nameheap.c: make program names consistent:FLIST,BROWSE
+
+	* src/nameheap.c: rcs-identifiers
+
 1985-07-04  Thomas E. Dickey
 
 	* src/textlink.h: RCS_BASE
