@@ -1,3 +1,47 @@
+1985-01-12  Thomas E. Dickey
+
+	* doc/d3.rno, doc/d2.rno: RCS_BASE
+
+1985-01-12  Thomas E. Dickey
+
+	* doc/d2.rno: rcs identifiers
+
+1985-01-12  Thomas E. Dickey
+
+	* doc/d5.rno: RCS_BASE
+
+1985-01-12  Thomas E. Dickey
+
+	* doc/d5.rno: rcs identifiers
+
+1985-01-12  Thomas E. Dickey
+
+	* src/tabexp.c: RCS_BASE
+
+1985-01-12  Thomas E. Dickey
+
+	* src/tabexp.c: rcs-identifiers
+
+1985-01-11  Thomas E. Dickey
+
+	* doc/m0-parts.rno, doc/m0.rno: RCS_BASE
+
+1985-01-11  Thomas E. Dickey
+
+	* doc/m0-parts.rno, doc/m0.rno: rcs identifiers
+
+1985-01-11  Thomas E. Dickey
+
+	* doc/mp.rno: RCS_BASE
+
+1985-01-11  Thomas E. Dickey
+
+	* doc/mp.rno: rcs identifiers
+
+1985-01-11  Thomas E. Dickey
+
+	* doc/dt.rno: RCS_BASE
+
 1985-01-09  Thomas E. Dickey
 
 	* doc/d1.pic: RCS_BASE
