@@ -1,12 +1,10 @@
-  	/* Copyright 1984 (C), Thomas E. Dickey */
-#include	<ctype.h>
-
-#include	"bool.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: setprot.c,v 1.2 1985/06/16 02:33:02 tom Exp $";
+#endif
 
 /*
  * Title:	setprot.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	19 Nov 1984
  * Last update:	15 Jun 1985, typed 'strchr'
  *		21 Dec 1984, make proper error-returns!
@@ -17,6 +15,11 @@
  * Arguments:	filespec - file specification (a null-ended string)
  *		prot_code - string in the form "PROT=xxx".
  */
+
+#include	<ctype.h>
+
+#include	"bool.h"
+#include	"dclarg.h"
 
 char	*strchr();
 

@@ -1,15 +1,10 @@
-		 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<stdio.h>
-#include	<ctype.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"dclarg.h"
-#include	"dclopt.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dclopt.c,v 1.2 1985/07/04 01:34:08 tom Exp $";
+#endif
 
 /*
  * Title:	dclopt.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	11 Jul 1984
  * Last update:	03 Jul 1985, use 'scanint' instead of 'sscanf' to bypass bug
  *			     in CC2.0
@@ -57,7 +52,15 @@
  *		becomes
  *			"17-NOV-1858 00:00:00.00"
  */
-
+
+#include	<stdio.h>
+#include	<ctype.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"dclarg.h"
+#include	"dclopt.h"
+
 char	*dclarg_keyw(),		/* skip past option-keyword	*/
 	*scanint(),		/* => after decoded integer	*/
 	*strchr();		/* return pointer to char in string */

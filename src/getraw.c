@@ -1,13 +1,6 @@
-   	 /* Copyright 1984 (C) Thomas E. Dickey */
-#include	<ctype.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<ssdef.h>
-#include	<string.h>
-#include	<stsdef.h>
-
-#include	"bool.h"
-#include	"crt.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: getraw.c,v 1.2 1989/02/24 17:12:10 tom Exp $";
+#endif
 
 /*
  * Title:	getraw.c
@@ -49,7 +42,17 @@
  *		(1-16 to 1-19) - sys$qiow
  *		(2-3) - Discussion of escapes vs read-terminator
  */
-
+
+#include	<ctype.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<ssdef.h>
+#include	<string.h>
+#include	<stsdef.h>
+
+#include	"bool.h"
+#include	"crt.h"
+
 /*
  * External functions:
  */

@@ -1,10 +1,10 @@
- 			/* Copyright 1984, 1985 (C) Thomas E. Dickey */
-#include	"bool.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dclinx.c,v 1.2 1985/02/05 10:24:26 tom Exp $";
+#endif
 
 /*
  * Title:	dclinx.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	30 Jun 1984
  * Last update:	05 Feb 1985, added 'dclinx2' entry to get actual DCLARG-pointer
  *		04 Jul 1984
@@ -21,6 +21,9 @@
  * Returns:	A pointer to the required DCLARG-data.  If it does not
  *		exist, NULL is returned.
  */
+
+#include	"bool.h"
+#include	"dclarg.h"
 
 DCLARG	*dclinx2 (dcl_, mfld, sfld)
 DCLARG	*dcl_;

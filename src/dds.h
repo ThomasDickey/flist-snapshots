@@ -1,10 +1,10 @@
 /*
  * Title:	dds.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	14 May 1984
  * Last update:	14 May 1984
  *
- *	Define codes for controlling dired's display functions.
+ *	Define codes for controlling FLIST's display functions.
  */
 
 #define	DDS_U_S	(-3)		/* Up one screen		*/

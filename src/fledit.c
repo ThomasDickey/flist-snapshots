@@ -1,11 +1,6 @@
-  	 	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
-#include	"bool.h"
-#include	"crt.h"
-
-#include	"dclarg.h"
-#include	"dds.h"
-#include	"dircmd2.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: fledit.c,v 1.3 1988/07/01 10:43:46 tom Exp $";
+#endif
 
 /*
  * Title:	fledit.c
@@ -49,24 +44,32 @@
  *		30 Jun 1984, to combine with recurring-call on 'flist' main
  *		28 May 1984
  *
- * Function:	This module supports an edit-function for "DIRED".  It tests
+ * Function:	This module supports an edit-function for "FLIST".  It tests
  *		the file-access to see if the file's directory is writeable.
  *		If not, it restricts the file to readonly.  Also, since we
  *		use EDT, it tests for the presence of the init-file in the
  *		user's home directory to generate the "/COMMAND" option.
  *
  *		If the file happens to be a directory, 'fledit' calls the main
- *		program of DIRED with a new argument: the new directory.
- *		(If the directory-name is NOT in 'filelist[], however, DIRED
+ *		program of FLIST with a new argument: the new directory.
+ *		(If the directory-name is NOT in 'filelist[], however, FLIST
  *		will simply open a new level on the single entry.  This is
- *		done to permit DIRED to alter protection, etc., of a root-
+ *		done to permit FLIST to alter protection, etc., of a root-
  *		level directory without exiting from the current level.)
  *
  *		If any sort of wildcard, or multiple-file argument is given,
- *		a new level of DIRED is entered, like the directory-file
+ *		a new level of FLIST is entered, like the directory-file
  *		treatment.
  */
-
+
+#include	"bool.h"
+#include	"crt.h"
+
+#include	"dclarg.h"
+#include	"dds.h"
+#include	"dircmd2.h"
+#include	"dirent.h"
+
 char	*dirent_dft(),		/* => wildcard default-string	*/
 	*getenv(),		/* => misc environment stuff	*/
 	*scanint(),		/* => after decoded integer	*/
@@ -398,7 +401,7 @@ int	max_bad_type = sizeof (bad_type) / sizeof(bad_type[0]);
 /*
  * Title:	flquit.c
  *
- * Function:	Process a "quit" command for DIRED.  If an argument is given,
+ * Function:	Process a "quit" command for FLIST.  If an argument is given,
  *		it must be the number of levels to quit from (default: 1).
  *		An asterisk quits all levels (actually 999).
  */

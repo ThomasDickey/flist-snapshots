@@ -1,14 +1,6 @@
-#define	DEBUG
-      	 	/* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"getpad.h"
-
-#include	"dclarg.h"
-#include	"dircmd2.h"
-#include	"dds.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dircmd.c,v 1.3 1988/11/04 12:27:00 tom Exp $";
+#endif
 
 /*
  * Title:	dircmd.c
@@ -53,7 +45,7 @@
  *			     treated as the third case.
  *		30 Apr 1985, broke 'dircmd_doit' from 'dircmd_read'.
  *		27 Apr 1985, corrected repeated-command test (in 'edtcmd').
- *		25 Apr 1985, re-use 'edtcmd' with MORE by adding delimiter-arg.
+ *		25 Apr 1985, re-use 'edtcmd' with BROWSE by adding delimiter-arg.
  *		18 Apr 1985, chopped out 'edtcmd' code
  *		13 Apr 1985, added call on 'flist_log'
  *		11 Apr 1985, added call to 'gotraw' to make typeahead run faster.
@@ -67,7 +59,8 @@
  *			     and NFIND defaults.
  *		29 Dec 1984, added "/SBACKUP", "/SCREATED", "/SREVISED", and
  *			     relative (e.g., "12-") numeric scrolling.  Show
- *			     SELECT-state (via 'dds_line').  Put MORE on key-9.
+ *			     SELECT-state (via 'dds_line').
+ *			     Put BROWSE on key-9.
  *		24 Dec 1984, added "/DSHORT", "/DLONG"
  *		23 Dec 1984, added "/CLEFT", "/CRIGHT".
  *		22 Dec 1984, added "NFIND", changed record-attributes to 'X'
@@ -81,7 +74,7 @@
  *		17 Nov 1984, added 'INSPECT'
  *		22 Oct 1984
  *
- * Function:	This module performs the actual command input for the "DIRED"
+ * Function:	This module performs the actual command input for the "FLIST"
  *		program.  Commands are of three types:
  *
  *		(a)	Set command-processor state (e.g., GOLD, FORWARD, and
@@ -96,6 +89,17 @@
  *			and returned to the main program.  Those which do not
  *			are executed under control of this module.
  */
+
+#define	DEBUG
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"getpad.h"
+
+#include	"dclarg.h"
+#include	"dircmd2.h"
+#include	"dds.h"
+#include	"dirent.h"
 
 /*
  * External procedures:
@@ -117,7 +121,7 @@ char	*calloc(),	/* allocate a block of dynamic memory		*/
  */
 
 /*
- * Procedures which perform DIRED commands:
+ * Procedures which perform FLIST commands:
  */
 int	flcols(),		/* Alter the display format		*/
 	flcols_left(),
@@ -130,7 +134,7 @@ int	fldlet();		/* Delete or purge a file		*/
 int	fldump();		/* Dump data structures			*/
 #endif
 int	fledit();		/* Edit/inspect file or directory	*/
-int	flescp();		/* Escape from DIRED temporarily	*/
+int	flescp();		/* Escape from FLIST temporarily	*/
 int	flfind();		/* Search for file-entry		*/
 int	flmore();		/* BROWSE a file (type it)		*/
 int	flnoid();		/* Enqueue a process, no wait		*/
@@ -172,7 +176,7 @@ import(filelist);
  *	This variable supports the notion of a fixed-point sort.  (If negative,
  *	it is inactive.)
  * 'read_dft' is used as the default name-string for READ, EDIT (with multiple-
- *	files), and is toggled by the DIRED option "VERSION, NOVERSION".
+ *	files), and is toggled by the FLIST option "VERSION, NOVERSION".
  */
 int	multi_quit;			/* Nonzero if multi-quit	*/
 
@@ -492,7 +496,7 @@ register int c = toascii(code) + ((flags & 1) ? 128 : 0);
 /* <dircmd_getc>:
  * Read a single command (keystroke-level), suppressing characters such
  * as control/S and control/Q which may be passed back by 'getpad()',
- * which are not used as single-key commands by "DIRED".
+ * which are not used as single-key commands by "FLIST".
  *
  * In particular, absorb all incoming nulls, since this code is used (DO_NEXT)
  * to tell the higher-level routines to continue reading command-input.
@@ -730,7 +734,7 @@ char	*fullname = "",
 	dds_line (*curfile_);	/* refresh the screen after receipt	*/
 
 	/*
-	 * A number directs "DIRED" to move the cursor to the specified
+	 * A number directs "FLIST" to move the cursor to the specified
 	 * file-index a la FLIST.  We permit a prefix '/' (actually ignore
 	 * all prefixes), and a trailing sign, for relative movement.
 	 */
@@ -847,13 +851,13 @@ char	ok[]	= "QNYG";
 }
 
 /* <dircmd_vcmd2>:
- * Do table lookup to find DIRED's full-name for a "visible" command.  This
+ * Do table lookup to find FLIST's full-name for a "visible" command.  This
  * lookup is used only for the VCMD2-entries (which can specify arguments,
  * hence must be parsed).  Because the command name may be found via lookup
  * in the logical-symbol table, this procedure may be called more than once
  * to interpret a command.
  *
- * If the name is not found in DIRED's table, assume it is the name of an
+ * If the name is not found in FLIST's table, assume it is the name of an
  * external command.
  */
 dircmd_vcmd2 (cmd_, len)

@@ -1,10 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<ctype.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: strvcpy.c,v 1.2 1984/11/06 00:43:26 tom Exp $";
+#endif
 
 /*
  * Title:	strvcpy.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	05 Nov 1984
  * Last update:	05 Nov 1984
  *
@@ -15,6 +15,8 @@
  * Arguments:	co_	=> output string
  *		ci_	=> input string.  If null, assume 'co_'.
  */
+
+#include	<ctype.h>
 
 strvcpy (co_, ci_)
 char	*co_, *ci_;

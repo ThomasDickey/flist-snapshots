@@ -1,14 +1,10 @@
-      	 	/* Copyright 1985 (C), Thomas E. Dickey */
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"getpad.h"
-
-#include	"dircmd2.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: chrcmd.c,v 1.2 1985/04/15 01:26:24 tom Exp $";
+#endif
 
 /*
  * Title:	chrcmd.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	14 Apr 1985
  * Last update:	14 Apr 1985
  *
@@ -19,6 +15,13 @@
  *		b) A GETPAD-code
  *		c) An FLIST sort-code
  */
+
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"getpad.h"
+
+#include	"dircmd2.h"
 
 char	*chrcmd (command)
 {

@@ -1,8 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
+#ifndef NO_IDENT
+static char *Id = "$Id: cmpblk.c,v 1.2 1984/10/24 10:41:28 tom Exp $";
+#endif
 
 /*
  * Title:	cmpblk.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	19 Jun 1984
  * Last update:	24 Oct 1984	re-code to make it more compact.
  *

@@ -1,3 +1,71 @@
+1995-02-18  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/descrip.mms, src/build.com: deleted repeated FLSHOW
+
+	* src/setprot.c: prototypes
+
+	* src/sybintim.c, src/dclopt.c, src/flcols.c, src/dirarg.c:
+	use strutils.h
+
+	* src/dircmd.c: prototypes
+
+	* src/browse.c: use dspc.h
+
+	* src/dspc.c: prototyped
+
+	* src/dspc.h: RCS_BASE
+
+	* src/strwcmp.c: prototyped
+
+	* src/cmdstk.c: use strutils.h
+
+	* src/strlcpy.c: prototyped
+
+	* src/sytrnlog.c: prototypes
+
+	* src/fl.c, src/edtcmd.c: use strutils.h
+
+	* src/strucpy.c, src/strskps.c, src/strabbr.c, src/strtrim.c:
+	prototyped
+
+	* src/strutils.h: RCS_BASE
+
+	* src/dds.c: renamed 'beep' to avoid conflict
+	fixed ctype include
+
+	* src/dirent.c: port to AXP (DATENT mods)
+
+	* src/fl.c: port to AXP (DATENT mods, renamed 'alarm')
+
+	* src/getraw.c: removed system-id tests
+
+	* src/flsort.c: port to AXP (DATENT mods)
+
+	* src/dircmd.c: port to AXP (renamed 'alarm', 'beep')
+
+	* src/rmslook.c: port to AXP (DATENT mods)
+
+	* src/termsize.c, src/flprot.c, src/browse.c, src/cmdstk.c, src/edtcmd.c:
+	port to AXP (renamed 'alarm')
+
+	* src/snapshot.c: port to AXP with DEC C (renamed 'alarm')
+
+	* src/dclwild.c:
+	change '+' to '|' in mask expression because DEC C on AXP sees that as
+	an overflowed integer expression.
+
+	* src/acplook.c: mods for AXP 64-bit integer date
+
+	* src/dirent.h: added macro isOkDate()
+
+	* src/getpad.c: rename 'alarm()' to 'sound_alarm()' for DEC C.
+
+	* src/dirent.h:
+	added hacks to cover up 64-bit date detail diffs between VAX and AXP
+
+	* src/alarm.c:
+	renamed entrypoint to 'sound_alarm()', since DEC-C now has UNIX-style 'alarm()'
+
 1993-04-23  dickey@software.org
 
 	* src/build.com: RCS_BASE

@@ -1,8 +1,12 @@
+#ifndef NO_IDENT
+static char *Id = "$Id: cpyblk.c,v 1.2 1983/10/12 15:30:28 tom Exp $";
+#endif
+
 /*
  * Title:	cpyblk.c
- * Author:	T.E.Dickey (ITT/ATC)
- * Created:	17 Aug 83
- * Last update:	12 Oct 83
+ * Author:	Thomas E. Dickey
+ * Created:	17 Aug 1983
+ * Last update:	12 Oct 1983
  *
  * Function:	Copy a block of characters (bytes), such as a component of
  *		an arbitrary structure.  For practical use, this assumes that

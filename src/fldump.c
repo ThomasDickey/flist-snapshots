@@ -1,16 +1,20 @@
-#include	"textlink.h"
-#include	"flist.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: fldump.c,v 1.4 1985/09/10 00:16:50 tom Exp $";
+#endif
 
 /*
  * Title:	fldump.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	20 Jul 1985
  * Last update:	09 Sep 1985, account for trailing '.' in FNAME
  *		20 Jul 1985
  *
- * Function:	Dump the contents of DIRED's file database for debugging.
+ * Function:	Dump the contents of FLIST's file database for debugging.
  */
+
+#include	"textlink.h"
+#include	"flist.h"
+#include	"dirent.h"
 
 import(pathlist);
 import(filelink);

@@ -1,3 +1,5 @@
+/* $Id: fchdef.h,v 1.2 1984/12/08 02:25:34 tom Exp $ */
+
 #define	FCH$M_ACL	0x800
 #define	FCH$M_BADBLOCK	0x4000
 #define	FCH$M_CONTIG	0x80

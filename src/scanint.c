@@ -2,7 +2,7 @@
 
 /*
  * Title:	scanint.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	17 Jun 1985
  * Last update:	04 Jul 1985, stepped on my good copy!!
  *

@@ -1,10 +1,10 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<ctype.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: strvcmp.c,v 1.2 1984/11/06 10:29:54 tom Exp $";
+#endif
 
 /*
  * Title:	strvcmp.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	05 Nov 1984
  * Last update:	06 Nov 1984
  *
@@ -26,6 +26,8 @@
  *		match with 'ref_[]', UNLESS a mismatch was found, in this case
  *		zero.
  */
+
+#include	<ctype.h>
 
 strvcmp (ref_, tst_, len)
 char	*ref_, *tst_;

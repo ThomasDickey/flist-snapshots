@@ -1,10 +1,10 @@
-#include	<descrip.h>
-
-#include	"lbrdef.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: help.c,v 1.3 1985/03/21 01:54:08 tom Exp $";
+#endif
 
 /*
  * Title:	help.c
- * Author:	T.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	20 Mar 1985
  * Last update:	20 Mar 1985
  *
@@ -28,6 +28,11 @@
  *			   This value is used in the librarian-routine to
  *			   format the index listing (default: 0 => 80).
  */
+
+#include	<descrip.h>
+
+#include	"lbrdef.h"
+
 int	lib$get_input(),
 	lib$put_output();
 

@@ -1,9 +1,10 @@
-	  /* Copyright 1985 (C), Thomas E. Dickey */
-#define	WILD_VER	-32768
+#ifndef NO_IDENT
+static char *Id = "$Id: scanver.c,v 1.2 1985/06/23 23:21:06 tom Exp $";
+#endif
 
 /*
  * Title:	scanver.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	23 Jun 1985
  * Last update:	23 Jun 1985
  *
@@ -18,6 +19,8 @@
  * Returns:	The version number.  If an '*' is found, we return the most-
  *		negative (16-bit) value.
  */
+
+#define	WILD_VER	-32768
 
 int	scanver (vers_, len)
 char	*vers_;

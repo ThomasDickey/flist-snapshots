@@ -1,18 +1,9 @@
- 		/* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<ctype.h>
-#include	<descrip.h>
-#include	<stsdef.h>
-
-#include	"getpad.h"
-#include	"flist.h"
-
-#include	"dds.h"
-#include	"dirent.h"
-#include	"dclarg.h"
-#include	"dclopt.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: fl.c,v 1.3 1989/02/28 18:22:54 tom Exp $";
+#endif
 
 /*
- * Title:	flist.c (alias DIRED, FLIST)
+ * Title:	flist.c (FLIST main program)
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
@@ -95,7 +86,19 @@
  *		editor, the DIRED program on Unix, and the FLIST program
  *		on IBM CMS.
  */
-
+
+#include	<ctype.h>
+#include	<descrip.h>
+#include	<stsdef.h>
+
+#include	"getpad.h"
+#include	"flist.h"
+
+#include	"dds.h"
+#include	"dirent.h"
+#include	"dclarg.h"
+#include	"dclopt.h"
+
 #define	FAILED	(STS$M_INHIB_MSG | STS$K_ERROR)
 #define	NORMAL	(STS$M_INHIB_MSG | STS$K_SUCCESS)
 
@@ -360,7 +363,7 @@ flist_date2 (curfile)
 }
 
 /*
- * Toggle the date-display mode.  To make DIRED faster, normally only one
+ * Toggle the date-display mode.  To make FLIST faster, normally only one
  * type of filedate (CREATED,BACKUP,REVISED) is shown on the screen at a time.
  */
 flist_date (curfile, opt)
@@ -378,7 +381,7 @@ flist_date (curfile, opt)
 }
 
 /*
- * DIRED sounds an audible alarm whenever a warning is sent to the status line.
+ * FLIST sounds an audible alarm whenever a warning is sent to the status line.
  * This, and other messages are normally cleared from the status line to show
  * the current default directory, and the index into the file-list.  We use
  * flags (beep_flag, warn_flag) to avoid having the status line alternate too

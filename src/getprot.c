@@ -1,18 +1,10 @@
- 		 /* Copyright 1984 (C), Thomas E. Dickey */
-#include	<rms.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<ssdef.h>
-#include	<stsdef.h>
-
-#include	"acp.h"
-
-#include	"bool.h"
-#include	"getprot.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: getprot.c,v 1.2 1985/06/16 02:29:32 tom Exp $";
+#endif
 
 /*
  * Title:	getprot.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	02 Jul 1984
  * Last update:	15 Jun 1985, CC2.0 changes declaration of uic-code.
  *		14 Dec 1984, use single FAB for search, open.
@@ -37,6 +29,17 @@
  *
  * Returns:	If nonzero, the RMS-status indicating the first failure.
  */
+
+#include	<rms.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<ssdef.h>
+#include	<stsdef.h>
+
+#include	"acp.h"
+
+#include	"bool.h"
+#include	"getprot.h"
 
 getprot (ret_, name_)
 GETPROT	*ret_;

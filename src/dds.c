@@ -1,15 +1,9 @@
-  		 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	"ctype.h"
-#include	<ssdef.h>
-#include	<stsdef.h>
-#include	<descrip.h>
-
-#include	"flist.h"
-#include	"dds.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dds.c,v 1.3 1989/02/23 18:32:04 tom Exp $";
+#endif
 
 /*
- * Title:	dds.c - "DIRED" display routines
+ * Title:	dds.c - "FLIST" display routines
  * Author:	T.E.Dickey
  * Created:	03 May 1984
  * Last update:
@@ -42,7 +36,7 @@
  *		29 May 1984, to chop into 'crt' and 'dds' modules
  *
  * Function:	These routines perform screen display/refresh operations for
- *		"DIRED".
+ *		"FLIST".
  *
  * Entry:
  *		dds_add:	Add a new FILENT-block to 'filelist[]' (show it)
@@ -64,6 +58,15 @@
  *		dds_while:	Show "Working..." messages
  *		dds_width:	Update display if (possible) column-width change
  */
+
+#include	"ctype.h"
+#include	<ssdef.h>
+#include	<stsdef.h>
+#include	<descrip.h>
+
+#include	"flist.h"
+#include	"dds.h"
+#include	"dirent.h"
 
 import(filelist); import(numfiles); import(numdlets);
 import(ccolumns); import(pcolumns); import(conv_list);

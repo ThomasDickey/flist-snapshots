@@ -1,10 +1,10 @@
-  	 /* Copyright (C) 1984, 1985 Thomas E. Dickey */
-#include	"flist.h"
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dirpath.c,v 1.3 1985/09/13 01:51:14 tom Exp $";
+#endif
 
 /*
  * Title:	dirpath.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
  * Last update:	12 Sep 1985, also account for implied trailing '.' in pathname
  *			     collating.
@@ -22,7 +22,7 @@
  *		06 Dec 1984, add "namelist"
  *		02 Sep 1984, use "import()"
  *
- * Function:	This module maintains for 'dirent' (DIRED entries) the
+ * Function:	This module maintains for 'dirent' (FLIST entries) the
  *		linked list 'pathlist':
  *
  *		pathlist is a sorted list of all (full) pathnames for the
@@ -41,7 +41,7 @@
  *			data for path+name+type+version easily since the string
  *			pointers are unique.
  *		filelink is a sorted list of all FILENT blocks (file data)
- *			known to DIRED.  We keep it sorted so that when we do a
+ *			known to FLIST.  We keep it sorted so that when we do a
  *			SYS$SEARCH, we keep the list-search time down; we need
  *			only search from the last insert/update position.  We
  *			init/release the list contents here because the other,
@@ -58,6 +58,9 @@
  *		dirpath_rename:	Rename a path
  *		dirpath_sort:	Append a new pathspec to 'pathlist'.
  */
+
+#include	"flist.h"
+#include	"dirent.h"
 
 import(filelink);
 import(namelist);

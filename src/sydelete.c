@@ -1,11 +1,10 @@
- 			/* Copyright 1985 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<stsdef.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: sydelete.c,v 1.2 1985/05/22 10:36:20 tom Exp $";
+#endif
 
 /*
  * Title:	sysdelete.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	22 May 1985
  * Last update:	22 May 1985
  *
@@ -15,6 +14,9 @@
  *
  * Returns:	nonzero VMS status value iff an error is detected.
  */
+
+#include	<rms.h>
+#include	<stsdef.h>
 
 #define	ok(x) 	status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
 

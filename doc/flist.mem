@@ -115,18 +115,18 @@ APPENDIX B      COMMAND SUMMARY
                                                                         Page v
 
 
-                                   PREFACE                                   PREFACE
+                                   PREFACE
 
 
 
-MANUAL OBJECTIVESMANUAL OBJECTIVES
+MANUAL OBJECTIVES
 
 This manual describes the directory-editing program FLIST and  provides  usage
 and reference information on the program.
 
 
 
-INTENDED AUDIENCEINTENDED AUDIENCE
+INTENDED AUDIENCE
 
 This manual is intended for users of the VAX/VMS  operating  system  who  must
 manage  disk  files.  Users are expected to be familiar with the VMS directory
@@ -135,7 +135,7 @@ edit).
 
 
 
-STRUCTURE OF THIS DOCUMENTSTRUCTURE OF THIS DOCUMENT
+STRUCTURE OF THIS DOCUMENT
 
 This manual contains six chapters and two appendices.
 
@@ -258,10 +258,10 @@ different attributes.  A sample display layout is shown in Figure 1.
    |DDS       LIS;2            57  21-DEC-1984 21:36  rwed rwed r-e- r-e-|
    |DIRCHK    LIS;2            12  26-DEC-1984 06:45  rwed rwed r-e- r-e-|
    |DIRCMD    LIS;7            91  24-DEC-1984 21:01  rwed rwed r-e- r-e-|
-    Path: DBA1:[DICKEY]                                        1 of  53   |Path: DBA1:[DICKEY]                                        1 of  53  |
+   |Path: DBA1:[DICKEY]                                        1 of  53  |
    +---------------------------------------------------------------------+
 
-                                   Sample Screen Dump                         Figure 1  Sample Screen Dump
+                         Figure 1  Sample Screen Dump
 
 
 
@@ -301,12 +301,12 @@ The last line in the screen is reserved for status and messages:
 1.2.2  Display-List
 
 The list of files which  are  described  in  FLIST's  tables  is  denoted  the
-____________display-list.   FLIST maintains a table of information (indeed, a private copy
+display-list.   FLIST maintains a table of information (indeed, a private copy
 of the directory) for each file, whether or not  it  is  currently  displayed.
 Commands  which  alter  the  display  format  present different slices of this
 directory.
 
-                                        _________FLIST maintains an auxiliary table, the read-list, which  is  a  list  of  the
+FLIST maintains an auxiliary table, the read-list, which  is  a  list  of  the
 expanded file specifications used to construct the display-list.
 
 FLIST is hierarchical; it may recur upon itself to  construct  new  read-  and
@@ -551,13 +551,13 @@ files, not to supersede existing ones.
 To uniquely specify arguments and ordering, FLIST uses two special tokens:
 
     /O
-            ____        The omit-operator directs  FLIST  to  omit  the  use  of  the  current
+        The omit-operator directs  FLIST  to  omit  the  use  of  the  current
         filename  as  an  implicit  argument.   For most commands, FLIST would
         otherwise  append  the  filename  from  the  current  entry   in   the
         display-list.
 
     /
-            _____        The after-operator directs FLIST to put  the  remaining  text  of  the
+        The after-operator directs FLIST to put  the  remaining  text  of  the
         command after the current filename.  Actually, the first time that the
         after-operator is encountered, FLIST  inserts  the  current  filename.
         Successive  occurrences  are  ignored.  If it is evoked at least once,
@@ -628,7 +628,7 @@ Before interpreting a command, FLIST tests the command keywords:
         carries out the token-substitution and executes it.
 
     o   If the keyword is not found in its symbol table, FLIST  determines  if
-                           ______        it is defined as a symbol.  If so, FLIST tests the keyword-part of the
+        it is defined as a symbol.  If so, FLIST tests the keyword-part of the
         translation.  If this is found in its symbol table, FLIST performs the
         substitution, and processes the resulting command.
 
@@ -943,7 +943,7 @@ Presently, the search utility processes only a single-entry file specification
 
 2.5  HELP (H)
 
-                          ______The HELP command runs the BROWSE program to display a  file  which  summarizes
+The HELP command runs the BROWSE program to display a  file  which  summarizes
 all of the FLIST commands.  (This summary is reproduced as Appendix B.)
 
 
@@ -992,7 +992,7 @@ display-list entries are reread (e.g., in the READ command).
 
 2.7  BROWSE (M)
 
-                              ______The BROWSE command evokes the BROWSE browsing program, which is  described  in
+The BROWSE command evokes the BROWSE browsing program, which is  described  in
 full  in  another  document.   BROWSE  is  a  versatile display program, which
 supports a variety of display modes, search commands,  and  scrolling  up/down
 and left/right.
@@ -1034,7 +1034,7 @@ description.
 2.9  NFIND (NF)
 
 NFIND is the logical complement of the FIND  command.   It  searches  for  the
-             ___first  file  not  matching  the  file  specification.   This  enables you, for
+first  file  not  matching  the  file  specification.   This  enables you, for
 example, to skip over a series of files which have the same file type.
 
 Like FIND, NFIND may be followed by the NEXT command.  In  the  NEXT  command,
@@ -1117,7 +1117,7 @@ Each may be set to any combination of
         READ, WRITE, EXECUTE, DELETE
 
 For example, to set a file's protection so that anyone in the same  accounting
-_____group has read and execute access, type
+group has read and execute access, type
 FLIST COMMANDS                                                        Page 2-9
 
 
@@ -1280,10 +1280,10 @@ Format:
 
 READ accepts an input list (zero or  more  file  specifications  separated  by
 comma).  If no specification is given, READ rereads the directory of each file
-                        _________specification using the read-list.  If a specification is  given,  READ  reads
+specification using the read-list.  If a specification is  given,  READ  reads
 the  directory  entries  which match the specification.  FLIST also appends to
-    _________the read-list each (expanded) specification from the input list which did  not
-                          _________previously  appear in the read-list.  In this way, you may either refresh your
+the read-list each (expanded) specification from the input list which did  not
+previously  appear in the read-list.  In this way, you may either refresh your
 directory display (to account for commands executed via spawned subprocesses),
 or augment the display by adding new display entries.
 
@@ -1293,7 +1293,7 @@ A CTRL/R performs a reread for the current file only.
 
 Notes:
 
-                                             _________FLIST appends new file specifications to the read-list if they differ from all
+FLIST appends new file specifications to the read-list if they differ from all
 previous  members.  It can not determine if one specification's range overlaps
 another's.  For example, the specification list
 
@@ -1304,9 +1304,9 @@ proper subset of the "*.*".  However,
 
         *.F*,*.*R
 
-                                    _________will result in two items  for  the  read-list,  even  though  the  only  files
+will result in two items  for  the  read-list,  even  though  the  only  files
 satisfying   this   would   be   "*.FOR".    If   several  grossly-overlapping
-                                        _________specifications are entered into FLIST's read-list,  performance  of  the  READ
+specifications are entered into FLIST's read-list,  performance  of  the  READ
 command will deteriorate markedly.
 
 
@@ -1563,7 +1563,7 @@ sorts are performed by permuting the filename components:
 The ordering of the sort keys (e.g., NAME, TYPE, PATH, VERSION) is designed to
 yield the most informative display:
 
-                                                                        normal    o   Sorting by PATH (PATH, NAME, TYPE, VERSION) corresponds to the  normal
+    o   Sorting by PATH (PATH, NAME, TYPE, VERSION) corresponds to the  normal
         sorting order obtained by a wildcard directory listing of the form
 
                 DIRECTORY [...]
@@ -1576,16 +1576,16 @@ yield the most informative display:
         permits  you  to  easily  see  files  which  appear  in  more than one
         directory, or those which differ only by type.  It is the most natural
         way  of  sorting  the directory entries, because the file name carries
-                 meaning        the most meaning.
+        the most meaning.
 
     o   Sorting by TYPE (TYPE, NAME,  PATH,  VERSION)  groups  together  files
         having  the  same  type.   This  is  valuable  when  managing  a large
         collection of different types of files.   The  file  type  is  usually
-                       use        related to the use of the file.
+        related to the use of the file.
 
     o   Sorting by VERSION (VERSION, NAME, TYPE, PATH) shows  the  files  with
         the  highest  version  numbers.   Using  this  sort,  you  may  easily
-                                                 modified        determine the files which have been most modified.
+        determine the files which have been most modified.
 
 The sort-by-NAME (NAME, TYPE, PATH, VERSION) is the default sorting order used
 by  FLIST.   NAME is first, because this is most natural to users.  VERSION is
@@ -1625,7 +1625,7 @@ always reposition the cursor to  the  fixed-point  with  higher  priority.   A
 temporary fixed-point overrides a latching fixed-point.
 
 FLIST may make changes to the display, even if no change has occurred  in  the
-_____order  of  display  entries.   When you delete files, FLIST blanks the entries
+order  of  display  entries.   When you delete files, FLIST blanks the entries
 which appear on the screen, rather than  redrawing  the  screen.   When  FLIST
 performs  a  sort,  it  also compacts the portion of the display list which is
 visible.  (The portion of the display-list which is not visible is always kept
@@ -1984,7 +1984,7 @@ function to keys having the same marking.
                       |               |       |       |
                       +-------+-------+-------+-------+
 
-                                   Model VT52 Keypad                         Figure 1  Model VT52 Keypad
+                         Figure 1  Model VT52 Keypad
 
 Like EDT, FLIST uses PF1 as a "GOLD key" (an  escape-shift  function).   FLIST
 provides four sorting commands on the keypad:  NAME, TYPE, DATE and SIZE.  The
@@ -2020,7 +2020,7 @@ functions.
                       |    /RNAME     |/NOMARK|       |
                       +-------+-------+-------+-------+
 
-                                VT52 Keypad Assignments                      Figure 2  VT52 Keypad Assignments
+                      Figure 2  VT52 Keypad Assignments
 
 
 
@@ -2047,7 +2047,7 @@ functions.
                                           |               |       |       |
                                           +-------+-------+-------+-------+
 
-                                   Model VT100 Keypad                         Figure 3  Model VT100 Keypad
+                         Figure 3  Model VT100 Keypad
 
 The extra keys on the VT100  keypad  are  used  for  functions  which  can  be
 performed in other ways, but which are useful on the keypad:
@@ -2083,7 +2083,7 @@ performed in other ways, but which are useful on the keypad:
                                           |    /RNAME     |/NOMARK|       |
                                           +-------+-------+-------+-------+
 
-                                VT100 Keypad Assignments                      Figure 4  VT100 Keypad Assignments
+                      Figure 4  VT100 Keypad Assignments
 
 
 
@@ -2232,7 +2232,7 @@ fashion, it does the entire job itself.
 
 
 
-FLIST - Directory EditorFLIST - Directory Editor
+FLIST - Directory Editor
 
   FLIST (directory management system/file-list)  permits  the  user  to  sort
   directories,  examine  files, delete rename or alter the protection code on
@@ -2243,7 +2243,7 @@ FLIST - Directory EditorFLIST - Directory Editor
         FLIST [*.*;*]
 
 
-Options:Options:
+Options:
 
   /AFTER         /AFTER=time
 
@@ -2336,7 +2336,7 @@ Options:Options:
                  can also use the keywords TODAY, TOMORROW, and YESTERDAY.
 
 
-Commands:Commands:
+Commands:
 
   FLIST's commands are listed below (capital letters indicate the allowable
   abbreviation).
@@ -2373,7 +2373,7 @@ Commands:Commands:
   -------------------------------------------------------------------------
 
 
-Direction:Direction:
+Direction:
 
   /FORWARD and /BACKWARD set the current-direction flag, used by  /PAGE  to
   determine  the  direction of scrolling.  Each of these commands accepts a
@@ -2381,7 +2381,7 @@ Direction:Direction:
   of scrolling is one screen.
 
 
-Display:Display:
+Display:
 
   The only  fixed-fields  in  FLIST's  display  format  are  the  filename,
   filetype and version.  The pathname for the current-file is automatically
@@ -2408,7 +2408,7 @@ Display:Display:
   -------------------------------------------------------------------------
 
 
-    Keywords:    Keywords:
+    Keywords:
 
   Column keywords include:  ALLOC, BACKUP,  CREATED,  DATE,  FORMAT,  ID,
   LENGTH,   MASK,   OWNER,   PATH,  REVISED  and  SIZE  and  XAB  (record
@@ -2421,7 +2421,7 @@ Display:Display:
   convenient means to append to the list.
 
 
-    Width:    Width:
+    Width:
 
   FLIST normally sets the displayed width of the filename and filetype to
   the  maximum  of any file in the list, so that all names and types will
@@ -2440,7 +2440,7 @@ Display:Display:
   state; either "n" or "t" may be defaulted.
 
 
-Hierarchy:Hierarchy:
+Hierarchy:
 
   FLIST permits you to enter up  to  eight  display  levels  (counting  the
   original invocation).  FLIST assumes a new level if you EDIT a directory,
@@ -2457,7 +2457,7 @@ Hierarchy:Hierarchy:
   initial EDIT-directory call on a new level.
 
 
-Keypad:Keypad:
+Keypad:
 
   The keypad functions provided by FLIST are, where possible, analogous  to
   the  ones  of the EDT editor.  Those indicated in "{...}" differ from the
@@ -2494,7 +2494,7 @@ Keypad:Keypad:
   -------------------------------------------------------------------------
 
 
-Line-editing:Line-editing:
+Line-editing:
 
   Any non-editing command may be given to FLIST by typing the  abbreviation
   (with  printable  characters)  next  to  the  file.   These  commands are
@@ -2520,7 +2520,7 @@ Line-editing:Line-editing:
   -------------------------------------------------------------------------
 
 
-Pathname:Pathname:
+Pathname:
 
   As you move your cursor up or down through the display list,  FLIST  sets
   the  default  directory  to  match that of the current file.  The default
@@ -2537,7 +2537,7 @@ Pathname:Pathname:
   implicit-wildcard for the pathname.
 
 
-Protection:Protection:
+Protection:
 
   Protection edit-mode is entered either by typing PROtect or  CTRL/P.   If
   the  first  (i.e.,  no  arguments),  the changes made in the edit will be
@@ -2561,7 +2561,7 @@ Protection:Protection:
   -------------------------------------------------------------------------
 
 
-Refresh:Refresh:
+Refresh:
 COMMAND SUMMARY                                                       Page B-7
 
 
@@ -2585,7 +2585,7 @@ Refresh:Refresh:
   -------------------------------------------------------------------------
 
 
-Scrolling:Scrolling:
+Scrolling:
 
   Main           Alternate     Description
   -------------------------------------------------------------------------
@@ -2606,7 +2606,7 @@ Scrolling:Scrolling:
   -------------------------------------------------------------------------
 
 
-Sorting:Sorting:
+Sorting:
 
   Name-fields are sorted in  increasing  order,  while  numbers  (including
   dates)  are  sorted in decreasing order.  The "/r" sorts reverse this.  A
@@ -2645,7 +2645,7 @@ Sorting:Sorting:
   -------------------------------------------------------------------------
 
 
-Status:Status:
+Status:
 
   The following commands display status information known to  FLIST,  which
   is not easily determinable by other methods:
@@ -2664,7 +2664,7 @@ Status:Status:
   -------------------------------------------------------------------------
 
 
-Substitution:Substitution:
+Substitution:
 
   The text of a visible command is directed to the current-file entry.   In
   most cases, the order of arguments is unambiguous:

@@ -1,32 +1,23 @@
-   	  /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<rms.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<ssdef.h>
-#include	<stsdef.h>
-
-#include	"acp.h"
-
-#include	"flist.h"
-#define		DIRENT		/* local */
-#include	"dirent.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
+#endif
 
 /*
  * Title:	acplook.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from test code)
  * Last update:
  *		04 Nov 1988, added '.fexpr' data
  *		22 Mar 1985, added file-id, record-length
  *		27 Jan 1985, fix file-size (if negative result, assume we use
  *			     the high-block).
- *		20 Dec 1984, keep file-org with format (for DIRED).
+ *		20 Dec 1984, keep file-org with format (for FLIST).
  *		12 Dec 1984, mask file-org from file-format
  *		11 Dec 1984, fixes if privilege-violation found.
  *
  * Function:	This procedure uses the VMS ancillary control processor (ACP)
  *		to obtain all directory information which will be useful for
- *		DIRED except the filename.  When successful, a lookup using
+ *		FLIST except the filename.  When successful, a lookup using
  *		ACP is up to twice as fast as the equivalent using RMS (which
  *		must itself call ACP).
  *
@@ -38,6 +29,18 @@
  *
  * Returns:	The worst error status encountered in doing I/O for the lookup.
  */
+
+#include	<rms.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<ssdef.h>
+#include	<stsdef.h>
+
+#include	"acp.h"
+
+#include	"flist.h"
+#define		DIRENT		/* local */
+#include	"dirent.h"
 
 long	acplook (z, filespec, nam_)
 FILENT	*z;

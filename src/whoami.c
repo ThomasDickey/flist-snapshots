@@ -1,10 +1,10 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-#include	<rms>
-#include	<jpidef.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: whoami.c,v 1.2 1985/10/01 01:56:06 tom Exp $";
+#endif
 
 /*
  * Title:	whoami.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	29 Nov 1984
  * Last update:	30 Sep 1985, use SYS$GETJPIw in VMS 4.x
  *		09 May 1985, return nonzero code if from system
@@ -26,6 +26,9 @@
  *
  * Returns:	TRUE iff the image is run from a system directory
  */
+
+#include	<rms>
+#include	<jpidef.h>
 
 int	whoami (name, opt)
 char	*name;

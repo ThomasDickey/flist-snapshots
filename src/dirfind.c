@@ -1,14 +1,10 @@
- 	   /* Copyright 1984, 1985 (C) Thomas E. Dickey */
-#include	<rms>
-#include	<stsdef.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dirfind.c,v 1.3 1985/09/14 12:57:42 tom Exp $";
+#endif
 
 /*
  * Title:	dirfind.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 Jul 1984 (broke off search code from 'flfind.c')
  * Last update:	14 Sep 1985, enhanced 'strwcmp' to process "..." in pathname.
  *			     Therefore, we need substitute a "*" into the
@@ -44,13 +40,13 @@
  *		15 Jul 1984, use PATHOF()
  *		05 Jul 1984
  *
- * Function:	The 'dirfind' procedure performs in-list searches for DIRED.
+ * Function:	The 'dirfind' procedure performs in-list searches for FLIST.
  *		This directly supports the FIND and NEXT commands, as well
  *		as the VERIFY command (which must find specific wildcard lists
  *		in 'filelist[]').
  *
  *		The FIND/NEXT commands require that the search be startable
- *		from any point, in DIRED's sorted order rather than that known
+ *		from any point, in FLIST's sorted order rather than that known
  *		to SYS$SEARCH.  Therefore I use my own wildcard compare.
  *
  *		If 'each' is set, we use a separate loop from the "once"
@@ -87,6 +83,13 @@
  * patch:	Should provide date-wise selection options to support DELETE,
  *		PURGE, FIND.
  */
+
+#include	<rms>
+#include	<stsdef.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
 
 char	*dirent_glue();	/* => concatenated string	*/
 
@@ -238,7 +241,7 @@ dirfind_nxt (j, forward)
 
 /*
  * Return true iff the pathname of the indicated DCLARG-structure was
- * not explicit.  Inexplicit pathnames within DIRED are treated as a special
+ * not explicit.  Inexplicit pathnames within FLIST are treated as a special
  * type of wildcard.
  */
 dirfind_notexp (find_spec)

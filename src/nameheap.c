@@ -1,9 +1,10 @@
-  /* Copyright 1984 (C), Thomas E. Dickey */
-#include	"textlink.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: nameheap.c,v 1.3 1985/07/06 18:35:00 tom Exp $";
+#endif
 
 /*
  * Title:	nameheap.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	04 Dec 1984
  * Last update:	06 Jul 1985, added 'nameheap_ref' and 'nameheap_add'.
  *		04 Jul 1985, added 'nameheap_set' and 'nameheap_clr'
@@ -13,7 +14,7 @@
  *		06 Dec 1984
  *
  * Function:	This module maintains a table of character strings.  It is
- *		used by DIRED to maintain the set of filename (path, name or
+ *		used by FLIST to maintain the set of filename (path, name or
  *		type) strings).  The strings are stored in an alphabetically-
  *		sorted (no repeats) linked list.
  *
@@ -30,6 +31,8 @@
  *	nameheap_clr	Deallocate entries in a heap at a given reference level
  *	nameheap_add	Mask additional levels for a given string
  */
+
+#include	"textlink.h"
 
 char	*calloc();
 

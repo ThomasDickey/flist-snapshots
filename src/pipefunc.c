@@ -1,14 +1,10 @@
- 		 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	"rmsio.h"
-#include	<rms.h>
-#include	<stsdef.h>
-
-#include	"bool.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: pipefunc.c,v 1.2 1985/02/24 00:34:18 tom Exp $";
+#endif
 
 /*
  * Title:	pipe.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	09 May 1984
  * Last update:	23 Feb 1985, broke out 'acpcopy' code, for other use.
  *		04 Feb 1985, provide for block-I/O
@@ -36,6 +32,13 @@
  *		<1:1>	Copy file creation date
  *		<2:2>	Make resulting file writeable (overwrites input protection)
  */
+
+#include	"rmsio.h"
+#include	<rms.h>
+#include	<stsdef.h>
+
+#include	"bool.h"
+#include	"dclarg.h"
 
 pipefunc (dcl_, func, blocked)
 DCLARG	*dcl_;

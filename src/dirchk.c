@@ -1,14 +1,10 @@
-   /* Copyright 1984, 1985 (C), Thomas E. Dickey */
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"names.h"
-#include	"dircmd2.h"
-#include	"dclarg.h"
+#ifndef NO_IDENT
+static char *Id = "$Id: dirchk.c,v 1.3 1985/09/20 01:55:30 tom Exp $";
+#endif
 
 /*
  * Title:	dirchk.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	28 Jun 1984
  * Last update:	19 Sep 1985, added tests for non-DCL syntax
  *		26 Dec 1984, changed call on 'dclwild'.
@@ -17,7 +13,7 @@
  *		30 Jun 1984
  *
  * Function:	This module checks the parsed command line (from 'dirarg')
- *		for DIRED.  It checks for the proper number of filespecs,
+ *		for FLIST.  It checks for the proper number of filespecs,
  *		and the absence (or presence) of options.  A status word is
  *		used to check for permissible min/max argument lists (see
  *		symbols "v_???").  This check routine can handle the following
@@ -37,6 +33,13 @@
  * Returns:	TRUE if no errors are found.  If an error is found, an
  *		appropriate message is emitted via 'warn'.
  */
+
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"names.h"
+#include	"dircmd2.h"
+#include	"dclarg.h"
 
 dirchk (cmd_, dcl_, state, flg)
 DCLARG	*dcl_;

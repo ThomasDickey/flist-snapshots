@@ -1,9 +1,10 @@
-   	 	/* Copyright 1985 (C), Thomas E. Dickey */
-#include	<rms.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: xabproui.c,v 1.2 1985/06/16 02:24:32 tom Exp $";
+#endif
 
 /*
  * Title:	xabprouic.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	15 Jun 1985
  * Last update:	15 Jun 1985
  *
@@ -15,6 +16,9 @@
  *		mbm_	=> word to load with member
  */
 
+#include	<rms.h>
+
+void
 xabprouic (pro_, grp_, mbm_)
 struct	XABPRO	*pro_;
 short	*grp_, *mbm_;

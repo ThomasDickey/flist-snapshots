@@ -69,18 +69,18 @@ APPENDIX A      COMMAND SUMMARY
                                                                        Page iv
 
 
-                                   PREFACE                                   PREFACE
+                                   PREFACE
 
 
 
-MANUAL OBJECTIVESMANUAL OBJECTIVES
+MANUAL OBJECTIVES
 
 This manual describes the screen-oriented browsing program BROWSE and provides
 usage and reference information on the program.
 
 
 
-INTENDED AUDIENCEINTENDED AUDIENCE
+INTENDED AUDIENCE
 
 This manual is intended for users of the VAX/VMS  operating  system  who  must
 manage  disk  files.  Users are expected to be familiar with the VMS directory
@@ -88,7 +88,7 @@ structure.
 
 
 
-STRUCTURE OF THIS DOCUMENTSTRUCTURE OF THIS DOCUMENT
+STRUCTURE OF THIS DOCUMENT
 
 This manual contains three chapters and one appendix.
 
@@ -168,7 +168,7 @@ Commands which require more information than a single keystroke prompt you  in
 the  status line for the required information.  There are two types of command
 which result in a prompt:
 
-                                                      ________     1.  Searches.  BROWSE accepts any combination of printing characters  for
+     1.  Searches.  BROWSE accepts any combination of printing characters  for
          a search target.  The DELETE key and CTRL/U, CTRL/X have their normal
          meaning (delete or cancel).
 
@@ -244,7 +244,7 @@ in parentheses, "(77)".
    Image top: 0  bottom: 22
 
    +---------------------------------------------------------------------+
-    _____ _ _________ ______   |FLIST - Directory Editor                                             |
+   |FLIST - Directory Editor                                             |
    |                                                                     |
    |  FLIST (directory editor) permits the  user  to  sort  directories, |
    |  files,  delete  rename  or  alter  the  protection code on files, a|
@@ -255,7 +255,7 @@ in parentheses, "(77)".
    |        FLIST [*.*;*]                                                |
    |                                                                     |
    |                                                                     |
-    ________   |Options:                                                             |
+   |Options:                                                             |
    |                                                                     |
    |  /NOALL         Suppress filename if no privilege for other data    |
    |  /ALL (D)       Read  directory  entries  for  all  filenames,   eve|
@@ -267,7 +267,7 @@ in parentheses, "(77)".
    |                 date, size).                                        |
    |  /NOOWNER       Suppress display of owner code                      |
    |  /NOPROTECTION  Suppress display of protection mask                 |
-    _______   _____ ____  ____ ____ ____   |FL.HLP;   Lines 1:23  Cols 1:69 (77)                                 |
+   |FL.HLP;   Lines 1:23  Cols 1:69 (77)                                 |
    +---------------------------------------------------------------------+
 
                              Figure 1  Sample Screen
@@ -305,7 +305,7 @@ typing R.  Scrolling and shifting are single-keystroke commands in BROWSE.
    |                                                                     |
    |f owner code                                                         |
    |f protection mask                                                    |
-    _______   _____ ____  ____ ______ ____   |FL.HLP;   Lines 1:23  Cols 36:104 (77)                               |
+   |FL.HLP;   Lines 1:23  Cols 36:104 (77)                               |
    +---------------------------------------------------------------------+
 
                      Figure 2  Sample Screen, Shifted Right
@@ -344,7 +344,7 @@ these backspaces (i.e., "^H" is a CTRL/H, or backspace).
    |                 date, size).^M                                      |
    |  /NOOWNER       Suppress display of owner code^M                    |
    |  /NOPROTECTION  Suppress display of protection mask^M               |
-    _______   _____ ____  ____ ____ ____   |FL.HLP;   Lines 1:23  Cols 1:69 (89)                                 |
+   |FL.HLP;   Lines 1:23  Cols 1:69 (89)                                 |
    +---------------------------------------------------------------------+
 
              Figure 3  Sample Screen with Expanded Carriage Control
@@ -360,7 +360,7 @@ Even more detail is possible.  You may direct BROWSE to show the  file-address
    Image top: 0  bottom: 22
 
    +---------------------------------------------------------------------+
-                 _____ _ _________ ______   |        0.01:FLIST - Directory Editor                                |
+   |        0.01:FLIST - Directory Editor                                |
    |       70.02:                                                        |
    |       74.03:  FLIST (directory editor) permits the  user  to  sort  |
    |      156.04:  files,  delete  rename  or  alter  the  protection cod|
@@ -371,7 +371,7 @@ Even more detail is possible.  You may direct BROWSE to show the  file-address
    |      282.09:        FLIST [*.*;*]                                   |
    |      308.10:                                                        |
    |      312.11:                                                        |
-                 ________   |      316.12:Options:                                                |
+   |      316.12:Options:                                                |
    |      344.13:                                                        |
    |      348.14:  /NOALL         Suppress filename if no privilege for o|
    |      418.15:  /ALL (D)       Read  directory  entries  for  all  fil|
@@ -383,7 +383,7 @@ Even more detail is possible.  You may direct BROWSE to show the  file-address
    |      810.21:                 date, size).                           |
    |      844.22:  /NOOWNER       Suppress display of owner code         |
    |      896.23:  /NOPROTECTION  Suppress display of protection mask    |
-    _______   _____ ____  ____ ____ _______   |FL.HLP;   Lines 1:23  Cols 1:56 (77):79                              |
+   |FL.HLP;   Lines 1:23  Cols 1:56 (77):79                              |
    +---------------------------------------------------------------------+
 
                   Figure 4  Sample Screen Showing File-Address
@@ -397,7 +397,7 @@ Another keystroke transforms the file-address into record lengths:
    Image top: 0  bottom: 22
 
    +---------------------------------------------------------------------+
-                 _____ _ _________ ______   |       68.01:FLIST - Directory Editor                                |
+   |       68.01:FLIST - Directory Editor                                |
    |        2.02:                                                        |
    |       79.03:  FLIST (directory editor) permits the  user  to  sort  |
    |       79.04:  files,  delete  rename  or  alter  the  protection cod|
@@ -408,7 +408,7 @@ Another keystroke transforms the file-address into record lengths:
    |       23.09:        FLIST [*.*;*]                                   |
    |        2.10:                                                        |
    |        2.11:                                                        |
-                 ________   |       26.12:Options:                                                |
+   |       26.12:Options:                                                |
    |        2.13:                                                        |
    |       67.14:  /NOALL         Suppress filename if no privilege for o|
    |       77.15:  /ALL (D)       Read  directory  entries  for  all  fil|
@@ -420,7 +420,7 @@ Another keystroke transforms the file-address into record lengths:
    |       31.21:                 date, size).                           |
    |       49.22:  /NOOWNER       Suppress display of owner code         |
    |       54.23:  /NOPROTECTION  Suppress display of protection mask    |
-    _______   _____ ____  ____ ____ _______   |FL.HLP;   Lines 1:23  Cols 1:56 (77):79                              |
+   |FL.HLP;   Lines 1:23  Cols 1:56 (77):79                              |
    +---------------------------------------------------------------------+
 
                  Figure 5  Sample Screen Showing Record-Lengths
@@ -436,7 +436,7 @@ readable.
    Image top: 0  bottom: 22
 
    +---------------------------------------------------------------------+
-    _____ _ _________ ______   |FLIST - Directory Editor                                             |
+   |FLIST - Directory Editor                                             |
    |                                                                     |
    |  FLIST (directory editor) permits the  user  to  sort  directories, |
    |  files,  delete  rename  or  alter  the  protection code on files, a|
@@ -444,10 +444,10 @@ readable.
    |                                                                     |
    |  Format:                                                            |
    |                                                                     |
-                        _   |        FLIST [*.*;*]                                                |
+   |        FLIST [*.*;*]                                                |
    |                                                                     |
    |                                                                     |
-    ________   |Options:                                                             |
+   |Options:                                                             |
    |                                                                     |
    |  /NOALL         Suppress filename if no privilege for other data    |
    |  /ALL (D)       Read  directory  entries  for  all  filenames,   eve|
@@ -459,22 +459,22 @@ readable.
    |                 date, size).                                        |
    |  /NOOWNER       Suppress display of owner code                      |
    |  /NOPROTECTION  Suppress display of protection mask                 |
-    ____________________ ___________________________________________   |....+...10....+...20....+...30....+...40....+...50....+...60....    9|
+   |....+...10....+...20....+...30....+...40....+...50....+...60....    9|
    +---------------------------------------------------------------------+
 
                Figure 6  Sample Screen Showing Line/Column "Ruler"
 
 
-                                              ____Though BROWSE is designed primarily to browse text files, you may also examine
-______binary  files  with  it.   Figure 7  was  obtained  by  setting the qualifiers
+Though BROWSE is designed primarily to browse text files, you may also examine
+binary  files  with  it.   Figure 7  was  obtained  by  setting the qualifiers
 "/OVER:2" and "/MARK".  This causes all control characters to be shown as ".",
 and the record-address and line numbers as a display-prefix.
 
 Note that unlike Figures 4 and 5, there are now four columns of numbers  shown
 in  the prefix area.  BROWSE normally displays one file-record on each display
 line.  However, if a LINE-FEED is  found  embedded  within  a  record,  BROWSE
-                                                                        ______begins  a  new  display  line.  In Figure 7, the first column shows the record
-____ _______file address, and the second the offset of the  new  display-line  within  the
+begins  a  new  display  line.  In Figure 7, the first column shows the record
+file address, and the second the offset of the  new  display-line  within  the
 record.   Because the display lines and records are not synonymous, the record
 number (third column) is  shown  separately,  from  the  line  number  (fourth
 column).
@@ -508,7 +508,7 @@ column).
    |     4096......09.21:roll .Up/.Down 1/2 screen (arrow)..    R,L  - sc|
    |     4608......10.22: or arrow keys.Special:.    K   - Copy screen to|
    |         .0483....23:.  Lines %d:%d  Cols %d:%d (%                   |
-    _______   _____ ____  ____ ____ _________  _______ __   |FL.EXE;   Lines 1:23  Cols 1:56 (512):512  Records 1+                |
+   |FL.EXE;   Lines 1:23  Cols 1:56 (512):512  Records 1+                |
    +---------------------------------------------------------------------+
 
                    Figure 7  Sample Screen Showing Binary File
@@ -527,7 +527,7 @@ the content alone is shifted:
    Image top: 0  bottom: 22
 
    +---------------------------------------------------------------------+
-                                            _   |        0......01.01:06............".....                            |
+   |        0......01.01:06............".....                            |
    |         .0141....02:                                                |
    |         .0189....03:                                                |
    |         .0229....04:                                                |
@@ -550,7 +550,7 @@ the content alone is shifted:
    |     4096......09.21:umn (in scale-mode, move cursor up too).    I,J |
    |     4608......10.22:   - Toggle .OVER mode (3 states if /OVER, else |
    |         .0483....23:                                                |
-                         ___________________ _______________________   |                     ....+..130....+..140....+..150....+..160...    1|
+   |                     ....+..130....+..140....+..150....+..160...    1|
    +---------------------------------------------------------------------+
 
                Figure 8  Sample Screen Showing Shifted Binary File
@@ -809,7 +809,7 @@ its original position.
 
 2.3  ALTERING THE DISPLAY FORMAT
 
-                          ____                    ______BROWSE is used to examine text files, rather than binary ones.  You may direct
+BROWSE is used to examine text files, rather than binary ones.  You may direct
 BROWSE to display your file in alternate forms to see its structure (i.e., the
 actual characters used to make up overstrikes, and the record numbering).  The
 alternatives  are  intentionally limited to those which are applicable to text
@@ -925,32 +925,32 @@ displays the help-screen shown in Figure 1:
    +---------------------------------------------------------------------+
    |BROWSE - Browsing program                                              |
    |Commands:                                                            |
-               ____   |    Q,Z  - Quit.                                                     |
+   |    Q,Z  - Quit.                                                     |
    |    ?    - display this message-screen                               |
    |    _    - toggle scale/normal mode (alters arrow keys also)         |
-                         ___ ___   |    T,E  - scroll to Top/End of file.                                |
-                      _______ ________   |    F,B  - scroll Forward/Backward by a full-screen.                 |
-                      __ ____   |    U,D  - scroll Up/Down 1/2 screen (arrow).                        |
-                      _____ ____   |    R,L  - scroll Right/Left 1/2 screen (arrow)                      |
-                              ____   |    H    - scroll left to Home-column (in scale-mode, move cursor up |
-                                                ___                 _____   |    I,J  - (scale-mode) move cursor to next tab stop or to next end-o|
+   |    T,E  - scroll to Top/End of file.                                |
+   |    F,B  - scroll Forward/Backward by a full-screen.                 |
+   |    U,D  - scroll Up/Down 1/2 screen (arrow).                        |
+   |    R,L  - scroll Right/Left 1/2 screen (arrow)                      |
+   |    H    - scroll left to Home-column (in scale-mode, move cursor up |
+   |    I,J  - (scale-mode) move cursor to next tab stop or to next end-o|
    |    /,\  - search (if '\', backward) for a string                    |
-                          ____ ________   |    N,P  - search for Next/Previous occurrence of string.            |
-                               ______   |    W    - refresh display Window                                    |
-               ______   |    X    - aborts search/skip                                        |
-                                                    ______   |    <number> - Permit H,L/R scroll by specified number of columns,   |
-                  ______   |           or repeat of U,D,B,F,I or arrow keys                      |
+   |    N,P  - search for Next/Previous occurrence of string.            |
+   |    W    - refresh display Window                                    |
+   |    X    - aborts search/skip                                        |
+   |    <number> - Permit H,L/R scroll by specified number of columns,   |
+   |           or repeat of U,D,B,F,I or arrow keys                      |
    |Special:                                                             |
    |    K   - Copy screen to SNAPSHOT.CRT                                |
-                     ____   |    M   - Toggle MARK mode (active if /MARK option)                  |
-                     ____   |    O   - Toggle OVER mode (3 states if /OVER, else 2)               |
-                              _______   |    V   - Display current Version                                    |
-                     ____  _____   |    ^   - Toggle MARK (DEBUG) modes                                  |
-    _______   _____ ____  ____ ____ ____   |FL.HLP;   Lines 1:23  Cols 1:71 (77)                                 |
+   |    M   - Toggle MARK mode (active if /MARK option)                  |
+   |    O   - Toggle OVER mode (3 states if /OVER, else 2)               |
+   |    V   - Display current Version                                    |
+   |    ^   - Toggle MARK (DEBUG) modes                                  |
+   |FL.HLP;   Lines 1:23  Cols 1:71 (77)                                 |
    +---------------------------------------------------------------------+
 
 
-                                      Help Summary                            Figure 1  Help Summary
+                            Figure 1  Help Summary
 
 
 
@@ -1121,7 +1121,7 @@ BROWSE recognizes several options, which you may supply in any order:
 
 
 
-BROWSEBROWSE
+BROWSE
 
   BROWSE is a versatile browsing  program.   It  permits  left/right  up/down
   scrolling   and   a   variety   of  display  formats.   Most  commands  are
@@ -1133,7 +1133,7 @@ BROWSEBROWSE
         BROWSE filespec [options]
 
 
-Options:Options:
+Options:
 
   /BG        Initialize a Bitgraph terminal to permit BROWSE to  present  a
              65-line display.
@@ -1160,16 +1160,16 @@ Options:Options:
              132-column  mode,  even  though  no  SET TERMINAL was done for
              this.
 
-Quit:Quit:
+Quit:
 COMMAND SUMMARY                                                       Page A-2
 
 
   Exit from BROWSE by typing Q.
 
-Help:Help:
+Help:
   A help-screen is displayed after typing "?" or PF2 (cf: EDT).
 
-Scrolling:Scrolling:
+Scrolling:
   T          scroll to top of file.
   E          scroll to end of file.
   F          scroll forward by a full-screen (space).
@@ -1187,14 +1187,14 @@ Scrolling:Scrolling:
   {number}   Set  column  for  H,  number  of  columns  for  L  or  R,   or
              repeat-factor for other scrolling commands.
 
-Searching:Searching:
+Searching:
   /          search for a string
   \          search backward for a string
   N          search for next occurrence of string.
   P          search for previous occurrence of string.
   CTRL/X     aborts search/skip.
 
-Miscellaneous:Miscellaneous:
+Miscellaneous:
   K          Copy screen to SNAPSHOT.CRT
   M          Toggle MARK mode (active if /MARK option)
   O          Toggle OVER mode (3 states if /OVER, else 2)

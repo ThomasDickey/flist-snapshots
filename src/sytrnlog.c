@@ -7,7 +7,7 @@
 
 /*
  * Title:	systrnlog.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	11 Apr 1985
  * Last update:	11 Apr 1985
  *

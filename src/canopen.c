@@ -1,16 +1,15 @@
- 			/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<stsdef.h>
+#ifndef NO_IDENT
+static char *Id = "$Id: canopen.c,v 1.3 1984/09/18 10:47:34 tom Exp $";
+#endif
 
 /*
  * Title:	canopen.c
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	18 Sep 1984
  * Last update:	18 Sep 1984
  *
  * Function:	Verify that a given file can be opened (for input).  This is
- *		a more stringent test-for-existence, which is used in DIRED to
+ *		a more stringent test-for-existence, which is used in FLIST to
  *		verify that a command-file is present and usable.
  *
  * Parameters:	name_	=> name-string to use
@@ -20,6 +19,9 @@
  * Patch:	Should consider extending this function to testing other types
  *		of file-open.
  */
+
+#include	<rms.h>
+#include	<stsdef.h>
 
 #define	check(f)	status = (f);\
 			if (!$VMS_STATUS_SUCCESS(status)) goto failed;

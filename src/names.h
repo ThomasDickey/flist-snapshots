@@ -1,6 +1,7 @@
-/*
+/* $Id: names.h,v 1.3 1984/08/25 11:19:06 tom Exp $
+ *
  * Title:	names.h
- * Author:	T.E.Dickey (ITT/ATC)
+ * Author:	Thomas E. Dickey
  * Created:	25 Aug 1984
  * Last update:	25 Aug 1984
  *

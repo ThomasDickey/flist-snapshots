@@ -1,11 +1,6 @@
-  	/* Copyright 1984 (C) Thomas E. Dickey */
-
-#include	<rms.h>
-#include	<prvdef.h>
-
-#include	"bool.h"
-#include	"getprot.h"
-
+#ifndef NO_IDENT
+static char *Id = "$Id: cmpprot.c,v 1.2 1989/12/05 11:56:58 tom Exp $";
+#endif
 
 /*
  * Title:	cmpprot.c
@@ -32,6 +27,12 @@
  *		because it does not distinguish between delete-access and
  *		write-access.
  */
+
+#include	<rms.h>
+#include	<prvdef.h>
+
+#include	"bool.h"
+#include	"getprot.h"
 
 #define	ACCESS(m)	(((mask << m) & pr_->p_mask) == 0)
 
