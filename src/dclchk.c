@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclchk.c,v 1.4 1995/06/04 19:06:22 tom Exp $";
+static char *Id = "$Id: dclchk.c,v 1.5 2000/11/05 23:17:05 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dclchk.c,v 1.4 1995/06/04 19:06:22 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 May 1984
  * Last update:
+ *		05 Nov 2000, DEC C warning about comparing unsigned to -1.
  *		19 Feb 1995, prototypes
  *		26 Aug 1984, cleanup buffer sizes
  *		14 Jul 1984, use $GETMSG for most messages.
@@ -46,7 +47,7 @@ dclchk (DCLARG *dcl_, char *co_)
 	{
 		if (status = dcl_->dcl_stat)
 		{
-			if (status == -1)
+			if ((int)status == -1)
 				form_ = dcl_->dcl_text;
 			else
 			{

@@ -1,4 +1,7 @@
-/* $Id: strutils.h,v 1.6 1995/10/22 21:41:14 tom Exp $ */
+/* $Id: strutils.h,v 1.7 2000/11/05 16:54:44 tom Exp $ */
+
+/* debrief.c */
+int debrief (char *msg, void *vec, int vsize, int vlast, char *find, int fsize);
 
 /* scanint.c */
 char * scanint (char *string, int *int_);

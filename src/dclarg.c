@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dclarg.c,v 1.8 1995/10/27 23:05:48 tom Exp $";
+static char *Id = "$Id: dclarg.c,v 1.9 2000/11/05 22:43:49 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dclarg.c,v 1.8 1995/10/27 23:05:48 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	24 May 1984
  * Last update:
+ *		05 Nov 2000, fix DEC C warning about comparing unsigned to -1.
  *		27 Oct 1995, suppress DNF-error so "create directory" works.
  *		18 Mar 1995, prototyped
  *		05 Dec 1989, patched out VMS-bug (PATCH_DEC89)
@@ -419,7 +420,7 @@ DCLARG	*dclarg_make (
 	}
 #endif	/* PATCH_DEC89 */
 
-	if (status == -1)
+	if ((int)status == -1)
 	{
 		sprintf (bfr, "%s: \\%.8s\\", s_, &cmd[from]);
 		s_ = bfr;

@@ -115,4 +115,4 @@ Installing:
 
 --
 
-Thomas E. Dickey (dickey@clark.net)
+Thomas E. Dickey (dickey@herndon4.his.com)

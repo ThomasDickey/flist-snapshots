@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: crt.c,v 1.7 1995/06/04 18:58:12 tom Exp $";
+static char *Id = "$Id: crt.c,v 1.8 2000/11/05 23:12:49 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,9 @@ static char *Id = "$Id: crt.c,v 1.7 1995/06/04 18:58:12 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	03 May 1984
  * Last update:
+ *		05 Nov 2000, recode a fragment to avoid warning by DEC C that
+ *			     misinterpreted as indexing before the beginning
+ *			     of an array.
  *		27 May 1995, prototypes
  *		07 Oct 1985, ensure that if term-size changed, LPP is ok.
  *		05 Oct 1985, added code to support 80/132-column switch.
@@ -574,7 +577,6 @@ void	crt_text(
 		 * so that the difference loop below will work.  (The
 		 * column-index ranges from 1 to the length of the string.)
 		 */
-		c1_ = bfr1 - 1;
 		c2_--;
 		while (oldlen < col_r)	c2_[++oldlen] = ' ';
 
@@ -590,7 +592,7 @@ void	crt_text(
 		 */
 		for (column = col_r, chg = eql = 0; column >= col_l; column--)
 		{
-			if (c1_[column] == c2_[column])
+			if (bfr1[column-1] == c2_[column])
 			{
 				to_chg[column] = ++chg;
 				to_eql[column] = eql = 0;

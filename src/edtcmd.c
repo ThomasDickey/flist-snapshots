@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: edtcmd.c,v 1.12 1995/06/06 09:44:14 tom Exp $";
+static char *Id = "$Id: edtcmd.c,v 1.13 2000/11/05 23:07:13 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: edtcmd.c,v 1.12 1995/06/06 09:44:14 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	16 Apr 1985 (from DIRCMD, 10 May 1984)
  * Last update:
+ *		05 Nov 2000, DEC C warning: strlen() is always positive.
  *		19 Feb 1995, prototypes
  *		18 Feb 1995, port to AXP (renamed 'alarm').
  *		27 Apr 1985
@@ -92,7 +93,7 @@ edtcmd (
 	int	command,	/* Initial and scratch value		*/
 	char	*delim,		/* Delimiters (if used, for repeat-count) */
 	int	flags,		/* Bits: highlight, lowercase, trim	*/
-	int	do_line,	/* Line on which to enter command 	*/
+	int	do_line,	/* Line on which to enter command	*/
 	int	do_col,		/* Column at which to begin command	*/
 	char	*do_hlp,	/* Help-interface string		*/
 	char	*do_1st,	/* Starting contents of command-result	*/
@@ -210,7 +211,7 @@ retrieve:
 			}
 			else
 				sound_alarm();
-			break;		
+			break;
 
 		case '\b':
 		case pad0:
@@ -246,7 +247,7 @@ retrieve:
 					if (strchr(delim, command))
 						complete = TRUE;
 					else if (!isdigit(command))
-						use_it = FALSE;	
+						use_it = FALSE;
 				}
 				if (use_it)
 				{
@@ -271,7 +272,7 @@ retrieve:
 			strcat  (cmdbfr, " ");
 
 		if (!gotraw() || complete) SHOWIT;
-		if (strlen(cmdbfr) <= 0)
+		if (strlen(cmdbfr) == 0)
 		{
 			cmdbfr[0] = EOS;
 			goto did_abort;

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: isowner.c,v 1.7 1998/10/25 00:52:43 tom Exp $";
+static char *Id = "$Id: isowner.c,v 1.8 2000/11/05 22:42:53 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: isowner.c,v 1.7 1998/10/25 00:52:43 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	20 Dec 1984
  * Last update:
+ *		05 Nov 2000, DEC C warnings.
  *		24 Oct 1998, limit getuid/getgid compares to 16-bits
  *		25 Oct 1995, missing parenthesis
  *		19 Feb 1995, str/sys utils prototypes
@@ -43,7 +44,7 @@ int	isowner (FILENT *z)
 	&& ! sysrights(PRV$M_SYSPRV,0))
 	{
 		strcpy (msg, "You are not the file's owner");
-		if (z->f_grp == -1)
+		if ((int) z->f_grp == -1)
 			strcat (msg, "(NO Privilege)");
 		else
 			sprintf (strnull(msg), ": [%03o,%03o]",
