@@ -1,3 +1,4 @@
+.; $Id: da.rno,v 1.2 1995/10/23 20:36:52 tom Exp $
 .req	"d0.req"
 .;
 .;
@@ -32,10 +33,10 @@ each disk directory which can be rapidly interrogated and modified.
 FLIST runs much faster than any similar program could on VMS or Unix
 for this reason.
 .b.i-4
-o	FLIST (a program of the same name on Unix) is a crude example
-showing that a directory editor can run on medium-sized systems.
+o	DIRED (a simple directory editor on Unix)
+shows that a directory editor can run on medium-sized systems.
 .b.lm-8
-FLIST is not a copy of either FLIST or FLIST/Unix.
+FLIST is not a copy of either FLIST or DIRED.
 It is implemented in a more difficult environment than either,
 because of complications imposed by VMS file structures:
 .lm+8
@@ -45,7 +46,7 @@ ready access to the directory.
 Each and every filename is composed of three tokens (name, type and disk).
 Screen management is performed by a fully integrated display manager.
 .b.i-4
-o	FLIST/Unix runs on a system which is superficially similar to VMS.
+o	DIRED runs on a system which is superficially similar to VMS.
 Filenames are hierarchical.
 Very crude display management is done, since this is done by each program.
 .lm-8
@@ -70,7 +71,7 @@ which appears with more than one version.
 FLIST must do the deletion immediately, else in succeeding operations
 the user may edit the "highest" remaining version (resulting in a
 version conflict).
-Thus, like FLIST, FLIST is a what-you-see-is-what-you-get editor.
+Thus FLIST is a what-you-see-is-what-you-get editor.
 .;
 .hl+1	Terminal Control
 Screen management is done within FLIST, using the
@@ -89,7 +90,7 @@ While this is simple, it is slow, particularly file-copying:
 o	FLIST parses the command, using RMS to parse the file specifications.
 RMS must do I/O to support its parse.
 .b.i-4
-o	FLIST verifies that the output file is writeable,
+o	FLIST verifies that the output file is writable,
 requiring more I/O, and determines its name.
 .b.i-4
 o	After the spawned command is completed, FLIST searches for

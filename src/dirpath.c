@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirpath.c,v 1.8 1995/06/04 23:08:06 tom Exp $";
+static char *Id = "$Id: dirpath.c,v 1.9 1995/10/23 00:50:49 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,9 @@ static char *Id = "$Id: dirpath.c,v 1.8 1995/06/04 23:08:06 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	27 Jul 1984
  * Last update:
+ *		22 Oct 1995, modified 'dirpath_sort()' to prune extra chars
+ *			     from expansion of rooted logicals (e.g., ".]["),
+ *			     and extra leaf for top-level (e.g., "000000.").
  *		28 May 1995, prototypes
  *		12 Sep 1985, also account for implied trailing '.' in pathname
  *			     collating.
@@ -141,12 +144,24 @@ PATHNT	*dirpath_sort (
 	PATHNT	*newP, *oldP, *nxtP;
 	int	cmp;
 	char	text	[MAX_PATH],
-		trim	[MAX_PATH];
+		trim	[MAX_PATH],
+		*s;
 
 	if (len < 1)		len = 1;
 	if (len >= MAX_PATH)	len = MAX_PATH-1;
 
-	strncpy (text, esa, len);	text[len] = '\0';
+	strncpy (text, esa, len)[len] = '\0';
+	for (s = text; *s; s++) {
+		if (*s == '<')	*s = '[';
+		if (*s == '>')	*s = ']';
+	}
+
+	while (strclip(text, ".]["))
+		/*EMPTY*/;
+	if ((s = strstr(text, "[000000.")) != 0)
+		(void)strclip(s+1, "000000.");
+
+	len = strlen(text);
 	strcpy  (trim, text);		strcpy  (&trim[len-1], ".");
 
 	for (newP = pathlist, oldP = 0;
