@@ -1,4 +1,5 @@
-/*
+/* $Id: main.h,v 1.6 1995/05/28 18:12:36 tom Exp $
+ *
  * Title:	main.h
  * Author:	Thomas E. Dickey
  * Created:	29 Nov 1984
