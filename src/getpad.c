@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: getpad.c,v 1.2 1984/09/18 10:25:26 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	"getpad.h"
 
 /*
  * Title:	getpad.c - Get keypad "character"
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	07 May 1984
  * Last Update:	18 Sep 1984, use 'alarm' instead of 'putchar'
  *		22 Jun 1984, corrections to erro handling
@@ -40,9 +40,7 @@ static char *Id = "$Id: getpad.c,v 1.2 1984/09/18 10:25:26 tom Exp $";
  *		<int> is an intermediate character, as above.
  *		<fin> is a final character in the range 40-7E.
  */
-
-#include	"getpad.h"
-
+
 typedef	struct	{
 	char	*s;
 	int	c;

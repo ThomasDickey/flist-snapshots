@@ -1,10 +1,9 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strlcpy.c,v 1.2 1985/05/15 10:59:16 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
 
+#include	"ctype.h"
 /*
  * Title:	strlcpy.c
- * Author:	Thomas E. Dickey
+ * Author:	T. E. Dickey (ITT/ATC)
  * Created:	28 Jun 1984
  * Last update: 15 May 1985, use macro, not routine for convert
  *		28 Jun 1984
@@ -16,8 +15,6 @@ static char *Id = "$Id: strlcpy.c,v 1.2 1985/05/15 10:59:16 tom Exp $";
  *
  * Returns:	Pointer to final null in output buffer.
  */
-
-#include	"ctype.h"
 
 char	*strlcpy (optr, iptr)
 char	*optr,				/* => output string		*/

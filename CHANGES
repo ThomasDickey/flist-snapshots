@@ -1,3 +1,35 @@
+1993-04-23  dickey@software.org
+
+	* src/build.com: RCS_BASE
+
+1993-04-23  Thomas E. Dickey  <dickey@software.org>
+
+	* src/build.com: rcs-identifiers
+
+1993-04-23  dickey@software.org
+
+	* doc/browse.hlp, doc/flist.hlp, doc/browse.mem: RCS_BASE
+
+1993-04-23  Thomas E. Dickey  <dickey@software.org>
+
+	* doc/browse.mem: stripped embedded carriage-returns
+
+1993-04-23  dickey@software.org
+
+	* doc/flist.mem: RCS_BASE
+
+1993-04-23  Thomas E. Dickey  <dickey@software.org>
+
+	* doc/flist.mem: stripped embedded carriage-returns
+
+1993-04-23  dickey@software.org
+
+	* doc/build.com: RCS_BASE
+
+1993-04-23  Thomas E. Dickey  <dickey@software.org>
+
+	* doc/build.com: rcs identifiers
+
 1993-04-22  dickey@software.org
 
 	* src/descrip.mms: RCS_BASE

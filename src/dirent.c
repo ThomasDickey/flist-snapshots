@@ -1,6 +1,12 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
-#endif
+ 	  /* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<rms.h>
+#include	<descrip.h>
+#include	<stsdef.h>
+
+#include	"flist.h"
+#define		DIRENT		/* local */
+#include	"dirent.h"
+#include	"dclarg.h"
 
 /*
  * Title:	dirent.c
@@ -89,8 +95,8 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
  *		28 May 1984
  *
  * Function:	This module performs wildcard directory lookup using the
- *		argc/argv argument list passed to the main program of "FLIST".
- *		It processes options which permit "FLIST" to display less than
+ *		argc/argv argument list passed to the main program of "DIRED".
+ *		It processes options which permit "DIRED" to display less than
  *		the full directory listing (for speed).
  *
  * Entry:	dirent:		Read directory, given argument list
@@ -123,16 +129,7 @@ static char *Id = "$Id: dirent.c,v 1.3 1989/12/05 14:54:28 tom Exp $";
  *		dirent__one:	read a FILENT-block for all file-info
  *		dirent__read:	read a FILENT-block, pruning if duplicates
  */
-
-#include	<rms.h>
-#include	<descrip.h>
-#include	<stsdef.h>
-
-#include	"flist.h"
-#define		DIRENT		/* local */
-#include	"dirent.h"
-#include	"dclarg.h"
-
+
 #define	MAXFILES	(4096 / sizeof(filelist[0]))
 
 /*

@@ -1,10 +1,8 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dclarea.c,v 1.2 1985/06/15 23:27:02 tom Exp $";
-#endif
+#include	"dclopt.h"
 
 /*
  * Title:	dclarea.c
- * Author:	Thomas E. Dickey
+ * Author:	T.Dickey (ITT/ATC)
  * Created:	13 Apr 1985
  * Last update:	15 Jun 1985, typed 'calloc'
  *		13 Apr 1985
@@ -20,8 +18,6 @@ static char *Id = "$Id: dclarea.c,v 1.2 1985/06/15 23:27:02 tom Exp $";
  * Returns:	Pointer to the allocated area.  The DCLOPT entry also points
  *		to this area.
  */
-
-#include	"dclopt.h"
 
 char	*calloc();
 

@@ -1,18 +1,17 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dirdata.c,v 1.4 1985/07/23 01:08:26 tom Exp $";
-#endif
+#include	"flist.h"
+#include	"dirent.h"
 
 /*
  * Title:	dirdata.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	13 Jul 1985
  * Last update:	22 Jul 1985, if rename, make sure path has same references as
  *			     the data objects, use 'dirpath_add'
  *		16 Jul 1985, added 'dirdata_one', 'dirdata_ren'.
  *
  * Function:	This module contains the principal routines which maintain the
- *		'filelink' linked-list of file information for FLIST.  We
- *		keep a single list of all files known to all levels of FLIST,
+ *		'filelink' linked-list of file information for DIRED.  We
+ *		keep a single list of all files known to all levels of DIRED,
  *		distinguishing ownership by a given level with a bit-mask
  *		'.file_refs' (see NAMEHEAP).  The list is sorted in the order
  *		which a SYS$SEARCH would yield the entire list of files:
@@ -37,9 +36,6 @@ static char *Id = "$Id: dirdata.c,v 1.4 1985/07/23 01:08:26 tom Exp $";
  *		dirdata_one:	Add FILENT block, searching from beginning.
  *		dirdata_ren:	Rename file, relinking block.
  */
-
-#include	"flist.h"
-#include	"dirent.h"
 
 char	*calloc();	/* allocate a memory-block	*/
 

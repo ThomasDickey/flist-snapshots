@@ -1,6 +1,5 @@
-#ifndef NO_IDENT
-static char *Id2 = "$Id: domore.c,v 1.2 1985/01/14 12:42:30 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
 
+ 
 #define	main_incl	more
 #include	"browse.c"

@@ -1,10 +1,9 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: xabproui.c,v 1.2 1985/06/16 02:24:32 tom Exp $";
-#endif
+   	 	/* Copyright 1985 (C), Thomas E. Dickey */
+#include	<rms.h>
 
 /*
  * Title:	xabprouic.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	15 Jun 1985
  * Last update:	15 Jun 1985
  *
@@ -16,9 +15,6 @@ static char *Id = "$Id: xabproui.c,v 1.2 1985/06/16 02:24:32 tom Exp $";
  *		mbm_	=> word to load with member
  */
 
-#include	<rms.h>
-
-void
 xabprouic (pro_, grp_, mbm_)
 struct	XABPRO	*pro_;
 short	*grp_, *mbm_;

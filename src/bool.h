@@ -1,10 +1,10 @@
 /*
  * Title:	bool.h
- * Author:	Thomas E. Dickey
- * Created:	08 Aug 1983
+ * Author:	T.E.Dickey (ITT/ATC)
+ * Created:	08-Aug-83
  * Last update:	11 Dec 1984, added SIZEOF, EOS
- *		11 Apr 1984, removed 'struct' from nullS
- *		05 Apr 1984, to added null-pointer def's
+ *		11 Apr 84, removed 'struct' from nullS
+ *		05 Apr-84, to added null-pointer def's
  */
 #define	TRUE	1
 #define	FALSE	0

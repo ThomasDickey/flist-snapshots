@@ -1,10 +1,8 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strform2.c,v 1.2 1984/07/14 01:26:54 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
 
 /*
  * Title:	strform2.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	13 Jul 1984
  * Last update:	13 Jul 1984
  *

@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: pathup.c,v 1.2 1985/04/12 01:23:42 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+#include	<rms>
+
+#include	"bool.h"
 
 /*
  * Title:	pathup.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	02 Jul 1984, recode from 'dirent.c' module
  * Last update:	11 Apr 1985, do a translate-logical before trying to scan the
  *			     pathname.  Some system stuff does logical-names for
@@ -25,10 +26,6 @@ static char *Id = "$Id: pathup.c,v 1.2 1985/04/12 01:23:42 tom Exp $";
  *
  * Returns:	TRUE if no error was detected.
  */
-
-#include	<rms>
-
-#include	"bool.h"
 
 char	*strnull();			/* => end of string	*/
 

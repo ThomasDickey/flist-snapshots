@@ -2,10 +2,10 @@
 
 /*
  * Title:	strskps.c
- * Author:	Thomas E. Dickey
- * Created:	14 Sep 1983
+ * Author:	T.E.Dickey (ITT/ATC)
+ * Created:	14 Sep 83
  * Last update:	29 Dec 1984, to use ctype-include
- *		05 Dec 1983
+ *		05 Dec 83
  *
  * Function:	Skip over spaces and other blank characters.
  *

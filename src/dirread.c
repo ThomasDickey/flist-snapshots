@@ -1,18 +1,20 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dirread.c,v 1.3 1985/06/16 00:16:32 tom Exp $";
-#endif
+  	 	/* Copyright 1985 (C) Thomas E. Dickey */
+#include	<rms>
+
+#include	"flist.h"
+#include	"dirent.h"
 
 /*
  * Title:	dirread.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	31 Jan 1985
  * Last update:	15 Jun 1985, typed 'realloc', 'calloc'.
  *		05 Feb 1985, added 'dirread_path' entry.
  *		01 Feb 1985
  *
- * Function:	This module updates the read-list for FLIST.  Each time a
+ * Function:	This module updates the read-list for DIRED.  Each time a
  *		directory search is performed (i.e., by the initial invocation,
- *		or by the READ command), FLIST calls this module to unite
+ *		or by the READ command), DIRED calls this module to unite
  *		the data with the read-list.  We do pruning here, because we
  *		want to make the full re-READ of the display list fast.
  *		By eliminating redundant search-patterns, we can keep the
@@ -26,11 +28,6 @@ static char *Id = "$Id: dirread.c,v 1.3 1985/06/16 00:16:32 tom Exp $";
  *			patterns already in the read-list causes those patterns
  *			to be replaced by the new pattern.
  */
-
-#include	<rms>
-
-#include	"flist.h"
-#include	"dirent.h"
 
 char	*calloc(),	/* Memory allocation		*/
 	*realloc(),	/* ...and re-allocation		*/

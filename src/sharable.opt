@@ -1,3 +1,2 @@
-! $Id: sharable.opt,v 1.2 1985/06/16 23:44:14 tom Exp $
 sys$share:vaxcrtl.exe/share
 stack=40

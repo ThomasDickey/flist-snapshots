@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: whoami.c,v 1.2 1985/10/01 01:56:06 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+#include	<rms>
+#include	<jpidef.h>
 
 /*
  * Title:	whoami.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	29 Nov 1984
  * Last update:	30 Sep 1985, use SYS$GETJPIw in VMS 4.x
  *		09 May 1985, return nonzero code if from system
@@ -26,9 +26,6 @@ static char *Id = "$Id: whoami.c,v 1.2 1985/10/01 01:56:06 tom Exp $";
  *
  * Returns:	TRUE iff the image is run from a system directory
  */
-
-#include	<rms>
-#include	<jpidef.h>
 
 int	whoami (name, opt)
 char	*name;

@@ -1,6 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
-#endif
+  	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
+#include	<rms.h>
+#include	<stsdef.h>
+#include	<descrip.h>
+
+#include	<ctype.h>
+
+#include	"bool.h"
 
 /*
  * Title:	rmsio.c
@@ -59,14 +64,6 @@ static char *Id = "$Id: rmsio.c,v 1.2 1989/02/28 18:50:30 tom Exp $";
  *		rerror:	(perror) Print message for last error
  *		rsize:	(?)	 Returns size of largest record of input.
  */
-
-#include	<rms.h>
-#include	<stsdef.h>
-#include	<descrip.h>
-
-#include	<ctype.h>
-
-#include	"bool.h"
 
 #define	DEFAULT_RSIZE	512
 

@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flfind.c,v 1.3 1985/08/15 23:57:32 tom Exp $";
-#endif
+  	/* Copyright 1984 (C), Thomas E. Dickey */
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
 
 /*
  * Title:	flfind.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	21 May 1984
  * Last update:	14 Aug 1985, added code to make search-state nested.
  *		13 Aug 1985, corrected pointer-references to '->dcl_text' (had
@@ -23,7 +24,7 @@ static char *Id = "$Id: flfind.c,v 1.3 1985/08/15 23:57:32 tom Exp $";
  *		05 Jul 1984
  *
  * Function:	This module performs the FIND, NFIND, and NEXT functions
- *		for FLIST:
+ *		for DIRED:
  *
  *		FIND -	initiates a search in the current direction, which is
  *			halted when a file entry is found matching the pattern.
@@ -34,11 +35,7 @@ static char *Id = "$Id: flfind.c,v 1.3 1985/08/15 23:57:32 tom Exp $";
  * Patch:	Should provide a re-entry point to 'dirarg' so that we can
  *		re-substitute /P/N/T/V stuff if it is needed in NEXT.
  */
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
-
+
 char	*calloc();
 
 typedef	struct	{

@@ -1,10 +1,9 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: rabrfa.c,v 1.2 1985/06/16 23:03:46 tom Exp $";
-#endif
+  	/* Copyright 1985 (C) Thomas E. Dickey */
+#include	<rms.h>
 
 /*
  * Title:	rabrfa.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	15 Jun 1985
  * Last update:	15 Jun 1985
  *
@@ -13,8 +12,6 @@ static char *Id = "$Id: rabrfa.c,v 1.2 1985/06/16 23:03:46 tom Exp $";
  *		altered in CC2.0: CC2.0 declares RAB's rfa as short[3],
  *		rather than long,short
  */
-
-#include	<rms.h>
 
 #define	RFA0	((z->rab$w_rfa[1]<<16) + z->rab$w_rfa[0])
 #define	RFA4	z->rab$w_rfa[2]

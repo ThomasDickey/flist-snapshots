@@ -1,9 +1,16 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.3 1989/02/02 19:32:54 tom Exp $";
-#endif
+ 	  	/* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<stdlib.h>	/* declares 'qsort()' */
+#define	QSORT
+
+#include	<rmsdef.h>
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dclarg.h"
 
 /*
- * Title:	flsort.c - "FLIST" sorting
+ * Title:	flsort.c - "DIRED" sorting
  * Author:	T.E.Dickey
  * Created:	04 May 1984
  * Last update:
@@ -38,7 +45,7 @@ static char *Id = "$Id: flsort.c,v 1.3 1989/02/02 19:32:54 tom Exp $";
  *		14 May 1984
  *
  * Function:	This module performs the directory-sorting operations for
- *		the "FLIST" program.  The following fields are sortable:
+ *		the "DIRED" program.  The following fields are sortable:
  *
  *		P	path,name,type,vers
  *		N	name,type,vers,path (normal)
@@ -72,16 +79,6 @@ static char *Id = "$Id: flsort.c,v 1.3 1989/02/02 19:32:54 tom Exp $";
  *		sort operations, the file-index may be adjusted even if no
  *		changes result directly from the sort.
  */
-
-#include	<stdlib.h>	/* declares 'qsort()' */
-#define	QSORT
-
-#include	<rmsdef.h>
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dclarg.h"
 
 import(filelist); import(numfiles);
 import(A_opt);	import(D_opt);	import(M_opt);	import(O_opt);

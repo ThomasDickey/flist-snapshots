@@ -1,35 +1,4 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
-#endif
-
-/*
- * Title:	acplook.c
- * Author:	Thomas E. Dickey
- * Created:	08 Dec 1984 (from test code)
- * Last update:
- *		04 Nov 1988, added '.fexpr' data
- *		22 Mar 1985, added file-id, record-length
- *		27 Jan 1985, fix file-size (if negative result, assume we use
- *			     the high-block).
- *		20 Dec 1984, keep file-org with format (for FLIST).
- *		12 Dec 1984, mask file-org from file-format
- *		11 Dec 1984, fixes if privilege-violation found.
- *
- * Function:	This procedure uses the VMS ancillary control processor (ACP)
- *		to obtain all directory information which will be useful for
- *		FLIST except the filename.  When successful, a lookup using
- *		ACP is up to twice as fast as the equivalent using RMS (which
- *		must itself call ACP).
- *
- * Arguments:	z	=> FILENT structure to load.  We write over default
- *			   values supplied by the caller.
- *		filespec=> unique, null-ended filename specification string.
- *		nam_	=> NAM block (if a SYS$SEARCH was used before calling
- *			   this procedure).
- *
- * Returns:	The worst error status encountered in doing I/O for the lookup.
- */
-
+   	  /* Copyright 1984, 1985 (C), Thomas E. Dickey */
 #include	<rms.h>
 #include	<descrip.h>
 #include	<iodef.h>
@@ -41,6 +10,34 @@ static char *Id = "$Id: acplook.c,v 1.3 1988/11/04 11:42:24 tom Exp $";
 #include	"flist.h"
 #define		DIRENT		/* local */
 #include	"dirent.h"
+
+/*
+ * Title:	acplook.c
+ * Author:	T.E.Dickey (ITT/ATC)
+ * Created:	08 Dec 1984 (from test code)
+ * Last update:
+ *		04 Nov 1988, added '.fexpr' data
+ *		22 Mar 1985, added file-id, record-length
+ *		27 Jan 1985, fix file-size (if negative result, assume we use
+ *			     the high-block).
+ *		20 Dec 1984, keep file-org with format (for DIRED).
+ *		12 Dec 1984, mask file-org from file-format
+ *		11 Dec 1984, fixes if privilege-violation found.
+ *
+ * Function:	This procedure uses the VMS ancillary control processor (ACP)
+ *		to obtain all directory information which will be useful for
+ *		DIRED except the filename.  When successful, a lookup using
+ *		ACP is up to twice as fast as the equivalent using RMS (which
+ *		must itself call ACP).
+ *
+ * Arguments:	z	=> FILENT structure to load.  We write over default
+ *			   values supplied by the caller.
+ *		filespec=> unique, null-ended filename specification string.
+ *		nam_	=> NAM block (if a SYS$SEARCH was used before calling
+ *			   this procedure).
+ *
+ * Returns:	The worst error status encountered in doing I/O for the lookup.
+ */
 
 long	acplook (z, filespec, nam_)
 FILENT	*z;

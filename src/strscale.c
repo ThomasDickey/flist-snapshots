@@ -1,10 +1,8 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: strscale.c,v 1.2 1984/06/06 12:38:20 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
 
 /*
  * Title:	strscale.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	06 Jun 1984
  * Last update:	07 Jun 1984
  *

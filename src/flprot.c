@@ -1,10 +1,14 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
-#endif
+ 	 	/* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"getpad.h"
+#include	"dclarg.h"
 
 /*
  * Title:	flprot.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	11 May 1984
  * Last update:	05 Oct 1985, added key-argument to 'flist_help'.
  *		24 Sep 1985, corrected threshold-test on 'prot_col'.
@@ -33,7 +37,7 @@ static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
  *		22 May 1984
  *
  * Function:	This module supports an edit-function for the protection-
- *		code field displayed (last on each line) by "FLIST".  As
+ *		code field displayed (last on each line) by "DIRED".  As
  *		each change to the original code is made, it is highlighted
  *		(and uppercased, for VT52, etc.) to show the user what he
  *		has changed.  On successful completion of the editing,
@@ -54,14 +58,7 @@ static char *Id = "$Id: flprot.c,v 1.3 1985/10/06 01:12:38 tom Exp $";
  *		CTRL/U, CTRL/X	- abort edit
  *		ENTER, RETURN	- complete edit, submit command
  */
-
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"getpad.h"
-#include	"dclarg.h"
-
+
 /*
  * External procedures and data:
  */
@@ -214,7 +211,7 @@ char	c, *c_, *d_,
 	}
 
 	/*
-	 * The protection-mask is the last field of the "FLIST" display
+	 * The protection-mask is the last field of the "dired" display
 	 * line.  The display corresponds (with blanks between groups of
 	 * four bits) to the bits in the protection mask, left-to-right
 	 * to LSB-to-MSB.  Use dead reckoning to build an index table:
@@ -357,7 +354,7 @@ char	c, *c_, *d_,
 			goto cleanup;
 		}
 
-		strcpy (set_, "PROTECT=(");	/* Abbreviate to match FLIST */
+		strcpy (set_, "PROTECT=(");	/* Abbreviate to match DIRED */
 		set_ = strnull(set_);
 		comma = FALSE;
 

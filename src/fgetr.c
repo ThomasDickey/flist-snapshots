@@ -1,22 +1,19 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: fgetr.c,v 1.3 1984/09/17 10:50:14 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<stdio.h>
 
 /*
  * Title:	fgetr.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	11 Sep 1984
  * Last update:	17 Sep 1984, return -1 on EOF
  *
  * Function:	This procedure reads a line from an (assumed) VMS carriage-
- *		control format file.  It is used by the BROWSE program as an
+ *		control format file.  It is used by the MORE program as an
  *		interim solution until a suitable set of RMS-oriented routines
  *		can be developed to read other formats.
  *
  */
-
-#include	<stdio.h>
-
 fgetr (file_, bfr, maxbfr, mark_)
 FILE	*file_;		/* file-descriptor pointer	*/
 char	bfr[];		/* buffer to load		*/

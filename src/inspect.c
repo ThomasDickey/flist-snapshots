@@ -1,10 +1,12 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: inspect.c,v 1.2 1985/06/16 01:57:20 tom Exp $";
-#endif
+  	/* Copyright 1984, 1985 (C) Thomas E. Dickey */
+
+#include	<ctype.h>
+
+#include	"bool.h"
 
 /*
  * Title:	inspect.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	17 Nov 1984
  * Last update:	15 Jun 1985, typed 'ropen'
  *		04 Feb 1985, block-encrypted files do not have proper record
@@ -25,10 +27,6 @@ static char *Id = "$Id: inspect.c,v 1.2 1985/06/16 01:57:20 tom Exp $";
  * Returns:	TRUE iff all scanned characters are as expected, and if the
  *		longest-record length is reasonable.
  */
-
-#include	<ctype.h>
-
-#include	"bool.h"
 
 char	*ropen();
 

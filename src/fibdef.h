@@ -1,5 +1,3 @@
-/* $Id: fibdef.h,v 1.2 1984/11/03 01:43:50 tom Exp $ */
-
 #define	FIB$C_ADD_QUOTA	0xb
 #define	FIB$C_CYL	0x1
 #define	FIB$C_DSA_QUOTA	0xa

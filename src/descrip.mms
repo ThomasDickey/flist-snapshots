@@ -1,5 +1,3 @@
-# $Id: descrip.mms,v 1.2 1993/04/22 16:56:24 tom Exp $
-#
 # VAX/VMS MMS build script for FLIST and BROWSE
 #
 # Tested with:

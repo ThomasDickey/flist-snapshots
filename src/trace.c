@@ -1,6 +1,4 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: trace.c,v 1.2 1984/11/05 11:22:34 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
 
 #include	<stdio.h>
 

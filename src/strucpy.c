@@ -2,10 +2,10 @@
 
 /*
  * Title:	strucpy.c
- * Author:	Thomas E. Dickey
- * Created:	22 Aug 1983
+ * Author:	T. E. Dickey (ITT/ATC)
+ * Created:	22 Aug 83
  * Last update: 15 May 1985, use ctype-include
- *		11 Nov 1983
+ *		11 Nov 83
  *
  * Function:	Copy a string, converting it to uppercase.
  *

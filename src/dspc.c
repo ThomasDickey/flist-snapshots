@@ -1,10 +1,12 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: dspc.c,v 1.3 1985/01/17 12:40:44 tom Exp $";
-#endif
+	   /* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	"ctype.h"
+
+#include	"crt.h"
+#include	"getpad.h"
 
 /*
  * Title:	dspc.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	07 Jun 1984
  * Last update:	17 Jan 1985, recode so we only do init/move functions here,
  *			     under control of caller.
@@ -12,16 +14,11 @@ static char *Id = "$Id: dspc.c,v 1.3 1985/01/17 12:40:44 tom Exp $";
  *		18 Jun 1984
  */
 
-#include	"ctype.h"
-
-#include	"crt.h"
-#include	"getpad.h"
-
 /*
  * Title:	dspc_init
  *
  * Function:	This procedure displays the current cursor location in-screen
- *		for the BROWSE program.
+ *		for the MORE program.
  *
  * Parameters:	scale	text buffer to load with basic scale.
  *		coladj	amount by which to right-shift the display to account

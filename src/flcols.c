@@ -1,6 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
-#endif
+	   /* Copyright 1984 (C), Thomas E. Dickey */
+#include	<ctype.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"dclarg.h"
+#include	"dds.h"
+#include	"dirent.h"
 
 /*
  * Title:	flcols.c
@@ -22,19 +27,11 @@ static char *Id = "$Id: flcols.c,v 1.3 1988/11/04 12:28:54 tom Exp $";
  *		05 Dec 1984, added 'PATH' type.
  *		17 Nov 1984, added 'ATTRIBUTE', 'FORMAT' types.
  *
- * Function:	Alter the FLIST display format by modifying the 'conv_list'
+ * Function:	Alter the DIRED display format by modifying the 'conv_list'
  *		string.  DIRCMD passes the DCL-list as a series of lower-
  *		cased tokens which we must match against the table of
  *		permissible keys.
  */
-
-#include	<ctype.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"dclarg.h"
-#include	"dds.h"
-#include	"dirent.h"
 
 char	*scanint(),		/* => past decoded integer */
 	*strchr();		/* Returns index to string of char-arg	*/
@@ -154,7 +151,7 @@ char	*out_, c;
 }
 
 /* <init>:
- * (Re)initialize 'conv_list', based on the current settings of FLIST's
+ * (Re)initialize 'conv_list', based on the current settings of DIRED's
  * option flags.
  */
 flcols_init ()

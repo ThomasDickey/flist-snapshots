@@ -1,10 +1,18 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: crt.c,v 1.3 1988/06/29 15:07:10 tom Exp $";
-#endif
+ 	 		 /* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<ssdef.h>
+#include	<stsdef.h>
+#include	<ttdef.h>
+
+#include	"bool.h"
+#include	"crt.h"
+#include	"names.h"
 
 /*
- * Title:	crt.c - "FLIST" display routines
- * Author:	Thomas E. Dickey
+ * Title:	crt.c - "DIRED" display routines
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	03 May 1984
  * Last update:	07 Oct 1985, ensure that if term-size changed, LPP is ok.
  *		05 Oct 1985, added code to support 80/132-column switch.
@@ -36,21 +44,10 @@ static char *Id = "$Id: crt.c,v 1.3 1988/06/29 15:07:10 tom Exp $";
  *		27 Jun 1984
  *		28 May 1984, to chop into 'crt' and 'dds' modules
  *
- *	These routines perform screen display/refresh operations for FLIST
- *	and BROWSE.
+ *	These routines perform screen display/refresh operations for DIRED
+ *	and MORE.
  */
-
-#include	<ctype.h>
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<ssdef.h>
-#include	<stsdef.h>
-#include	<ttdef.h>
-
-#include	"bool.h"
-#include	"crt.h"
-#include	"names.h"
-
+
 /*
  * VAX/VMS terminal-independent routines know about the ANSI "Set Graphics
  * rendition" codes.  Those available via the VMS run-time library are:
@@ -186,8 +183,8 @@ crt_y ()	{	return (lasty);		}
 crt_qsgr(index)	{	return (sgrvec[index]);	}
 
 /* <crt_margin>:
- * If this is an ANSI terminal, we may set scrolling margins.  Both FLIST
- * and BROWSE use the special case of a status line at the end of the page.
+ * If this is an ANSI terminal, we may set scrolling margins.  Both DIRED
+ * and MORE use the special case of a status line at the end of the page.
  */
 crt_margin (lo, hi)
 {
@@ -210,7 +207,7 @@ crt_set (top, val)
 /* <crt_quit>:
  * On exit, clear the path-mark line, to set the cursor there.  We also
  * reset the scrolling margins to their default value (without keeping this
- * in our state) so that if this is called from a FLIST-SPAWN command, then
+ * in our state) so that if this is called from a DIRED-SPAWN command, then
  * we can use 'crt_reset' to restore our scrolling margins.
  *
  * The 'erase' option causes the last line of the screen to be cleared.
@@ -242,7 +239,7 @@ register int	j;
 /* <crt_reset>:
  * Reset scrolling margins and graphics-rendition for ANSI terminals (which
  * may be left in funny modes by other programs).  This code is called on
- * entry to FLIST/BROWSE, and also on return from spawned subprocesses.
+ * entry to DIRED/MORE, and also on return from spawned subprocesses.
  */
 crt_reset ()
 {
@@ -366,8 +363,8 @@ int	y,			/* 1 <= y <= lpp	*/
 }
 
 /* <crt__lpp0>:
- * We need at least four lines on the screen to run BROWSE.  For the same
- * reason, the screen-length must be even.
+ * We need at least four lines on the screen to run MORE/BROWSE.  For the
+ * same reason, the screen-length must be even.
  */
 crt__lpp0 (length)
 {
@@ -383,7 +380,7 @@ crt__lpp0 (length)
  * The flag 'NLflag' is intended to track this, so I can provide an extra
  * '\n'.
  *
- * This entry point is needed because the Bitgraph init (see BROWSE) cancels
+ * This entry point is needed because the Bitgraph init (see MORE) cancels
  * the absorption.
  */
 crt__NL0 (flg)	{	NLflag = flg;	}

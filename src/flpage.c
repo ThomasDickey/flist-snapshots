@@ -1,10 +1,14 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: flpage.c,v 1.2 1985/07/04 01:20:44 tom Exp $";
-#endif
+ 		/* Copyright 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+
+#include	"flist.h"
+#include	"dirent.h"
+#include	"dds.h"
+#include	"dclarg.h"
 
 /*
  * Title:	flpage.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	02 May 1985 (from code in main program)
  * Last update:	03 Jul 1985, added import-definition.  Use 'scanint' to bypass
  *			     bug in 'sscanf' in CC2.0
@@ -13,13 +17,6 @@ static char *Id = "$Id: flpage.c,v 1.2 1985/07/04 01:20:44 tom Exp $";
  * Function:	This module performs scrolling/cursor-movement operations
  *		for FLIST.
  */
-
-#include	<ctype.h>
-
-#include	"flist.h"
-#include	"dirent.h"
-#include	"dds.h"
-#include	"dclarg.h"
 
 char	*scanint();	/* => after decoded integer	*/
 

@@ -1,10 +1,7 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: syhour.c,v 1.2 1985/06/25 10:30:12 tom Exp $";
-#endif
-
+ 			/* Copyright 1984 (C), Thomas E. Dickey */
 /*
  * Title:	syshour.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	02 Aug 1984
  * Last update:	25 Jun 1985, corrected comments.
  *		21 Dec 1984, test for special cases 0, -1 which cause the system

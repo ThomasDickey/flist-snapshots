@@ -1,6 +1,6 @@
 /*
  * Title:	dclarg.h
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	28 May 1984
  * Last update:	05 Feb 1985, added 'dclinx2'
  *		26 Dec 1984, added '.dcl$l_fnb' to reduce re-parsing, and other

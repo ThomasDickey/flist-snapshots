@@ -1,5 +1,5 @@
 I have a hook for 'lib$get_symbol' in 'dirarg', which now tests for equates
-into FLIST's own commands.  FLIST should (if I figure how to do error-message
+into DIRED's own commands.  DIRED should (if I figure how to do error-message
 intercept) allow any command to be spawned which doesn't fall into its own
 tables.  (Note: It should be able to execute a DCL-procedure as the current
 entry by typing "@/ ", followed by appropriate parms.)
@@ -25,7 +25,7 @@ I fixed some of the spacing needs of DCLARG ("/ opt = val"), but I note
 that this is primarily to fill in the needs for symbol substitution.
 DCL itself allows a space whenever a punctuation mark is pending.
 
-(8-Aug-84) I ran FLIST on "SYS$EXAMPLES:", which SYS$PARSE expanded to
+(8-Aug-84) I ran DIRED on "SYS$EXAMPLES:", which SYS$PARSE expanded to
 "SYS$SYSROOT:[SYSHLP.EXAMPLES]".  Then I did a SPAWN into that directory.
 The SHOW-DEFAULT command showed the expanded string, but I was unable
 to do "DI" (DIR was ok), or "FORT", until I re-issued "SET DEF SYS$EXAMPLES:".
@@ -56,15 +56,15 @@ properly testing for explicit-pathname (see: DIRFIND.C).
 
 14-nov-84: If a file is in a directory, but does not exist, then DIRECTORY
 will give the message "no such file".  This corresponds to the code
-RMS$_FNF, which FLIST uses as a magic code for deleted-file.  Should use
+RMS$_FNF, which DIRED uses as a magic code for deleted-file.  Should use
 instead a code which isn't used by RMS.
 
 12-dec-84: If I used my own parse (instead of SYS$PARSE) in DIRENT_CHOP,
 I could cut directory-read by 20% when going across decnet.  However,
-DIRECTORY itself is about 5 times faster than FLIST. ???
+DIRECTORY itself is about 5 times faster than DIRED. ???
 (For this, test NAM.NAM$NOP |= NAM$M_SYNCHK).
 
-13-dec-84: FLIST is robust enough that I should put in ^C, ^Y intercepts.
+13-dec-84: DIRED is robust enough that I should put in ^C, ^Y intercepts.
 
 19-dec-84: It would be nice to have a control which can abort reading a long
 directory without killing the entire program.
@@ -94,8 +94,8 @@ put spurious versions into display list.
 10-jan-85: Would like to support VMS options:
 	/EXCLUDE, /EXPIRED, /FILEID, /SELECT
 
-Also, would like to permit BROWSE to run in (given VT100), or start-in (VT52)
-a half-screen from FLIST.  This would make browsing much faster, since then
+Also, would like to permit MORE to run in (given VT100), or start-in (VT52)
+a half-screen from DIRED.  This would make browsing much faster, since then
 I could integrate it with a mode which ensures that the current-entry is
 in the top half of the screen (problem if file is in the last ten entries!).
 
@@ -126,7 +126,7 @@ test for root-node.
 23-mar:
 Added display of file-id.  I noticed that at the root level, there are some
 directories which are entered twice in the directory, once as a number, and
-also as a name.  This is a hole in FLIST which I don't think I should try to
+also as a name.  This is a hole in DIRED which I don't think I should try to
 plug (yet).
 
 26-mar:
@@ -136,8 +136,8 @@ nonzero?
 How do I clear an unused AST?
 
 29-mar:
-Both FLIST and BROWSE should return the worst-error code, as well as printing
-the error message.  (For example, FLIST does not now return an error code
+Both DIRED and MORE should return the worst-error code, as well as printing
+the error message.  (For example, DIRED does not now return an error code
 if the first-level could not be read.)
 
 Should use lib$get_ef instead of having hard-coded event flag numbers (see
@@ -151,7 +151,7 @@ a subprocess.
 /LOG should cover results of COPY and APPEND
 
 26-apr:
-If I get a message from system, etc., while in BROWSE, it gets caught on
+If I get a message from system, etc., while in MORE, it gets caught on
 the bottom of my screen as though it too were a scrolling region.
 Maybe I should leave scrolling margins normally set up to bracket the
 cursor-line, and enable them for scrolling only occasionally.

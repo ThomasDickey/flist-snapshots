@@ -1,6 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: termsize.c,v 1.2 1988/08/18 20:37:58 tom Exp $";
-#endif
+  	 	/* Copyright 1985 (C), Thomas E. Dickey */
+#include	<dcdef.h>
+#include	<ttdef.h>
+#include	<tt2def.h>
+
+#include	<descrip.h>
+#include	<iodef.h>
+#include	<stsdef.h>
 
 /*
  * Title:	termsize.c
@@ -35,14 +40,6 @@ static char *Id = "$Id: termsize.c,v 1.2 1988/08/18 20:37:58 tom Exp $";
  *		The resulting screen size is always returned in the width/length
  *		arguments.
  */
-
-#include	<dcdef.h>
-#include	<ttdef.h>
-#include	<tt2def.h>
-
-#include	<descrip.h>
-#include	<iodef.h>
-#include	<stsdef.h>
 
 /*
  * Local definitions:

@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: syrename.c,v 1.2 1984/09/08 10:49:18 tom Exp $";
-#endif
+ 			/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<rms.h>
+#include	<stsdef.h>
 
 /*
  * Title:	sysrename.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	17 May 1984
  * Last update:	06 Sep 1984, permit wildcards in output-filename
  *		05 Sep 1984, fixed fatal error
@@ -23,9 +24,6 @@ static char *Id = "$Id: syrename.c,v 1.2 1984/09/08 10:49:18 tom Exp $";
  *			RENAME X X;-1   yields ok status, with the next version
  *			RENAME X X;+1	yields an error
  */
-
-#include	<rms.h>
-#include	<stsdef.h>
 
 #define	ok(x) status = x; if (!$VMS_STATUS_SUCCESS(status)) return(status)
 

@@ -1,6 +1,6 @@
 /*
  * Title:	getprot.h
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	03 Jul 1984
  * Last update:
  *		04 Nov 1988, enlarged p_grp, p_mbm fields

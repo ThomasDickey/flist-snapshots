@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: syasctim.c,v 1.2 1984/08/03 01:34:38 tom Exp $";
-#endif
+  	/* Copyright 1984 (C) Thomas E. Dickey */
+
+#include	<descrip.h>
 
 /*
  * Title:	sysasctim.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	02 Aug 1984 (broke out of 'dirent.c')
  * Last update:	02 Aug 1984
  *
@@ -21,8 +21,6 @@ static char *Id = "$Id: syasctim.c,v 1.2 1984/08/03 01:34:38 tom Exp $";
  *			   to use Smithsonian time).
  *		ilen	=  length to convert.
  */
-
-#include	<descrip.h>
 
 sysasctim (buf, q_, ilen)
 char	buf[];			/* String to load into			*/

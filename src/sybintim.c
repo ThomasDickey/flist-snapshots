@@ -1,10 +1,11 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: sybintim.c,v 1.2 1985/06/27 00:48:16 tom Exp $";
-#endif
+	 		/* Copyright 1984, 1985 (C), Thomas E. Dickey */
+#include	<ctype.h>
+#include	<ssdef.h>
+#include	<descrip.h>
 
 /*
  * Title:	sysbintim.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	13 Jul 1984
  * Last update:	26 Jun 1985, make this recognize the DCL-style VMS date format
  *			     (keywords, fill-in-gaps).
@@ -23,10 +24,6 @@ static char *Id = "$Id: sybintim.c,v 1.2 1985/06/27 00:48:16 tom Exp $";
  * Bugs:	If user gives a string like "6::.4", then the current minute
  *		and second are filled in, rather than using zero.
  */
-
-#include	<ctype.h>
-#include	<ssdef.h>
-#include	<descrip.h>
 
 #define	MAXDAY	24
 #define	MAXBFR	80

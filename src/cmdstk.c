@@ -1,10 +1,10 @@
-#ifndef NO_IDENT
-static char *Id = "$Id: cmdstk.c,v 1.3 1985/05/14 10:16:56 tom Exp $";
-#endif
+  	 	/* Copyright 1984 (C), Thomas E. Dickey */
+#include	"bool.h"
+#include	"crt.h"
 
 /*
  * Title:	cmdstk.c
- * Author:	Thomas E. Dickey
+ * Author:	T.E.Dickey (ITT/ATC)
  * Created:	17 Oct 1984 (broke out of 'dircmd')
  * Last update:	14 May 1985, was testing wrong variable in entry to '_put'.
  *		30 Apr 1985, always store commands in lower-case.
@@ -14,12 +14,9 @@ static char *Id = "$Id: cmdstk.c,v 1.3 1985/05/14 10:16:56 tom Exp $";
  *			     from a linked-list to a ring buffer.
  *
  * Function:	This module maintains a buffer of the most-recently-used
- *		command strings of FLIST, permitting the user to retrieve
+ *		command strings of DIRED, permitting the user to retrieve
  *		commands for re-use or alteration.
  */
-
-#include	"bool.h"
-#include	"crt.h"
 
 /*
  * External procedures:
@@ -29,7 +26,7 @@ char	*calloc();	/* allocate a block of dynamic memory		*/
 /*
  * Local (static) data:
  *
- * Save FLIST "visible commands" in a stack-list in memory, to provide
+ * Save DIRED "visible commands" in a stack-list in memory, to provide
  * last-command retrieval.
  */
 #define	PAGESIZE	4096
@@ -55,7 +52,7 @@ CMDSTK	*cmdstk_ = nullC;
 
 /*
  * Allocate a page-buffer for the command-stack.  We provide a hierarchy
- * for FLIST by copying the stack from a higher level to this level.  Thus,
+ * for DIRED by copying the stack from a higher level to this level.  Thus,
  * there is no loss of continuity on entering a new level; but on exit we
  * resume with the set of stacked commands which were present on nesting.
  */
