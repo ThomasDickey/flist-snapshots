@@ -1,3 +1,8 @@
+2000-01-28  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/termsize.c:
+	huh - either Sandman's computer's messed up, or DEC dropped TT$V_xxx defs.
+
 1998-10-24  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/isowner.c:
