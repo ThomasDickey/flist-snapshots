@@ -1,3 +1,25 @@
+1985-08-15  Thomas E. Dickey
+
+	* src/browse.cld: RCS_BASE
+
+1985-08-15  Thomas E. Dickey
+
+	* src/browse.cld: rcs identifiers
+
+1985-08-15  Thomas E. Dickey
+
+	* src/flfind.c: RCS_BASE
+
+1985-08-15  Thomas E. Dickey
+
+	* src/flfind.c: make program names consistent:FLIST,BROWSE
+
+	* src/flfind.c: rcs-identifiers
+
+1985-07-31  Thomas E. Dickey
+
+	* src/flist.hlp, doc/db.rno: RCS_BASE
+
 1985-07-27  Thomas E. Dickey
 
 	* src/flscan.c: RCS_BASE
