@@ -1,3 +1,13 @@
+1988-06-29  dickey@software.org
+
+	* src/crt.c: RCS_BASE
+
+1988-06-29  Thomas E. Dickey  <dickey@software.org>
+
+	* src/crt.c: make program names consistent:FLIST,BROWSE
+
+	* src/crt.c: rcs-identifiers
+
 1988-06-16  dickey@software.org
 
 	* src/crm.c: RCS_BASE
