@@ -1,3 +1,31 @@
+1985-09-10  Thomas E. Dickey
+
+	* src/pathdown.c: RCS_BASE
+
+1985-09-10  Thomas E. Dickey
+
+	* src/pathdown.c: rcs-identifiers
+
+1985-09-09  Thomas E. Dickey
+
+	* src/flread.c: RCS_BASE
+
+1985-09-09  Thomas E. Dickey
+
+	* src/flread.c: make program names consistent:FLIST,BROWSE
+
+	* src/flread.c: rcs-identifiers
+
+1985-09-09  Thomas E. Dickey
+
+	* src/fldump.c: RCS_BASE
+
+1985-09-09  Thomas E. Dickey
+
+	* src/fldump.c: make program names consistent:FLIST,BROWSE
+
+	* src/fldump.c: rcs-identifiers
+
 1985-08-24  Thomas E. Dickey
 
 	* src/dirhigh.c: RCS_BASE
