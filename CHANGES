@@ -1,3 +1,9 @@
+1998-10-18  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/rmslook.c: fix an old bug-report for DEC C 5.3
+
+	* src/datent.h: an old bug report
+
 1996-09-13  Thomas E. Dickey  <dickey@clark.net>
 
 	* RELEASE: RCS_BASE
