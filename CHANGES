@@ -1,3 +1,19 @@
+1985-07-04  Thomas E. Dickey
+
+	* src/textlink.h: RCS_BASE
+
+1985-07-04  Thomas E. Dickey
+
+	* src/textlink.h: rcs-identifiers
+
+1985-07-04  Thomas E. Dickey
+
+	* src/scanint.c: RCS_BASE
+
+1985-07-04  Thomas E. Dickey
+
+	* src/scanint.c: rcs-identifiers
+
 1985-07-03  Thomas E. Dickey
 
 	* src/dclopt.c: RCS_BASE
