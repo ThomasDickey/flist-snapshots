@@ -102,6 +102,7 @@
   -------------------------------------------------------------------------
   APpend                       Append the current file to the argument
   COpy                         Copy the current file to the argument
+  CReate                       Create the specified file or directory
   DELete                       Delete the current file
   Edit                         Edit (if file),  else  enter  new  directory
                                level.

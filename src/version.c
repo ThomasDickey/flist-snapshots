@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: version.c,v 1.7 1995/10/26 10:14:27 tom Exp $";
+static char *Id = "$Id: version.c,v 1.8 1995/10/27 13:29:02 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,12 @@ static char *Id = "$Id: version.c,v 1.7 1995/10/26 10:14:27 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	28 Aug 1984
  * Last update:			In-progress: restructure 'dircmd', 'getraw'.
+ *
+ *	v951027 - prerelease testing
+ *
+ *	----	27 Oct 1995	Added "create" command.  Modified BROWSE to
+ *				allow it to read locked files by using shared
+ *				I/O.
  *
  *	v951026 - prerelease testing
  *
@@ -425,5 +431,5 @@ static char *Id = "$Id: version.c,v 1.7 1995/10/26 10:14:27 tom Exp $";
 char
 *dired_release()
 {
-	return ("FLIST (v951026)");
+	return ("FLIST (v951027)");
 }

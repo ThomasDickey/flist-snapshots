@@ -1,4 +1,4 @@
-$! $Id: build.com,v 1.11 1995/10/25 18:22:58 tom Exp $
+$! $Id: build.com,v 1.12 1995/10/27 11:42:06 tom Exp $
 $! VAX/VMS DCL build script for FLIST and BROWSE
 $!
 $! Tested with:
@@ -71,6 +71,7 @@ $	call	cc_lib DSPC
 $	call	cc_lib EDTCMD
 $	call	cc_lib FLCOLS
 $	call	cc_lib FLCOPY
+$	call	cc_lib FLCREA
 $	call	cc_lib FLDLET
 $	call	cc_lib FLDUMP
 $	call	cc_lib FLEDIT

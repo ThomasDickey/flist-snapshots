@@ -1,19 +1,21 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: inspect.c,v 1.4 1995/10/21 18:54:08 tom Exp $";
+static char *Id = "$Id: inspect.c,v 1.5 1995/10/27 00:05:15 tom Exp $";
 #endif
 
 /*
  * Title:	inspect.c
  * Author:	Thomas E. Dickey
  * Created:	17 Nov 1984
- * Last update:	15 Jun 1985, typed 'ropen'
+ * Last update:
+ *		26 Oct 1995, mods for DEC-C (long/unsigned/int)
+ *		15 Jun 1985, typed 'ropen'
  *		04 Feb 1985, block-encrypted files do not have proper record
  *			     structure and so will exit immediately with
  *			     an error/end-of-file.  Forgot to check for null
  *			     file.
  *
  * Function:	Read the beginning of a specified file, to see if it seems
- *		to be ordinary source-text.  If so, return TRUE.  We accepts
+ *		to be ordinary source-text.  If so, return TRUE.  We accept
  *		any combination of the normal "printing" set, or the VAX/VMS
  *		"space" characters (space, tab, line feed, carriage return or
  *		form feed).
@@ -35,9 +37,8 @@ static char *Id = "$Id: inspect.c,v 1.4 1995/10/21 18:54:08 tom Exp $";
 
 int	inspect (char *filespec, int toscan)
 {
-	int	j, c,
+	int	j, c, lenr,
 		success	= FALSE;
-	unsigned lenr;
 	unsigned mark;
 	RFILE	*file_	= ropen (filespec, "r");
 	char	z[1024];

@@ -11,7 +11,7 @@
 
 
 
-          October 25, 1995
+          October 27, 1995
 
 
 
@@ -50,23 +50,24 @@ CHAPTER 1       INTRODUCTION TO FLIST
 CHAPTER 2       FLIST COMMANDS
 
         2.1     APPEND (AP), COPY (CO) . . . . . . . . . . . . . . 2-1
-        2.2     DELETE (DEL) . . . . . . . . . . . . . . . . . . . 2-2
-        2.3     EDIT (E), VIEW (V) . . . . . . . . . . . . . . . . 2-3
-        2.4     FIND (F) . . . . . . . . . . . . . . . . . . . . . 2-4
-        2.5     HELP (H) . . . . . . . . . . . . . . . . . . . . . 2-5
-        2.6     INSPECT (I)  . . . . . . . . . . . . . . . . . . . 2-6
-        2.7     BROWSE (M) . . . . . . . . . . . . . . . . . . . . 2-6
-        2.8     NEXT (N) . . . . . . . . . . . . . . . . . . . . . 2-7
-        2.9     NFIND (NF) . . . . . . . . . . . . . . . . . . . . 2-7
-        2.10    PRINT (PR) . . . . . . . . . . . . . . . . . . . . 2-8
-        2.11    PROTECT (PRO)  . . . . . . . . . . . . . . . . . . 2-8
-        2.12    PURGE (PUR)  . . . . . . . . . . . . . . . . . .  2-10
-        2.13    QUIT (Q) . . . . . . . . . . . . . . . . . . . .  2-11
-        2.14    READ (R) . . . . . . . . . . . . . . . . . . . .  2-11
-        2.15    RENAME (REN) . . . . . . . . . . . . . . . . . .  2-12
-        2.16    SPAWN (SP) . . . . . . . . . . . . . . . . . . .  2-12
-        2.17    SUBMIT (SU)  . . . . . . . . . . . . . . . . . .  2-13
-        2.18    VERIFY (VE)  . . . . . . . . . . . . . . . . . .  2-13
+        2.2     CREATE (CR)  . . . . . . . . . . . . . . . . . . . 2-2
+        2.3     DELETE (DEL) . . . . . . . . . . . . . . . . . . . 2-2
+        2.4     EDIT (E), VIEW (V) . . . . . . . . . . . . . . . . 2-3
+        2.5     FIND (F) . . . . . . . . . . . . . . . . . . . . . 2-5
+        2.6     HELP (H) . . . . . . . . . . . . . . . . . . . . . 2-5
+        2.7     INSPECT (I)  . . . . . . . . . . . . . . . . . . . 2-6
+        2.8     BROWSE (M) . . . . . . . . . . . . . . . . . . . . 2-6
+        2.9     NEXT (N) . . . . . . . . . . . . . . . . . . . . . 2-7
+        2.10    NFIND (NF) . . . . . . . . . . . . . . . . . . . . 2-7
+        2.11    PRINT (PR) . . . . . . . . . . . . . . . . . . . . 2-8
+        2.12    PROTECT (PRO)  . . . . . . . . . . . . . . . . . . 2-8
+        2.13    PURGE (PUR)  . . . . . . . . . . . . . . . . . .  2-10
+        2.14    QUIT (Q) . . . . . . . . . . . . . . . . . . . .  2-11
+        2.15    READ (R) . . . . . . . . . . . . . . . . . . . .  2-11
+        2.16    RENAME (REN) . . . . . . . . . . . . . . . . . .  2-12
+        2.17    SPAWN (SP) . . . . . . . . . . . . . . . . . . .  2-12
+        2.18    SUBMIT (SU)  . . . . . . . . . . . . . . . . . .  2-13
+        2.19    VERIFY (VE)  . . . . . . . . . . . . . . . . . .  2-13
 
 
 CHAPTER 3       DISPLAY MANIPULATION
@@ -79,10 +80,10 @@ CHAPTER 3       DISPLAY MANIPULATION
         3.2.1     /COLUMNS (/C)  . . . . . . . . . . . . . . . . . 3-4
         3.2.2     DATE Toggle Commands . . . . . . . . . . . . . . 3-5
         3.2.3     Display Column Rotation  . . . . . . . . . . . . 3-5
-        3.3     STATUS COMMANDS  . . . . . . . . . . . . . . . . . 3-6
                                                                Page iv
 
 
+        3.3     STATUS COMMANDS  . . . . . . . . . . . . . . . . . 3-6
         3.4     OTHER DISPLAY COMMANDS . . . . . . . . . . . . . . 3-7
         3.4.1     Refresh-Hold . . . . . . . . . . . . . . . . . . 3-7
         3.4.2     Screen Refresh . . . . . . . . . . . . . . . . . 3-7
@@ -720,7 +721,14 @@ display-list updates.
 FLIST COMMANDS                                                        Page 2-2
 
 
-2.2  DELETE (DEL)
+2.2  CREATE (CR)
+
+The CREATE command is simpler than the VMS command CREATE.  It allows  you  to
+create a file or a directory.  FLIST examines the argument to see which it is.
+
+
+
+2.3  DELETE (DEL)
 
 The DELETE command is unlike  the  VMS  command  DELETE.   There  are  several
 differences:
@@ -766,6 +774,7 @@ or any other set of files
 If a wildcard is given, FLIST will scroll to the location  of  each  permanent
 file  if  a prompt is needed before deleting it.  On completion, FLIST reports
 the number of files which were deleted.
+FLIST COMMANDS                                                        Page 2-3
 
 
 Notes:
@@ -775,14 +784,11 @@ of  the  VMS file-deletion options.  Wildcards may be used, but only one field
 (e.g., "*.FOR" rather than "*.FOR,*.LIS") may be given.
 
 Like VMS DELETE, no attempt is made to override the  protection  codes  before
-FLIST COMMANDS                                                        Page 2-3
-
-
 deletion.  Protection violations are reported in status messages.
 
 
 
-2.3  EDIT (E), VIEW (V)
+2.4  EDIT (E), VIEW (V)
 
 The EDIT and VIEW commands effect changes in the display-level.  They
 
@@ -826,6 +832,9 @@ the input argument always includes a wildcard:
         *.*;*
 
 depending on the setting of the  "/VERSION"  option  when  FLIST  is  invoked.
+FLIST COMMANDS                                                        Page 2-4
+
+
 Also,   null  file  specification  items  inherit  from  the  preceding  item.
 Therefore, when specifying the name of a file other than  the  current  entry,
 you  must be careful to use the ";" (current version indicator) properly.  For
@@ -833,8 +842,6 @@ example, suppose that you wish to create a new file "X.FOR".  If you type  the
 command
 
         /O EDIT X.FOR
-FLIST COMMANDS                                                        Page 2-4
-
 
 FLIST will interpret that as
 
@@ -883,17 +890,14 @@ this is the EDT editor:
 EDIT commands which result in a  new  display  list  do  not  permit  options.
 FLIST's  options  (other than those implemented as display-commands) are fixed
 after entry.
+FLIST COMMANDS                                                        Page 2-5
 
 
-
-2.4  FIND (F)
+2.5  FIND (F)
 
 The FIND command searches for  file  entries  in  the  display-list  by  name.
 Together  with  the  NEXT  command  (CTRL/N or PF3), the name-search helps you
 quickly find all occurrences of a given file  specification.   The  cursor  is
-FLIST COMMANDS                                                        Page 2-5
-
-
 positioned at the next entry, in the prevailing search/scroll direction.
 
 
@@ -940,17 +944,16 @@ Presently, the search utility processes only a single-entry file specification
 
 
 
-2.5  HELP (H)
+2.6  HELP (H)
 
 The HELP command runs the BROWSE program to display a  file  which  summarizes
 all of the FLIST commands.  (This summary is reproduced as Appendix B.)
+FLIST COMMANDS                                                        Page 2-6
 
 
 Format:
 
 HELP requires no arguments.  Alternate forms of HELP include:
-FLIST COMMANDS                                                        Page 2-6
-
 
         /HELP (/H)
         ?HELP (?)
@@ -962,7 +965,7 @@ The FLIST help-file must reside in the same directory as the FLIST program.
 
 
 
-2.6  INSPECT (I)
+2.7  INSPECT (I)
 
 The INSPECT command inspects one or more files to see if they  are  binary  or
 ASCII.   INSPECT is an aid to browsing directories; it finds those files which
@@ -989,7 +992,7 @@ display-list entries are reread (e.g., in the READ command).
 
 
 
-2.7  BROWSE (M)
+2.8  BROWSE (M)
 
 The BROWSE command evokes the BROWSE browsing program, which is  described  in
 full  in  another  document.   BROWSE  is  a  versatile display program, which
@@ -1013,7 +1016,7 @@ fast.
 
 
 
-2.8  NEXT (N)
+2.9  NEXT (N)
 
 The NEXT command continues the last search begun with FIND or  NFIND.   If  no
 search pattern was given previously, an error is reported.
@@ -1030,7 +1033,7 @@ description.
 
 
 
-2.9  NFIND (NF)
+2.10  NFIND (NF)
 
 NFIND is the logical complement of the FIND  command.   It  searches  for  the
 first  file  not  matching  the  file  specification.   This  enables you, for
@@ -1062,7 +1065,7 @@ file type, a combination of command retrieval and reexecution is required.
 FLIST COMMANDS                                                        Page 2-8
 
 
-2.10  PRINT (PR)
+2.11  PRINT (PR)
 
 The PRINT command prints files using the VMS PRINT utility.
 
@@ -1097,7 +1100,7 @@ files.
 
 
 
-2.11  PROTECT (PRO)
+2.12  PROTECT (PRO)
 
 The FLIST PROTECT command allows you to issue a "SET PROTECTION"  command,  or
 to enter a protection-editing mode (which is much simpler than the baroque VMS
@@ -1205,7 +1208,7 @@ The PROTECT command affects only the current file entry.
 
 
 
-2.12  PURGE (PUR)
+2.13  PURGE (PUR)
 
 Like the VMS PURGE command, the FLIST PURGE command deletes obsolete  versions
 of  a file.  Unlike VMS, FLIST allows you to be more selective about the files
@@ -1242,7 +1245,7 @@ PURGE affects only those files which appear in the display-list.
 
 
 
-2.13  QUIT (Q)
+2.14  QUIT (Q)
 
 The QUIT command exits from one or  more  display  levels,  restoring  FLIST's
 status before entering the level.
@@ -1269,7 +1272,7 @@ one by one, because no display refresh is required.
 
 
 
-2.14  READ (R)
+2.15  READ (R)
 
 The READ command rereads old directory entries, or appends  new  ones  to  the
 display list.
@@ -1310,7 +1313,7 @@ command will deteriorate markedly.
 
 
 
-2.15  RENAME (REN)
+2.16  RENAME (REN)
 
 The RENAME command renames a single file.  VMS permits any combination of  the
 directory-path,  name,  type or version to be altered.  (A file may be renamed
@@ -1332,7 +1335,7 @@ appended to the display-list.
 
 
 
-2.16  SPAWN (SP)
+2.17  SPAWN (SP)
 
 The  SPAWN  command  uses  the  VMS  subprocess-spawn  facility  to  create  a
 subprocess in which you can enter normal VMS commands.
@@ -1368,7 +1371,7 @@ a CTRL/C, then on exit from the subprocess FLIST will be terminated.
 
 
 
-2.17  SUBMIT (SU)
+2.18  SUBMIT (SU)
 
 The SUBMIT command enables you to submit batch jobs from FLIST.
 
@@ -1396,7 +1399,7 @@ FLIST uses the VMS SUBMIT command  to  implement  its  SUBMIT.   It  sets  the
 
 
 
-2.18  VERIFY (VE)
+2.19  VERIFY (VE)
 
 The VERIFY command supplements the READ command.  Rather than  augmenting  the
 display-list, it removes items.
@@ -2088,7 +2091,6 @@ performed in other ways, but which are useful on the keypad:
                                           |    /RNAME     |/NOMARK|       |
                                           +-------+-------+-------+-------+
 
-                                VT100 Keypad Assignments
                       Figure 4  VT100 Keypad Assignments
 
 
@@ -2357,6 +2359,7 @@ Commands:
   -------------------------------------------------------------------------
   APpend                       Append the current file to the argument
   COpy                         Copy the current file to the argument
+  CReate                       Create the specified file or directory
   DELete                       Delete the current file
   Edit                         Edit (if file),  else  enter  new  directory
                                level.
@@ -2389,10 +2392,10 @@ Display:
   filetype and version.  The pathname for the current-file is automatically
   displayed in the summary line.  The "/d"-commands alter the DATE-field to
   alternate  formats  to  permit  different  date-sorting.   The "/columns"
-  command permits the user to set the display to any combination of  fields
 COMMAND SUMMARY                                                       Page B-4
 
 
+  command permits the user to set the display to any combination of  fields
   for which FLIST has read the data:
 
   -------------------------------------------------------------------------
@@ -2447,10 +2450,10 @@ Hierarchy:
   FLIST permits you to enter up  to  eight  display  levels  (counting  the
   original invocation).  FLIST assumes a new level if you EDIT a directory,
   if your  EDIT  command  implies  a  wildcard  (e.g.,  inexplicit  version
-  number),  or  if  you  explicitly  edit  a  directory which is not in the
 COMMAND SUMMARY                                                       Page B-5
 
 
+  number),  or  if  you  explicitly  edit  a  directory which is not in the
   current display list.  Column settings are inherited as you enter  a  new
   level, and restored as you exit.
 
@@ -2505,10 +2508,10 @@ Line-editing:
   edited:
 
   Key            (also)        Operation
-  -------------------------------------------------------------------------
 COMMAND SUMMARY                                                       Page B-6
 
 
+  -------------------------------------------------------------------------
   {printing}                   Insert printing characters at the cursor.
   {backspace}    {keypad-0}    Move to the beginning of the input line.
   CTRL/E         {keypad-2}    Move to the end of the input line.
@@ -2561,9 +2564,9 @@ Protection:
   CTRL/U         CTRL/X        Abort the command
   ?              PF2           Help-display
   -------------------------------------------------------------------------
-
-
 COMMAND SUMMARY                                                       Page B-7
+
+
 Refresh:
 
   The   following   commands    are    used    to    update    the    FLIST
@@ -2619,11 +2622,11 @@ Sorting:
   Normal         Reverse       Description
   -------------------------------------------------------------------------
   /SPath         /RPath        Sort by PATH name, then name, type, version.
-  /Sname         /Rname        Sort by file NAME, then path, etc.
-  /SType         /RType        Sort by file TYPE, then path, name, etc.
 COMMAND SUMMARY                                                       Page B-8
 
 
+  /Sname         /Rname        Sort by file NAME, then path, etc.
+  /SType         /RType        Sort by file TYPE, then path, name, etc.
   /SVersion      /RVersion     Sort by VERSION
   -------------------------------------------------------------------------
   /SAlloc        /RAlloc       Sort by ALLOCated size
@@ -2677,11 +2680,11 @@ Substitution:
 
   In some commands, the order must be specified more precisely (e.g., COPY,
   APPEND).   FLIST  uses  the  "/O" and "/" tokens to accomplish this.  The
-  first occurrence of the "/" token in the argument list causes the current
-  filename  to  be implicitly placed at that point, and all succeeding text
 COMMAND SUMMARY                                                       Page B-9
 
 
+  first occurrence of the "/" token in the argument list causes the current
+  filename  to  be implicitly placed at that point, and all succeeding text
   after it.  The filename is normally placed at the  end  of  the  command.
   The  "/O"  prefix,  on  the other hand, causes the current filename to be
   omitted from the command string expansion (unless a "/" token is used).
@@ -2714,33 +2717,33 @@ Backspace key                             B-8
   move up, 1-5, B-7                   "/V", substitute VERSION, 1-8,
 /BACKUP qualifier, B-1                    B-9
 /BACKWARD, scroll backward, 1-4,    COPY, 2-1, B-3
-    B-7                             /CREATED qualifier, B-2
-/BEFORE qualifier, B-1              /CRIGHT, rotate column-list, B-4
-BROWSE, 2-6, B-3                    CTRL/B, scroll backward, 1-4, B-7
-Browsing                            CTRL/D, move cursor left, 1-6,
-  BROWSE, 2-6, B-3                      2-9, B-6
-  VIEW, 2-3, B-3                    CTRL/E
-                                      move to end of line, 1-6, B-6
-/CLEFT, rotate column-list, B-4       scroll to end, 1-4, B-7
-Column keywords, 3-1, B-4           CTRL/F
-  ALLOC, 3-1, B-4                     move cursor right, 1-6, 2-9,
-  BACKUP, 3-1, B-4                        B-6
-  CREATED, 3-1, B-4                   scroll forward, 1-4, B-7
-  DATE, 3-1, B-4                    CTRL/K, screen dump, 3-7, B-7
-  EXPIRED, 3-2, B-4                 CTRL/N, NEXT, 2-4, 2-7, B-3
-  FORMAT, 3-2, B-4                  CTRL/P, protection edit, 2-10,
-  ID, B-4                               B-3, B-6
-  LENGTH, B-4                       CTRL/R, reread line, 2-11, B-7
-  MASK, 3-2, B-4                    CTRL/T, scroll to top, 1-4, B-7
-  NAME, 3-2                         CTRL/U, abort command, 1-6, 2-9,
-  OWNER, 3-2, B-4                       B-6
-  PATH, 3-2, B-4                    CTRL/V, verify, 2-14, B-7
-  REVISED, 3-2, B-4                 CTRL/W, refresh display, 3-7, B-7
-  SIZE, 3-2, B-4                    CTRL/X, abort command, 1-6, 2-9,
-  TYPE, 3-2                             B-6
-  VERSION, 3-2                      CTRL/Z, quit, 2-11, B-3
-  XAB, 3-2, B-4                     /CWIDTH, set column width, B-4
-Column-list, 1-2, 3-4
+    B-7                             CREATE, 2-2, B-3
+/BEFORE qualifier, B-1              /CREATED qualifier, B-2
+BROWSE, 2-6, B-3                    /CRIGHT, rotate column-list, B-4
+Browsing                            CTRL/B, scroll backward, 1-4, B-7
+  BROWSE, 2-6, B-3                  CTRL/D, move cursor left, 1-6,
+  VIEW, 2-3, B-3                        2-9, B-6
+                                    CTRL/E
+/CLEFT, rotate column-list, B-4       move to end of line, 1-6, B-6
+Column keywords, 3-1, B-4             scroll to end, 1-4, B-7
+  ALLOC, 3-1, B-4                   CTRL/F
+  BACKUP, 3-1, B-4                    move cursor right, 1-6, 2-9,
+  CREATED, 3-1, B-4                       B-6
+  DATE, 3-1, B-4                      scroll forward, 1-4, B-7
+  EXPIRED, 3-2, B-4                 CTRL/K, screen dump, 3-7, B-7
+  FORMAT, 3-2, B-4                  CTRL/N, NEXT, 2-5, 2-7, B-3
+  ID, B-4                           CTRL/P, protection edit, 2-10,
+  LENGTH, B-4                           B-3, B-6
+  MASK, 3-2, B-4                    CTRL/R, reread line, 2-11, B-7
+  NAME, 3-2                         CTRL/T, scroll to top, 1-4, B-7
+  OWNER, 3-2, B-4                   CTRL/U, abort command, 1-6, 2-9,
+  PATH, 3-2, B-4                        B-6
+  REVISED, 3-2, B-4                 CTRL/V, verify, 2-14, B-7
+  SIZE, 3-2, B-4                    CTRL/W, refresh display, 3-7, B-7
+  TYPE, 3-2                         CTRL/X, abort command, 1-6, 2-9,
+  VERSION, 3-2                          B-6
+  XAB, 3-2, B-4                     CTRL/Z, quit, 2-11, B-3
+Column-list, 1-2, 3-4               /CWIDTH, set column width, B-4
   see also Column-rotation
   /COLUMNS, B-4                     Date format, 3-5
 Column-rotation, 3-5                  /DLONG, 3-5, B-4
@@ -2785,44 +2788,44 @@ Display commands, 3-4, B-3            PRINT, 2-8
   INSPECT, 2-6, B-3                 File management
   /NOHOLD, 3-7, B-7                   APPEND, 2-1, B-3
   /TIMES, 3-7, B-4                    COPY, 2-1, B-3
-    see also ?TIMES                   DELETE, 2-2, B-3
-Display hierarchy, B-4                EDIT, 2-3, B-3
-Display level, 2-3                    PRINT, 2-8, B-3
-  see also QUIT                       PROTECT, 2-8, B-3
-  EDIT, VIEW, 2-3                     PURGE, 2-10, B-3
-  ?LEVEL, 3-6                         RENAME, 2-12, B-3
-Display list, 1-1, 1-3                VIEW, 2-3
-  appending via COPY, 2-1           Files
-  appending via EDIT, 2-4             EDTINI.EDT, 2-4
-  appending via READ, 2-12            SNAPSHOT.CRT
-  appending via RENAME, 2-12            see Screen dump
-  compaction, 3-4                   FIND, 2-4, B-3
-  deleting files, 1-4, 2-2, 2-11    Fixed-point sorting
-  EDIT, 2-3                           /MARK, 3-4, B-8
-  removal via RENAME, 4-2             /NOMARK, 3-4, B-8
-  removal via VERIFY, 2-14          /FORWARD, scroll forward, 1-4,
-  restricting with /NOALL, 4-1          B-7
-  restricting with /NOVERSIONS,
-      4-1                           "?", HELP (immediate in
-  VERIFY, 2-13, B-7                     protection edit), B-6
-/DLONG, set long date format, B-4   /HELP, show command summary, 2-6
-Down-arrow                          ?HELP, show command summary, 2-6,
-  disable protection, 2-9, B-6          B-3, B-8
-  move down, 1-5, B-7               HELP, show command summary, 2-5,
-  recall (newer), 1-7                   B-3
-/DREVISED qualifier, 4-1, B-2       ?HELP, show search target, B-8
-/DREVISED, toggle DATE to REVISED,  Highlighting
-    4-1, B-4                          command editing, 1-5
+    see also ?TIMES                   CREATE, 2-2, B-3
+Display hierarchy, B-4                DELETE, 2-2, B-3
+Display level, 2-3                    EDIT, 2-3, B-3
+  see also QUIT                       PRINT, 2-8, B-3
+  EDIT, VIEW, 2-3                     PROTECT, 2-8, B-3
+  ?LEVEL, 3-6                         PURGE, 2-10, B-3
+Display list, 1-1, 1-3                RENAME, 2-12, B-3
+  appending via COPY, 2-1             VIEW, 2-3
+  appending via EDIT, 2-4           Files
+  appending via READ, 2-12            EDTINI.EDT, 2-4
+  appending via RENAME, 2-12          SNAPSHOT.CRT
+  compaction, 3-4                       see Screen dump
+  deleting files, 1-4, 2-2, 2-11    FIND, 2-5, B-3
+  EDIT, 2-3                         Fixed-point sorting
+  removal via RENAME, 4-2             /MARK, 3-4, B-8
+  removal via VERIFY, 2-14            /NOMARK, 3-4, B-8
+  restricting with /NOALL, 4-1      /FORWARD, scroll forward, 1-4,
+  restricting with /NOVERSIONS,         B-7
+      4-1
+  VERIFY, 2-13, B-7                 "?", HELP (immediate in
+/DLONG, set long date format, B-4       protection edit), B-6
+Down-arrow                          /HELP, show command summary, 2-6
+  disable protection, 2-9, B-6      ?HELP, show command summary, 2-6,
+  move down, 1-5, B-7                   B-3, B-8
+  recall (newer), 1-7               HELP, show command summary, 2-5,
+/DREVISED qualifier, 4-1, B-2           B-3
+/DREVISED, toggle DATE to REVISED,  ?HELP, show search target, B-8
+    4-1, B-4                        Highlighting
                                                           Page Index-3
 
 
-  fixed-point sorting, 3-4              move to beginning of line,
-  protection changes, 2-9                   1-5, B-6
-  screen dump, 3-7                      sort by NAME, 5-2 to 5-3, B-5
-/HOME, 1-5, B-7                       Keypad 1, sort by TYPE, 5-2 to
-                                          5-3, B-5
-INSPECT, 2-6, B-3                     Keypad 2
-                                        move to end of line, 1-6, B-6
+  command editing, 1-5                  move to beginning of line,
+  fixed-point sorting, 3-4                  1-5, B-6
+  protection changes, 2-9               sort by NAME, 5-2 to 5-3, B-5
+  screen dump, 3-7                    Keypad 1, sort by TYPE, 5-2 to
+/HOME, 1-5, B-7                           5-3, B-5
+                                      Keypad 2
+INSPECT, 2-6, B-3                       move to end of line, 1-6, B-6
                                         sort by DATE, 5-2 to 5-3, B-5
 Key assignments                       Keypad 2, sort by DATE, 3-5
   Backspace key                       Keypad 3, sort by SIZE, 5-2 to
@@ -2841,7 +2844,7 @@ Key assignments                       Keypad 2, sort by DATE, 3-5
         B-6                             display timer, 5-2 to 5-3,
     scroll forward, 1-4, B-7                B-5
   CTRL/K, screen dump, 3-7, B-7         reset timer (GOLD), 5-2 to
-  CTRL/N, NEXT, 2-4, 2-7, B-3               5-3, B-5
+  CTRL/N, NEXT, 2-5, 2-7, B-3               5-3, B-5
   CTRL/P, protection edit, 2-10,      Keypad 6, display timer, 3-6
       B-3, B-6                        Keypad 7
   CTRL/R, reread line, 2-11, B-7        EDIT, 5-2 to 5-3, B-5
@@ -2865,7 +2868,7 @@ Key assignments                       Keypad 2, sort by DATE, 3-5
         to B-6                            B-6
     move down, 1-5, B-7               PF3
   "?", HELP (immediate in               FIND (GOLD), 5-2 to 5-3, B-5
-      protection edit), B-6             NEXT, 2-4, 2-7, 5-2 to 5-3,
+      protection edit), B-6             NEXT, 2-5, 2-7, 5-2 to 5-3,
   Keypad "-", recall, 1-6 to 1-7,           B-5
       5-3, B-5                        PF4
   Keypad ".", Fixed-point sorting,      /CLEFT, 3-6
@@ -2913,7 +2916,7 @@ Keypad 5                            /PAGE, scroll one screen, B-7
       5-3, B-5                      PF2, HELP, 5-2 to 5-3, B-5 to B-6
 Keypad 6                            PF3
   display timer, 5-2 to 5-3, B-5      FIND (GOLD), 5-2 to 5-3, B-5
-  reset timer (GOLD), 5-2 to 5-3,     NEXT, 2-4, 2-7, 5-2 to 5-3, B-5
+  reset timer (GOLD), 5-2 to 5-3,     NEXT, 2-5, 2-7, 5-2 to 5-3, B-5
       B-5                           PF4
 Keypad 7                              /CLEFT, 3-6
   EDIT, 5-2 to 5-3, B-5               column-rotation, 5-3, B-5
@@ -2962,7 +2965,7 @@ Return key                                B-7
     B-8                             /SDATE, sort by DATE, 3-1, B-8
 /RID, sort by file-id, B-8          Searching
 Right-arrow, move cursor right,       CTRL/N, NEXT, B-3
-    1-6, 2-9, B-6                     FIND, 2-4, B-3
+    1-6, 2-9, B-6                     FIND, 2-5, B-3
 /RLENGTH, sort by record-length,      NEXT, 2-7, B-3
     B-8                               NFIND, 2-7, B-3
 /RMASK, sort by protection mask,    /SEXPIRED, sort by EXPIRED date,
@@ -2973,11 +2976,11 @@ Right-arrow, move cursor right,       CTRL/N, NEXT, B-3
 /RREVISED, sort by REVISED date,    /SHOUR, sort by hour of DATE, 3-2,
     3-2, B-8                            B-8
 /RSIZE, sort by SIZE, 3-2, B-8      /SID, sort by file-id, B-8
-/RTYPE, sort by TYPE, 3-2, B-7      /SINCE qualifier, B-2
+/RTYPE, sort by TYPE, 3-2, B-8      /SINCE qualifier, B-2
 /RUSER, sort by file owner's user   ?SIZE, show blocks in display
     name, 3-2, B-8                      list, B-8
 /RVERSION, sort by VERSION, 3-2,    Slash-scrolling, B-7
-    B-7                             /SLENGTH, sort by record-length,
+    B-8                             /SLENGTH, sort by record-length,
 /RWEEK, sort by DATE's weekday,         B-8
     3-2, B-8                        /SMASK, sort by protection mask,
 /RXAB, sort by extra attributes,        3-2, B-8
@@ -2994,11 +2997,11 @@ Right-arrow, move cursor right,       CTRL/N, NEXT, B-3
       3-1, B-8                        /SREVISED, sort by REVISED date,
   /RBACKUP, sort by BACKUP date,          3-2, B-8
       3-1, B-8                        /SSIZE, sort by SIZE, 3-2, B-8
-  /RCREATED, sort by CREATED date,    /STYPE, sort by TYPE, 3-2, B-7
+  /RCREATED, sort by CREATED date,    /STYPE, sort by TYPE, 3-2, B-8
       3-1, B-8                        /SUSER, sort by file owner's
   /RDATE, sort by DATE, 3-1, B-8          user name, 3-2, B-8
   /REXPIRED, sort by EXPIRED date,    /SVERSION, sort by VERSION, 3-2,
-      3-2, B-8                            B-7
+      3-2, B-8                            B-8
   /RFORMAT, sort by format, 3-2,      /SWEEK, sort by DATE's weekday,
       B-8                                 3-2, B-8
   /RHOUR, sort by hour of DATE,       /SXAB, sort by extra attributes,
@@ -3009,42 +3012,42 @@ Right-arrow, move cursor right,       CTRL/N, NEXT, B-3
   /RMASK, sort by protection mask,  Spawned subprocesses, 3-7
       3-2, B-8                        APPEND, 2-1, B-3
   /RNAME, sort by NAME, 3-2, B-7      COPY, 2-1, B-3
-  /ROWNER, sort by owner, 3-2,        EDIT, 2-4, B-3
-      B-8                             PRINT, 2-8, B-3
-  /RPATH, sort by PATH, 3-2, B-7      SHELL, B-3
-  /RREVISED, sort by REVISED date,    SPAWN, 2-12, B-3
-      3-2, B-8                        SUBMIT, 2-13, B-3
-  /RSIZE, sort by SIZE, 3-2, B-8      VIEW, 2-4, B-3
-  /RTYPE, sort by TYPE, 3-2, B-7    /SREVISED, sort by REVISED date,
-  /RUSER, sort by file owner's          3-2, B-8
-      user name, 3-2, B-8           /SSIZE, sort by SIZE, 3-2, B-8
-  /RVERSION, sort by VERSION, 3-2,  Status commands, 3-6, B-8
-      B-7                             ?COLUMNS, show column-list, 3-6,
-  /RWEEK, sort by DATE's weekday,         B-8
-      3-2, B-8                        ?DATE, show current date, 3-6,
-  /RXAB, sort by extra attributes,        B-8
-      3-2, B-8                        ?FIND, show search-target, B-8
-  /SALLOC, sort by allocation,        ?HELP
-      3-1, B-8                          see also /HELP
-  /SBACKUP, sort by BACKUP date,        see also HELP
-      3-1, B-8                        ?HELP, show command summary,
-  /SCREATED, sort by CREATED date,        3-6, B-8
-      3-1, B-8                        ?LEVEL, show display level, 3-6,
-  /SDATE, sort by DATE, 3-1, B-8          B-8
-  /SEXPIRED, sort by EXPIRED date,    ?MEMORY, show dynamic memory
-      3-2, B-8                            usage, B-8
-  /SFORMAT, sort by format, 3-2,      ?READ, show read-list and
-      B-8                                 options, B-8
-  /SHOUR, sort by hour of DATE,       ?SIZE, show blocks in display
-      3-2, B-8                            list, 3-6, B-8
-  /SID, sort by file-id, B-8          ?TIMES
-  /SLENGTH, sort by record-length,      see also /TIMES
-      B-8                             ?TIMES, show timer, 3-6, B-8
-  /SMASK, sort by protection mask,    ?VERSION, show FLIST version,
-      3-2, B-8                            3-6, B-8
-  /SNAME, sort by NAME, 3-2, B-7    /STYPE, sort by TYPE, 3-2, B-7
-  /SOWNER, sort by owner, 3-2,      SUBMIT, 2-13, B-3
-      B-8
+  /ROWNER, sort by owner, 3-2,        CREATE, B-3
+      B-8                             EDIT, 2-4, B-3
+  /RPATH, sort by PATH, 3-2, B-7      PRINT, 2-8, B-3
+  /RREVISED, sort by REVISED date,    SHELL, B-3
+      3-2, B-8                        SPAWN, 2-12, B-3
+  /RSIZE, sort by SIZE, 3-2, B-8      SUBMIT, 2-13, B-3
+  /RTYPE, sort by TYPE, 3-2, B-8      VIEW, 2-4, B-3
+  /RUSER, sort by file owner's      /SREVISED, sort by REVISED date,
+      user name, 3-2, B-8               3-2, B-8
+  /RVERSION, sort by VERSION, 3-2,  /SSIZE, sort by SIZE, 3-2, B-8
+      B-8                           Status commands, 3-6, B-8
+  /RWEEK, sort by DATE's weekday,     ?COLUMNS, show column-list, 3-6,
+      3-2, B-8                            B-8
+  /RXAB, sort by extra attributes,    ?DATE, show current date, 3-6,
+      3-2, B-8                            B-8
+  /SALLOC, sort by allocation,        ?FIND, show search-target, B-8
+      3-1, B-8                        ?HELP
+  /SBACKUP, sort by BACKUP date,        see also /HELP
+      3-1, B-8                          see also HELP
+  /SCREATED, sort by CREATED date,    ?HELP, show command summary,
+      3-1, B-8                            3-6, B-8
+  /SDATE, sort by DATE, 3-1, B-8      ?LEVEL, show display level, 3-6,
+  /SEXPIRED, sort by EXPIRED date,        B-8
+      3-2, B-8                        ?MEMORY, show dynamic memory
+  /SFORMAT, sort by format, 3-2,          usage, B-8
+      B-8                             ?READ, show read-list and
+  /SHOUR, sort by hour of DATE,           options, B-8
+      3-2, B-8                        ?SIZE, show blocks in display
+  /SID, sort by file-id, B-8              list, 3-6, B-8
+  /SLENGTH, sort by record-length,    ?TIMES
+      B-8                               see also /TIMES
+  /SMASK, sort by protection mask,    ?TIMES, show timer, 3-6, B-8
+      3-2, B-8                        ?VERSION, show FLIST version,
+  /SNAME, sort by NAME, 3-2, B-7          3-6, B-8
+  /SOWNER, sort by owner, 3-2,      /STYPE, sort by TYPE, 3-2, B-8
+      B-8                           SUBMIT, 2-13, B-3
                                                           Page Index-7
 
 
@@ -3053,13 +3056,13 @@ Right-arrow, move cursor right,       CTRL/N, NEXT, B-3
 /SUSER, sort by file owner's user   VERIFY, 2-13, B-7
     name, 3-2, B-8                  ?VERSION, show FLIST version, B-8
 /SVERSION, sort by VERSION, 3-2,    /VERSIONS qualifier, 4-1
-    B-7                             VIEW, 2-3, B-3
+    B-8                             VIEW, 2-3, B-3
 /SWEEK, sort by DATE's weekday,     VMS error messages
     3-2, B-8                          /HOLD, 3-7
 /SXAB, sort by extra attributes,    VMS messages, 2-8, 2-13
     3-2, B-8
                                     Wildcard searches
-"/T", substitute TYPE, 1-8, B-9       DELETE, 2-2
+"/T", substitute TYPE, 1-8, B-9       DELETE, 2-3
 /TIMES, reset timer, 3-7, B-4         differences from VMS, 2-5
 ?TIMES, show timer, 3-6, B-8          FIND, 2-5
 /TOP, scroll to top, 1-4, B-7         INSPECT, 2-6

@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: browse.c,v 1.21 1995/10/26 10:12:19 tom Exp $";
+static char *Id = "$Id: browse.c,v 1.22 1995/10/27 13:31:04 tom Exp $";
 #endif
 
 /*
@@ -9,6 +9,7 @@ static char *Id = "$Id: browse.c,v 1.21 1995/10/26 10:12:19 tom Exp $";
  *		titled BROWSE, which was written by L.Seeton, 06-Nov-1983).
  * Created:	16 Apr 1984
  * Last update:
+ *		27 Oct 1995, release-version
  *		22 Oct 1995, DEC-C clean-compile
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		27 May 1995, prototyped
@@ -812,7 +813,7 @@ void	more_file (void)
 
 	    case 'V':			/* Display current version	*/
 		LOGARGS('V',0);
-		more_msg ("BROWSE (v951026)", TRUE);
+		more_msg ("BROWSE (v951027)", TRUE);
 		sleep (3);
 		break;
 

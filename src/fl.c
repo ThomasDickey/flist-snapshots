@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: fl.c,v 1.22 1995/10/22 22:10:57 tom Exp $";
+static char *Id = "$Id: fl.c,v 1.24 1995/10/27 21:30:44 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: fl.c,v 1.22 1995/10/22 22:10:57 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	31 Apr 1984
  * Last update:
+ *		26 Oct 1995, err in stdarg conversion
  *		22 Oct 1995, DEC-C clean-compile.  Added seconds to "/dlong".
  *		28 May 1995, use stdarg instead of VARARGS hack.
  *		18 Mar 1995, prototypes
@@ -438,7 +439,7 @@ int	didwarn(void)	{	return (warn_flag);	}
 static
 void	WarnVA (char *format, va_list ap)
 {
-	if (!beep_flag)
+	if (!didbeep())
 	{
 		warn_flag = TRUE;
 		sound_alarm();
@@ -490,6 +491,7 @@ void	FlistTellVA (char *format, va_list ap)
 void	flist_tell (char *format, ...)
 {
 	va_list ap;
+
 	va_start(ap, format);
 	FlistTellVA (format, ap);
 	va_end(ap);
@@ -615,12 +617,11 @@ void	FlistLogVA (char *format, va_list ap)
 {
 	if (LogRAB != 0)
 	{
-		va_list	ap;
 		register int j,k,next;
 		char	bfr[CRT_COLS+(2*MAX_PATH)],
 			bfr2[CRT_COLS];
 
-		strcpy (bfr2, "         ");
+		sprintf (bfr2, "%*s", nesting_lvl, " ");
 		vsprintf (bfr, format, ap);
 
 		/*
@@ -667,7 +668,7 @@ int	flist_nest (void)
  */
 int	flist_opts (int argc, char **argv, DCLARG *arg_, int subset)
 {
-	char	msg[CRT_COLS + MAX_PATH];
+	char	msg[CRT_COLS + 8 * MAX_PATH];
 
 	if (subset)	subset = SUBOPT; /* Number of entries to ignore	*/
 	if (dclopt (msg, arg_, &opts[subset],
@@ -736,12 +737,18 @@ int	flist_opts (int argc, char **argv, DCLARG *arg_, int subset)
 			}
 			else if (argc > 0)
 			{
-			int	j;
+				int	j;
+				size_t	len = 0;
+
 				msg[0]	= EOS;
 				for (j = 0; j < argc; j++)
 				{
+					char	*parm = argv[j];
+					len += (strlen(parm) + 1);
+					if (len >= sizeof(msg) - 1)
+						break;
 					strcat (msg, " ");
-					strcat (msg, argv[j]);
+					strcat (msg, parm);
 				}
 				flist_log ("!%s", msg);
 			}

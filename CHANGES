@@ -1,3 +1,38 @@
+1995-10-27  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/flcrea.c: got this to work with VAX-C (no more AXP available)
+
+	* src/dclarg.c:
+	suppress status from sys$parse if it's directory-not-found (prevents
+	us from getting into the flcrea() function).
+	also, trim off ".;" if it results from an empty match (messes up the
+	testing in 'looks_like_directory()')
+
+	* doc/flist.mem, doc/browse.mem:
+	regenerated after adding create-command
+
+	* src/fl.c: typo (from sourced-in patch)
+
+	* doc/flist.hlp: regenerated after adding create-command
+
+	* src/browse.c, src/version.c: release-version
+
+	* doc/db.rno, doc/d2.rno: added CREATE command
+
+	* src/dircmd.h: added extern for 'flcrea()'
+
+	* src/flcrea.c: RCS_BASE
+
+	* src/descrip.mms, src/build.com: added module 'FLCREA'
+
+	* src/dircmd2.h: added symbol 'v_1d' for "create" command
+
+	* src/dircmd.c: added "create" command
+
+	* src/flist.bug: deleted some obsolete entries
+
+	* src/rmsio.c: added flags to enable shared-read
+
 1995-10-26  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/inspect.c:

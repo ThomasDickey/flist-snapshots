@@ -1,4 +1,4 @@
-/* $Id: dircmd.h,v 1.5 1995/06/06 00:05:29 tom Exp $
+/* $Id: dircmd.h,v 1.6 1995/10/27 13:13:17 tom Exp $
  *
  * public interface of dircmd.c (and functions tabulated there)
  */
@@ -15,6 +15,7 @@ extern	tDIRCMD(flcols_right);
 extern	tDIRCMD(flcols_width);
 extern	tDIRCMD(flcols_132);
 extern	tDIRCMD(flcopy);	/* Copy/append files			*/
+extern	tDIRCMD(flcrea);	/* create file or directory		*/
 extern	tDIRCMD(fldlet);	/* Delete or purge a file		*/
 #ifdef	DEBUG
 extern	tDIRCMD(fldump);	/* Dump data structures			*/
