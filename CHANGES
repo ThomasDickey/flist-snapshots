@@ -1,3 +1,19 @@
+1985-02-05  Thomas E. Dickey
+
+	* src/dclarg.h: RCS_BASE
+
+1985-02-05  Thomas E. Dickey
+
+	* src/dclarg.h: rcs-identifiers
+
+1985-02-05  Thomas E. Dickey
+
+	* src/dclinx.c: RCS_BASE
+
+1985-02-05  Thomas E. Dickey
+
+	* src/dclinx.c: rcs-identifiers
+
 1985-02-04  Thomas E. Dickey
 
 	* src/crs.c: RCS_BASE
