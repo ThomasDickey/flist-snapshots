@@ -1,3 +1,39 @@
+1995-10-25  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/isowner.c:
+	corrected missing parenthesis that made this not work for system accounts.
+
+	* doc/browse.mem: regen'd
+
+	* doc/flist.mem: regen'd after updating source-files
+
+	* src/dirent.c: tuned the default size for "user" column
+	added animation-call for 'dds_while()'
+	workaround for bug in DEC-C sprintf (which put leading zeroes on limited-
+	length number!)
+
+	* src/flscan.c:
+	sprinkled some 'dds_while()' calls to make animated "Working..." message
+
+	* src/build.com, src/descrip.mms:
+	use only the .hlp files generated in [-.doc]
+
+	* doc/flist.hlp: regen'd
+
+	* src/flshow.c: oops: missed an '&' in sys$gettim()
+
+	* src/dirfind.c:
+	fixed bug that broke repeated delete of [...] w/o intervening sort to
+	compress display's deleted-file entries.
+
+	* src/dds.c: mods to make 'dds_while()' animated
+
+	* src/flsort.c: modified interface to 'dds_while()'
+
+	* src/version.c: summarized my changes this year
+
+	* src/version.c: merged 'notes' file from SPC into this history
+
 1995-10-24  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/flsort.c: added USER-column sort

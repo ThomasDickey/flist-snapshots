@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: uid2s.c,v 1.1 1995/10/24 10:03:28 tom Exp $";
+static char *Id = "$Id: uid2s.c,v 1.2 1995/10/25 00:18:06 tom Exp $";
 #endif
 
 /*
@@ -58,6 +58,8 @@ char *	lookup_id (unsigned id)
 	static	char	buffer[80];
 	$DESCRIPTOR(nambuf,buffer);
 
+	MY_LIST *p;
+
 	if (sys$idtoasc(
 			id,
 			&namlen,
@@ -65,13 +67,14 @@ char *	lookup_id (unsigned id)
 			&resid,
 			&attrib,
 			&contxt) == SS$_NORMAL) {
-		MY_LIST *p = (MY_LIST *)malloc(sizeof(MY_LIST));
-		p->next = identifiers;
-		p->id   = id;
-		p->name = strncpy(calloc(namlen+1,1), buffer, namlen);
-		result  = p->name;
-		identifiers = p;
+		result = strncpy(calloc(namlen+1,1), buffer, namlen);
 	}
+
+	p = (MY_LIST *)malloc(sizeof(MY_LIST));
+	p->next = identifiers;
+	p->id   = id;
+	p->name = result;
+	identifiers = p;
 #if 0
 	if (st != SS$_NOSUCHID)
 		sys$finish_rdb(contxt);
@@ -92,21 +95,24 @@ char *	uid_to_string(unsigned uid, unsigned gid)
 	if (uid != ID_MASK) {
 		unsigned id0 = uid;
 		unsigned id1 = (uid | (gid << GID_SHIFT));
+		int	found_0 = 0;
+		int	found_1 = 0;
 		for (p = identifiers; p != 0; p = p->next) {
-			if (p->id == id0
-			 || p->id == id1) {
+			if (p->id == id0) {
+				found_0 = 1;
 				result = p->name;
-				break;
 			}
+			if (p->id == id1) {
+				found_1 = 1;
+				result = p->name;
+			}
+			if (result != 0 || (found_0 && found_1))
+				break;
 		}
-		if (result == 0)
-			result = lookup_id(id0);
-		if (result == 0)
+		if (result == 0 && !found_1)
 			result = lookup_id(id1);
-	}
-	if (result == 0) {
-		static char temp[10];
-		sprintf(result = temp, "%u", uid);
+		if (result == 0 && !found_0)
+			result = lookup_id(id0);
 	}
 	return (result);
 }
@@ -122,18 +128,16 @@ char *	gid_to_string(unsigned gid)
 
 	if (gid != ID_MASK) {
 		unsigned id = (gid << GID_SHIFT) | ID_MASK;
+		int found = 0;
 		for (p = identifiers; p != 0; p = p->next) {
 			if (id == p->id) {
+				found = 1;
 				result = p->name;
 				break;
 			}
 		}
-		if (result == 0)
+		if (result == 0 && !found)
 			result = lookup_id(id);
-	}
-	if (result == 0) {
-		static char temp[10];
-		sprintf(result = temp, "%u", gid);
 	}
 	return (result);
 }
@@ -144,16 +148,18 @@ char *	gid_to_string(unsigned gid)
 char *	vms_uid2s(char *result, unsigned member, unsigned group)
 {
 	int	bracket = ((group & 0100000) == 0);
+	char	*s;
 
 	*result = '\0';
 	if (bracket) {
 		strcat(result, "[");
-		if (group != 1) {
-			strcat(result, gid_to_string(group));
+		if ((s = gid_to_string(group)) != 0) {
+			strcat(result, s);
 			strcat(result, ",");
 		}
 	}
-	strcat(result, uid_to_string(member, group));
+	if ((s = uid_to_string(member, group)) != 0)
+		strcat(result, s);
 	if (bracket)
 		strcat(result, "]");
 	return (result);

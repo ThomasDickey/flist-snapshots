@@ -1,3 +1,4 @@
+.; $Id: d3.rno,v 1.2 1995/10/25 01:02:55 tom Exp $
 .req	"d0.req"
 .; directory sorting and display format commands
 .;
@@ -12,7 +13,7 @@ Using FLIST, you may sort by anything on the screen:
 .b.i-4
 o	Name fields (e.g., the file name, type and directory-path).
 .b.i-4
-o	Date fields (the creation, backup and revision dates),
+o	Date fields (the creation, backup, expired and revision dates),
 and their major components (day-of-week, hour-of-day).
 .b.i-4
 o	Size (of the file, in blocks, or its allocated space).
@@ -61,6 +62,13 @@ character (the minimum abbreviation):
 	Any of the file dates, depending on the current display mode
 .x DATE-toggle
 (see "/D" commands).
+.b.i-12;EXPIRED
+.x Column keywords>EXPIRED
+.x Sorting commands>/SEXPIRED, sort by EXPIRED date
+.x /SEXPIRED, sort by EXPIRED date
+.x Sorting commands>/REXPIRED, sort by EXPIRED date
+.x /REXPIRED, sort by EXPIRED date
+	The expiration date of the file.
 .b.i-12;FORMAT
 .x Column keywords>FORMAT
 .x Sorting commands>/SFORMAT, sort by format
@@ -139,6 +147,12 @@ TYPE always appears as the second display column.
 	The file's version number, left-justified and separated from the
 TYPE field by a ";".
 VERSION always appears as the third display column.
+.b.i-12;USER
+.x Sorting commands>/SUSER, sort by file owner's user name
+.x /SUSER, sort by file owner's user name
+.x Sorting commands>/RUSER, sort by file owner's user name
+.x /RUSER, sort by file owner's user name
+	The file's owner in symbolic format
 .b.i-12;WEEK
 .x Sorting commands>/SWEEK, sort by DATE's weekday
 .x /SWEEK, sort by DATE's weekday
@@ -292,8 +306,8 @@ These keywords (which may be abbreviated to a single character) are
 the portions of the FLIST display which are not permanently
 assigned:
 .b.lm+8.nj
-ALLOC, BACKUP, CREATED, DATE, FORMAT, MASK, OWNER, PATH, REVISED,
-SIZE, XAB
+ALLOC, BACKUP, CREATED, DATE, EXPIRED, FORMAT, MASK, OWNER, PATH, REVISED,
+SIZE, USER, XAB
 .j.lm-8
 .b;The remaining display keywords
 .b;########NAME, TYPE, VERSION
@@ -314,7 +328,7 @@ No column may be repeated, however.
 There is one instance in which FLIST permits you to display the
 same information twice on the screen.
 The DATE display column is treated specially,
-and is separate from the BACKUP, CREATED and REVISED columns.
+and is separate from the BACKUP, CREATED, EXPIRED and REVISED columns.
 The contents of the DATE column may be changed without issuing a
 "/COLUMNS" command.
 By providing a toggle-command "/D", FLIST can reserve a single key
@@ -330,6 +344,8 @@ the type of date you wish:
 .br;/DBACKUP (/DB)
 .x	DATE-toggle>/DCREATED
 .br;/DCREATED (/D)
+.x	DATE-toggle>/DEXPIRED
+.br;/DEXPIRED (/D)
 .x	DATE-toggle>/DREVISED
 .br;/DREVISED (/DR)
 .b.lm-8
@@ -391,7 +407,7 @@ analogous to the VMS "SHOW" commands.
 .br;The COLUMNS status command summarizes the current display format,
 by showing the keywords which describe it.
 Its primary use is to show which date-columns correspond to
-the various file dates (BACKUP, CREATED, REVISED).
+the various file dates (BACKUP, CREATED, EXPIRED, REVISED).
 .;
 .b.i-4;?DATE
 .x Status commands>?DATE, show current date

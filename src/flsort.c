@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: flsort.c,v 1.9 1995/06/06 10:41:20 tom Exp $";
+static char *Id = "$Id: flsort.c,v 1.10 1995/10/25 01:06:51 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: flsort.c,v 1.9 1995/06/06 10:41:20 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	04 May 1984
  * Last update:
+ *		24 Oct 1995	added USER-sort
  *		18 Mar 1995	prototypes
  *		18 Feb 1995	port to AXP (DATENT mods).
  *		02 Jan 1989	modified to use 'qsort' instead of my selection-
@@ -58,6 +59,7 @@ static char *Id = "$Id: flsort.c,v 1.9 1995/06/06 10:41:20 tom Exp $";
  *		O	owner	[,name,type,vers,path]
  *		R	revised	[,name,type,vers,path]
  *		S	size	[,name,type,vers,path]
+ *		U	user	[,name,type,vers,path]
  *		W	week	[,name,type,vers,path]
  *		X	xab	[,name,type,vers,path]
  *
@@ -95,8 +97,10 @@ static
 char	*full_opt[] = {
 		"PATH",		"NAME",		"TYPE",		"VERSION",
 		"ALLOC",	"BACKUP",	"CREATED",	"DATE",
+		"EXPIRED",
 		"FORMAT",	"HOUR",		"MASK",		"OWNER",
-		"REVISED",	"SIZE",		"XAB",		"EXPIRED"};
+		"REVISED",	"SIZE",		"USER",
+		"XAB"};
 static
 int	by_hour = 0;		/* Last HOUR-mode used	*/
 
@@ -130,6 +134,7 @@ static	int	flsort_fix (FLINK *f_);
 #define	sort_P(z1,z2)	sort_FWD(z1->fpath_->path_sort, z2->fpath_->path_sort)
 #define	sort_N(z1,z2)	sort_STR(z1->fname,  z2->fname)
 #define	sort_T(z1,z2)	sort_STR(z1->ftype,  z2->ftype)
+#define	sort_U(z1,z2)	sort_STR(z1->f_user, z2->f_user)
 
 #define	sort_V(z1,z2)	sort_NUM(z1->fvers,  z2->fvers)
 
@@ -206,7 +211,7 @@ int	compare(const void *p1, const void *p2)
 		if (sortPRV(f1,f2))	break;
 		if (sort_D(f1->frevi,f2->frevi))	break;
 		goto by_name;
-	case 'E':			/* EXPRIRED	*/
+	case 'E':			/* EXPIRED	*/
 		if (sortPRV(f1,f2))	break;
 		if (sort_D(f1->fexpr,f2->fexpr))	break;
 		goto by_name;
@@ -222,6 +227,10 @@ int	compare(const void *p1, const void *p2)
 	case 'O':
 		if (sortPRV(f1,f2))	break;
 		if (sort_O(f1,f2))	break;
+		goto by_name;
+	case 'U':
+		if (sortPRV(f1,f2))	break;
+		if (sort_U(f1,f2))	break;
 		goto by_name;
 	case 'I':
 #define	sort_ID(n)	sort_NUM(f1->fidnum[n],f2->fidnum[n])
@@ -281,7 +290,7 @@ tDIRCMD(flsort)
 	if ((strchr("AS",	opt)	&& !A_opt)
 	||  (strchr("BCDEHRW",	opt)	&& !D_opt)
 	||  (strchr("M",	opt)	&& !M_opt)
-	||  (strchr("O",	opt)	&& !O_opt) )
+	||  (strchr("OU",	opt)	&& !O_opt) )
 	{
 		warn ("Sort (%s) is not applicable", full_opt[j0]);
 		return;
