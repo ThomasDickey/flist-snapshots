@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.9 1995/10/21 18:45:20 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.10 1995/11/15 20:15:16 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: acplook.c,v 1.9 1995/10/21 18:45:20 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from test code)
  * Last update:
+ *		15 Nov 1995, corrected err in 'SWAP' macro
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT changes).
  *		04 Nov 1988, added '.fexpr' data
@@ -59,7 +60,7 @@ unsigned acplook (
 	short	uic_vec[2];
 	FAT	recattr;
 	unsigned uchar;
-#define	SWAP(x)	((x >> 16) + (x & 0xffff))
+#define	SWAP(x)	(((x >> 16) & 0xffff) + ((x & 0xffff) << 16))
 
 	static $DESCRIPTOR(DSC_name,"");
 	struct	dsc$descriptor	fibDSC;

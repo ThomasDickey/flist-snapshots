@@ -1,4 +1,4 @@
-/* $Id: dirent.h,v 1.15 1995/10/24 20:26:16 tom Exp $ */
+/* $Id: dirent.h,v 1.16 1995/11/15 20:21:50 tom Exp $ */
 
 /*
  * Title:	dirent.h
@@ -201,7 +201,7 @@ typedef	struct my_flink {
 #define	size_O_opt
 #define	size_P_opt
 #define	size_V_opt
-#define	size_ccolumns	[7]		/* name,type,version,path,rfm,org,user*/
+#define	size_ccolumns	[9]		/* name,type,version,path,rfm,org,user,size,alloc*/
 #define	size_pcolumns	[2]		/* name,type	*/
 #define	size_conv_list	[27]
 #define	size_maxfiles
