@@ -1,3 +1,11 @@
+1985-01-01  Thomas E. Dickey
+
+	* doc/d0.req: RCS_BASE
+
+1985-01-01  Thomas E. Dickey
+
+	* doc/d0.req: rcs identifiers
+
 1984-12-29  Thomas E. Dickey
 
 	* src/strskps.c: RCS_BASE
