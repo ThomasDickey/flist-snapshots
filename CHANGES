@@ -1,3 +1,21 @@
+1985-10-07  Thomas E. Dickey
+
+	* src/browse.bug: RCS_BASE
+
+1985-10-07  Thomas E. Dickey
+
+	* src/browse.bug: make program names consistent:FLIST,BROWSE
+
+1985-10-05  Thomas E. Dickey
+
+	* src/flprot.c: RCS_BASE
+
+1985-10-05  Thomas E. Dickey
+
+	* src/flprot.c: make program names consistent:FLIST,BROWSE
+
+	* src/flprot.c: rcs-identifiers
+
 1985-09-30  Thomas E. Dickey
 
 	* src/whoami.c: RCS_BASE
