@@ -1,3 +1,57 @@
+1989-12-05  dickey@software.org
+
+	* src/notes: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/notes: make program names consistent:FLIST,BROWSE
+
+1989-12-05  dickey@software.org
+
+	* src/dirent.c: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/dirent.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirent.c: rcs-identifiers
+
+1989-12-05  dickey@software.org
+
+	* src/dclarg.c: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/dclarg.c: make program names consistent:FLIST,BROWSE
+
+	* src/dclarg.c: rcs-identifiers
+
+1989-12-05  dickey@software.org
+
+	* src/syrights.c: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/syrights.c: rcs-identifiers
+
+1989-12-05  dickey@software.org
+
+	* src/isowner.c: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/isowner.c: make program names consistent:FLIST,BROWSE
+
+	* src/isowner.c: rcs-identifiers
+
+1989-12-05  dickey@software.org
+
+	* src/cmpprot.c: RCS_BASE
+
+1989-12-05  Thomas E. Dickey  <dickey@software.org>
+
+	* src/cmpprot.c: rcs-identifiers
+
 1989-03-06  dickey@software.org
 
 	* src/browse.c: RCS_BASE
