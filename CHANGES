@@ -1,3 +1,31 @@
+2000-11-05  Thomas E. Dickey  <dickey@clark.net>
+
+	* FREEWARE_README.TXT, FREEWARE_DEMO.TXT, RELEASE: update contact
+
+	* src/dclchk.c: DEC C warning.
+
+	* src/crt.c:
+	recode a fragment to avoid a DEC C warning (perhaps clearer now anyway)
+
+	* src/debrief.c:
+	put prototype in strutils.h, allowing a void* param to avoid declaring VEC
+
+	* src/edtcmd.c: DEC C warning
+
+	* src/dclarg.c: DEC warning
+
+	* src/acplook.c: DEC C warning
+
+	* src/isowner.c:
+	fix DEC C warning about comparing an unsigned value to -1.
+
+	* src/strform2.c:
+	modified strform1() after reading it closely when I got a seg-violation
+	in it: the place where I set out[len1] to null could be beyond the end
+	of the buffer.
+
+	* src/strutils.h: add prototype for debrief()
+
 2000-01-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/termsize.c:

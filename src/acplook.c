@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: acplook.c,v 1.10 1995/11/15 20:15:16 tom Exp $";
+static char *Id = "$Id: acplook.c,v 1.11 2000/11/05 22:43:36 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: acplook.c,v 1.10 1995/11/15 20:15:16 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	08 Dec 1984 (from test code)
  * Last update:
+ *		05 Nov 2000, fix DEC C warning about comparing unsigned to -1.
  *		15 Nov 1995, corrected err in 'SWAP' macro
  *		18 Mar 1995, prototypes
  *		18 Feb 1995, port to AXP (DATENT changes).
@@ -114,7 +115,7 @@ unsigned acplook (
 			z->fsize = SWAP(recattr.fat$l_efblk);
 			if (!recattr.fat$w_ffbyte)	z->fsize--;
 			z->fallc = SWAP(recattr.fat$l_hiblk);
-			if (z->fsize < 0)		z->fsize = z->fallc;
+			if ((int)z->fsize < 0)		z->fsize = z->fallc;
 			z->f_grp = uic_vec[1];
 			z->f_mbm = uic_vec[0];
 			memcpy (z->fidnum, nam_->nam$w_fid, sizeof(z->fidnum));

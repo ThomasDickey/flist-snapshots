@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: debrief.c,v 1.4 1995/06/04 19:27:42 tom Exp $";
+static char *Id = "$Id: debrief.c,v 1.5 2000/11/05 23:08:35 tom Exp $";
 #endif
 
 /*
@@ -7,10 +7,11 @@ static char *Id = "$Id: debrief.c,v 1.4 1995/06/04 19:27:42 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	16 Sep 1985
  * Last update:
+ *		05 Nov 2000, add prototype to strutils.h
  *		19 Feb 1995, prototypes
- *		21 Sep 1985	The 'vec[]' array may not be sorted.  Allow
- *				for this in generating a list of ambiguous
- *				matches.
+ *		21 Sep 1985, The 'vec[]' array may not be sorted.  Allow
+ *			     for this in generating a list of ambiguous
+ *			     matches.
  *		17 Sep 1985
  *
  * Function:	Perform a table-lookup for a command-keyword.  If the keyword
@@ -22,7 +23,7 @@ static char *Id = "$Id: debrief.c,v 1.4 1995/06/04 19:27:42 tom Exp $";
  *		vec	=> array of structures a la VEC (no repeated entries!!)
  *		vsize	= actual size of *vec
  *		vlast	= number of entries in array *vec
- *		find 	- string to find (must be in the same case as the table).
+ *		find	- string to find (must be in the same case as the table).
  *		fsize	= length of 'find' (need not be null-terminated).
  *
  * Returns:	0..vlast-1 if legal match found
@@ -41,7 +42,7 @@ typedef	struct	{
 	int	brief;
 	}	VEC;
 
-#define	LOOP	for (v_ = vec, k = 0;\
+#define	LOOP	for (v_ = (VEC *)vec, k = 0;\
 			 k < vlast;\
 			 k++, v_ = (VEC *)((char *)v_ + vsize))
 #define	RANGE	4
@@ -49,7 +50,7 @@ typedef	struct	{
 int
 debrief (
 	char	*msg,
-	VEC	*vec,
+	void	*vec,
 	int	vsize,		/* actual number of bytes/entry	*/
 	int	vlast,
 	char	*find,
@@ -61,7 +62,7 @@ debrief (
 		j,
 		k,
 		range,
-    		toomany	= 0,
+		toomany = 0,
 		flen[RANGE];
 	char	key[255],
 		*s_,

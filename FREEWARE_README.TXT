@@ -18,4 +18,4 @@ integrate VMS commands, and to augment them
     o   Commands which alter or create files are  reflected  in  the  display,
         which is updated automatically for most operations.
 
-Author: Thomas E. Dickey (dickey@clark.net)
+Author: Thomas E. Dickey (dickey@herndon4.his.com)

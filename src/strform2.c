@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: strform2.c,v 1.4 1995/06/06 13:41:18 tom Exp $";
+static char *Id = "$Id: strform2.c,v 1.5 2000/11/05 22:39:53 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,8 @@ static char *Id = "$Id: strform2.c,v 1.4 1995/06/06 13:41:18 tom Exp $";
  * Author:	Thomas E. Dickey
  * Created:	13 Jul 1984
  * Last update:
+ *		05 Nov 2000, adjust limit in strform1() to account for trailing
+ *			     null.
  *		19 Feb 1995, prototypes
  *
  * Function:	Format a message into a buffer with restricted size.  The
@@ -58,7 +60,7 @@ int	strform1 (char *out, int maxout, char *s1, int len1)
 	if (s1 && (maxout > 0))
 	{
 		if (len1 <= 0)		len1	= strlen(s1);
-		if (len1 > maxout)	len1	= maxout;
+		if (len1 >= maxout)	len1	= maxout - 1;
 		strncpy (out, s1, len1);
 		out[len1] = '\0';
 		maxout	-= len1;
