@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dircmd.c,v 1.12 1995/06/05 23:29:09 tom Exp $";
+static char *Id = "$Id: dircmd.c,v 1.13 1995/10/25 00:53:17 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dircmd.c,v 1.12 1995/06/05 23:29:09 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	10 May 1984
  * Last update:
+ *		24 Oct 1995, added commands to sort-by-username
  *		27 May 1995, prototypes
  *		04 Nov 1988- added "/dexpired" table entry, and matching sort
  *		11 Jul 1988- fix side-effect of "<number> -" from dclarg fix.
@@ -245,6 +246,7 @@ VCMD2	vcmd2[]	= {
 	"/sexpired",	3, flsort,	OZ(0),
 	"/ssize",	3, flsort,	OZ(0),
 	"/stype",	3, flsort,	OZ(0),
+	"/suser",	3, flsort,	OZ(0),
 	"/svers",	3, flsort,	OZ(0),
 	"/sweek",	3, flsort,	OZ(0),
 	"/sxab",	3, flsort,	OZ(0),
@@ -265,6 +267,7 @@ VCMD2	vcmd2[]	= {
 	"/rexpired",	3, flsort,	OZ(0),
 	"/rsize",	3, flsort,	OZ(0),
 	"/rtype",	3, flsort,	OZ(0),
+	"/ruser",	3, flsort,	OZ(0),
 	"/rvers",	3, flsort,	OZ(0),
 	"/rweek",	3, flsort,	OZ(0),
 	"/rxab",	3, flsort,	OZ(0),

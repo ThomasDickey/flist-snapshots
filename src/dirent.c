@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.17 1995/10/24 10:12:42 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.18 1995/10/25 00:37:28 tom Exp $";
 #endif
 
 /*
@@ -637,7 +637,7 @@ void	dirent_conv (char *bfr, FILENT *z)
 					strncpy (c_, day_of_week[j % 7], 4);
 					c_ += 4;
 				}
-				sysasctim (c_, date_, D_mode == 1 ? 18 : 21);
+				sysasctim (c_, date_, D_mode <= 1 ? 18 : 21);
 				if (D_mode < 0)	/* "dd-mmm hh:mm" */
 				{		/* "dd-mmm-yyyy " */
 					if (j+180 > absolute_day)
@@ -682,21 +682,7 @@ void	dirent_conv (char *bfr, FILENT *z)
 			break;
 
 		case 'u':		/* USER (len=18)	*/
-			if (no_priv) {
-				sprintf(c_, "%-*s", ccolumns[6], " ");
-			} else {
-				int	len, latch;
-				/*
-				 * FIXME: I'd have latched the maximum width
-				 * in 'dirent_width()', except that I'm not
-				 * caching an allocated string for the user
-				 * identifier. This is crude, but sufficient.
-				 */
-				len = strlen(
-					vms_uid2s(tempid, z->f_mbm, z->f_grp));
-				LATCH(6,len);
-				sprintf (c_, "%-*s", ccolumns[6], tempid);
-			}
+			sprintf (c_, "%-*s", ccolumns[6], z->f_user ? z->f_user : "");
 			break;
 
 		/* Patch: Limit this to 13 columns until either we extend the
@@ -1024,6 +1010,9 @@ int	dirent_width (FILENT *z)
 				len += 3;
 			}
 		LATCH(5,len);
+
+		len = strlen(z->f_user);
+		LATCH(6,len);
 	}
 	else		/* Reset entire list	*/
 	{
@@ -1110,6 +1099,7 @@ int	dirent__look (
 {
 	unsigned status	= RMS$_NORMAL;		/* return-status	*/
 	int	ok	= TRUE;
+	char	temp[80];
 
 	/*
 	 * Fill the FILENT block with the name, and null-data:
@@ -1128,6 +1118,12 @@ int	dirent__look (
 		status = acplook (z, filespec, &znam);
 
 	if (!P_opt && zNOPRIV(z))	ok = FALSE;
+
+	vms_uid2s(temp, z->f_mbm, z->f_grp);
+	if (!strcmp(temp, "[]"))
+		temp[0] = '\0';
+	/* FIXME: memory leak */
+	z->f_user = strcpy(malloc(strlen(temp)+1), temp);
 
 	return (ok);
 }

@@ -1,4 +1,3 @@
-! $Id: flist.cld,v 1.2 1985/07/14 23:54:30 tom Exp $
 DEFINE	VERB	flist
 	IMAGE		flist
 	PARAMETER	p1,	value(list)

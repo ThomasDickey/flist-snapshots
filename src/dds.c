@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dds.c,v 1.13 1995/10/21 19:26:07 tom Exp $";
+static char *Id = "$Id: dds.c,v 1.14 1995/10/25 01:05:33 tom Exp $";
 #endif
 
 /*
@@ -690,7 +690,7 @@ void	dds_add2 (FILENT *z, int curfile)
 void	dds_width (FILENT *z, int curfile)
 {
 	type_ccolumns	Ccolumns size_ccolumns;
-	static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfx";
+	static	char	Pcolumns [SIZEOF(ccolumns)+1] = "ntvpfxu";
 	register j;
 
 	memcpy (Ccolumns, ccolumns, sizeof(ccolumns));

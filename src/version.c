@@ -1,18 +1,182 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: version.c,v 1.4 1995/10/21 19:37:28 tom Exp $";
+static char *Id = "$Id: version.c,v 1.6 1995/10/25 10:58:38 tom Exp $";
 #endif
 
 /*
- * Title:	dired.c - Directory-Editor Release history
+ * Title:	version.c - Directory-Editor Release history
  * Author:	Thomas E. Dickey
  * Created:	28 Aug 1984
  * Last update:			In-progress: restructure 'dircmd', 'getraw'.
  *
+ * 	----	24 Oct 1995	added "USER" column and corresponding sort
+ *				commands.
+ *
+ * 	----	22 Oct 1995	corrected bug in ^P (set protection) command
+ *				due to difference between DEC-C/VAX-C ctype.h
+ *
+ *				modified "/dlong" to show seconds if command is
+ *				repeated.
+ *
+ *				corrected (pruned) redundant pathname text that
+ *				arises from rooted-logical expansions.
+ *
+ * 	----	21 Oct 1995	final phase of mods for prototyping functions,
+ *				clean-compile with DEC-C.
+ *
+ *	----	06 Jun 1995	more prototypes (almost done)
+ *
+ *	----	28 May 1995	use <stdarg.h> rather than VARARGS hack
+ *
  *	v950319 ported to AXP in VAX-C compatibility mode
  *
- *	----- stopped keeping track of absolute build numbers, converted to rcs
+ *	----	19 Feb 1995	Using AXP demo machine with DEC-C, first phase
+ *				of mods to prototype all functions.
+ *
+ *	---- stopped keeping track of absolute build numbers, converted to rcs
  *
  *	x2149	22 Apr 1993	Rebuilt at Software Productivity Consortium
+ *
+ * 	----	05 Dec 1989	vms 5.1 altered "prvdef.h" file so that
+ *				PRV$V_???  is no longer defined.  altered
+ *				sysrights.c and callers isowner.c, cmpprot.c to
+ *				recompile.
+ *
+ *				patched out trace in DCLARG for bug found in
+ *				89/03/20 (haven't seen it under vms 5.1, also
+ *				conflicts with rebuild).
+ *
+ *				corrected typo in 'dirent.c' (wrong
+ *				variable-type, which previous compilers
+ *				accepted & dealt with properly).
+ *
+ *	----	20 Mar 1989	found intermittent problem with RMS where an
+ *				illegal status code is returned -- manifested
+ *				in a 0x10000 code returned from SYS$PARSE call
+ *				in DCLARG.
+ *
+ *	----	06 Mar 1989	increased BROWSE's limit on the size of the
+ *				fseek-vector which it maintains; also increased
+ *				FLIST's limit on log-file width to 132 from 80.
+ *
+ *	----	24 Feb 1989	added procedure 'flist_chdir()' to encapsulate
+ *				(and log) changes of working directory.
+ *
+ *				modified 'getraw()' so that command-file input
+ *				is discarded except for lines beginning with
+ *				'$' (leading blanks optional).  This lets me
+ *				use the /LOG output directly as a command-file.
+ *
+ *				modified 'browse.c' so that the version which
+ *				is linked into FLIST will log output in a form
+ *				that can be replayed in FLIST's command-file.
+ *
+ *	----	16 Feb 1989	added ".DIF$*", ".SHO" and ".TJL" to list of
+ *				file-types which are not prompted on deletion
+ *				(fldlet.c).
+ *
+ *	----	09 Feb 1989	mod for vms5.0; may set delete-enable on files
+ *				to rename them, restore original protection
+ *				after renaming.
+ *
+ *	----	02 Feb 1989	port to vms5.0; minor fix to flsort; also there
+ *				use 'qsort()' instead of the previous
+ *				selection-sort.
+ *
+ *	----	17 Nov 1988	FLIST on SYS$SYSROOT suddenly changes to
+ *				SYS$COMMON, and the list is not sorted
+ *				properly.
+ *
+ *	----	04 Nov 1988	added expiration-date stuff to FLIST (a la
+ *				REVISED).  Also, corrected places where
+ *				member/group codes were masked to a single
+ *				byte.
+ *
+ *	----	03 Nov 1988	the output from my tar program is not readable
+ *				by BROWSE, though other STMLF files are.
+ *
+ *	----	14 Oct 1988	sometimes FLIST's command history gets
+ *				garbaged.
+ *
+ *				sometimes after an UPDATE command in FLIST,
+ *				PURGE thinks it has found a file which was
+ *				protected, even though it is successfully
+ *				removed.
+ *
+ *				FLIST does not recognize rooted device names,
+ *				e.g., a delete applied to BOOCH_:[ADT]X.LIS
+ *				becomes BOOCH_:[000000.ADT]X.LIS, which it does
+ *				not like.
+ *
+ *	----	11 Oct 1988	corrected place in 'dirarg.c' where "/o" alone
+ *				caused crash.  added ".DIA" to temp-file types
+ *				in 'fldlet.c'
+ *
+ *	----	05 Oct 1988	the uid+gid display for pyster+dickey is
+ *				wrong...should convert to names
+ *
+ *	----	03 Oct 1988	should update using DEC's current acpdef.h files
+ *
+ *	----	16 Sep 1988	corrected "purge" command, which crashed if too
+ *				many versions were protected, since the
+ *				message-buffer overflow check was wrong.
+ *
+ *	----	22 Aug 1988	added test in BROWSE to ensure that we have a
+ *				filename!
+ *
+ *	----	17 Aug 1988	modified 'termsize.c' and 'getraw.c' so they
+ *				use SYS$COMMAND rather than SYS$INPUT so that
+ *				VTSIZE works in a LOGIN.COM (works either way
+ *				with FLIST and BROWSE).
+ *
+ *	----	16 Aug 1988	corrected 'dirent_conv()', guarding better
+ *				against buffer overflow on very long lines
+ *				(i.e., > CRT_COLS).
+ *
+ *				relinked both flist, browse; increased size by
+ *				about 16 blocks (may be because of VMS 4.7
+ *				upgrade).
+ *
+ *	----	15 Aug 1988	observed bugs when helping sam gregory
+ *				straighten out file protections for [.oldcamp]
+ *				(they weren't readable):
+ *				(a) had a very long display line, which would
+ *				    have been longer than 132 characters before
+ *				    truncation.  this caused a segment
+ *				    violation.
+ *				(b) at one point I lost the oldest part of the
+ *				    command history.
+ *
+ *	----	11 Jul 1988	Permit '-' in filenames.
+ *
+ *	----	01 Jul 1988	Added command-table entry for LSEDIT (a la
+ *				EDIT).  Note that FLIST will accept
+ *				LSEDIT/EDIT/VIEW now to view a list (should
+ *				plug it).
+ *
+ *	----	29 Jun 1988	Stripped parity bit in output-lines so that
+ *				boldface/highlighting work properly on
+ *				vt200-class terminals.
+ *
+ *	----	16 Jun 1988	Tried CC's /INCLUDE option so I could move the
+ *				".h" files into a common directory; this did
+ *				not work: it told me that I exceeded my
+ *				enqueue-quota.
+ *
+ *				Relinked sortx; note that link/nodebug does not
+ *				appear to do anything.
+ *
+ *	----	15 Jun 1988	Recompiled objects (userc.olb, fl.obj,
+ *				browse.obj) and relinked.  To do this, copied
+ *				some include-files from home into [.c] and
+ *				[.d], since the VMS C-compiler's search rules
+ *				have changed since I used it last (should fix
+ *				REDO.COM).  Will test against the new
+ *				executables.
+ *
+ *	----	13 Jun 1988	Moved to Software Productivity Consortium. 
+ *				Most items work as-is, but FLIST and BROWSE
+ *				executables sometimes crash.  For example, the
+ *				"find" command in FLIST.
  *
  *	x2062	08 Oct 1985	Added code in CRT-module to detect change of
  *				terminal-size (especially after spawned commands).

@@ -1,4 +1,4 @@
-.; 31 Jul 1985
+.; $Id: db.rno,v 1.2 1995/10/25 01:00:54 tom Exp $
 .; This is the help-file for FLIST.  The following variants are possible:
 .;
 .;	PAGED - format for document
@@ -433,6 +433,7 @@ the display to any combination of fields for which FLIST has read the data:
 .x Column keywords>BACKUP
 .x Column keywords>CREATED
 .x Column keywords>DATE
+.x Column keywords>EXPIRED
 .x Column keywords>FORMAT
 .x Column keywords>ID
 .x Column keywords>LENGTH
@@ -442,9 +443,10 @@ the display to any combination of fields for which FLIST has read the data:
 .x Column keywords>REVISED
 .x Column keywords>SIZE
 .x Column keywords>XAB
-Column keywords include:  ALLOC,  BACKUP,  CREATED,  DATE, FORMAT,
+Column keywords include:  ALLOC,  BACKUP,  CREATED,  DATE, EXPIRED, FORMAT,
 ID, LENGTH, MASK, OWNER,
-PATH, REVISED and SIZE and XAB (record attributes).  For example, the standard
+PATH, REVISED, SIZE, USER and XAB (record attributes).
+For example, the standard
 display is:
 .b.c;/columns size date mask
 .b
@@ -900,6 +902,11 @@ Normal	Reverse	Description
 .x Sorting commands>/RDATE, sort by DATE
 .x /RDATE, sort by DATE
 .i-29;/SDate	/RDate	Sort by DATE
+.x Sorting commands>/SEXPIRED, sort by EXPIRED date
+.x /SEXPIRED, sort by EXPIRED date
+.x Sorting commands>/REXPIRED, sort by EXPIRED date
+.x /REXPIRED, sort by EXPIRED date
+.i-29;/SExpired	/RExpired	Sort by EXPIRED date
 .x Sorting commands>/SFORMAT, sort by format
 .x /SFORMAT, sort by format
 .x Sorting commands>/RFORMAT, sort by format
@@ -940,6 +947,11 @@ Normal	Reverse	Description
 .x Sorting commands>/RSIZE, sort by SIZE
 .x /RSIZE, sort by SIZE
 .i-29;/SSize	/RSize	Sort by SIZE
+.x Sorting commands>/SUSER, sort by file owner's user name
+.x /SUSER, sort by file owner's user name
+.x Sorting commands>/RUSER, sort by file owner's user name
+.x /RUSER, sort by file owner's user name
+.i-29;/SUser	/RUser	Sort by file owner's user name
 .x Sorting commands>/SWEEK, sort by DATE's weekday
 .x /SWEEK, sort by DATE's weekday
 .x Sorting commands>/RWEEK, sort by DATE's weekday
