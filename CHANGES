@@ -1,3 +1,21 @@
+1984-09-18  Thomas E. Dickey
+
+	* src/canopen.c: RCS_BASE
+
+1984-09-18  Thomas E. Dickey
+
+	* src/canopen.c: make program names consistent:FLIST,BROWSE
+
+	* src/canopen.c: rcs-identifiers
+
+1984-09-18  Thomas E. Dickey
+
+	* src/getpad.c: RCS_BASE
+
+1984-09-18  Thomas E. Dickey
+
+	* src/getpad.c: rcs-identifiers
+
 1984-09-17  Thomas E. Dickey
 
 	* src/fgetr.c: RCS_BASE
