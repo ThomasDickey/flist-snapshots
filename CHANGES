@@ -1,3 +1,13 @@
+1988-10-11  dickey@software.org
+
+	* src/dirarg.c: RCS_BASE
+
+1988-10-11  Thomas E. Dickey  <dickey@software.org>
+
+	* src/dirarg.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirarg.c: rcs-identifiers
+
 1988-08-18  dickey@software.org
 
 	* src/termsize.c: RCS_BASE
