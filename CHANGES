@@ -1,3 +1,41 @@
+1984-08-25  Thomas E. Dickey
+
+	* src/dirprot.c: RCS_BASE
+
+1984-08-25  Thomas E. Dickey
+
+	* src/dirprot.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirprot.c: rcs-identifiers
+
+1984-08-25  Thomas E. Dickey
+
+	* src/diropen.c: RCS_BASE
+
+1984-08-25  Thomas E. Dickey
+
+	* src/diropen.c: make program names consistent:FLIST,BROWSE
+
+	* src/diropen.c: rcs-identifiers
+
+1984-08-25  Thomas E. Dickey
+
+	* src/sygetsym.c: RCS_BASE
+
+1984-08-25  Thomas E. Dickey
+
+	* src/sygetsym.c: rcs-identifiers
+
+1984-08-25  Thomas E. Dickey
+
+	* src/names.h: RCS_BASE
+
+1984-08-25  Thomas E. Dickey
+
+	* src/names.h: rcs identifiers
+
+	* src/names.h: rcs-identifiers
+
 1984-08-24  Thomas E. Dickey
 
 	* src/crt.h: RCS_BASE
