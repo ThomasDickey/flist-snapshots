@@ -1,3 +1,71 @@
+1985-06-15  Thomas E. Dickey
+
+	* src/setprot.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/setprot.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/getprot.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/getprot.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/xabproui.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/xabproui.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/inspect.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/inspect.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dirread.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dirread.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirread.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dirseek.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dirseek.c: make program names consistent:FLIST,BROWSE
+
+	* src/dirseek.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dclarea.c: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/dclarea.c: rcs-identifiers
+
+1985-06-15  Thomas E. Dickey
+
+	* src/acp.h: RCS_BASE
+
+1985-06-15  Thomas E. Dickey
+
+	* src/acp.h: rcs keywords
+
 1985-06-11  Thomas E. Dickey
 
 	* src/flescp.c: RCS_BASE
