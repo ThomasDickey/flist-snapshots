@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: dirent.c,v 1.19 1995/10/26 00:08:37 tom Exp $";
+static char *Id = "$Id: dirent.c,v 1.20 1995/11/16 22:18:29 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: dirent.c,v 1.19 1995/10/26 00:08:37 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	30 Apr 1984
  * Last update:
+ *		15 Nov 1995, latch width for filesize, allocated
  *		25 Oct 1995, workaround for DEC-C bug in sprintf.
  *		23 Oct 1995, added 'u(ser)' column
  *		21 Oct 1995, /dlong repeated shows time in seconds.
@@ -568,14 +569,17 @@ void	dirent_conv (char *bfr, FILENT *z)
 			break;
 
 		case 'a':		/* ALLOC (allocation)	*/
-			dirent__cnv2 (no_priv, c_, z->fallc);
+			if (no_priv)
+				sprintf (c_, "%-*s", ccolumns[8], " ");
+			else
+				sprintf (c_, "%*.*u", ccolumns[8], ccolumns[8], z->fallc);
 			break;
 
 		case 's':		/* SIZE (usage)		*/
 			if (no_priv)
-				sprintf (c_, "%-5s", " ");
+				sprintf (c_, "%-*s", ccolumns[7], " ");
 			else
-				sprintf (c_, "%5.5s", filesize);
+				sprintf (c_, "%*.*s", ccolumns[7], ccolumns[7], filesize);
 			break;
 
 		case 'l':		/* LENGTH (of record)	*/
@@ -974,6 +978,23 @@ int	dirent_old_any (
 	return (-2);
 }
 
+static
+int	digits_of (unsigned value)
+{
+	static	unsigned tens[20] = { 1 };
+	int	count;
+
+	for (count = 1; count < sizeof(tens)/sizeof(tens[0]); count++)
+	{
+		if (tens[count] == 0)
+			tens[count] = 10 * tens[count-1];
+		if (value < tens[count]
+		 || tens[count] <= tens[count-1])
+			break;
+	}
+	return count;
+}
+
 /* <dirent_width>:
  * Latch the widest field of each type which is actually used in the display
  * list.  We call this from points at which we are actually loading a FILENT
@@ -983,15 +1004,12 @@ int	dirent_old_any (
 int	dirent_width (FILENT *z)
 {
 	register int	len, num, latch;
-	static	int	tens[6] = {1,10,100,1000,10000,100000};
 
 	if (z)
 	{
 		LATCH(0,len = strlen(z->fname)-1);
 		LATCH(1,len = strlen(z->ftype));
-		for (len = 1; len < SIZEOF(tens) && z->fvers >= tens[len]; len++)
-			/*EMPTY*/;
-		LATCH(2,len);
+		LATCH(2,len = digits_of(z->fvers));
 		LATCH(3,len = strlen(zPATHOF(z)));
 
 		/*
@@ -1013,8 +1031,9 @@ int	dirent_width (FILENT *z)
 			}
 		LATCH(5,len);
 
-		len = strlen(z->f_user);
-		LATCH(6,len);
+		LATCH(6,len = strlen(z->f_user));
+		LATCH(7,len = digits_of(z->fsize));
+		LATCH(8,len = digits_of(z->fallc));
 	}
 	else		/* Reset entire list	*/
 	{
@@ -1025,6 +1044,8 @@ int	dirent_width (FILENT *z)
 		ccolumns[4] = 3;	/* format + (organization)	*/
 		ccolumns[5] = 1;	/* attributes	*/
 		ccolumns[6] = 8;	/* user-identifier */
+		ccolumns[7] = 5;	/* filesize (blocks) */
+		ccolumns[8] = 5;	/* allocation (blocks) */
 		for (num = 0; num < numfiles; num++)
 			if (!DELETED(num))
 				latch |= dirent_width (FK_(num));
