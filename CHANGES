@@ -1,3 +1,11 @@
+1984-10-24  Thomas E. Dickey
+
+	* src/cmpblk.c: RCS_BASE
+
+1984-10-24  Thomas E. Dickey
+
+	* src/cmpblk.c: rcs-identifiers
+
 1984-09-18  Thomas E. Dickey
 
 	* src/canopen.c: RCS_BASE
