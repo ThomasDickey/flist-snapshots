@@ -1,3 +1,19 @@
+1985-01-14  Thomas E. Dickey
+
+	* src/domore.c: RCS_BASE
+
+1985-01-14  Thomas E. Dickey
+
+	* src/domore.c: rcs-identifiers
+
+1985-01-14  Thomas E. Dickey
+
+	* src/dclopt.h: RCS_BASE
+
+1985-01-14  Thomas E. Dickey
+
+	* src/dclopt.h: rcs-identifiers
+
 1985-01-12  Thomas E. Dickey
 
 	* doc/d3.rno, doc/d2.rno: RCS_BASE
