@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: termsize.c,v 1.5 1995/10/21 18:40:38 tom Exp $";
+static char *Id = "$Id: termsize.c,v 1.6 2000/01/28 11:27:58 tom Exp $";
 #endif
 
 /*
@@ -7,6 +7,7 @@ static char *Id = "$Id: termsize.c,v 1.5 1995/10/21 18:40:38 tom Exp $";
  * Author:	T.E.Dickey
  * Created:	02 Oct 1985
  * Last update:
+ *		29 Jan 2000, add TT$V_PAGE definition, omitted in DEC C 4.x
  *		18 Feb 1995, port to AXP (renamed 'alarm')
  *		17 Aug 1988, use SYS$COMMAND rather than SYS$INPUT.
  *		03 Oct 1985
@@ -49,6 +50,10 @@ static char *Id = "$Id: termsize.c,v 1.5 1995/10/21 18:40:38 tom Exp $";
 #include	<stsdef.h>
 
 #include	"crt.h"
+
+#ifndef TT$V_PAGE
+#define TT$V_PAGE 24
+#endif
 
 /*
  * Local definitions:
